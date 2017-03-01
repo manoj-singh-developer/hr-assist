@@ -2,6 +2,26 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.0]
   def change
     create_table :users do |t|
       ## Database authenticatable
+      t.string :first_name,         limit: 45
+      t.string :middle_name,        limit: 45
+      t.string :last_name,          limit: 45
+      t.text :address
+      t.date :birthday
+      t.string :phone,              limit: 14
+      t.string :picture
+      t.text :observations
+      t.string :email_other,       limit: 120
+      t.text :urgent_contact
+      t.string :car_plate,           limit: 25
+      t.date :assist_start_date
+      t.text :courses_and_certifications
+      t.text :courses_date
+      t.integer :schedule_id
+      t.text :skills_level
+      t.text :skills_type
+      t.text :project_dates
+      t.integer :status
+
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
 
