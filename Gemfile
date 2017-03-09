@@ -60,3 +60,4 @@ gem 'mysql2' ,'~> 0.4.4'
 gem 'devise'
 gem 'devise_ldap_authenticatable'
 
+gem 'grape'
