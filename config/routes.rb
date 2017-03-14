@@ -7,6 +7,11 @@ Rails.application.routes.draw do
   mount V1::IndustryAPI => '/api'
   mount V1::ActivityAPI => '/api'
   mount V1::ApplicationTypeAPI => '/api'
+  mount V1::TrainingAPI => '/api'
+  mount V1::EquipmentAPI => '/api'
+  mount V1::LanguageAPI => '/api'
+  mount V1::PositionAPI => '/api'
+  mount V1::EducationAPI => '/api'
   devise_for :users
 
 
