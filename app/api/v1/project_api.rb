@@ -1,5 +1,11 @@
 module V1
   class ProjectAPI < Grape::API
+    helpers Authentication
+
+    before do
+      authenticate!
+    end
+
     version 'v1', using: :path
     format :json
 
@@ -11,7 +17,7 @@ module V1
       end
 
       params do
-        requires :id ,type: Integer , desc: "Project id"
+        requires :id, type: Integer , desc: "Project id"
       end
 
       desc "Returns a project"
