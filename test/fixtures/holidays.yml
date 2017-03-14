@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  days: 1
+  start_date: 2017-02-24
+  end_date: 2017-02-24
+  signing_day: 2017-02-24
+
+two:
+  user_id: 1
+  days: 1
+  start_date: 2017-02-24
+  end_date: 2017-02-24
+  signing_day: 2017-02-24

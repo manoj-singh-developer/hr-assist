@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  start_date: 2017-02-24
+  end_date: 2017-02-24
+  deadline: 2017-02-24
+  in_progress: false
+  main_activities: MyText
+  url: MyString
+  assist_url: MyString
+  application_type_id: 1
+  industrie_id: 1
+  customer_id: 1
+
+two:
+  name: MyString
+  description: MyText
+  start_date: 2017-02-24
+  end_date: 2017-02-24
+  deadline: 2017-02-24
+  in_progress: false
+  main_activities: MyText
+  url: MyString
+  assist_url: MyString
+  application_type_id: 1
+  industrie_id: 1
+  customer_id: 1
