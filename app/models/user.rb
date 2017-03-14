@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  before_save :ensure_authentication_token
+
   devise :ldap_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
@@ -25,5 +27,20 @@ class User < ApplicationRecord
   has_many :departments, through: :user_departments
   has_many :user_technologies
   has_many :technologies, through: :user_technologies
+
+  def ensure_authentication_token
+    if auth_token.blank?
+      self.auth_token = generate_access_token
+    end
+  end
+
+  private
+
+  def generate_access_token
+    loop do
+      token = Devise.friendly_token
+      break token unless User.where(auth_token: token).first
+    end
+  end
 
 end
