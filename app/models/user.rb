@@ -4,6 +4,14 @@ class User < ApplicationRecord
   devise :ldap_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  before_validation :get_ldap_info
+  def get_ldap_info
+    self.email = Devise::LDAP::Adapter.get_ldap_param(self.email,"mail").first
+    self.first_name = Devise::LDAP::Adapter.get_ldap_param(self.email,"givenName").first
+    self.last_name = Devise::LDAP::Adapter.get_ldap_param(self.email,"sn").first
+    self.uid = Devise::LDAP::Adapter.get_ldap_param(self.email,"uidNumber").first
+  end
+
   has_one :schedule
   has_many :uploads
   has_many :user_positions
