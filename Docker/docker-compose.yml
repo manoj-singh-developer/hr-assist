@@ -1,0 +1,15 @@
+version: "2.0"
+
+services:
+    db-mysql:
+      image: mysql
+      env_file:
+        - env/mysql.env
+    app:
+      build: app
+      volumes:
+        - /Users/sebastianvirlan/Documents/workspace/work/hr-assist-rails:/usr/src/app/:rw
+      links:
+        - db-mysql
+      ports:
+        - 3000:3000

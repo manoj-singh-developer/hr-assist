@@ -1,6 +1,7 @@
 *.rbc
 capybara-*.html
 .rspec
+.DS_Store
 /log
 /config/secrets.yml
 /config/database.yml
