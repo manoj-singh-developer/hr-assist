@@ -6,7 +6,9 @@ class User < ApplicationRecord
   devise :ldap_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  before_validation :get_ldap_info
+  attr_accessor :skip_password_validation
+  
+  #before_validation :get_ldap_info
   def get_ldap_info
     self.email = Devise::LDAP::Adapter.get_ldap_param(self.email,"mail").first
     self.first_name = Devise::LDAP::Adapter.get_ldap_param(self.email,"givenName").first
@@ -49,6 +51,12 @@ class User < ApplicationRecord
       token = Devise.friendly_token
       break token unless User.where(auth_token: token).first
     end
+  end
+
+  protected
+  def password_required?
+    return false if skip_password_validation
+    super
   end
 
 end
