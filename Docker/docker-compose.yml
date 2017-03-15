@@ -8,8 +8,16 @@ services:
     app:
       build: app
       volumes:
-        - /Users/sebastianvirlan/Documents/workspace/work/hr-assist-rails:/usr/src/app/:rw
+        - YOUR_LOCAL_PATH:/usr/src/app/:rw
       links:
         - db-mysql
       ports:
         - 3000:3000
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      environment:
+        - PMA_HOST=db-mysql
+      links:
+        - db-mysql
+      ports:
+        - 80:8080

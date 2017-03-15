@@ -7,6 +7,26 @@ module V1
       def nil_error field
         "This user didn't fill in #{field} field"
       end
+
+      #Finds or create user by email
+      def createUser(result)
+
+        user = User.find_or_create_by(email: result.first.mail) do |user|
+          user.first_name = result.first.givenName
+          user.last_name  = result.first.sn
+          user.uid        = result.first.uidNumber
+        end
+        
+        user.skip_password_validation = true
+        user.ensure_authentication_token
+
+        if user.save!
+          { status: 'ok', auth_token: user.auth_token}
+        else
+          { status: :error, response: "error_creating_user"}
+        end
+      end
+
     end
 
     resource :users do
@@ -77,12 +97,10 @@ module V1
         :password => password
       )
 
-      user = User.find_by_email(email)
+      #user = User.find_by_email(email)
 
       if result
-        user.ensure_authentication_token
-        user.save
-        { status: 'ok', auth_token: user.auth_token}
+        createUser result
       else
         { message: "Authentication FAILED." }
       end
