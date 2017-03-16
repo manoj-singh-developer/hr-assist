@@ -11,20 +11,22 @@ module V1
       #Finds or create user by email
       def createUser(result)
 
-        user = User.find_or_create_by(email: result.first.mail) do |user|
-          user.first_name = result.first.givenName
-          user.last_name  = result.first.sn
-          user.uid        = result.first.uidNumber
+        user = User.find_or_create_by(email: self.getParam(result.first.mail)) do |user|
+          user.first_name = self.getParam(result.first.givenName)
+          user.last_name  = self.getParam(result.first.sn)
+          user.uid        = self.getParam(result.first.uidNumber)
+          user.skip_password_validation = true
         end
-        
-        user.skip_password_validation = true
-        user.ensure_authentication_token
 
-        if user.save!
-          { status: 'ok', auth_token: user.auth_token}
-        else
-          { status: :error, response: "error_creating_user"}
-        end
+        user.ensure_authentication_token
+        user.save
+
+        { status: 'ok', auth_token: user.auth_token}
+
+      end
+
+      def getParam(data)
+        data[0].chomp('"')
       end
 
     end

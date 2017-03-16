@@ -39,11 +39,13 @@ class User < ApplicationRecord
   has_many :technologies, through: :user_technologies
 
   def ensure_authentication_token
-    if auth_token.blank?
-      self.auth_token = generate_access_token
-    end
+    self.auth_token = generate_access_token
   end
 
+  def is_admin
+    true
+  end
+  
   private
 
   def generate_access_token
