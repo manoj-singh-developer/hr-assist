@@ -4,7 +4,7 @@ class CreateUploads < ActiveRecord::Migration[5.0]
       t.string :file_name, limit: 120
       t.string :file_description
       t.string :path
-      t.integer :user_id
+      t.references :user, index: true, foreign_key: true
 
       t.timestamps
     end

@@ -6,7 +6,7 @@ class CreateTrainings < ActiveRecord::Migration[5.0]
       t.text :picture
       t.date :start_date
       t.integer :duration
-      t.integer :user_id
+      t.references :user, index: true, foreign_key: true
 
       t.timestamps
     end
