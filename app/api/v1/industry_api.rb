@@ -3,22 +3,57 @@ module V1
     version 'v1', using: :path
     format :json
 
+    include RescuesAPI
+
+    helpers do
+      include AccessGranted::Rails::ControllerMethods
+      include Authentication
+      include Responses
+      include APIHelpers
+
+      def postParams
+        ActionController::Parameters.new(params)
+          .permit(:name, :label)
+      end
+
+      params :pagination do
+        optional :page, type: Integer
+        optional :per_page, type: Integer
+      end
+
+    end
+    
+    before do
+      authenticate!
+    end
+
     resource :industries do
 
       desc "Return all industries"
-      get do
-        Industry.all
-      end
-
       params do
-        requires :id ,type: Integer , desc: "Industry id"
+        use :pagination # aliases: includes, use_scope
+      end
+      get do
+        getPaginatedItemsFor Industry
       end
 
       desc "Returns a industry"
-      get ':id' do
-        industry = Industry.find_by_id(params[:id])
-        industry ? industry : {message: "Industry not found"}
+      params do
+        requires :id ,type: Integer , desc: "Industry id"
       end
+      get ':id' do
+        authorize! :read, Industry.find(params[:id])
+      end
+
+      desc "Create new industry"
+      params do
+        requires :name, allow_blank: false, type: String
+        requires :label, allow_blank: false, type: String
+      end
+      post 'new' do
+        authorizeAndCreate Industry postParams
+      end
+      
     end
   end
 end

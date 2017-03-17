@@ -1,5 +1,5 @@
 module V1
-  class ApplicationTypeAPI < Grape::API
+  class ScheduleAPI < Grape::API
     version 'v1', using: :path
     format :json
 
@@ -13,7 +13,7 @@ module V1
 
       def postParams
         ActionController::Parameters.new(params)
-          .permit(:name, :label)
+          .permit(:name, :timetable, :user_id)
       end
 
       params :pagination do
@@ -27,31 +27,34 @@ module V1
       authenticate!
     end
 
-    resource :application_types do
+    resource :schedules do
 
-      desc "Return all application types"
+      desc "Return all schedules"
       params do
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor ApplicationType
+        getPaginatedItemsFor Schedule
       end
 
-      desc "Returns an application type"
+      desc "Returns a schedule"
       params do
-        requires :id ,type: Integer , desc: "Application type id"
+        requires :id, type: Integer , desc: "Schedule id"
       end
       get ':id' do
-        authorize! :read, ApplicationType.find(params[:id])
+        authorize! :read, Schedule.find(params[:id])
       end
 
-      desc "Create new application type"
+      desc "Create new schedule"
       params do
         requires :name, allow_blank: false, type: String
-        requires :label, allow_blank: false, type: String
+        requires :timetable, allow_blank: false, type: String
+        requires :user_id, allow_blank: false, type: Integer
       end
       post 'new' do
-        authorizeAndCreate ApplicationType postParams
+        authorizeAndCreate Schedule postParams do
+            User.find(postParams[:user_id])
+        end
       end
 
     end

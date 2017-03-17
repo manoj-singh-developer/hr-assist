@@ -1,5 +1,5 @@
 module V1
-  class ProjectAPI < Grape::API
+  class HolidayAPI < Grape::API
     version 'v1', using: :path
     format :json
 
@@ -13,7 +13,7 @@ module V1
 
       def postParams
         ActionController::Parameters.new(params)
-          .permit(:name, :description, :start_date, :end_date, :deadline, :main_activities, :url, :assist_url)
+          .permit(:user_id, :days, :start_date, :end_date, :signing_day)
       end
 
       params :pagination do
@@ -27,37 +27,36 @@ module V1
       authenticate!
     end
 
-    resource :projects do
+    resource :holidays do
 
-      desc "Return all projects"
+      desc "Return all holidays"
       params do
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Project
+        getPaginatedItemsFor Holiday
       end
 
-      desc "Returns a project"
+      desc "Returns a holiday"
       params do
-        requires :id, type: Integer , desc: "Project id"
+        requires :id, type: Integer , desc: "Holiday id"
       end
       get ':id' do
-        authorize! :read, Project.find(params[:id])
+        authorize! :read, Holiday.find(params[:id])
       end
 
-      desc "Create new project"
+      desc "Create new holiday"
       params do
-        requires :name, allow_blank: false, type: String
-        requires :description, allow_blank: false, type: String
+        requires :user_id, allow_blank: false, type: Integer
+        requires :days, allow_blank: false, type: Integer
         requires :start_date, allow_blank: false, type: Date
         requires :end_date, allow_blank: false, type: Date
-        optional :deadline, type: Date
-        optional :main_activities, type: String
-        optional :url, type: String
-        optional :assist_url, type: String
+        optional :signing_day, allow_blank: false, type: Date
       end
       post 'new' do
-        authorizeAndCreate Project postParams
+        authorizeAndCreate Holiday postParams do
+            User.find(postParams[:user_id])
+        end
       end
 
     end

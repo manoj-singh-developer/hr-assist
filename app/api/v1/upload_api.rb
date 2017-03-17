@@ -1,5 +1,5 @@
 module V1
-  class ApplicationTypeAPI < Grape::API
+  class UploadAPI < Grape::API
     version 'v1', using: :path
     format :json
 
@@ -13,7 +13,7 @@ module V1
 
       def postParams
         ActionController::Parameters.new(params)
-          .permit(:name, :label)
+          .permit(:file_name, :file_description, :path, :user_id)
       end
 
       params :pagination do
@@ -27,31 +27,35 @@ module V1
       authenticate!
     end
 
-    resource :application_types do
+    resource :uploads do
 
-      desc "Return all application types"
+      desc "Return all uploads"
       params do
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor ApplicationType
+        getPaginatedItemsFor Upload
       end
 
-      desc "Returns an application type"
+      desc "Returns a upload"
       params do
-        requires :id ,type: Integer , desc: "Application type id"
+        requires :id, type: Integer , desc: "Upload id"
       end
       get ':id' do
-        authorize! :read, ApplicationType.find(params[:id])
+        authorize! :read, Upload.find(params[:id])
       end
 
-      desc "Create new application type"
+      desc "Create new upload"
       params do
-        requires :name, allow_blank: false, type: String
-        requires :label, allow_blank: false, type: String
+        requires :file_name, allow_blank: false, type: String
+        requires :file_description, allow_blank: false, type: String
+        requires :path, allow_blank: false, type: String
+        requires :user_id, allow_blank: false, type: Integer
       end
       post 'new' do
-        authorizeAndCreate ApplicationType postParams
+        authorizeAndCreate Upload postParams do
+            User.find(postParams[:user_id])
+        end
       end
 
     end
