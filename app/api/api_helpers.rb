@@ -51,8 +51,6 @@ module APIHelpers
       :items => items,
       :paginate => url_paginate(items, params[:per_page])
     }
-
-    items
   end
 
   def authorizeAndCreate(model, postParams, &block)

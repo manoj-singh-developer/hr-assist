@@ -3,6 +3,8 @@ module V1
     version 'v1', using: :path
     format :json
 
+    include RescuesAPI
+
     helpers do
 
       include Responses
@@ -12,21 +14,58 @@ module V1
         "This user didn't fill in #{field} field"
       end
 
+      def postParams
+        ActionController::Parameters.new(params)
+          .permit(:first_name, :middle_name, :last_name, :address, :birthday, :phone, :picture, :observations,
+          :email_other, :urgent_contact, :car_plate, :assist_start_date, :courses_and_certifications, :courses_date,
+          :schedule_id, :skills_level, :skills_type, :project_dates, :status, :email)
+      end
+
+      params :pagination do
+        optional :page, type: Integer
+        optional :per_page, type: Integer
+      end
+
     end
 
     resource :users do
-      get do
-        User.all
+
+      desc "Return all users"
+      params do
+        use :pagination # aliases: includes, use_scope
       end
+      get do
+        getPaginatedItemsFor User
+      end
+
+      desc "Returns a user"
+      params do
+        requires :id, type: Integer , desc: "User id"
+      end
+      get ':id' do
+        authenticate!
+        authorize! :read, User.find(params[:id])
+      end
+
+      desc "User login"
 
       params do
-        requires :id ,type: Integer , desc: "User id"
+        requires :email, type: String
+        requires :password, type: String
+      end
+      post "login" do
+        result = ldap_login
+
+        if result
+          createUser result
+        else
+          error({ message: "Authentication FAILED." })
+        end
       end
 
-      get ':id' do
-        user = User.find_by_id(params[:id])
-        user ? user : {message: 'User not found'}
-      end
+
+
+
 
       get ':id/equipments' do
         user = User.find_by_id(params[:id])
@@ -59,21 +98,6 @@ module V1
       end
     end
 
-    params do
-      requires :email, type: String
-      requires :password, type: String
-    end
-
-    post "login" do
-
-      result = ldap_login
-
-      if result
-        createUser result
-      else
-        error({ message: "Authentication FAILED." })
-      end
-    end
   end
 end
 
