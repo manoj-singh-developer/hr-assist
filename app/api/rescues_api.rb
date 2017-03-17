@@ -10,7 +10,7 @@ module RescuesAPI
     end
 
     rescue_from ActiveRecord::RecordNotFound do |exception|
-      error_response(message: @@not_found, status: 404)
+      error_response(message: {error: @@not_found, exception: exception}, status: 404)
     end
   end
 end

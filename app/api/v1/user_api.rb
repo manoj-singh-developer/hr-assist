@@ -3,47 +3,69 @@ module V1
     version 'v1', using: :path
     format :json
 
+    include RescuesAPI
+
     helpers do
+
+      include Responses
+      include APIHelpers
+
       def nil_error field
         "This user didn't fill in #{field} field"
       end
 
-      #Finds or create user by email
-      def createUser(result)
-
-        user = User.find_or_create_by(email: self.getParam(result.first.mail)) do |user|
-          user.first_name = self.getParam(result.first.givenName)
-          user.last_name  = self.getParam(result.first.sn)
-          user.uid        = self.getParam(result.first.uidNumber)
-          user.skip_password_validation = true
-        end
-
-        user.ensure_authentication_token
-        user.save
-
-        { status: 'ok', auth_token: user.auth_token}
-
+      def postParams
+        ActionController::Parameters.new(params)
+          .permit(:first_name, :middle_name, :last_name, :address, :birthday, :phone, :picture, :observations,
+          :email_other, :urgent_contact, :car_plate, :assist_start_date, :courses_and_certifications, :courses_date,
+          :schedule_id, :skills_level, :skills_type, :project_dates, :status, :email)
       end
 
-      def getParam(data)
-        data[0].chomp('"')
+      params :pagination do
+        optional :page, type: Integer
+        optional :per_page, type: Integer
       end
 
     end
 
     resource :users do
-      get do
-        User.all
+
+      desc "Return all users"
+      params do
+        use :pagination # aliases: includes, use_scope
       end
+      get do
+        getPaginatedItemsFor User
+      end
+
+      desc "Returns a user"
+      params do
+        requires :id, type: Integer , desc: "User id"
+      end
+      get ':id' do
+        authenticate!
+        authorize! :read, User.find(params[:id])
+      end
+
+      desc "User login"
 
       params do
-        requires :id ,type: Integer , desc: "User id"
+        requires :email, type: String
+        requires :password, type: String
+      end
+      post "login" do
+        result = ldap_login
+
+        if result
+          createUser result
+        else
+          error({ message: "Authentication FAILED." })
+        end
       end
 
-      get ':id' do
-        user = User.find_by_id(params[:id])
-        user ? user : {message: 'User not found'}
-      end
+
+
+
 
       get ':id/equipments' do
         user = User.find_by_id(params[:id])
@@ -76,37 +98,6 @@ module V1
       end
     end
 
-    params do
-      requires :email, type: String
-      requires :password, type: String
-    end
-
-    post "login" do
-      email = params[:email]
-      password = params[:password]
-      env = Rails.env
-      ldap = Net::LDAP.new :host => LDAP_SETTINGS[env]["host"],
-                           :port => LDAP_SETTINGS[env]["port"],
-                           :auth => {
-                              :method => :simple,
-                              :username => LDAP_SETTINGS[env]["admin_user"],
-                              :password => LDAP_SETTINGS[env]["admin_password"]
-                           }
-
-      result = ldap.bind_as(
-        :base => "dc=test,dc=com",
-        :filter => "(mail=#{email})",
-        :password => password
-      )
-
-      #user = User.find_by_email(email)
-
-      if result
-        createUser result
-      else
-        { message: "Authentication FAILED." }
-      end
-    end
   end
 end
 

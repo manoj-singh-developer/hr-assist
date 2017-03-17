@@ -1,5 +1,5 @@
 module V1
-  class ApplicationTypeAPI < Grape::API
+  class CountryAPI < Grape::API
     version 'v1', using: :path
     format :json
 
@@ -13,7 +13,7 @@ module V1
 
       def postParams
         ActionController::Parameters.new(params)
-          .permit(:name, :label)
+          .permit(:long_name, :short_name)
       end
 
       params :pagination do
@@ -27,31 +27,31 @@ module V1
       authenticate!
     end
 
-    resource :application_types do
+    resource :countries do
 
-      desc "Return all application types"
+      desc "Return all countries"
       params do
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor ApplicationType
+        getPaginatedItemsFor Country
       end
 
-      desc "Returns an application type"
+      desc "Returns a country"
       params do
-        requires :id ,type: Integer , desc: "Application type id"
+        requires :id, type: Integer , desc: "Country id"
       end
       get ':id' do
-        authorize! :read, ApplicationType.find(params[:id])
+        authorize! :read, Country.find(params[:id])
       end
 
-      desc "Create new application type"
+      desc "Create new country"
       params do
-        requires :name, allow_blank: false, type: String
-        requires :label, allow_blank: false, type: String
+        requires :long_name, allow_blank: false, type: String
+        requires :short_name, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate ApplicationType postParams
+        authorizeAndCreate Country postParams
       end
 
     end

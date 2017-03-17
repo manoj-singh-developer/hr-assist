@@ -1,5 +1,5 @@
 module V1
-  class ApplicationTypeAPI < Grape::API
+  class DepartmentAPI < Grape::API
     version 'v1', using: :path
     format :json
 
@@ -13,7 +13,7 @@ module V1
 
       def postParams
         ActionController::Parameters.new(params)
-          .permit(:name, :label)
+          .permit(:name, :description,)
       end
 
       params :pagination do
@@ -27,31 +27,31 @@ module V1
       authenticate!
     end
 
-    resource :application_types do
+    resource :departments do
 
-      desc "Return all application types"
+      desc "Return all departments"
       params do
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor ApplicationType
+        getPaginatedItemsFor Department
       end
 
-      desc "Returns an application type"
+      desc "Returns a department"
       params do
-        requires :id ,type: Integer , desc: "Application type id"
+        requires :id, type: Integer , desc: "Department id"
       end
       get ':id' do
-        authorize! :read, ApplicationType.find(params[:id])
+        authorize! :read, Department.find(params[:id])
       end
 
-      desc "Create new application type"
+      desc "Create new department"
       params do
         requires :name, allow_blank: false, type: String
-        requires :label, allow_blank: false, type: String
+        requires :description, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate ApplicationType postParams
+        authorizeAndCreate Department postParams
       end
 
     end
