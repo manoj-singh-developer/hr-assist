@@ -3,7 +3,7 @@ class CreateSchedules < ActiveRecord::Migration[5.0]
     create_table :schedules do |t|
       t.string :name
       t.string :timetable
-      t.integer :user_id
+      t.references :user, index: true, foreign_key: true
 
       t.timestamps
     end
