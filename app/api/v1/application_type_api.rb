@@ -3,22 +3,57 @@ module V1
     version 'v1', using: :path
     format :json
 
-    resource :application_types do
+    include RescuesAPI
 
-      desc "Return all application_types"
-      get do
-        ApplicationType.all
+    helpers do
+      include AccessGranted::Rails::ControllerMethods
+      include Authentication
+      include Responses
+      include APIHelpers
+
+      def postParams
+        ActionController::Parameters.new(params)
+          .permit(:name, :label)
       end
 
+      params :pagination do
+        optional :page, type: Integer
+        optional :per_page, type: Integer
+      end
+
+    end
+    
+    before do
+      authenticate!
+    end
+
+    resource :application_types do
+
+      desc "Return all application types"
       params do
-        requires :id ,type: Integer , desc: "Application type id"
+        use :pagination # aliases: includes, use_scope
+      end
+      get do
+        getPaginatedItemsFor ApplicationType
       end
 
       desc "Returns an application type"
-      get ':id' do
-        application_type = ApplicationType.find_by_id(params[:id])
-        application_type ? application_type : {message: "Application type not found"}
+      params do
+        requires :id ,type: Integer , desc: "Application type id"
       end
+      get ':id' do
+        authorize! :read, ApplicationType.find(params[:id])
+      end
+
+      desc "Create new application type"
+      params do
+        requires :name, allow_blank: false, type: String
+        requires :label, allow_blank: false, type: String
+      end
+      post 'new' do
+        authorizeAndCreate ApplicationType postParams
+      end
+
     end
   end
 end

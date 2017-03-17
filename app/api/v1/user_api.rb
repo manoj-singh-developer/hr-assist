@@ -4,29 +4,12 @@ module V1
     format :json
 
     helpers do
+
+      include Responses
+      include APIHelpers
+
       def nil_error field
         "This user didn't fill in #{field} field"
-      end
-
-      #Finds or create user by email
-      def createUser(result)
-
-        user = User.find_or_create_by(email: self.getParam(result.first.mail)) do |user|
-          user.first_name = self.getParam(result.first.givenName)
-          user.last_name  = self.getParam(result.first.sn)
-          user.uid        = self.getParam(result.first.uidNumber)
-          user.skip_password_validation = true
-        end
-
-        user.ensure_authentication_token
-        user.save
-
-        { status: 'ok', auth_token: user.auth_token}
-
-      end
-
-      def getParam(data)
-        data[0].chomp('"')
       end
 
     end
@@ -82,29 +65,13 @@ module V1
     end
 
     post "login" do
-      email = params[:email]
-      password = params[:password]
-      env = Rails.env
-      ldap = Net::LDAP.new :host => LDAP_SETTINGS[env]["host"],
-                           :port => LDAP_SETTINGS[env]["port"],
-                           :auth => {
-                              :method => :simple,
-                              :username => LDAP_SETTINGS[env]["admin_user"],
-                              :password => LDAP_SETTINGS[env]["admin_password"]
-                           }
 
-      result = ldap.bind_as(
-        :base => "dc=test,dc=com",
-        :filter => "(mail=#{email})",
-        :password => password
-      )
-
-      #user = User.find_by_email(email)
+      result = ldap_login
 
       if result
         createUser result
       else
-        { message: "Authentication FAILED." }
+        error({ message: "Authentication FAILED." })
       end
     end
   end

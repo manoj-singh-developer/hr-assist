@@ -1,7 +1,8 @@
-# -*- encoding : utf-8 -*-
 module V1
   class ProjectAPI < Grape::API
-    
+    version 'v1', using: :path
+    format :json
+
     include RescuesAPI
 
     helpers do
@@ -12,7 +13,7 @@ module V1
 
       def postParams
         ActionController::Parameters.new(params)
-          .permit(:name, :description,:start_date, :end_date, :deadline, :main_activities, :url, :assist_url)
+          .permit(:name, :description, :start_date, :end_date, :deadline, :main_activities, :url, :assist_url)
       end
 
       params :pagination do
@@ -26,9 +27,6 @@ module V1
       authenticate!
     end
 
-    version 'v1', using: :path
-    format :json
-
     resource :projects do
 
       desc "Return all projects"
@@ -36,23 +34,15 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-
-        items = Project.all.page(params[:page]).per(params[:per_page])
-
-        {
-          :items => items,
-          :paginate => url_paginate(items, params[:per_page])
-        }
-      end
-
-      params do
-        requires :id, type: Integer , desc: "Project id"
+        getPaginatedItemsFor Project
       end
 
       desc "Returns a project"
+      params do
+        requires :id, type: Integer , desc: "Project id"
+      end
       get ':id' do
-        project = Project.find(params[:id])
-        authorize! :read, project
+        authorize! :read, Project.find(params[:id])
       end
 
       desc "Create new project"
@@ -67,9 +57,9 @@ module V1
         optional :assist_url, type: String
       end
       post 'new' do
-        Project.create!(postParams)
-        success
+        authorizeAndCreate Project postParams
       end
+
     end
   end
 end
