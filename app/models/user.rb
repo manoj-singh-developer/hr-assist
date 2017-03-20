@@ -7,7 +7,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   attr_accessor :skip_password_validation
-  
+
   #before_validation :get_ldap_info
   def get_ldap_info
     self.email = Devise::LDAP::Adapter.get_ldap_param(self.email,"mail").first
@@ -18,25 +18,20 @@ class User < ApplicationRecord
 
   has_one :schedule
   has_many :uploads
-  has_many :user_positions
-  has_many :positions, through: :user_positions
-  has_many :user_languages
-  has_many :languages, through: :user_languages
-  has_many :user_equipments
-  has_many :equipments, through: :user_equipments
+  has_and_belongs_to_many :positions
+  has_and_belongs_to_many :languages
+  has_and_belongs_to_many :devices
+  has_and_belongs_to_many :educations
+  has_and_belongs_to_many :departments
+  has_and_belongs_to_many :technologies
+  has_and_belongs_to_many :roles
   has_many :holidays
   has_many :holiday_replacements, through: :holidays
   has_many :replacers, through: :holiday_replacements
   has_many :replaced_users, through: :holiday_replacements, inverse_of: :replaced_user
-  has_many :user_educations
-  has_many :educations, through: :user_educations
   has_many :trainings
   has_many :user_projects
   has_many :projects, through: :user_projects
-  has_many :user_departments
-  has_many :departments, through: :user_departments
-  has_many :user_technologies
-  has_many :technologies, through: :user_technologies
 
   def ensure_authentication_token
     self.auth_token = generate_access_token
@@ -45,7 +40,7 @@ class User < ApplicationRecord
   def is_admin
     true
   end
-  
+
   private
 
   def generate_access_token

@@ -63,13 +63,9 @@ module V1
         end
       end
 
-
-
-
-
-      get ':id/equipments' do
+      get ':id/devices' do
         user = User.find_by_id(params[:id])
-        user.equipments.any? ? user.equipments : nil_error("equipments")
+        user.devices.any? ? user.devices : nil_error("devices")
       end
 
       get ':id/languages' do

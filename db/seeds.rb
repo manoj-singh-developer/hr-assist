@@ -55,31 +55,24 @@ Project.populate 5 do |project|
   project.main_activities = Faker::Lorem.sentence
   project.url = Faker::Internet.url
   project.assist_url = Faker::Internet.url('assist.ro')
+end
+projects = Project.all
+# project = Project.all[Random.new.rand(Project.count)]
+projects.each do |project|
   industry = Industry.all[Random.new.rand(Industry.count)]
-  ProjectIndustry.populate 1 do |pri|
-    pri.project_id = project.id
-    pri.industry_id = industry.id
-  end
+  project.industries << industry
+
   application_type = ApplicationType.all[Random.new.rand(ApplicationType.count)]
-  ApplicationTypeProject.populate 1 do |app|
-    app.application_type_id = application_type.id
-    app.project_id = project.id
-  end
+  project.application_types << application_type
+
   activity = Activity.all[Random.new.rand(Activity.count)]
-  ActivityProject.populate 1 do |act|
-    act.activity_id = activity.id
-    act.project_id = project.id
-  end
+  project.activities << activity
+
   technology = Technology.all[Random.new.rand(Technology.count)]
-  ProjectTechnology.populate 1 do |proj|
-    proj.project_id = project.id
-    proj.technology_id = technology.id
-  end
+  project.technologies << technology
+
   customer = Customer.all[Random.new.rand(Customer.count)]
-  CustomerProject.populate 1 do |customer|
-    customer.customer_id = customer.id
-    customer.project_id = project.id
-  end
+  project.customers << customer
 end
 
 Education.populate 3 do |education|
@@ -95,15 +88,20 @@ Position.populate 3 do |position|
   position.job_detail = Faker::Educator.course
 end
 
-Equipment.populate 3 do |equipment|
-  equipment.name = Faker::Name.name
-  equipment.description = Faker::Lorem.sentence
-  equipment.total = Faker::Number.number(2)
+Device.populate 3 do |device|
+  device.name = Faker::Name.name
+  device.description = Faker::Lorem.sentence
+  device.total = Faker::Number.number(2)
 end
 
 Department.populate 3 do |depart|
   depart.name = Faker::Company.name
   depart.description = Faker::Company.catch_phrase
+end
+
+Role.populate 3 do |rol|
+  rol.name = Faker::Name.name
+  rol.description = Faker::Lorem.sentence
 end
 
 User.populate 10 do |user|
@@ -125,11 +123,7 @@ User.populate 10 do |user|
   user.email = Faker::Internet.email
   user.encrypted_password = Faker::Internet.password
   user.sign_in_count = Faker::Number.between(0,10)
-  language = Language.all[Random.new.rand(3)]
-  UserLanguage.populate 1 do |ul|
-    ul.user_id = user.id
-    ul.language_id = language.id
-  end
+
   Holiday.populate 2 do |holiday|
     holiday.user_id = user.id
     holiday.days = Faker::Number.between(1,3)
@@ -142,33 +136,19 @@ User.populate 10 do |user|
     upr.project_id = project.id
     upr.start_date = Faker::Date.forward(1)
     upr.end_date = Faker::Date.forward(6)
+  end
+  users_projects = UserProject.all.each do |upr|
     technology = Technology.all[Random.new.rand(Technology.count)]
-    UserProjectTechnology.populate 1 do |upt|
-      upt.user_project_id = upr.id
-      upt.technology_id = technology.id
-    end
+    upr.technologies << technology
   end
-  education = Education.all[Random.new.rand(Education.count)]
-  UserEducation.populate 1 do |ue|
-    ue.education_id = education.id
-    ue.user_id = user.id
-  end
+
   Upload.populate 1 do |upload|
     upload.file_name = Faker::Name.name
     upload.file_description = Faker::Lorem.sentence
     upload.path = Faker::Internet.url
     upload.user_id = user.id
   end
-  position = Position.all[Random.new.rand(Position.count)]
-  UserPosition.populate 1 do |up|
-    up.user_id = user.id
-    up.position_id = position.id
-  end
-  equipment = Equipment.all[Random.new.rand(Equipment.count)]
-  UserEquipment.populate 1 do |ue|
-    ue.user_id = user.id
-    ue.equipment_id = equipment.id
-  end
+
   Training.populate 1 do |training|
     training.title = Faker::Educator.course
     training.description = Faker::Lorem.sentence
@@ -177,21 +157,36 @@ User.populate 10 do |user|
     training.duration = Faker::Number.number(2)
     training.user_id = user.id
   end
-  department = Department.all[Random.new.rand(Department.count)]
-  UserDepartment.populate 1 do |ud|
-    ud.user_id = user.id
-    ud.department_id = department.id
-  end
+
   Schedule.populate 1 do |schedule|
     schedule.name = Faker::Educator.course
     schedule.user_id = user.id
     schedule.timetable = Faker::Number.between(0,1).to_s
   end
+end
+
+users = User.all
+users.each do |user|
   technology = Technology.all[Random.new.rand(Technology.count)]
-  UserTechnology.populate 1 do |utech|
-    utech.user_id = user.id
-    utech.technology_id = technology.id
-  end
+  user.technologies << technology
+
+  department = Department.all[Random.new.rand(Department.count)]
+  user.departments << department
+
+  position = Position.all[Random.new.rand(Position.count)]
+  user.positions << position
+
+  device = Device.all[Random.new.rand(Device.count)]
+  user.devices << device
+
+  education = Education.all[Random.new.rand(Education.count)]
+  user.educations << education
+
+  language = Language.all[Random.new.rand(Language.count)]
+  user.languages << language
+
+  role = Role.all[Random.new.rand(Role.count)]
+  user.roles << role
 end
 
 Holiday.all.each do |holiday|

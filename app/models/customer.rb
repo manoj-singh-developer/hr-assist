@@ -1,5 +1,4 @@
 class Customer < ApplicationRecord
-  has_many :customer_projects
-  has_many :projects, through: :customer_projects
+  has_and_belongs_to_many :projects
   belongs_to :country
 end
