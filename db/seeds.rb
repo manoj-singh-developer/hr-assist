@@ -14,6 +14,15 @@ languages.each do |lang|
   end
 end
 
+roles = [{name: :admin, description: "Administrator role"},{name: :employee, description: "Employee role"}]
+
+roles.each do |role|
+  Role.populate 1 do |rol|
+      rol.name = role[:name]
+      rol.description = role[:description]
+  end
+end
+
 ApplicationType.populate 3 do |app|
   app.name = Faker::Name.name
   app.label = Faker::Name.name
@@ -97,11 +106,6 @@ end
 Department.populate 3 do |depart|
   depart.name = Faker::Company.name
   depart.description = Faker::Company.catch_phrase
-end
-
-Role.populate 3 do |rol|
-  rol.name = Faker::Name.name
-  rol.description = Faker::Lorem.sentence
 end
 
 User.populate 10 do |user|
