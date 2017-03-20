@@ -1,4 +1,3 @@
 class Department < ApplicationRecord
-  has_many :user_departments
-  has_many :users, through: :user_departments
+  has_and_belongs_to_many :users
 end
