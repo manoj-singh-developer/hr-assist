@@ -22,7 +22,7 @@ module V1
       end
 
     end
-    
+
     before do
       authenticate!
     end
@@ -51,9 +51,26 @@ module V1
         requires :description, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate Department postParams
+        authorizeAndCreate(Department, postParams)
       end
 
+      desc "Update department"
+      params do
+        optional :name, allow_blank: false, type: String
+        optional :description, allow_blank: false, type: String
+      end
+
+      put ':id' do
+        department = Department.find(params[:id])
+        authorize! :update, Department
+        department.update(postParams)
+        success
+      end
+
+      desc "Delete department"
+      delete ':id' do
+        Department.find(params[:id]).destroy
+      end
     end
   end
 end

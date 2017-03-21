@@ -22,7 +22,7 @@ module V1
       end
 
     end
-    
+
     before do
       authenticate!
     end
@@ -58,6 +58,19 @@ module V1
         end
       end
 
+      desc "Update upload"
+      params do
+        optional :file_name, allow_blank: false, type: String
+        optional :file_description, allow_blank: false, type: String
+        optional :path, allow_blank: false, type: String
+      end
+
+      put ':id' do
+        upload = Upload.find(params[:id])
+        authorize! :update, Upload
+        upload.update(postParams)
+        success
+      end
     end
   end
 end

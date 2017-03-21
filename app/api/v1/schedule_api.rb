@@ -22,7 +22,7 @@ module V1
       end
 
     end
-    
+
     before do
       authenticate!
     end
@@ -52,11 +52,23 @@ module V1
         requires :user_id, allow_blank: false, type: Integer
       end
       post 'new' do
-        authorizeAndCreate Schedule postParams do
+        authorizeAndCreate(Schedule, postParams) do
             User.find(postParams[:user_id])
         end
       end
 
+      desc "Update schedule"
+      params do
+        optional :name, allow_blank: false, type: String
+        optional :timetable, allow_blank: false, type: Integer
+      end
+
+      put ':id' do
+        schedule = Schedule.find(params[:id])
+        authorize! :update, Schedule
+        schedule.update(postParams)
+        success
+      end
     end
   end
 end

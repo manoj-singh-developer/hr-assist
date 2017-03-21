@@ -22,7 +22,7 @@ module V1
       end
 
     end
-    
+
     before do
       authenticate!
     end
@@ -54,9 +54,29 @@ module V1
         optional :end_date, allow_blank: false, type: Date
       end
       post 'new' do
-        authorizeAndCreate Education postParams
+        authorizeAndCreate(Education, postParams)
       end
-      
+
+      desc "Update education"
+      params do
+        optional :name, allow_blank: false, type: String
+        optional :degree, allow_blank: false, type: String
+        optional :description, allow_blank: false, type: String
+        optional :start_date, allow_blank: false, type: Date
+        optional :end_date, allow_blank: false, type: Date
+      end
+
+      put ':id' do
+        education = Education.find(params[:id])
+        authorize! :update, Education
+        education.update(postParams)
+        success
+      end
+
+      desc "Delete education"
+      delete ':id' do
+        Education.find(params[:id]).destroy
+      end
     end
   end
 end

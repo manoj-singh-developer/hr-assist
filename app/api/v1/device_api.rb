@@ -52,7 +52,26 @@ module V1
         requires :total, allow_blank: false, type: Integer
       end
       post 'new' do
-        authorizeAndCreate Device postParams
+        authorizeAndCreate(Device, postParams)
+      end
+
+      desc "Update device"
+      params do
+        optional :name, allow_blank: false, type: String
+        optional :description, allow_blank: false, type: String
+        optional :total, allow_blank: false, type: Integer
+      end
+
+      put ':id' do
+        device = Device.find(params[:id])
+        authorize! :update, Device
+        device.update(postParams)
+        success
+      end
+
+      desc "Delete device"
+      delete ':id' do
+        Device.find(params[:id]).destroy
       end
     end
   end

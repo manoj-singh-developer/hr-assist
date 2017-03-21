@@ -4,7 +4,7 @@ module V1
     format :json
 
     include RescuesAPI
-    
+
     helpers do
       include AccessGranted::Rails::ControllerMethods
       include Authentication
@@ -51,9 +51,26 @@ module V1
         requires :label, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate Technology postParams
+        authorizeAndCreate(Technology, postParams)
       end
-      
+
+      desc "Update technology"
+      params do
+        optional :name, allow_blank: false, type: String
+        optional :label, allow_blank: false, type: String
+      end
+
+      put ':id' do
+        technology = Technology.find(params[:id])
+        authorize! :update, Technology
+        technology.update(postParams)
+        success
+      end
+
+      desc "Delete an technology"
+      delete ':id' do
+        Technology.find(params[:id]).destroy
+      end
     end
   end
 end

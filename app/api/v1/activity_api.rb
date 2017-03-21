@@ -12,17 +12,15 @@ module V1
       include APIHelpers
 
       def postParams
-        ActionController::Parameters.new(params)
-          .permit(:name, :description)
+        ActionController::Parameters.new(params).permit(:name, :description)
       end
 
       params :pagination do
         optional :page, type: Integer
         optional :per_page, type: Integer
       end
-
     end
-    
+
     before do
       authenticate!
     end
@@ -51,9 +49,26 @@ module V1
         requires :description, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate Project postParams
+        authorizeAndCreate(Activity, postParams)
       end
-      
+
+      desc "Update activity"
+      params do
+        optional :name, allow_blank: false, type: String
+        optional :description, allow_blank: false, type: String
+      end
+
+      put ':id' do
+        activity = Activity.find(params[:id])
+        authorize! :update, Activity
+        activity.update(postParams)
+        success
+      end
+
+      desc "Delete an activity"
+      delete ':id' do
+        Activity.find(params[:id]).destroy
+      end
     end
   end
 end

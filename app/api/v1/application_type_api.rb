@@ -22,7 +22,7 @@ module V1
       end
 
     end
-    
+
     before do
       authenticate!
     end
@@ -51,9 +51,26 @@ module V1
         requires :label, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate ApplicationType postParams
+        authorizeAndCreate(ApplicationType, postParams)
       end
 
+      desc "Update application type"
+      params do
+        optional :name, allow_blank: false, type: String
+        optional :label, allow_blank: false, type: String
+      end
+
+      put ':id' do
+        application_type = ApplicationType.find(params[:id])
+        authorize! :update, ApplicationType
+        application_type.update(postParams)
+        success
+      end
+
+      desc "Delete application type"
+      delete ':id' do
+        ApplicationType.find(params[:id]).destroy
+      end
     end
   end
 end
