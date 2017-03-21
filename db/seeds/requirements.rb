@@ -1,0 +1,7 @@
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+AppSetting.create!(key: 'ldap_host' , value: '')
+AppSetting.create!(key: 'ldap_port' , value: '')
+AppSetting.create!(key: 'ldap_account' , value: '')
+AppSetting.create!(key: 'ldap_password' , value: '')
+AppSetting.create!(key: 'ldap_basedn' , value: '')
+AppSetting.create!(key: 'ldap_filter' , value: '')
