@@ -22,19 +22,23 @@ module APIHelpers
     data[0].chomp('"')
   end
 
+  def getOption key
+    AppSetting::where(key: key).first[:value]
+  end
+
   def ldap_login
 
       email = params[:email]
       password = params[:password]
       env = Rails.env
-      ldap = Net::LDAP.new :host => YourFileReader.load[env]["host"],
-                           :port => YourFileReader.load[env]["port"],
+
+      ldap = Net::LDAP.new(:host => getOption("ldap_host"),
+                           :port => getOption("ldap_port"),
                            :auth => {
                               :method => :simple,
-                              :username => YourFileReader.load[env]["admin_user"],
-                              :password => YourFileReader.load[env]["admin_password"]
-                           }
-
+                              :username => getOption("ldap_account"),
+                              :password => ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base).decrypt_and_verify(getOption("ldap_password"))
+                                })
       result = ldap.bind_as(
         :base => "dc=test,dc=com",
         :filter => "(mail=#{email})",

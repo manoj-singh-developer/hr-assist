@@ -20,7 +20,6 @@ Rails.application.routes.draw do
   mount V1::HolidayAPI => '/api'
   mount V1::HolidayReplacementAPI => '/api'
   mount V1::ScheduleAPI => '/api'
-  devise_for :users
 
   get '/show' , to: 'admin/authenticate#show'
   post '/show' , to: 'app_settings#create'
