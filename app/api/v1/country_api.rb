@@ -22,7 +22,7 @@ module V1
       end
 
     end
-    
+
     before do
       authenticate!
     end
@@ -51,9 +51,21 @@ module V1
         requires :short_name, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate Country postParams
+        authorizeAndCreate(Country, postParams)
       end
 
+      desc "Update country"
+      params do
+        optional :long_name, allow_blank: false, type: String
+        optional :short_name, allow_blank: false, type: String
+      end
+
+      put ':id' do
+        country = Country.find(params[:id])
+        authorize! :update, Country
+        country.update(postParams)
+        success
+      end
     end
   end
 end

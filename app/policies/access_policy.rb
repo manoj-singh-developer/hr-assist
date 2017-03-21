@@ -53,6 +53,7 @@ class AccessPolicy
       can :manage, Industry
       can :manage, Language
       can :manage, Position
+      can :manage, Holiday
       can :manage, ProjectIndustry
       can :manage, ProjectTechnology
       can :manage, Schedule

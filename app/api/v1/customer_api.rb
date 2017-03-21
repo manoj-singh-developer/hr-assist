@@ -22,7 +22,7 @@ module V1
       end
 
     end
-    
+
     before do
       authenticate!
     end
@@ -51,11 +51,22 @@ module V1
         requires :country_id, allow_blank: false, type: Integer
       end
       post 'new' do
-        authorizeAndCreate Customer postParams do
-          Country.find(postParams[:country_id])          
+        authorizeAndCreate(Customer, postParams) do
+          Country.find(postParams[:country_id])
         end
       end
 
+      desc "Update customer"
+      params do
+        optional :name, allow_blank: false, type: String
+      end
+
+      put ':id' do
+        customer = Customer.find(params[:id])
+        authorize! :update, Customer
+        customer.update(postParams)
+        success
+      end
     end
   end
 end

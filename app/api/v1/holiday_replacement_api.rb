@@ -22,7 +22,7 @@ module V1
       end
 
     end
-    
+
     before do
       authenticate!
     end
@@ -53,7 +53,7 @@ module V1
         requires :replaced_user_id, allow_blank: false, type: Integer
       end
       post 'new' do
-        authorizeAndCreate HolidayReplacement postParams do
+        authorizeAndCreate(HolidayReplacement, postParams) do
             Holiday.find(postParams[:holiday_id])
             Project.find(postParams[:project_id])
             User.find(postParams[:replacer_id])
@@ -61,6 +61,18 @@ module V1
         end
       end
 
+      desc "Update holiday replacement"
+      params do
+        optional :project_id, allow_blank: false, type: Integer
+        optional :replacer_id, allow_blank: false, type: Integer
+      end
+
+      put ':id' do
+        holiday_replacement = HolidayReplacement.find(params[:id])
+        authorize! :update, HolidayReplacement
+        holiday_replacement.update(postParams)
+        success
+      end
     end
   end
 end

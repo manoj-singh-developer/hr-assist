@@ -22,7 +22,7 @@ module V1
       end
 
     end
-    
+
     before do
       authenticate!
     end
@@ -54,11 +54,25 @@ module V1
         optional :signing_day, allow_blank: false, type: Date
       end
       post 'new' do
-        authorizeAndCreate Holiday postParams do
+        authorizeAndCreate(Holiday, postParams) do
             User.find(postParams[:user_id])
         end
       end
 
+      desc "Update holiday"
+      params do
+        optional :days, allow_blank: false, type: Integer
+        optional :start_date, allow_blank: false, type: Date
+        optional :end_date, allow_blank: false, type: Date
+        optional :signing_day, allow_blank: false, type: Date
+      end
+
+      put ':id' do
+        holiday = Holiday.find(params[:id])
+        authorize! :update, Holiday
+        holiday.update(postParams)
+        success
+      end
     end
   end
 end
