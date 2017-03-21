@@ -22,7 +22,7 @@ module V1
       end
 
     end
-    
+
     before do
       authenticate!
     end
@@ -51,9 +51,26 @@ module V1
         requires :job_detail, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate Position postParams
+        authorizeAndCreate(Position, postParams)
       end
-      
+
+      desc "Update position"
+      params do
+        optional :name, allow_blank: false, type: String
+        optional :job_detail, allow_blank: false, type: String
+      end
+
+      put ':id' do
+        position = Position.find(params[:id])
+        authorize! :update, Position
+        position.update(postParams)
+        success
+      end
+
+      desc "Delete position"
+      delete ':id' do
+        Position.find(params[:id]).destroy
+      end
     end
   end
 end

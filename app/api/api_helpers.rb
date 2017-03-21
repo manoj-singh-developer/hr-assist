@@ -55,13 +55,13 @@ module APIHelpers
 
   def authorizeAndCreate(model, postParams, &block)
     authorize! :create, model
-    block.call()
+    block.call if block_given?
     model.create!(postParams)
     success
   end
-  
+
   def url_paginate(collection, per_page)
-    
+
     @@per_page = per_page
 
     {

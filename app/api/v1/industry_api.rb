@@ -22,7 +22,7 @@ module V1
       end
 
     end
-    
+
     before do
       authenticate!
     end
@@ -51,9 +51,26 @@ module V1
         requires :label, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate Industry postParams
+        authorizeAndCreate(Industry, postParams)
       end
-      
+
+      desc "Update industry"
+      params do
+        optional :name, allow_blank: false, type: String
+        optional :label, allow_blank: false, type: String
+      end
+
+      put ':id' do
+        industry = Industry.find(params[:id])
+        authorize! :update, Industry
+        industry.update(postParams)
+        success
+      end
+
+      desc "Delete industry"
+      delete ':id' do
+        Industry.find(params[:id]).destroy
+      end
     end
   end
 end

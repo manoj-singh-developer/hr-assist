@@ -51,9 +51,26 @@ module V1
         requires :short_name, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate Language postParams
+        authorizeAndCreate(Language, postParams)
       end
-      
+
+      desc "Update language"
+      params do
+        optional :long_name, allow_blank: false, type: String
+        optional :short_name, allow_blank: false, type: String
+      end
+
+      put ':id' do
+        language = Language.find(params[:id])
+        authorize! :update, Language
+        language.update(postParams)
+        success
+      end
+
+      desc "Delete language"
+      delete ':id' do
+        Language.find(params[:id]).destroy
+      end
     end
   end
 end

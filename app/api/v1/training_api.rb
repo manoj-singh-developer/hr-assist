@@ -2,9 +2,9 @@ module V1
   class TrainingAPI < Grape::API
     version 'v1' , using: :path
     format :json
-    
+
     include RescuesAPI
-    
+
     helpers do
       include AccessGranted::Rails::ControllerMethods
       include Authentication
@@ -55,12 +55,31 @@ module V1
         optional :user_id, type: Integer
       end
       post 'new' do
-        authorizeAndCreate Training, postParams do
+        authorizeAndCreate(Training, postParams) do
           User.find(postParams[:user_id])
         end
       end
-      
-    end
 
+      desc "Update training"
+      params do
+        optional :title, allow_blank: false, type: String
+        optional :description, allow_blank: false, type: String
+        optional :picture, allow_blank: false, type: String
+        optional :start_date, allow_blank: false, type: Date
+        optional :duration, type: Integer
+      end
+
+      put ':id' do
+        training = Training.find(params[:id])
+        authorize! :update, Training
+        training.update(postParams)
+        success
+      end
+
+      desc "Delete an training"
+      delete ':id' do
+        Training.find(params[:id]).destroy
+      end
+    end
   end
 end
