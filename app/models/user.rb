@@ -37,11 +37,11 @@ class User < ApplicationRecord
     self.auth_token = generate_access_token
   end
 
-  def is_admin?
+  def is_admin
     self.roles.first.name == 'admin' ? true : false
   end
 
-  def is_employee?
+  def is_employee
     self.roles.first.name == 'employee' ? true : false
   end
 
