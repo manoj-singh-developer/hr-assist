@@ -16,7 +16,6 @@ Rails.application.routes.draw do
   mount V1::PositionAPI => '/api'
   mount V1::EducationAPI => '/api'
 
-
   get '/show' , to: 'admin/authenticate#show'
   post '/show' , to: 'app_settings#create'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
