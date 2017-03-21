@@ -208,3 +208,10 @@ Holiday.all.each do |holiday|
 end
 
 
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+AppSetting.create!(key: 'ldap_host' , value: '192.168.200.107')
+AppSetting.create!(key: 'ldap_port' , value: '389')
+AppSetting.create!(key: 'ldap_account' , value: 'cn=admin,dc=test,dc=com')
+AppSetting.create!(key: 'ldap_password' , value: 'TmVkbW1iQUtPOFQ0cUxqUk9MNC9Bdz09LS0rOFg3dUZZNWZDdnVneVRURmtsMlVnPT0=--28e89bc882d8720c1c6f12d4945bb318b4621013')
+AppSetting.create!(key: 'ldap_basedn' , value: 'dc=test,dc=com')
+AppSetting.create!(key: 'ldap_filter' , value: 'inetOrgPerson')
