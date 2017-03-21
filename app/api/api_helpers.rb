@@ -27,12 +27,12 @@ module APIHelpers
       email = params[:email]
       password = params[:password]
       env = Rails.env
-      ldap = Net::LDAP.new :host => LDAP_SETTINGS[env]["host"],
-                           :port => LDAP_SETTINGS[env]["port"],
+      ldap = Net::LDAP.new :host => YourFileReader.load[env]["host"],
+                           :port => YourFileReader.load[env]["port"],
                            :auth => {
                               :method => :simple,
-                              :username => LDAP_SETTINGS[env]["admin_user"],
-                              :password => LDAP_SETTINGS[env]["admin_password"]
+                              :username => YourFileReader.load[env]["admin_user"],
+                              :password => YourFileReader.load[env]["admin_password"]
                            }
 
       result = ldap.bind_as(

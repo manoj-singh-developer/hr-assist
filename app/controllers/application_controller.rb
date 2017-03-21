@@ -8,4 +8,16 @@ class ApplicationController < ActionController::Base
   layout 'application'
 
   before_filter :authenticate_user!
+
+  def createOption hash
+    AppSetting::create([key: hash.key, value: hash.value])
+  end
+
+  def updateOption key, value
+    AppSetting::where(key: key).update(value: value)
+  end
+
+  def getOption key
+    AppSetting::where(key: key).first[:value]
+  end
 end
