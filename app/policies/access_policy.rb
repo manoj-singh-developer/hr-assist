@@ -39,12 +39,9 @@ class AccessPolicy
 
 
     role :admin, { is_admin: true } do
-      can :manage, ActivityProject
       can :manage, Activity
-      can :manage, ApplicationTypeProject
       can :manage, ApplicationType
       can :manage, Country
-      can :manage, CustomerProject
       can :manage, Customer
       can :manage, Department
       can :manage, Education
@@ -54,8 +51,6 @@ class AccessPolicy
       can :manage, Language
       can :manage, Position
       can :manage, Holiday
-      can :manage, ProjectIndustry
-      can :manage, ProjectTechnology
       can :manage, Schedule
       can :manage, Technology
       can :manage, Training

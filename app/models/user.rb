@@ -38,7 +38,11 @@ class User < ApplicationRecord
   end
 
   def is_admin
-    true
+    self.roles.first.name == 'admin' ? true : false
+  end
+
+  def is_employee
+    self.roles.first.name == 'employee' ? true : false
   end
 
   private
