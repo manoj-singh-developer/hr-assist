@@ -47,22 +47,6 @@ module V1
         authorize! :read, User.find(params[:id])
       end
 
-      desc "User login"
-
-      params do
-        requires :email, type: String
-        requires :password, type: String
-      end
-      post "login" do
-        result = ldap_login
-
-        if result
-          createUser result
-        else
-          error({ message: "Authentication FAILED." })
-        end
-      end
-
       get ':id/devices' do
         user = User.find_by_id(params[:id])
         user.devices.any? ? user.devices : nil_error("devices")
@@ -93,7 +77,22 @@ module V1
         user.schedule ? user.schedule : {message: 'Schedule not found'}
       end
     end
+    
+      desc "User login"
 
+      params do
+        requires :email, type: String
+        requires :password, type: String
+      end
+      post "login" do
+        result = ldap_login
+
+        if result
+          createUser result
+        else
+          error({ message: "Authentication FAILED." })
+        end
+      end
   end
 end
 
