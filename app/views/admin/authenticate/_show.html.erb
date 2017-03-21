@@ -1,0 +1,25 @@
+<h2>Authenticate</h2>
+
+<%= check_box("LDAP" , "ldap") %> LDAP
+<br>
+<%= check_box("normal_login", "normal") %> Normal Login
+<br>
+<%= check_box("facebook" , "fb") %> Facebook
+<br>
+<%= check_box("google" , "google") %> Google
+
+<div id="ceva" style="display:none;">
+  <%= render 'ldap_details' , :locals => {:app_settings => AppSetting.new} %>
+</div>
+
+<script type="text/javascript">
+  var checkbox = document.getElementById('LDAP_ldap');
+  var show_details = document.getElementById('ceva');
+    checkbox.onchange = function() {
+      if(this.checked) {
+        show_details.style['display'] = 'block' ;
+      } else {
+        show_details.style['display'] = 'none';
+      }
+    };
+</script>

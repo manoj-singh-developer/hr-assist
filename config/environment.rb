@@ -3,4 +3,8 @@ require_relative 'application'
 
 # Initialize the Rails application.
 Rails.application.initialize!
-LDAP_SETTINGS = YAML.load_file("#{Rails.root}/config/ldap.yml")
+module YourFileReader
+  def self.load
+    Yaml.load_file("#{Rails.root}/config/ldap.yml")
+  end
+end
