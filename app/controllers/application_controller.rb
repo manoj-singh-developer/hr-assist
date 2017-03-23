@@ -21,5 +21,9 @@ class ApplicationController < ActionController::Base
     AppSetting::where(key: key).first[:value]
   end
 
-  helper_method :getOption , :createOption , :updateOption
+  def decrypt var
+    ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base).decrypt_and_verify(var) unless (var) == ""
+  end
+
+  helper_method :getOption , :createOption , :updateOption , :decrypt
 end
