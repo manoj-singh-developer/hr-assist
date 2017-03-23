@@ -37,7 +37,7 @@ module APIHelpers
                            :auth => {
                               :method => :simple,
                               :username => getOption("ldap_account"),
-                              :password => ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base).decrypt_and_verify(getOption("ldap_password"))
+                              :password => decrypt(getOption("ldap_password"))
                                 })
       result = ldap.bind_as(
         :base => "dc=test,dc=com",
