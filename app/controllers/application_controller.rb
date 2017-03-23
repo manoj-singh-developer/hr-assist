@@ -20,4 +20,6 @@ class ApplicationController < ActionController::Base
   def getOption key
     AppSetting::where(key: key).first[:value]
   end
+
+  helper_method :getOption , :createOption , :updateOption
 end
