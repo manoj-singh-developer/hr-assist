@@ -11,6 +11,9 @@ default: &default
   password: DB_PASSWORD
   encoding: utf8
   collation: utf8_general_ci
+
+staging:
+  <<: *default
   
 development:
   <<: *default
