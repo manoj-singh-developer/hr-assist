@@ -26,6 +26,10 @@ module V1
         optional :per_page, type: Integer
       end
 
+      params :other do
+        optional :with, values: ['positions', 'languages', 'devices', 'educations', 'departments', 'projects', 'technologies'], type: Array[String]
+      end
+
     end
 
     resource :users do
@@ -33,9 +37,10 @@ module V1
       desc "Return all users"
       params do
         use :pagination # aliases: includes, use_scope
+        use :other
       end
       get do
-        getPaginatedItemsFor User
+        getPaginatedItemsFor User, params[:with]
       end
 
       desc "Returns a user"
