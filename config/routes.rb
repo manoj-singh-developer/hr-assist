@@ -24,5 +24,8 @@ Rails.application.routes.draw do
 
   get '/show' , to: 'admin/authenticate#show'
   post '/show' , to: 'app_settings#create'
+
+  mount GrapeSwaggerRails::Engine => '/swagger'
+  mount ApplicationApi, at: "/"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

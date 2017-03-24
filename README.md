@@ -21,6 +21,15 @@ In order to install the application on a clean ubuntu environment please follow 
 
 2. Copy all files from `config/examples` into `config/` and remove `.example` from the file name.
 
+```
+cp -R config/examples/* config/
+cd config
+mv database.yml.example database.yml
+mv ldap.yml.example ldap.yml
+mv secrets.yml.example secrets.yml
+
+```
+
 3. Set the MySql credentials for the `database.yml`.
 
     - Run `rake secret` on the project root and fill the `secrets.yml` file on development and test keys with secret keys.

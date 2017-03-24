@@ -64,5 +64,6 @@ gem 'devise'
 gem 'devise_ldap_authenticatable'
 
 gem 'grape'
-
+gem 'grape-swagger-rails'
+gem 'grape-swagger'
 gem 'activeadmin', github: 'activeadmin'
