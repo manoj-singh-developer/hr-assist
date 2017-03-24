@@ -1,8 +1,0 @@
-development:
-  APP_URL: 'http://localhost:3000/api/v1'
-
-staging:
-  APP_URL: 'http://192.168.200.115/api/v1'
-
-production:
-  APP_URL: 'http://hr.assist.ro/api/v1'
