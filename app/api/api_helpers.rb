@@ -51,12 +51,12 @@ module APIHelpers
 
   end
 
-  def getPaginatedItemsFor model
+  def getPaginatedItemsFor model, relations = nil
 
-    items = model.all.page(params[:page]).per(params[:per_page])
+    items = model.all.includes(relations).page(params[:page]).per(params[:per_page])
 
     {
-      :items => items,
+      :items => items.as_json(include: relations),
       :paginate => url_paginate(items, params[:per_page])
     }
   end
