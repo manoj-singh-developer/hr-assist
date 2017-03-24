@@ -32,6 +32,17 @@ development:
 
   # <<: *AUTHORIZATIONS
 
+staging:
+  host: <%= AppSetting::where(key: "ldap_host").first[:value] %>
+  port: <%= AppSetting::where(key: "ldap_port").first[:value] %>
+  attribute: mail
+  base: <%= AppSetting::where(key: "ldap_basedn").first[:value] %>
+  admin_user: <%= AppSetting::where(key: "ldap_account").first[:value] %>
+  admin_password: <%= ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base).decrypt_and_verify(AppSetting::where(key: "ldap_password").first[:value]) %>
+  mail: mail
+
+  # <<: *AUTHORIZATIONS
+
 test:
   host: localhost
   port: 3389

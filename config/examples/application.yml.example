@@ -1,0 +1,8 @@
+development:
+  APP_URL: 'http://localhost:3000/api/v1'
+
+staging:
+  APP_URL: 'http://YOUR_STAGING_HOST/api/v1'
+
+production:
+  APP_URL: 'http://YOUR_HOST/api/v1'
