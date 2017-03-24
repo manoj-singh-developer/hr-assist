@@ -21,14 +21,14 @@ In order to install the application on a clean ubuntu environment please follow 
 
 2. Copy all files from `config/examples` into `config/` and remove `.example` from the file name.
 
-```
-cp -R config/examples/* config/
-cd config
-mv database.yml.example database.yml
-mv ldap.yml.example ldap.yml
-mv secrets.yml.example secrets.yml
-
-```
+    ```
+    cp -R config/examples/* config/
+    cd config
+    mv database.yml.example database.yml
+    mv ldap.yml.example ldap.yml
+    mv secrets.yml.example secrets.yml
+    mv application.yml.example application.yml
+    ```
 
 3. Set the MySql credentials for the `database.yml`.
 
@@ -38,7 +38,7 @@ mv secrets.yml.example secrets.yml
 5. Run `rails db:seed:requirements` to populate the database with required data and `rails db:seed:
 5. Start the server:
     ```
-    rails s
+    rails s -e YOUR_ENVIRONMENT
     ```
 5. Access the API at http://localhost:3000/api/v1/endpoint
 6. Access the Admin Dashboard at http://localhost:3000/admin
