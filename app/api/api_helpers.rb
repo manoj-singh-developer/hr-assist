@@ -26,6 +26,10 @@ module APIHelpers
     AppSetting::where(key: key).first[:value]
   end
 
+  def decrypt var
+    ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base).decrypt_and_verify(var) unless (var) == ""
+  end
+  
   def ldap_login
 
       email = params[:email]
