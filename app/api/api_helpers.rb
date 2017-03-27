@@ -14,7 +14,7 @@ module APIHelpers
     user.ensure_authentication_token
     user.save
 
-    { status: 'ok', auth_token: user.auth_token}
+    success user: user
 
   end
 
