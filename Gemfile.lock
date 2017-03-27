@@ -138,6 +138,8 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
+    jwt (0.1.8)
+      multi_json (>= 1.5)
     kaminari (1.0.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.0.1)
@@ -284,6 +286,7 @@ DEPENDENCIES
   grape-swagger-rails
   jbuilder (~> 2.5)
   jquery-rails
+  jwt
   liquid
   listen (~> 3.0.5)
   mysql (~> 2.9.1)
