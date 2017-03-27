@@ -59,5 +59,8 @@ class AccessPolicy
       #can :view_project, Project
     end
 
+    role :employee do
+      can :read, User
+    end
   end
 end
