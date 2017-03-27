@@ -48,3 +48,4 @@ bower.json
 # Ignore Byebug command history file.
 .byebug_history
 config/ldap.yml
+config/initializers/cors.rb
