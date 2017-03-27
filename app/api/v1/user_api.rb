@@ -10,6 +10,7 @@ module V1
       include Responses
       include APIHelpers
       include Authentication
+      include AccessGranted::Rails::ControllerMethods
 
       def nil_error field
         "This user didn't fill in #{field} field"
