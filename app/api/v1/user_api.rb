@@ -9,6 +9,7 @@ module V1
 
       include Responses
       include APIHelpers
+      include Authentication
 
       def nil_error field
         "This user didn't fill in #{field} field"
@@ -97,6 +98,11 @@ module V1
         else
           error({ message: "Authentication FAILED." })
         end
+      end
+
+      desc "Return current user"
+      get "me" do
+        current_user
       end
   end
 end
