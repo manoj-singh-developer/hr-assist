@@ -9,7 +9,7 @@ module APIHelpers
       user.last_name  = self.getParam(result.first.sn)
       user.uid        = self.getParam(result.first.uidNumber)
       user.skip_password_validation = true
-      user.roles << Role.second #default role -> employee
+      user.roles << Role.find_by_name["employee"] #default role -> employee
     end
     user.ensure_authentication_token
     user.save
