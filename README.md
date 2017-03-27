@@ -61,3 +61,5 @@ In order to install the application via docker please follow the steps:
     ```
     rails db:migrate
     ```
+
+HR Assist - Work in progress ...
