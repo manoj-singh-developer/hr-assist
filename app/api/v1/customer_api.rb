@@ -3,26 +3,69 @@ module V1
     version 'v1', using: :path
     format :json
 
+    include RescuesAPI
+
+    helpers do
+      include AccessGranted::Rails::ControllerMethods
+      include Authentication
+      include Responses
+      include APIHelpers
+
+      def postParams
+        ActionController::Parameters.new(params)
+          .permit(:name, :country_id)
+      end
+
+      params :pagination do
+        optional :page, type: Integer
+        optional :per_page, type: Integer
+      end
+
+    end
+
+    before do
+      authenticate!
+    end
+
     resource :customers do
 
       desc "Return all curstomers"
-      get do
-        Customer.all
-      end
-
       params do
-        requires :id ,type: Integer , desc: "Customer id"
+        use :pagination # aliases: includes, use_scope
+      end
+      get do
+        getPaginatedItemsFor Customer
       end
 
       desc "Returns a customer"
+      params do
+        requires :id ,type: Integer , desc: "Customer id"
+      end
       get ':id' do
-        customer = Customer.find_by_id(params[:id])
-        customer ? customer : {message: "Customer not found"}
+        authorize! :read, Customer.find(params[:id])
       end
 
-      desc "Returns customers country"
-      get ':id/country' do
-        Customer.find_by_id(params[:id]).country
+      desc "Create new customer"
+      params do
+        requires :name, allow_blank: false, type: String
+        requires :country_id, allow_blank: false, type: Integer
+      end
+      post 'new' do
+        authorizeAndCreate(Customer, postParams) do
+          Country.find(postParams[:country_id])
+        end
+      end
+
+      desc "Update customer"
+      params do
+        optional :name, allow_blank: false, type: String
+      end
+
+      put ':id' do
+        customer = Customer.find(params[:id])
+        authorize! :update, Customer
+        customer.update(postParams)
+        success
       end
     end
   end

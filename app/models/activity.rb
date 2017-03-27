@@ -1,3 +1,3 @@
 class Activity < ApplicationRecord
-  has_many :projects, through: :activity_projects
+  has_and_belongs_to_many :projects
 end

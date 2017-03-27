@@ -1,0 +1,23 @@
+version: "2.0"
+
+services:
+    db-mysql:
+      image: mysql
+      env_file:
+        - env/mysql.env
+    app:
+      build: app
+      volumes:
+        - YOUR_LOCAL_PATH:/usr/src/app/:rw
+      links:
+        - db-mysql
+      ports:
+        - 3000:3000
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      environment:
+        - PMA_HOST=db-mysql
+      links:
+        - db-mysql
+      ports:
+        - 80:8080

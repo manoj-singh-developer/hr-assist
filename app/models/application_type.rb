@@ -1,4 +1,3 @@
 class ApplicationType < ApplicationRecord
-  has_many :application_type_projects
-  has_many :projects, through: :application_type_projects
+  has_and_belongs_to_many :projects
 end

@@ -1,9 +1,11 @@
 *.rbc
 capybara-*.html
 .rspec
+.DS_Store
 /log
 /config/secrets.yml
 /config/database.yml
+/config/application.yml
 /tmp
 /db/*.sqlite3
 /db/*.sqlite3-journal

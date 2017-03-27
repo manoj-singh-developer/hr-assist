@@ -21,6 +21,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.0]
       t.text :skills_type
       t.text :project_dates
       t.integer :status
+      t.integer :uid, :unique => true
+      t.string :auth_token
 
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""

@@ -1,13 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  user_id: 1
-  project_id: 1
-  start_date: 2017-02-24
-  end_date: 2017-02-24
+  user: one
+  project: one
 
 two:
-  user_id: 1
-  project_id: 1
-  start_date: 2017-02-24
-  end_date: 2017-02-24
+  user: two
+  project: two
