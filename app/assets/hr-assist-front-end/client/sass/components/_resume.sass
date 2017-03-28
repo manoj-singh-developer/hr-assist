@@ -1,0 +1,106 @@
+// RESUME
+$resume-color-alpha: #1b4491
+$resume-color-beta: #7b90b5
+$resume-color-delta: #777
+
+.c-resume
+  font-size: 15px
+  width: 100%
+  max-width: 850px
+  margin: 20px auto
+  padding: 30px 20px
+  background: #fff
+
+  *
+    box-sizing: border-box
+
+  &__section
+    margin-bottom: 30px
+
+    &:last-of-type
+      margin-bottom: 0
+
+  &__section-row
+    margin-bottom: 20px
+
+  &__row-title
+    font-size: 18px
+    font-weight: 600
+    line-height: 1.2
+    margin: 0 0 20px 0
+    text-transform: uppercase
+    color: $resume-color-alpha
+
+  &__section-row:after,
+  &__section-row:before
+    display: table
+    content: ""
+
+  &__section-row:after
+    clear: both
+
+  &__aside
+    float: left
+    width: 20%
+    padding-right: 15px
+    & img
+      width: 100%
+
+  &__main
+    float: left
+    width: 80%
+    padding-left: 15px
+
+  &__main-titles
+    margin-bottom: 20px
+
+  &__aside-subtitle
+    font-size: 14px
+    font-weight: 600
+    font-style: italic
+    margin: 0 0 5px 0
+    color: $resume-color-beta
+
+  &__main-title
+    font-size: 16px
+    font-weight: 600
+    margin: 0 0 5px 0
+    margin-bottom: 0
+
+  &__main-subtitle
+    font-size: 14px
+    font-weight: 600
+    font-style: italic
+    margin: 0 0 5px 0
+    color: #777
+
+// LIST
+.c-resume-list
+  margin: 0
+  padding: 0
+  list-style: none
+
+  &__item
+    margin-bottom: 15px
+
+  &__item-title
+    font-size: 16px
+    font-weight: 600
+    display: block
+
+  &__item-subtitle
+    font-size: 14px
+    font-weight: 600
+    display: block
+    color: $resume-color-delta
+
+// LIST BULLET
+.c-resume-list--bullet
+  list-style: disc
+
+// LIST INLINE
+.c-resume-list--inline
+  .c-resume-list
+    &__item
+      display: inline-block
+      margin-right: 25px

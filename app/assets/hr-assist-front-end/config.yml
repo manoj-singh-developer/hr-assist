@@ -1,0 +1,75 @@
+# Your project"s server will run on localhost:xxxx at this port
+PORT: 8000
+
+# Autoprefixer will make sure your CSS works with these browsers
+COMPATIBILITY:
+  - "last 2 versions"
+  - "ie >= 9"
+  - "ios >= 7"
+
+# UnCSS will use these settings
+UNCSS_OPTIONS:
+  html:
+    - "src/**/*.html"
+  ignore:
+    - !!js/regexp ^\.is-.*
+
+# Gulp will reference these paths when it copies files
+PATHS:
+
+  release: "release"
+
+  pages:
+    - "client/pages/**/*"
+
+  views:
+    - "client/js/**/*.view.html"
+
+  assets:
+    - "client/assets/**/*"
+
+  css:
+    - "bower_components/angular-material/angular-material.css"
+    - "bower_components/angular-material-data-table/dist/md-data-table.css"
+    - "bower_components/angular-datepicker/dist/angular-datepicker.css"
+    - "bower_components/angular-datepicker/dist/angular-datepicker.css"
+    - "bower_components/angular-loading-bar/build/loading-bar.min.css"
+
+  sass:
+    - "client/sass/**/*.sass"
+
+  javascriptAll:
+    - "client/js/custom/**/*"
+
+  javascriptCustom:
+    - "client/js/custom/app.js"
+    - "client/js/custom/**/*.service.js"
+    - "client/js/custom/**/*.model.js"
+    - "client/js/custom/**/*.directive.js"
+    - "client/js/custom/**/*.controller.js"
+
+  #Dependencies like jQuery, or Angular are brought in here
+  # TODO: We need to see what we can delete from here
+  javascriptVendor:
+    - "bower_components/jquery/dist/jquery.min.js"
+    - "bower_components/jquery-ui/jquery-ui.min.js"
+    - "bower_components/angular/angular.min.js"
+    - "bower_components/angular-sanitize/angular-sanitize.min.js"
+    - "bower_components/angular-resource/angular-resource.min.js"
+    - "bower_components/angular-animate/angular-animate.min.js"
+    - "bower_components/angular-aria/angular-aria.min.js"
+    - "bower_components/angular-material/angular-material.js"
+    - "bower_components/angular-permission/dist/angular-permission.min.js"
+    - "bower_components/angular-permission/dist/angular-permission-ui.min.js"
+    - "bower_components/angular-messages/angular-messages.min.js"
+    - "bower_components/angular-material-data-table/dist/md-data-table.min.js"
+    - "bower_components/angular-ui-router/release/angular-ui-router.min.js"
+    - "bower_components/moment/min/moment.min.js"
+    - "bower_components/angular-moment/angular-moment.min.js"
+    - "bower_components/ng-file-upload/ng-file-upload.min.js"
+    - "bower_components/ngSelectable/src/ngSelectable.js"
+    # - "bower_components/html2canvas/build/html2canvas.min.js"
+    - "bower_components/underscore/underscore-min.js"
+    - "bower_components/ng-csv/build/ng-csv.js"
+    - "bower_components/angular-datepicker/dist/angular-datepicker.min.js"
+    - "bower_components/angular-loading-bar/build/loading-bar.min.js"

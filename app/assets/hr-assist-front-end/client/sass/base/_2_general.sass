@@ -1,0 +1,253 @@
+
+// BUG FIX FOR
+// bug(toast): causes scrollbars to hide while animating in
+// https://github.com/angular/material/issues/6743
+.md-toast-animating
+  overflow: initial !important
+
+// @Tables
+// ---------------------------------------------------------------------------
+
+// @Lists
+// ---------------------------------------------------------------------------
+.c-list
+  padding: 0
+  list-style: none
+
+
+// @Dashboard
+// ---------------------------------------------------------------------------
+.c-dashboard-container
+  max-width: 1200px
+  width: 100%
+  margin: 0 auto
+
+
+.page-content
+  padding: 15px 20px
+  // max-width: 1300px
+  // margin: 0 auto
+
+// Projects table
+.project__row td
+  padding: 0 15px!important
+
+md-toolbar.md-table-toolbar.alternate
+  color: #1e88e5
+  background-color: #e3f2fd
+
+md-toolbar.md-table-toolbar.alternate .md-toolbar-tools
+  font-size: 16px
+
+md-dialog
+  max-width: 600px
+  width: 100%
+
+.rating
+  color: #a9a9a9
+  margin: 0
+  padding: 0
+
+ul.rating
+  display: inline-block
+
+.rating li
+  list-style-type: none
+  display: inline-block
+  padding: 1px
+  text-align: center
+  font-weight: bold
+  cursor: pointer
+
+.rating .filled
+  color: red
+
+.save-from-json
+  display: block
+  width: 100%
+  height: 300px
+  overflow: auto
+  resize: none
+  margin: 0 0 10px 0
+
+.general-info
+  font-weight: 100
+
+.image-profile
+  width: 100%
+  height: 150px
+
+.language
+  text-align: center
+
+.md-select-level
+  margin: 5px 0 26px 0
+
+.equipment-align
+  margin: 40px 0 40px 0
+
+.equipment-form
+  margin-bottom: 15px
+
+.header
+  position: absolute
+  top: 50%
+  text-align: center
+  width: 100%
+  color: #fff
+  font-size: 36px
+  -ms-transform: translate(0,-50%)
+  -webkit-transform: translate(0,-50%)
+  transform: translate(0,-50%)
+
+#content
+  padding: 100px 50px
+  text-align: center
+  width: 80%
+  margin: 0px auto
+
+
+#content h2
+  margin: 0px 0px 30px 0px
+
+#footer
+  padding: 30px 0px
+  text-align: center
+  background: #ddd
+
+.wrapper
+  margin-top: -42px
+
+.outer
+  display: table
+  position: absolute
+  height: 100%
+  width: 100%
+
+.middle
+  display: table-cell
+  vertical-align: middle
+
+.inner
+  margin-left: auto
+  margin-right: auto
+  width: 33%
+
+.login-img
+  width: 50%
+  height: 50%
+  align: middle
+  display: block
+  margin-left: auto
+  margin-right: auto
+
+.login-input
+  align: middle
+  display: block
+  margin-left: auto
+  margin-right: auto
+
+.project-align
+  margin-bottom: 20px
+
+.shadow
+  box-shadow: 10px 20px 30px #888888 !important
+
+
+.dragover
+  border: 5px dashed blue
+
+.print-btn
+  float: right
+
+.print-btn-hide
+  float: right
+  margin-top: -50px
+
+.cv-left-side
+  float: left
+  width: 30%
+  margin-right: 10%
+  color: #674D93
+  img
+    width: 100%
+    height: auto
+  p
+    font-size: smaller
+
+.cv-right-side
+  margin-left: 40%
+  h3
+    font-weight: normal
+
+p.cv-title
+  color: #29BEF3
+  padding-top: 20px
+
+img.info-pic
+  width: 50%
+  height: auto
+
+.hide-menu
+  display: none
+
+.holiday-preview
+  max-width: 1200px
+  margin-left: auto
+  margin-right: auto
+
+.alert-success
+  background-color: #DFF0D8
+  color: #47A447
+  width: 70%
+  padding: 5px 0px 5px 10px
+  margin-bottom: 10px
+
+  .fade.ng-hide
+    transition: 5s linear all
+    opacity: 0
+
+.alert-error
+  background-color: #F2DEDE
+  color: #AB445A
+  width: 70%
+  padding: 5px 0px 5px 10px
+  margin-bottom: 10px
+
+md-divider.divider-bold
+  border-top-width: 3px
+
+.md-button.md-fab md-icon
+  color: rgba(0, 0, 0, 0.54)
+
+/* SCROLLBAR */
+::-webkit-scrollbar-track
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+  background-color: #F5F5F5
+
+::-webkit-scrollbar
+  width: 9px
+  background-color: rgba(0, 0, 0, 0.54)
+
+table ::-webkit-scrollbar
+  width: 7px
+
+::-webkit-scrollbar-thumb
+  background-color: rgba(0, 0, 0, 0.54)
+/* /SCROLLBAR */
+
+
+// CARDS
+md-card
+  position: relative
+
+  &.has-progress-bar
+    padding-top: 20px
+// CARDS
+
+
+textarea
+  min-height: 80px !important
+  padding: 16px !important
+  border: 1px solid rgba(0,0,0,0.12) !important
+

@@ -1,0 +1,124 @@
+[{
+	"name": "angularjs",
+	"label": "AngularJS"
+}, {
+	"name": "js",
+	"label": "JavaScript"
+}, {
+	"name": "html",
+	"label": "HTML"
+}, {
+	"name": "css",
+	"label": "CSS"
+}, {
+	"name": "bootstrap",
+	"label": "Bootstrap"
+}, {
+	"name": "php",
+	"label": "PHP"
+}, {
+	"name": "nodejs",
+	"label": "NodeJS"
+}, {
+	"name": "coffe",
+	"label": "CoffeeScript"
+}, {
+	"name": "charp",
+	"label": "C#"
+}, {
+	"name": "wordpress",
+	"label": "Wordpress"
+}, {
+	"name": "ror",
+	"label": "Ruby on Rails"
+}, {
+	"name": "python",
+	"label": "Python"
+}, {
+	"name": "jquery",
+	"label": "jQuery"
+}, {
+	"name": "reactjs",
+	"label": "ReactJS"
+}, {
+	"name": "sql",
+	"label": "SQL"
+}, {
+	"name": "joomla",
+	"label": "Joomla"
+}, {
+	"name": "android",
+	"label": "Android"
+}, {
+	"name": "ios",
+	"label": "IOS"
+}, {
+	"name": "java",
+	"label": "Java"
+}, {
+	"name": "sass",
+	"label": "Sass"
+}, {
+	"name": "scss",
+	"label": "SCSS"
+}, {
+	"name": "bem",
+	"label": "BEM"
+}, {
+	"name": "objectivec",
+	"label": "Objective-C"
+}, {
+	"name": "backbonejs",
+	"label": "BackboneJS"
+}, {
+	"name": "scala",
+	"label": "Scala"
+}, {
+	"name": "perl",
+	"label": "Perl"
+}, {
+	"name": "delphi",
+	"label": "Delphi"
+}, {
+	"name": "visual_basic",
+	"label": "Visual Basic"
+}, {
+	"name": "emberjs",
+	"label": "EmberJS"
+}, {
+	"name": "meteorjs",
+	"label": "MeteorJS"
+}, {
+	"name": "git",
+	"label": "Git"
+}, {
+	"name": "selenium",
+	"label": "Selenium"
+}, {
+	"name": "phantomjs",
+	"label": "PhantomJS"
+}, {
+	"name": "django",
+	"label": "Django"
+}, {
+	"name": "drupal",
+	"label": "Drupal"
+}, {
+	"name": "linux",
+	"label": "Linux"
+}, {
+	"name": "photoshop",
+	"label": "Photoshop"
+}, {
+	"name": "topogun",
+	"label": "TopoGun"
+}, {
+	"name": "zbush",
+	"label": "Zbush"
+}, {
+	"name": "asp",
+	"label": "ASP.NET"
+}, {
+	"name": "groovy",
+	"label": "Groovy"
+}]

@@ -1,0 +1,64 @@
+<md-card  class="employee-profile">
+
+	  <md-card-title>
+		   <md-card-title-text>
+		     <span class="md-headline">General informations</span>
+		   </md-card-title-text>
+	  </md-card-title>
+
+	  <md-content class="c-card-profile__preview">
+
+	   <section layout-gt-xs="row">
+
+	     <div flex="100" class="c-card-profile__general-info">
+
+	       <p class="c-card-profile__info c-card-profile__name">
+	        <strong>Name: </strong>
+	         {{detailsCtrl.equipmentInfo.name}}
+	       </p>
+
+	       <p class="c-card-profile__info c-card-profile__email">
+	         <strong>Description: </strong>{{detailsCtrl.equipmentInfo.description}}
+	       </p>
+
+	       <p class="c-card-profile__info c-card-profile__email">
+	         <strong>Updated at: </strong>{{detailsCtrl.equipmentInfo.updatedAt | date}}
+	       </p>
+
+	       <p class="c-card-profile__info c-card-profile__phone">
+	         <strong>Created at: </strong>
+	         {{detailsCtrl.equipmentInfo.createdAt | date}}
+	       </p>
+
+	     </div>
+
+	    </section>
+	  </md-content>
+
+</md-card><br>
+
+<md-card  class="employee-profile">
+
+	  <md-card-title>
+		   <md-card-title-text>
+		     <span class="md-headline">Employees with this equipment</span>
+		   </md-card-title-text>
+	  </md-card-title>
+
+	  <md-content class="c-card-profile__preview">
+
+	   <section layout-gt-xs="row">
+
+	     <div flex="100" class="c-card-profile__general-info">
+
+	       <p class="c-card-profile__info c-card-profile__name" ng-repeat="employees in detailsCtrl.equipmentInfo.employees">
+	        Name:
+	         {{employees.firstName}} {{employees.lastName}}
+	       </p>
+	     </div>
+
+	    </section>
+	  </md-content>
+
+</md-card>
+

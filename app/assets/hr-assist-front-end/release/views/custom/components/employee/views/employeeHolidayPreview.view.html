@@ -1,0 +1,130 @@
+<section class="holiday-preview">
+
+
+
+
+  <md-content class="md-padding [ js-holiday-preview ]">
+    <div class="holiday__container">
+
+      <img src="../images/assist.png" class="holiday__logo">
+
+      <h1 class="holiday__title text--center">
+        <u>Cerere pentru concediu de odihnă </u>
+      </h1>
+
+      <p class="holiday__text text--ident">
+        Stimate Domnule Director,
+      </p>
+
+      <p class="holiday__text text--ident">
+        Subsemnatul
+          <strong>
+            {{ holidayPreview.holiday.employee[0].firstName }} {{ holidayPreview.holiday.employee[0].lastName }}
+          </strong>,
+        angajat al firmei <strong>SC ASSIST Software SRL</strong>,
+        vă rog să-mi aprobaţi <strong>{{ holidayPreview.holiday.days }}</strong> zile
+        de concediu din anul
+        <strong>
+          {{ holidayPreview.holiday.intervals[0].from | date: 'yyyy' }}
+        </strong>
+        pentru odihna conform contractului de munca in perioada
+
+        <strong ng-repeat="item in holidayPreview.holiday.intervals">
+          {{ item.from | date: 'dd MMMM yyyy' }} - {{ item.to | date: 'dd MMMM yyyy' }}
+          <span ng-if="holidayPreview.holiday.intervals.length > 1"> si </span>
+        </strong>
+      </p>
+
+      <p class="holiday__text text--ident">Vă mulţumesc.</p>
+
+      <div class="holiday__inner clearfix">
+        <p class="holiday__text text--left">Cu considerație,</p>
+        <p class="holiday__text text--right"><strong>APROBAT,</strong></p>
+      </div>
+
+      <p class="holiday__text text--lite">
+        {{holidayPreview.employee.firstName}} {{holidayPreview.employee.lastName}}
+      </p>
+      <p class="holiday__text text--lite2">Semnătura,</p>
+
+      <br>
+      <br>
+
+      <p class="holiday__text text--lite">
+        Data:
+        <strong>
+        {{ holidayPreview.holiday.signingDate | date: 'dd-MMM-yyyy' }}
+        </strong>
+      </p>
+
+      <br>
+      <br>
+
+      <h4>Mențiuni</h4>
+
+      <p class="holiday__text text--ident">
+        <strong>1. </strong>Task-urile din proiectele la care sunt implicat vor fi preluate de:
+      </p>
+      <table class="table">
+        <thead>
+          <tr>
+            <td><strong>Proiect</strong></td>
+            <td><strong>Înlocuitor</strong></td>
+            <td><strong>Semnătura înlocuitor</strong></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in holidayPreview.holiday.replacementEmployees track by $index">
+            <td>
+              {{ holidayPreview.holiday.replacementProjects[$index].name }}
+            </td>
+            <td>
+              {{ item.firstName }} {{ item.lastName }}
+            </td>
+            <td><!-- Empty field for signature --></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="holiday__text text--ident">
+        <strong>2. </strong>
+        Am luat notă de cererea de concediu și confirm că avem la dispoziție toate elementele de acces, resursele și informațiile necesare derulării corespunzătoare a proiectelor în care colegul meu, solicitant al prezentei cereri, este implicat.
+      </p>
+
+      <div class="holiday__inner clearfix">
+        <p class="holiday__text text--left">Team leader,
+          <strong>
+            {{ holidayPreview.holiday.teamLeader[0].firstName }}
+            {{ holidayPreview.holiday.teamLeader[0].lastName }}
+          </strong>
+        </p>
+        <p class="holiday__text text--right">
+          Data:
+          <strong>
+          {{ holidayPreview.holiday.signingDate | date: 'dd-MMM-yyyy' }}
+          </strong>
+        </p>
+      </div>
+      <p class="holiday__text text--lite" ng-repeat = "item in holidayPreview.searchLeaderHold track by $index">{{item}}</p>
+    </div>
+  </md-content>
+
+
+
+  <div layout="row" layout-align="center center">
+
+     <md-button
+      class="md-raised md-primary generatepdf"
+      ng-click="holidayPreview.print()">
+      Print
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ui-sref="employeesParent.details({ id: holidayPreview.employeeId })">
+      Close
+    </md-button>
+
+  </div>
+
+</section>
+

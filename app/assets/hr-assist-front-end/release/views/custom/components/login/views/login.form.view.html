@@ -1,0 +1,51 @@
+<md-card class="login-card">
+
+	<div layout="row">
+		<img class="login-img" ng-src="/images/logo-assist.png">
+	</div>
+
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline"><strong>hr platform</strong></span>
+    </md-card-title-text>
+  </md-card-title>
+
+  <form ng-submit="loginCtrl.login(loginCtrl.username, loginCtrl.password)">
+  	<!-- Input fields -->
+  	<div layout-gt-xs="row">
+  		<md-input-container md-no-float class="md-block login-input" md-no-float>
+        <label>Email</label>
+  			<input
+          ng-model="loginCtrl.username"
+          name=login
+          type="email"
+          required>
+  		</md-input-container>
+  	</div>
+
+  	<div layout-gt-xs="row">
+  		<md-input-container md-no-float class="md-block login-input" >
+  			<label>Password</label>
+  			<input
+          ng-model="loginCtrl.password"
+          name=password
+          type="password"
+          required>
+  		</md-input-container>
+  	</div><!-- /Input fields -->
+
+  	<!-- Actions button -->
+  	<div layout="row" layout-align="center center">
+  		<md-button
+  			class="md-raised"
+  			type="submit">
+  			Sign In
+  		</md-button>
+  	</div> <!-- /Actions button -->
+  </form>
+
+  <p class="login-footer-note">
+    <strong>Important: </strong>Use your <strong>ASSIST</strong> email credentials
+  </p>
+
+</md-card>

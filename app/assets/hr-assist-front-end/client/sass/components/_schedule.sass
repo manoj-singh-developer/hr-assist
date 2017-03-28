@@ -1,0 +1,79 @@
+// @SELECTABLE
+// ----------------------------------------------------------------------------
+
+.c-section-schedule
+  position: relative
+  flex-direction: column
+
+  &[aria-disabled='true']
+    color: #696c6f
+
+    .ui-selected
+      background: #afb2b5
+      border-color: #afb2b5
+
+    [selectable] li,
+    .c-schedule--hours li,
+    .c-schedule-days li
+      border-color: #afb2b5
+
+.c-schedule-days
+  margin: 0
+  padding: 0
+  padding-left: 215px
+  list-style: none
+  text-align: left
+
+  li
+    font-size: 14px
+    font-weight: bold
+    display: inline-block
+    box-sizing: border-box
+    width: 100px
+    margin: 5px 0
+    padding: 5px
+    text-align: center
+    text-transform: uppercase
+    border: 1px solid #444
+
+.c-schedule-list
+  width: 100%
+  padding-top: 0
+  justify-content: center
+
+.c-schedule
+  margin: 0
+  padding: 0
+  list-style-type: none
+
+.c-schedule .ui-selecting
+  background: #feca40
+
+.c-schedule .ui-selected
+  color: white
+  background: #f39814
+
+.c-schedule li
+  font-size: 14px
+  box-sizing: border-box
+  width: auto
+  margin: 5px 2px
+  padding: 5px
+  text-align: center
+  border: 1px solid #444
+  border-radius: 0
+
+[selectable]
+  li
+    width: 100px
+    text-indent: -9999px
+
+.selected-hours
+  margin: 5px
+  padding: 5px
+  border: 1px solid #444
+  border-radius: 5px
+
+.c-schedule--hours
+  li
+    font-weight: bold

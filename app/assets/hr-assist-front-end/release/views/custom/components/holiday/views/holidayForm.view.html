@@ -1,0 +1,237 @@
+<section layout="column">
+
+  <md-toolbar class="md-table-toolbar">
+    <div class="md-toolbar-tools ">
+      {{ holidayForm.formTitle }}
+    </div>
+  </md-toolbar>
+
+  <section class="md-padding">
+
+    <form name="holidayform" class="form form-add-user md-inline-form">
+      <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
+        <!-- Request -->
+        <md-tab label="Request">
+          <md-content class="md-padding">
+            <br>
+
+            <!--Employee start-->
+            <div ng-repeat = "holidaysRow in holidayForm.holidayEmpIncrement track by $index">
+              <div class="md-block md-padding">
+                <form ng-submit="$event.preventDefault()">
+                  <md-autocomplete
+                md-no-cache="true"
+              md-search-text="holidayForm.searchUser[$index]"
+              md-search-text-change="holidayForm.searchTextChange(holidayForm.searchUser[$index])"
+              md-selected-item-change="holidayForm.addUser(item, holidayForm.holiday, $index)"
+              md-items="item in holidayForm.querySearch(holidayForm.searchUser[$index])"
+              md-item-text="item.getFullName()"
+              md-min-length="0"
+              placeholder="Select User">
+                    <md-item-template >
+                      <span class="item-metadata">
+                        {{item.getFullName()}}
+                    </md-item-template>
+                  </md-autocomplete>
+            </form>
+            </div><!--Employee end-->
+
+             <!--Team Leader start-->
+              <div class="md-block md-padding">
+            <form ng-submit="$event.preventDefault()">
+              <md-autocomplete
+                      md-no-cache="true"
+                      md-search-text="holidayForm.searchLeaderHold[$index]"
+                      md-search-text-change="holidayForm.searchTextChange(holidayForm.searchLeaderHold[$index])"
+                      md-selected-item-change="holidayForm.addTeamLeader(item, holidayForm.employee, $index)"
+                      md-items="item in holidayForm.querySearch(holidayForm.searchLeaderHold[$index])"
+                      md-item-text="item.getFullName()"
+                      md-min-length="0"
+                      placeholder="Select a team leader">
+                    <md-item-template >
+                      <span class="item-metadata">
+                        {{item.getFullName()}}
+                    </md-item-template>
+                  </md-autocomplete>
+            </form>
+          </div><!--Team Leader end-->
+        </div>
+
+             <div layout-gt-xs="row" ng-repeat = "holidayRow in holidayForm.holidayReplaceIncrement track by $index">
+
+             <!--Project start-->
+                  <div class="md-block md-padding"
+                       flex-gt-xs="40">
+                <form ng-submit="$event.preventDefault()">
+              <md-autocomplete
+                      md-no-cache="true"
+                      md-search-text="holidayForm.searchProjectHold[$index]"
+                      md-search-text-change="holidayForm.searchTextChange(holidayForm.searchProjectHold[$index])"
+                      md-selected-item-change="holidayForm.addRepProject(item, holidayForm.employee, $index)"
+                      md-items="item in holidayForm.querySearchProj(holidayForm.searchProjectHold[$index])"
+                      md-item-text="item.name"
+                      md-min-length="0"
+                      placeholder="Select a project">
+                    <md-item-template >
+                      <span class="item-metadata">
+                        {{item.name}}
+                    </md-item-template>
+                  </md-autocomplete>
+            </form>
+            </div><!--Project end--><!-- ng-model = "aaa" -->
+
+            <!--Replacement Employee start-->
+            <div class="md-block md-padding"
+              flex-gt-xs="40">
+            <form ng-submit="$event.preventDefault()">
+              <md-autocomplete
+                md-no-cache="true"
+                md-search-text="holidayForm.searchRepEmpHold[$index]"
+                md-search-text-change="holidayForm.searchTextChange(holidayForm.searchRepEmpHold[$index])"
+                md-selected-item-change="holidayForm.addRepEmployee(item, holidayForm.employee, $index)"
+                md-items="item in holidayForm.querySearch(holidayForm.searchRepEmpHold[$index])"
+                md-item-text="item.getFullName()"
+                md-min-length="0"
+                placeholder="Select an employee">
+              <md-item-template >
+                <span
+                class="item-metadata">
+                  {{item.getFullName()}}
+              </md-item-template>
+            </md-autocomplete>
+            </form>
+            </div><!--Replacement Employee start-->
+
+              <md-input-container md-no-float>
+              <md-button
+                class="md-raised md-primary"
+                ng-click="holidayForm.addNewReplaceHoliday()">
+                New
+              </md-button>
+            </div>
+            </md-input-container>
+
+            <section layout-gt-xs="row" ng-repeat="holidayDate in holidayForm.holidayDateIncrement track by $index">
+            <!--Period start-->
+              <md-datepicker required
+                ng-model="holidayForm.dateList[$index].from"
+                md-placeholder="Start date"></md-datepicker>
+
+              <md-datepicker required
+                ng-model="holidayForm.dateList[$index].to"
+                md-placeholder="End date"></md-datepicker>
+
+              <md-input-container md-no-float>
+                <md-button
+                  class="md-raised md-primary"
+                  ng-click="holidayForm.addNewDateHoliday()"
+                  ng-show="!isDate">
+                  New Date
+                </md-button><!--Period end-->
+              </md-input-container>
+
+            </section>
+
+          </md-content>
+        </md-tab><!-- /Request -->
+
+        <!-- Preview request-->
+         <md-tab label="Preview">
+          <md-content class="md-padding">
+            <div class="holiday__container" id="printable" pdf-save-content="generatepdf">
+              <img src="../images/assist.png" class="holiday__logo">
+              <h1 class="holiday__title text--center"><u>Cerere pentru concediu de odihnă </u></h1>
+              <p class="holiday__text text--ident">Stimate Domnule Director,</p>
+              <p class="holiday__text text--ident">
+                Subsemnatul {{holidayForm.user[0].firstName}} {{holidayForm.user[0].lastName}}, angajat al firmei SC ASSIST Software SRL,
+                vă rog să-mi aprobaţi {{ (holidayForm.dateList[0].to - holidayForm.dateList[0].from - 86400000) + (holidayForm.dateList[1].to - holidayForm.dateList[1].from) | date: 'dd'}} zile
+                de concediu din 2016 pentru odihna conform contractului de muncă in perioada
+                {{holidayForm.dateList[0].from | date: 'dd-MMM-yyyy'}} - {{holidayForm.dateList[0].to | date: 'dd-MMM-yyyy'}}
+                <span ng-if = "holidayForm.dateList[1]"> si </span>
+                <span>{{holidayForm.dateList[1].from | date: 'dd-MMM-yyyy'}}
+                <span ng-if = "holidayForm.dateList[1]"> - </span> {{holidayForm.dateList[1].to | date: 'dd-MMM-yyyy'}}</span>
+              </p>
+              <p class="holiday__text text--ident">Vă mulţumesc.</p>
+              <div class="holiday__inner clearfix">
+                <p class="holiday__text text--left">Cu considerație,</p>
+                <p class="holiday__text text--right"><strong>APROBAT,</strong></p>
+              </div>
+              <p class="holiday__text text--lite">ANGAJAT</p>
+              <p class="holiday__text text--lite2">Semnătura,</p>
+              <p class="holiday__text text--lite">
+                Data: <strong><i ng-model = "holidayForm.today">{{holidayForm.today | date: 'dd-MMM-yyyy'}}</i></strong>
+              </p>
+              <h4>Mențiuni</h4>
+              <p class="holiday__text text--ident">
+                <strong>1. </strong>Task-urile din proiectele la care sunt implicat vor fi preluate de:
+              </p>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <td><strong>Proiect</strong></td>
+                    <td><strong>Înlocuitor</strong></td>
+                    <td><strong>Semnătura înlocuitor</strong></td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat = "item in holidayForm.searchProjectHold track by $index">
+                    <td>
+                      <span ng-model = "item.name">{{item}}</span>
+                    </td>
+                    <td>
+                          <span>{{holidayForm.searchRepEmpHold[$index]}}</span>
+                    </td>
+                    <td><!-- Empty field for signature --></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="holiday__text text--ident">
+                <strong>2. </strong>
+                Am luat notă de cererea de concediu și confirm că avem la dispoziție toate elementele de acces, resursele și informațiile necesare derulării corespunzătoare a proiectelor în care colegul meu, solicitant al prezentei cereri, este implicat.
+              </p>
+
+              <div class="holiday__inner clearfix">
+                <p class="holiday__text text--left">Team leader,</p>
+                <p class="holiday__text text--right">
+                  Data: <strong><i ng-model = "holidayForm.today">{{holidayForm.today | date: 'dd-MMM-yyyy'}}</i></strong>
+                </p>
+              </div>
+              <p class="holiday__text text--lite" ng-repeat = "item in holidayForm.holiday.teamLeader track by $index" ng-model = "holidayForm.holiday.teamLeader">{{item.firstName}} {{item.lastName}}</p>
+
+            </div>
+            <md-button class="md-primary md-raised generatepdf" ng-click="holidayForm.createPDF()">Generate PDF</md-button>
+            <md-button class="md-primary md-raised generatepdf" ng-click = "holidayForm.print()">Print</md-button>
+          </md-content>
+        </md-tab>
+
+      </md-tabs>
+
+
+      <div layout="row" layout-align="center center">
+
+        <md-button
+          class="md-raised md-primary"
+          ng-click="holidayForm.saveHoliday(holidayForm.holiday)"
+          ng-disabled="btnIsDisabled">
+          Save
+        </md-button>
+
+        <md-button
+          class="md-raised md-primary"
+          ng-click="holidayForm.clearFields()">
+          Clear
+        </md-button>
+
+        <md-button
+          class="md-raised"
+          ng-click="holidayForm.closeDialog()">
+          Close
+        </md-button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+</section>

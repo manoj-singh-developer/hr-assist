@@ -1,0 +1,24 @@
+[
+  {
+    "label": "cloud",
+    "name" : "Cloud Platform"
+  },{
+    "label": "health",
+    "name" : "Healthcare"
+  },{
+    "label": "web",
+    "name" : "Web Application"
+  },{
+    "label": "mobileApp",
+    "name" : "Mobile Application"
+  },{
+    "label": "dbSystem",
+    "name" : "Database System"
+  },{
+    "label": "desktop",
+    "name" : "Desktop Application"
+  },{
+    "label": "mobileGames",
+    "name" : "Mobile Games"
+  }
+]

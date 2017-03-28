@@ -1,0 +1,283 @@
+<!-- CARD PROJECTS -->
+<md-card>
+
+
+
+
+
+  <!-- CARD TITLE -->
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">Projects</span>
+    </md-card-title-text>
+  </md-card-title><!-- /CARD TITLE -->
+
+
+
+
+
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here with the projects in which you were involved.
+    </p>
+    <p>
+      Add the period in which you were involved in the project and the technologies that you used.
+    </p>
+  </md-content> <!-- CARD NOTES -->
+
+
+
+
+
+  <!-- PREVIEW PROJECTS -->
+  <md-content
+    ng-show="!employeeProject.showForm"
+    class="c-card-profile__preview">
+    <!--
+      @!TODO: Angajatul are adaugat un proiect.
+      Proiectul intre timp este modificat.
+      De verificat daca modificarile facute la proiect se reflecta la profilul angajatului
+    -->
+    <md-list layout="row" layout-wrap>
+      <md-list-item
+        flex="50"
+        class="md-2-line projects-list"
+        ng-repeat="project in employeeProject.employee.projects">
+        <div class="md-list-item-text" layout="column">
+
+          <h3 class="u-mb-10">
+            <strong>{{ project.name }}</strong>
+            <p>
+              <span ng-click="employeeProject.editProject(project)">Edit</span>
+            </p>
+
+            <p>
+              <span ng-click="employeeProject.deleteProject(project)">Edit</span>
+            </p>
+          </h3>
+
+          <p>
+            <strong>I worked during:</strong>
+          </p>
+
+          <p>
+            {{employeeProject.projectDateShow[$index].from | date: "MMMM y" }} - {{employeeProject.projectDateShow[$index].to | date: "MMMM y"}}
+          </p>
+
+          <p class="u-mt-10">
+            <strong>
+              I worked with the following technologies:
+            </strong>
+          </p>
+
+          <p ng-repeat="technology in employeeProject.acc[$index] track by $index">
+            {{technology}}
+          </p>
+
+<!--           <strong class="u-mt-20 u-font-small">Project Technologies</strong>
+          <span class="u-font-small" ng-repeat="technology in project.technologiesJSON track by $index" >{{technology}}</span> -->
+
+         <!--  <strong class="u-mt-20 u-font-small">Type</strong>
+          <span class="u-font-small" ng-repeat="activity in employeeProject.mainActivities track by $index" >{{activity}}</span> -->
+
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-content><!-- /PREVIEW PROJECTS -->
+
+
+
+
+
+  <!-- FORM PROJECTS -->
+  <md-content ng-show="employeeProject.showForm" class="md-padding">
+
+    <!-- CARD GROUP  -->
+    <section
+      class="md-padding c-card-group"
+      layout-align="center center">
+
+
+
+      <!-- REMOVE PROJECT -->
+      <md-button
+        class="md-fab md-mini md-warn c-card-group__remove"
+        label="Remove project"
+        aria-label="Remove project"
+        ng-disabled="employeeProject.disabledProjects"
+        ng-click="employeeProject.removeProject($index, project, employeeProject.employee)">
+          <md-icon class="material-icons">delete</md-icon>
+          <md-tooltip>Remove job</md-tooltip>
+      </md-button>
+      <!-- /REMOVE PROJECT -->
+
+
+
+      <!-- SELECT PROJECT -->
+      <section layout="row" layout-align="start center">
+        <div class="u-mr-5 u-ml-5 u-mb-20" flex-gt-xs="100">
+          <label>Project {{employeeProject.currentProject.name}}</label>
+          <form class="u-mt-5" ng-submit="$event.preventDefault()">
+            <md-autocomplete
+              ng-model="employeeProject.currentProject"
+              ng-init="employeeProject.currentProject.name"
+              md-no-cache="true"
+              md-selected-item="employeeProject.selectedProject"
+              md-search-text="employeeProject.searchedProject"
+              md-selected-item-change="employeeProject.selectedProjectChanged(item)"
+              md-items="item in employeeProject.querySearchProject(employeeProject.searchedProject)"
+              md-item-text="item.name"
+              md-min-length="0"
+              placeholder="Select project">
+
+              <md-item-template >
+                {{item.name}}
+              </md-item-template>
+
+            </md-autocomplete>
+          </form>
+
+        </div>
+      </section><!-- SELECT PROJECT -->
+
+
+
+      <!-- SELECT START/END DATE -->
+      <section layout-gt-xs="row" layout-align="start center">
+
+        <div flex-gt-xs="50">
+          <label class="u-ml-5">From</label>
+          <hra-date-select
+            class="vertical hide-days"
+            flex-gt-xs="50"
+            ng-model="employeeProject.projectDate[$index].from">
+          </hra-date-select>
+        </div>
+
+        <div flex-gt-xs="50">
+          <label class="u-ml-5">To</label>
+          <hra-date-select
+            class="vertical hide-days"
+            flex-gt-xs="50"
+            ng-model="employeeProject.projectDate[$index].to">
+          </hra-date-select>
+        </div>
+
+      </section><!-- /SELECT START/END DATE -->
+
+      <md-divider
+        class="md-padding divider-bold u-no-padding u-mt-20 u-mb-20">
+      </md-divider>
+
+
+
+      <p ng-show="employeeProject.acc[projIndex].length > 0" class="u-mb-10">
+        <strong>
+          On this project I worked with the following technologies:
+        </strong>
+      </p>
+
+      <!-- TECHNOLOGIES -->
+      <md-list layout="row" layout-wrap layout-align="left center">
+        <md-list-item
+          flex="50"
+          class="md-2-line"
+          ng-repeat="technology in employeeProject.currentProject.myTechnologies track by $index">
+
+          <!-- TECHNOLOGIES AUTOCOMPLETE -->
+          <!-- TODO the pus toate skillurile aici, nu doar cele legate de proiect -->
+          <div class="md-block" flex-gt-xs="80">
+            <form ng-submit="$event.preventDefault()">
+              <md-autocomplete
+                ng-model=employeeProject.currentProject.myTechnologies[$index]
+                md-no-cache="true"
+                md-search-text="employeeProject.searchTech[$index]"
+                md-selected-item-change="employeeProject.addTech(item, $index)"
+                md-items="item in employeeProject.querySearchTech(eemployeeProject.searchTech[$index])"
+                md-item-text="item.label"
+                md-min-length="0"
+                placeholder="Technology">
+                <md-item-template >
+                  <span class="item-metadata">
+                    {{item.label}}
+                </md-item-template>
+              </md-autocomplete>
+            </form>
+          </div><!-- /TECHNOLOGIES AUTOCOMPLETE -->
+
+          <md-button
+            class="md-icon-button md-warn"
+            label="Remove project"
+            aria-label="Remove project"
+            ng-click="employeeProject.removeTechnology(projIndex, $index)">
+            <md-icon class="material-icons">delete</md-icon>
+          </md-button>
+
+        </md-list-item>
+      </md-list><!-- /TECHNOLOGIES -->
+
+
+
+      <md-button
+        md-no-ink
+        class="md-primary small-text"
+        ng-click="employeeProject.addEmptyTechnology(projIndex)">
+        Add New Technology
+      </md-button>
+
+    </section><!-- /CARD GROUP ng-repeat -->
+
+<!--     <section class="md-padding">
+      <md-button
+        md-no-ink
+        class="md-primary small-text"
+        ng-click="employeeProject.addNewProject()">
+        Add New Project
+      </md-button>
+    </section> -->
+
+  </md-content><!-- /FORM PROJECTS -->
+
+
+
+
+
+  <!-- CARD ACTIONS -->
+  <md-card-actions
+    layout="column"
+    layout-align="start"
+    ng-show="!employeeProject.showForm">
+    <md-button
+      class="c-card-profile__btn no-margin"
+      ng-click="employeeProject.addEmptyProject(); employeeProject.toggleCard($event, 'open')"
+      ng-disabled="btnIsDisabled">
+      Add Project
+    </md-button>
+  </md-card-actions>
+
+  <md-card-actions
+    layout="row"
+    layout-align="center center"
+    ng-show="employeeProject.showForm"
+    class="additional">
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="employeeProject.saveProjectToEmployee(employeeProject.currentProject); employeeProject.toggleCard($event, 'close')">
+      Save
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ng-click="employeeProject.cancelAdd(); employeeProject.toggleCard($event, 'close')">
+      Cancel
+    </md-button>
+
+  </md-card-actions>
+  <!-- /CARD ACTIONS -->
+
+
+
+
+</md-card><!-- /CARD PROJECTS -->

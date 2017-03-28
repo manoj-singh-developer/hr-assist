@@ -1,0 +1,47 @@
+<style>
+    .cerere {
+        max-width: 850px;
+        margin: 20px auto;
+    }
+</style>
+
+<section class="cerere">
+    <h1 style="text-align: center; font-size: 26px;">Cerere pentru concediu de odihna</h1>
+    <p>Stimate Domnule Director,</p>
+    <p>
+        Subsemnatul <strong>{{se.viewObject[0].employee[0].firstName}} {{se.viewObject[0].employee[0].lastName}}</strong>, angajat al firmei SC ASSIST Software SRL, vă rog să-mi aprobaţi <strong>{{se.viewObject[0].days}}</strong> <span ng-if="se.viewObject[0].days === 1">zi</span> <span ng-if="se.viewObject[0].days > 1">zile</span> de concediu pentru odihna conform contractului de muncă in data de 30 Septembrie 2016.
+    </p>
+    <p style="text-align: left">Va multumesc.</p>
+
+    <p style="text-align: left">Cu consideratie,</p>
+    <p style="text-align: left"><strong>{{se.viewObject[0].employee[0].firstName}} {{se.viewObject[0].employee[0].lastName}}</strong></p>
+    <p style="text-align: right">APROBAT, </p>
+    <p style="text-align: left">Semnatura, </p>
+    <p style="text-align: left">Data: <strong>{{se.viewObject[0].signingDate | date }}</strong></p>
+    <br>
+    <h4><strong>Mentiuni</strong></h4>
+    <br>
+    <p><strong>1.</strong> Task-urile din proiectele la care sunt implicat vor fi preluate de:</p>
+    <table style="border: 1px solid #000;"">
+        <thead>
+            <tr style="border: 1px solid #000;">
+                <th>Proiect</th>
+                <th>Inlocuitor</th>
+                <th>Semnatura inlocuitorului</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in se.viewObject[0].replacement" style="border: 1px solid #000;">
+                <td >{{item.project.name}}</td>
+                <td>{{item.employee.lastName}}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <p>
+        <strong>2.</strong> Am luat notă de cererea de concediu și confirm că avem la dispoziție toate elementele de acces, resursele și informațiile necesare derulării corespunzătoare a proiectelor în care colegul meu, solicitant al prezentei cereri, este implicat.
+    </p>
+    <p>Team leader, <strong>{{se.viewObject[0].teamLeader[0].firstName}} {{se.viewObject[0].teamLeader[0].lastName}}</strong></p>
+    <p>Data: <strong>{{se.viewObject[0].signingDate | date }}</strong></p>
+</section>

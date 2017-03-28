@@ -1,0 +1,52 @@
+.u-text-right
+  text-align: right
+
+.u-no-margin
+  margin: 0 !important
+
+.u-no-padding
+  padding: 0 !important
+
+// MARGIN TOP UTILITY
+@for $i from 1 through 20
+  .u-mt-#{$i * 5}
+    margin-top: $i * 5px !important
+
+// MARGIN RIGHT UTILITY
+@for $i from 1 through 20
+  .u-mr-#{$i * 5}
+    margin-right: $i * 5px !important
+
+
+// MARGIN RIGHT UTILITY
+@for $i from 1 through 20
+  .u-ml-#{$i * 5}
+    margin-left: $i * 5px !important
+
+// MARGIN BOTTOM UTILITY
+@for $i from 1 through 20
+  .u-mb-#{$i * 5}
+    margin-bottom: $i * 5px !important
+
+
+.u-uppercase
+  text-transform: uppercase
+
+.u-font-small
+  font-size: 12px !important
+
+
+.u-clearfix
+  &:after,
+  &:before
+    content: ''
+    display: table
+
+  &:after
+    clear: both
+
+.u-float-right
+  float: right !important
+
+.u-float-left
+  float: left !important

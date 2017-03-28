@@ -1,0 +1,219 @@
+<section layout="column" md-whiteframe="6" class="u-mb-50">
+
+
+
+  <!-- TITLE -->
+  <md-toolbar
+    class="md-table-toolbar md-default"
+    layout="row"
+    layout-align="space-between center">
+    <div class="md-toolbar-tools">
+
+      <div class="md-title">Industries</div>
+
+      <div flex="" class="flex"></div>
+
+      <md-button
+        ng-show="extraList.api"
+        md-no-ink
+        class="md-primary"
+        ng-click="extraList.showFormDialog($event, {})">
+          Add Industry
+      </md-button>
+
+      <md-button
+        ng-show="extraList.api"
+        md-no-ink
+        class="md-primary"
+        ng-click="extraList.showFormJsonDialog($event)">
+          Add from JSON
+      </md-button>
+
+      <md-button
+        ng-hide="extraList.api"
+        md-no-ink
+        class="md-primary"
+        ng-click="extraList.addExtraListFromAPI()">
+          Load Extra from api
+      </md-button>
+
+      <md-button
+        ng-hide="extraList.api"
+        md-no-ink
+        class="md-primary"
+        ng-click="extraList.addProjectsFromAPI()">
+          Load projects from api
+      </md-button>
+
+      <md-button
+        ng-hide="extraList.api"
+        md-no-ink
+        class="md-primary"
+        ng-click="extraList.updateProjectsFromAPI()">
+          Update projects
+      </md-button>
+
+    </div>
+  </md-toolbar> <!-- /TITLE -->
+
+
+
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+  <!-- TABLE SEARCH -->
+  <md-input-container md-no-float class="simple-search">
+    <md-icon class="material-icons">search</md-icon>
+    <input ng-model="extraList.searchText">
+  </md-input-container><!-- TABLE SEARCH -->
+
+
+
+
+  <!-- SELECTED ROWS -->
+  <md-toolbar
+    class="md-table-toolbar alternate"
+    ng-show="sk.table.options.rowSelection && sk.table.selected.length">
+    <div class="md-toolbar-tools">
+      <span>
+        {{sk.table.selected.length}} {{sk.table.selected.length > 1 ? 'Skills' : 'Skill'}} selected
+      </span>
+    </div>
+  </md-toolbar><!-- /SELECTED ROWS -->
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+
+
+
+  <!-- TABLE INDUSTRIES -->
+  <md-table-container>
+    <table
+      class="c-table--actions"
+      md-table
+      md-row-select="extraList.table.options.rowSelection"
+      multiple="{{extraList.table.options.multiSelect}}"
+      ng-model="extraList.table.selected"
+      md-progress="promise">
+
+      <thead
+        ng-if="!extraList.table.options.decapitate"
+        md-head
+        md-order="extraList.table.query.order">
+        <tr md-row>
+          <th md-column md-order-by="name">Name</th>
+          <th md-column>Label</th>
+          <th md-column>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody md-body>
+        <tr
+        md-row
+        md-select="industry"
+        md-on-select="logItem"
+        md-auto-select="extraList.table.options.autoSelect"
+        ng-repeat="industry in extraList.extraList | filter: extraList.searchText | orderBy: extraList.table.query.order | limitTo: extraList.table.query.limit : (extraList.table.query.page -1) * extraList.table.query.limit">
+
+          <td md-cell>{{industry.name}}</td>
+
+          <td md-cell>{{industry.label}}</td>
+
+          <td md-cell>
+
+            <md-button
+              class="md-icon-button md-primary"
+              label="Edit industry"
+              aria-label="Edit industry"
+              ng-click="extraList.showFormDialog($event, industry, industry.id)">
+                <md-icon class="material-icons">create</md-icon>
+                <md-tooltip md-autohide="true">
+                  Edit industry
+                </md-tooltip>
+              </md-button>
+
+            <md-button
+              class="md-icon-button md-warn"
+              label="Remove industry"
+              aria-label="Remove industry"
+              ng-click="extraList.deleteConfirm($event, industry.name, industry.id, $index)">
+              <md-icon class="material-icons">delete</md-icon>
+              <md-tooltip md-autohide="true">
+                Remove industry
+              </md-tooltip>
+            </md-button>
+
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+  </md-table-container><!-- TABLE INDUSTRIES -->
+
+
+
+
+  <!-- TABLE PAGINATION -->
+  <md-table-pagination
+    md-limit="extraList.table.query.limit"
+    md-limit-options="extraList.table.limitOptions"
+    md-page="extraList.table.query.page"
+    md-total="{{extraList.extraList.length}}"
+    md-page-select="extraList.table.options.pageSelect"
+    md-boundary-links="extraList.table.options.boundaryLinks">
+  </md-table-pagination><!-- TABLE PAGINATION -->
+
+
+
+
+  <!-- TEMPLATES -->
+  <script type="text/ng-template" id="extraJsonForm.tmpl.html">
+    <section layout="column">
+
+      <md-toolbar class="md-table-toolbar">
+        <div class="md-toolbar-tools ">
+          Add Industry from JSON
+        </div>
+      </md-toolbar>
+
+      <section class="md-padding">
+
+        <form name="employeejsonform" class="form md-inline-form">
+          <textarea class="save-from-json" ng-model="extraJsonM.json" placeholder="Paste json here">
+          </textarea>
+        </form>
+
+        <!-- Actions buttons -->
+        <div layout="row" layout-align="center center">
+
+          <md-button
+            class="md-raised md-primary"
+            ng-click="extraJsonM.saveFromJson(extraJsonM.json)">
+            Save
+          </md-button>
+
+          <md-button
+            class="md-raised md-primary"
+            ng-click="extraJsonM.clearFields()">
+            Clear
+          </md-button>
+
+          <md-button
+            class="md-raised"
+            ng-click="extraJsonM.closeDialog()">
+            Close
+          </md-button>
+
+        </div><!-- /Actions buttons -->
+
+      </section>
+
+    </section>
+  </script>
+  <!-- /TEMPLATES -->
+
+
+
+
+</section>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HR ASSIST</title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="./vendor.css">
+    <link rel="stylesheet" href="./app.css">
+
+  </head>
+
+  <body ng-app="HRA" ui-router-styles hra-route-css-class ng-cloak>
+
+    <section ng-controller="mainController" class="main-view">
+
+      <style>
+        .c-navigation,
+        .view-login .c-navigation {
+          display: none !important;
+        }
+      </style>
+
+
+
+
+
+      <md-content class="c-navigation">
+
+        <md-nav-bar
+          ng-if="isAdmin"
+          class="[ c-navbar c-navbar--admin ] [ js-navbar-admin ]"
+          md-selected-nav-item="currentNavItem"
+          nav-bar-aria-label="navigation links">
+
+          <md-nav-item md-nav-sref="dashboard" name="Dashboard">
+            <md-icon class="material-icons">dashboard</md-icon>
+            Dashboard
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="projectsParent.list" name="projects">
+            <md-icon class="material-icons">work</md-icon>
+            Projects
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="employeesParent.list" name="employees">
+            <md-icon class="material-icons">group</md-icon>
+            Employees
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="candidateParent.list" name="candidate">
+            <md-icon class="material-icons">school</md-icon>
+            Candidates
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="holidayParent.list" name="Holiday">
+            <md-icon class="material-icons">mood</md-icon>
+            Holidays
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="logout" name="logout">
+            Logout
+          </md-nav-item>
+
+        </md-nav-bar>
+
+        <md-nav-bar
+          ng-if="isAdmin"
+          class="[ c-navbar c-navbar--admin c-navbar--secondary ] [ js-navbar-admin ]"
+          md-selected-nav-item="currentNavItem"
+          nav-bar-aria-label="navigation links">
+
+          <md-nav-item md-nav-sref="equipmentsParent.list" name="equipments">
+            Equipments
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="skillsParent.list" name="skills">
+            Skills
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="industriesParent.list" name="industries">
+            Industries
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="customersParent.list" name="customers">
+            Customers
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="appTypesParent.list" name="appTypes">
+            App types
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="extraParent.list" name="extra">
+            Extra
+          </md-nav-item>
+
+        </md-nav-bar>
+
+        <md-nav-bar
+          ng-if="!isAdmin"
+          class="[ c-navbar--employee ]  [ js-navbar-employee ]"
+          md-selected-nav-item="currentNavItem"
+          nav-bar-aria-label="navigation links">
+
+          <md-nav-item md-nav-sref="logout" name="equipments">
+            Logout
+          </md-nav-item>
+
+        </md-nav-bar>
+
+      </md-content>
+
+
+
+
+
+      <section class="page-content" >
+        <div ui-view></div>
+      </section>
+
+
+
+
+
+    </section>
+
+    <!--SCRIPTS-->
+     <script src="./vendor.js"></script>
+     <script src="./app.js"></script>
+
+
+
+
+  </body>
+</html>

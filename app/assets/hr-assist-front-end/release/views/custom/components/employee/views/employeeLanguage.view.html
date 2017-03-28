@@ -1,0 +1,189 @@
+<!-- CARD LANGUAGES -->
+<md-card>
+
+
+
+
+  <!-- CARD TITLE -->
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">Languages</span>
+    </md-card-title-text>
+  </md-card-title><!-- /CARD TITLE -->
+
+
+
+
+
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here with the languages that you know. Select a language and choose the proficiency.
+    </p>
+  </md-content> <!-- CARD NOTES -->
+
+
+
+
+
+  <!-- PREVIEW LANGUAGES -->
+  <md-content
+    ng-show="employeeLanguage.disabledLanguagesis"
+    class="c-card-profile__preview">
+    <md-list layout="row" layout-wrap>
+      <md-list-item
+        flex="50"
+        class="md-2-line"
+        ng-repeat="language in employeeLanguage.createLanguage track by $index">
+        <div class="md-list-item-text" layout="column">
+          <h4>{{language.language}}</h4>
+          <p>{{language.level}}</p>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-content><!-- /PREVIEW LANGUAGES -->
+
+
+
+
+
+  <!-- FORM LANGUAGES -->
+  <md-content
+    class="md-padding"
+    ng-hide="employeeLanguage.disabledLanguagesis">
+
+    <section
+      layout-gt-xs="row"
+      layout-align="center center"
+      ng-repeat="languages in employeeLanguage.createLanguage track by $index">
+
+
+
+
+
+      <!-- LANGUAGE SELECT-->
+      <div class="md-block md-padding" flex-gt-xs="45">
+
+        <form ng-submit="$event.preventDefault()">
+          <md-autocomplete
+            md-no-cache="true"
+            md-search-text="employeeLanguage.createLanguage[$index].language"
+            md-search-text-change="employeeLanguage.searchTextChange(employeeLanguage.createLanguage[$index].language)"
+            md-selected-item-change="employeeLanguage.addLanguages(item.name, $index)"
+            md-items="item in employeeLanguage.querySearchLanguage(employeeLanguage.createLanguage[$index].language)"
+            md-item-text="item.name"
+            md-min-length="0"
+            ng-disabled="employeeLanguage.disabledLanguagesis"
+            placeholder="Language"
+            >
+            <md-item-template >
+              <span class="item-metadata">
+                {{item.name}}
+            </md-item-template>
+          </md-autocomplete>
+        </form>
+
+     </div><!-- /LANGUAGE SELECT -->
+
+
+
+
+
+      <!-- LANGUAGE PROFICIENCY -->
+      <md-input-container
+        md-no-float class="md-block md-padding u-no-margin"
+        flex-gt-xs="45">
+        <md-select
+          aria-label="Proficiency"
+          ng-model="employeeLanguage.createLanguage[$index].level"
+          md-selected-text="employeeLanguage.getSelectedText(employeeLanguage.createLanguage[$index].level, $index)"
+          ng-disabled="employeeLanguage.disabledLanguagesis">
+          <md-option
+            ng-value="level"
+            ng-repeat="level in employeeLanguage.levels">
+              {{level}}
+          </md-option>
+        </md-select>
+      </md-input-container><!-- /LANGUAGE PROFICIENCY -->
+
+
+
+
+
+      <!-- DELETE LANGUAGE -->
+      <md-input-container md-no-float class="md-block" flex-gt-xs="10">
+        <md-button
+          class="md-icon-button md-warn"
+          label="Remove language"
+          aria-label="Remove language"
+          ng-disabled="employeeLanguage.disabledLanguagesis"
+          ng-click="employeeLanguage.removeLanguage($index)">
+          <md-icon class="material-icons">delete</md-icon>
+        </md-button>
+      </md-input-container><!-- /DELETE LANGUAGE -->
+
+    </section>
+
+
+
+
+
+    <section class="md-padding">
+      <md-button
+        md-no-ink
+        class="md-primary small-text"
+        ng-click="employeeLanguage.addNewLanguage()">
+        Add New Language
+      </md-button>
+    </section>
+
+
+
+
+
+  </md-content><!-- FORM LANGUAGES -->
+
+
+
+
+
+  <!-- CARD ACTIONS-->
+  <md-card-actions
+    layout="column"
+    layout-align="start"
+    ng-show="employeeLanguage.disabledLanguagesis">
+    <md-button
+      class="c-card-profile__btn no-margin"
+      id ="languages"
+      ng-click="employeeLanguage.generalInfoShowHide('languages');
+      employeeLanguage.toggleCard($event, 'open')">
+      Add/Edit Languages
+    </md-button>
+  </md-card-actions>
+
+  <md-card-actions
+    layout="row"
+    layout-align="center center"
+    ng-show="!employeeLanguage.disabledLanguagesis"
+    class="additional">
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="employeeLanguage.saveEmployee(employeeLanguage.employee); employeeLanguage.toggleCard($event, 'close')"
+      ng-disabled="btnIsDisabled">
+      Save
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ng-click="employeeLanguage.cancelAdd(); employeeLanguage.toggleCard($event, 'close')">
+      Cancel
+    </md-button>
+
+  </md-card-actions><!-- /CARD ACTIONS-->
+
+
+
+
+
+</md-card><!-- /CARD LANGUAGES -->

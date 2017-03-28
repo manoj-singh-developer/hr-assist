@@ -1,0 +1,8 @@
+ TODO:
+
+ ☐ To use month picker from material deisgn
+   https://github.com/angular/material/issues/9270
+   https://plnkr.co/edit/nJyHfu?p=preview
+
+ ☐ De folosit ng-hide sau ng-show, nu ambele.
+   Lucrurile trebuie sa fie consistene

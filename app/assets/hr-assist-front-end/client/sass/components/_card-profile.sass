@@ -1,0 +1,116 @@
+.c-card-profile
+
+  .c-card-profile__notes
+    transition: background-color 0.3s ease-in-out
+
+  md-card
+    transition: all 0.3s ease-in-out
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)
+
+  &.is-opened
+    md-card
+      transform: translateY(-2px)
+      box-shadow: 0 7px 8px -4px rgba(0,0,0,.2), 0 12px 17px 2px rgba(0,0,0,.14), 0 5px 22px 4px rgba(0,0,0,.12)
+
+    md-card-title-text .md-headline
+      color: #6b818c - 10
+      font-weight: bold
+
+    .c-card-profile__notes
+      background-color: #6b818c - 10
+      color: #FFF
+
+  &__notes
+    margin: 16px
+    padding: 16px
+    overflow: visible
+    color: #8a8f94
+
+    p
+      margin: 0 0 16px 0
+
+      &:last-child
+        margin-bottom: 0
+
+  &__preview
+    padding: 10px 20px 20px 20px
+    background-color: #fff
+
+  &__general-info
+    padding-left: 30px
+
+  &__info
+    margin-top: 0
+    margin-bottom: 5px
+
+  &__name .c-card-profile__info-text
+    font-size: 22px
+
+  &__btn
+    margin: 4px 0 0 0 !important
+    color: #FFF
+    border-radius: 0
+    background-color: #6b818c
+
+    &.no-margin
+      margin: 0 !important
+
+    &:active,
+    &:hover,
+    &:focus
+      background-color: #6b818c - 30 !important
+
+  md-card
+    margin: 0 0 30px 0
+    border-radius: 0
+
+  md-card-title
+    font-size: 26px
+    font-weight: lighter
+    padding: 20px
+    color: #afb2b5
+
+  .md-card-image
+    border: none
+
+  md-input-container
+    margin: 5px
+
+    &.input-text
+      margin: 0
+      padding: 0
+      width: 100%
+
+  md-card-actions
+    margin: 0
+    padding: 0
+    background-color: #f4f4f4
+
+    &.additional
+      padding: 20px
+      background-color: transparent
+
+.c-card-group
+  position: relative
+  margin-bottom: 20px
+  padding-top: 65px
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12)
+
+  &__remove
+    position: absolute
+    top: 10px
+    right: 10px
+
+
+.cv-picture
+  width: 3.5cm !important
+  height: auto !important
+
+
+.projects-list
+  padding-bottom: 20px !important
+  margin-bottom: 40px !important
+  border-bottom: 3px solid rgba(0,0,0,0.12)
+
+  .md-list-item-text
+    margin: 0 !important

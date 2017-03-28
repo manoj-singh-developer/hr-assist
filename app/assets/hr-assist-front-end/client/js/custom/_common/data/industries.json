@@ -1,0 +1,36 @@
+[
+  {
+    "label": "automotive",
+    "name" : "Automotive"
+  },{
+    "label": "financial",
+    "name" : "Financial"
+  },{
+    "label": "social",
+    "name" : "Social"
+  },{
+    "label": "eHealth",
+    "name" : "e-Health"
+  },{
+    "label": "media",
+    "name" : "Media"
+  },{
+    "label": "food",
+    "name" : "Food"
+  },{
+    "label": "education",
+    "name" : "Education"
+  },{
+    "label": "eCommerce",
+    "name" : "e-Commerce"
+  },{
+    "label": "bussiness",
+    "name" : "Bussiness"
+  },{
+    "label": "entertainment",
+    "name" : "Entertainment"
+  },{
+    "label": "manufacturing",
+    "name" : "Manufacturing"
+  }
+]

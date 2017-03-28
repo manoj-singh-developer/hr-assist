@@ -1,0 +1,177 @@
+<!-- CARD EQUIPMENTS -->
+<md-card>
+
+
+
+
+  <!-- CARD TITLE -->
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">Equipments</span>
+    </md-card-title-text>
+  </md-card-title><!-- CARD TITLE -->
+
+
+
+
+
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here with the equipments that you are using.
+    </p>
+  </md-content> <!-- CARD NOTES -->
+
+
+
+
+
+  <!-- PREVIEW EQUIPMENTS -->
+  <md-content
+    ng-show="employeeEquipments.disabledEquipments"
+    class="c-card-profile__preview">
+    <md-list layout="row" layout-wrap>
+      <md-list-item
+        flex="50"
+        class="md-2-line"
+        ng-repeat="equipmentEq in employeeEquipments.replaceEq track by $index">
+
+        <div class="md-list-item-text" layout="column">
+          <h4 class="general-info">
+            {{equipmentEq.name}} {{equipmentEq.description}}
+          </h4>
+        </div>
+
+      </md-list-item>
+    </md-list>
+  </md-content><!-- /PREVIEW EQUIPMENTS -->
+
+
+
+
+
+  <!-- FORM Equipments -->
+  <md-content
+    class="md-padding"
+    ng-hide="employeeEquipments.disabledEquipments">
+
+
+
+
+
+    <!-- SELECT EQUPMENT -->
+    <md-list layout="row" layout-wrap>
+      <md-list-item
+        flex="100"
+        class="md-2-line"
+        ng-repeat="equipment in employeeEquipments.createEquipments track by $index">
+
+          <div class="md-block" flex-gt-xs="100">
+            <form ng-submit="$event.preventDefault()">
+              <md-autocomplete
+                md-no-cache="true"
+                md-search-text="employeeEquipments.searchEquipment[$index]"
+                md-search-text-change="employeeEquipments.searchTextChange($index, employeeEquipments.searchEquipment[$index])"
+                md-selected-item-change="employeeEquipments.addEquipments(itemEq, employeeEquipments.employee, $index)"
+                md-items="itemEq in employeeEquipments.querySearchEquipments(employeeEquipments.searchEquipment[$index])"
+                md-item-text="itemEq.getFullName()"
+                md-min-length="0"
+                ng-disabled="employeeEquipments.disabledEquipments"
+                placeholder="{{employeeEquipments.equipmentsLabels[$index]}}">
+
+                <md-item-template >
+                  <span class="item-metadata">
+                    {{itemEq.getFullName()}}
+                </md-item-template>
+
+              </md-autocomplete>
+            </form>
+          </div>
+      </md-list-item>
+    </md-list><!-- /SELECT EQUPMENT -->
+
+
+
+
+
+    <section class="md-padding">
+      <md-button
+        md-no-ink
+        class="md-primary small-text"
+        ng-click="employeeEquipments.addEquipment()"
+        ng-hide = "employeeEquipments.disabledEquipments">
+        Add New
+      </md-button>
+    </section>
+
+
+
+
+
+  </md-content><!-- /FORM Equipments -->
+
+
+
+
+
+  <!-- CARD ACTIONS -->
+  <md-card-actions
+    layout="column"
+    layout-align="start"
+    ng-show="employeeEquipments.disabledEquipments">
+    <md-button
+      id ="equipments"
+      class="c-card-profile__btn no-margin"
+      ng-click="employeeEquipments.generalInfoShowHide('equipments'); employeeEquipments.toggleCard($event, 'open')">
+      Add/Edit equipments
+    </md-button>
+  </md-card-actions>
+
+  <md-card-actions
+    layout="row"
+    layout-align="center center"
+    class="additional"
+    ng-show="!employeeEquipments.disabledEquipments">
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="employeeEquipments.saveEmployee(employeeEquipments.employee); employeeEquipments.toggleCard($event, 'close')">
+      Save
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ng-click="employeeEquipments.cancelAdd(); employeeEquipments.toggleCard($event, 'close')">
+      Cancel
+    </md-button>
+
+  </md-card-actions>
+  <!-- /CARD ACTIONS -->
+
+
+
+
+
+</md-card><!-- CARD EQUIPMENTS -->
+
+
+<!--     <div layout-gt-xs="row" ng-show="employeeEquipments.hideNewEq">
+
+      <md-input-container md-no-float class="md-block" flex-gt-xs="">
+        <label>Full Name</label>
+        <input
+        type="text"
+        name="name"
+        ng-model="employeeEquipments.form.name"
+        required>
+      </md-input-container>
+
+      <md-input-container md-no-float class="md-block" flex-gt-xs="">
+        <label>Description</label>
+        <input
+          type="text"
+          name="description"
+          ng-model="employeeEquipments.form.description">
+      </md-input-container>
+
+    </div> -->

@@ -1,0 +1,196 @@
+<!-- CARD COURSES -->
+<md-card>
+
+
+
+
+
+  <!-- CARD TITLE -->
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">Courses and Certifications</span>
+    </md-card-title-text>
+  </md-card-title><!-- CARD TITLE -->
+
+
+
+
+
+
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here with your courses and certifications experience.
+    </p>
+  </md-content> <!-- CARD NOTES -->
+
+
+
+
+
+
+  <!-- PREVIEW COURSES -->
+  <md-content
+    ng-show="employeeCourse.disabledCourses"
+    class="c-card-profile__preview">
+    <md-list layout="row" layout-wrap>
+      <md-list-item
+        flex="50"
+        class="md-3-line"
+        ng-repeat="course in employeeCourse.courseIncrement track by $index">
+
+        <div class="md-list-item-text" layout="column">
+          <h3><strong>Course: </strong>{{course.title}}</h3>
+          <h4><strong>Diploma: </strong>{{course.diploma}}</h4>
+          <p><strong>at </strong>{{course.issue}} </p>
+          <!-- <p>in {{employeeCourse.courseDates[$index]| date:'MMMM, y'}}</p> -->
+        </div>
+
+      </md-list-item>
+    </md-list>
+  </md-content> <!--/PREVIEW COURSES -->
+
+
+
+
+
+  <!-- FORM COURSES -->
+  <md-content
+    ng-show="!employeeCourse.disabledCourses"
+    class="md-padding">
+
+    <!-- CARD GROUP -->
+    <section
+      ng-repeat="education in employeeCourse.courseIncrement track by $index"
+      layout='column'
+      class="md-padding c-card-group">
+
+
+
+
+
+      <md-button
+        class="md-fab md-mini md-warn c-card-group__remove"
+        ng-click="employeeCourse.removeCourse($index)"
+        ng-disabled = "employeeCourse.disabledCourses">
+        <md-icon class="material-icons">delete</md-icon>
+        <md-tooltip>Remove Course</md-tooltip>
+      </md-button>
+
+
+
+
+
+      <!-- COURSE TITLE AND MONTH -->
+      <section layout='row'>
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+          <label>Title</label>
+          <input
+            ng-model="employeeCourse.courseList[$index].title"
+            ng-disabled ="employeeCourse.disabledCourses">
+        </md-input-container>
+      </section><!-- /COURSE TITLE AND MONTH -->
+
+
+
+
+
+      <!-- DIPLOMA -->
+      <section layout='row'>
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+          <label>Diploma</label>
+          <input
+            ng-model="employeeCourse.courseList[$index].diploma"
+            ng-disabled ="employeeCourse.disabledCourses">
+        </md-input-container>
+      </section><!-- /DIPLOMA -->
+
+
+
+
+
+      <!-- AUTHORITY -->
+      <section layout='row'>
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+          <label>Issuing authority</label>
+          <input
+            ng-model="employeeCourse.courseList[$index].issue"
+            ng-disabled ="employeeCourse.disabledCourses">
+        </md-input-container>
+      </section><!-- /AUTHORITY -->
+
+
+
+
+      <!-- PERIOD -->
+      <section layout-gt-xs="row" layout-align="center center" class="u-mb-20">
+        <div flex-gt-xs="100">
+          <label class="u-ml-5">Course date</label>
+          <hra-date-select
+            show-months="true"
+            orientation="horizontal"
+            initial-date="employeeCourse.courseDates[$index]"
+            ng-model="employeeCourse.courseDates[$index]">
+          </hra-date-select>
+        </div>
+      </section><!-- /PERIOD -->
+
+
+    </section><!-- /CARD GROUP -->
+
+
+    <section class="md-padding">
+      <md-button
+        md-no-ink
+        class="md-primary small-text"
+        ng-click="employeeCourse.addNewCourse()">
+        Add New Course
+      </md-button>
+    </section>
+
+  </md-content><!-- /FORM COURSES -->
+
+
+
+
+
+  <!-- CARD ACTIONS -->
+  <md-card-actions
+    layout="column"
+    layout-align="start"
+    ng-show="employeeCourse.disabledCourses">
+    <md-button
+      class="c-card-profile__btn no-margin"
+      ng-click="employeeCourse.changeCourseView(); employeeCourse.toggleCard($event, 'open')"
+      ng-disabled="btnIsDisabled"
+      ng-show="employeeCourse.disabledCourses">
+      Add courses
+    </md-button>
+  </md-card-actions>
+
+  <md-card-actions
+    layout="row"
+    layout-align="center center"
+    ng-show="!employeeCourse.disabledCourses"
+    class="additional">
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="employeeCourse.saveEmployee(employeeCourse.employee); employeeCourse.toggleCard($event, 'close')">
+      Save
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ng-click="employeeCourse.cancelAdd(); employeeCourse.toggleCard($event, 'close')">
+      Cancel
+    </md-button>
+
+  </md-card-actions>
+  <!-- /CARD ACTIONS -->
+
+
+
+
+
+</md-card><!-- /CARD COURSES -->

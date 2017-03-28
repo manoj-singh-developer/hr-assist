@@ -1,0 +1,67 @@
+
+// @INPUT
+// Normal input
+md-input-container
+  label
+    color: $hr-input-label-color !important
+
+  .md-input
+    box-sizing: border-box
+    border: 1px solid $hr-input-border-color !important
+    color: $hr-input-color
+    padding: 0 10px !important
+    min-height: 40px
+    font-size: 15px
+
+  &.md-input-focused
+    label
+      color: $hr-input-focused-color !important
+    .md-input
+      border-color: $hr-input-focused-color !important
+
+[md-no-float]
+  label
+    position: static !important
+    margin-bottom: 5px !important
+    font-size: 15px !important
+    transform: none !important
+    display: block !important
+
+
+
+// @SELECT
+// Normal input
+
+md-select
+  font-size: 15px
+  md-select-value
+    box-sizing: border-box
+    border: 1px solid $hr-input-border-color !important
+    padding: 0 10px !important
+    height: 40px
+    font-size: 15px
+
+.input-select
+  &.md-input-has-value,
+  &.md-input-focused
+    label
+      opacity: 0 !important
+
+
+
+// @AUTOCOMPLETE
+.input-autocomplete
+  input
+    border: none !important
+
+
+md-autocomplete
+  background-color: transparent
+  font-size: 15px !important
+  input
+    font-size: inherit !important
+
+md-autocomplete-wrap
+  box-shadow: none !important
+  border: 1px solid $hr-input-border-color !important
+  background-color: transparent !important

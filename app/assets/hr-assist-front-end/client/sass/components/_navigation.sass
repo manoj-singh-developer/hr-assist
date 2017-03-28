@@ -1,0 +1,87 @@
+body
+  padding-top: 80px
+
+  &.view-login
+    padding-top: 0
+
+  &.pages-employee
+    padding-top: 45px
+
+.c-navigation
+  top: 0
+  left: 0
+  width: 100%
+  position: fixed
+  z-index: 9999
+
+  ._md-nav-bar-list
+    max-width: 830px
+    width: 100%
+    margin-right: auto
+    margin-left: auto
+
+  &:after
+    content: ''
+    width: 40px
+    height: 40px
+    background-image: url(/images/beta.png)
+    background-repeat: no-repeat
+    background-size: cover
+    position: fixed
+    top: 0
+    right: 0
+
+md-nav-bar
+  md-icon
+    color: rgba(0,0,0,0.54) !important
+    vertical-align: middle
+
+  md-icon + span
+    vertical-align: middle
+
+.md-button._md-nav-button
+  font-weight: 600
+
+.md-nav-item a
+  font-size: 12px
+
+.md-nav-bar
+  height: 40px
+
+.md-button._md-nav-button
+  line-height: 20px
+  padding-top: 10px
+  padding-bottom: 10px
+
+  &.md-active *,
+  &:hover *
+    color: rgba(0,0,0,1) !important
+
+md-nav-bar.md-default-theme md-nav-ink-bar,
+md-nav-bar md-nav-ink-bar
+  color: rgba(0,0,0,1) !important
+  background: rgba(0,0,0,1) !important
+
+
+._md-nav-bar-list
+  justify-content: center
+
+
+// SECONDARY MENU
+.c-navbar--secondary ._md-nav-button
+  text-transform: none !important
+
+
+// USER NAVIGATION
+.c-navbar--employee ._md-nav-bar-list
+  justify-content: flex-end
+
+
+// FOR ADMINS HIDE EMPLOYEE NAVIGATION
+.view-admin .c-navbar--employee
+  display: none !important
+
+
+// FOR EMPLOYEES HIDE ADMIN NAVIGATION
+.view-user .c-navbar--admin
+  display: none !important

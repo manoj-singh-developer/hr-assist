@@ -1,0 +1,128 @@
+<md-card class="employee-profile"> <!-- Skill details -->
+
+<md-card-title>
+  <md-card-title-text>
+    <span class="md-headline">Skill Details</span>
+  </md-card-title-text>
+</md-card-title>
+
+  <md-content
+    class="md-padding"
+    class="c-card-profile">
+
+    <section
+      layout-gt-xs="column"
+      layout-align="start left"
+      class="md-padding section-group">
+
+      <div class="md-list-item-text">
+        Name: {{ skillDetails.viewObject[0].name }}
+      </div>
+      <div class="md-list-item-text">
+        Description: {{ skillDetails.viewObject[0].label }}
+      </div>
+      <div class="md-list-item-text">
+        Created At: {{ skillDetails.viewObject[0].createdAt | date:"longDate" }}
+      </div>
+      <div class="md-list-item-text">
+        Updated At: {{ skillDetails.viewObject[0].updatedAt | date:"longDate" }}
+      </div>
+
+    </section>
+
+  </md-content>
+
+</md-card><!-- /Skill details -->
+
+
+
+
+<md-card class="employee-profile"> <!-- Employee list -->
+
+  <md-card-title>
+         <md-card-title-text>
+           <span class="md-headline">Employees with this skill</span>
+         </md-card-title-text>
+  </md-card-title>
+
+  <md-content
+    class="md-padding">
+
+    <section
+      layout-gt-xs="column"
+      layout-align="start left"
+      class="md-padding section-group">
+
+      <div class="md-list-item-text"
+      ng-repeat="employee in skillDetails.employees">
+       {{$index+1}}. {{employee.firstName}} {{employee.lastName}}
+      </div>
+
+    </section>
+
+  </md-content>
+
+</md-card></br> <!-- /Employee list -->
+
+
+
+
+<md-card class="employee-profile"> <!-- Candidate list -->
+
+  <md-card-title>
+         <md-card-title-text>
+           <span class="md-headline">Candidates with this skill</span>
+         </md-card-title-text>
+  </md-card-title>
+
+  <md-content
+    class="md-padding">
+
+    <section
+      layout-gt-xs="column"
+      layout-align="start left"
+      class="md-padding section-group">
+
+      <div class="md-list-item-text"
+      ng-repeat="candidate in skillDetails.candidates">
+       {{$index+1}}. {{candidate.firstName}} {{candidate.lastName}}
+      </div>
+
+    </section>
+
+  </md-content>
+
+</md-card></br> <!-- /Candidate list -->
+
+
+
+
+<md-card class="employee-profile"> <!-- Project list -->
+
+  <md-card-title>
+         <md-card-title-text>
+           <span class="md-headline">Projects with this skill</span>
+         </md-card-title-text>
+  </md-card-title>
+
+  <md-content
+    class="md-padding">
+
+    <section
+      layout-gt-xs="column"
+      layout-align="start left"
+      class="md-padding section-group">
+
+      <div class="md-list-item-text"
+      ng-repeat="project in skillDetails.projects track by $index">
+       {{$index+1}}. {{project}}
+      </div>
+
+    </section>
+
+  </md-content>
+
+</md-card> <!-- /Project list -->
+
+
+

@@ -1,0 +1,72 @@
+"card_general{
+  picture: {
+    type: 'string'
+  },
+  firstName: {
+    type: 'string',
+    required: true
+  },
+  middleName: {
+    type: 'string'
+  },
+  lastName: {
+    type: 'string'
+  },
+  address: {
+    type: 'json'
+  },
+  phone: {
+    type: 'string',
+    unique: true
+  },
+  emailAssist: {
+    type: 'email',
+    unique: true
+  },
+  emailOther: {
+    type: 'email',
+    unique: true
+  },
+  urgentContact: {
+    type: 'json'
+  },
+}
+
+
+"card_skills
+
+"card_schedule
+
+"card_languages
+
+"card_education
+  diplomas
+
+
+"card_holidays
+
+
+"card_projects
+
+
+"card_equipments
+
+"coursesAndCertifications
+
+
+
+
+
+"card_job {
+  jobTitle: {
+      type: 'stirng'
+    },
+    dateOfEmployment: {
+      type: 'date'
+    },
+    department: {
+      collection: 'department',
+      via: 'employee',
+      dominantn: true
+    },
+}

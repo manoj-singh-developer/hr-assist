@@ -1,0 +1,184 @@
+<section layout="column" md-whiteframe='6'>
+
+
+
+
+  <!-- TITLE -->
+  <md-toolbar
+    class="md-table-toolbar md-default"
+    layout="row"
+    layout-align="space-between center">
+
+    <div class="md-toolbar-tools">
+
+      <div class="md-title">Equipments</div>
+
+      <div flex="" class="flex"></div>
+
+      <div layout="row" layout-align="right">
+
+        <md-button
+          md-no-ink
+          class="md-primary"
+          ng-click="listEq.showAddForm()">
+          Add Equipment
+        </md-button>
+
+        <md-button
+          md-no-ink
+          class="md-primary"
+          ng-click="listEq.addFromJson($event)">
+          Add Equipments from JSON
+        </md-button>
+
+        <md-button
+          md-no-ink
+          class="md-primary"
+          ng-click="listEq.multipleDelete()">
+          Multiple Delete
+        </md-button>
+      </div>
+
+    </div>
+
+  </md-toolbar><!-- /TITLE -->
+
+
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+  <!-- AUTOCOMPLETE SEARCH -->
+  <md-content class="md-padding">
+    <form ng-submit="$event.preventDefault()">
+      <md-autocomplete
+        ng-disabled="listEq.isDisabled"
+        ng-model="listEq.searchText"
+        md-selected-item="listEq.selectedItem"
+        md-search-text-change="listEq.searchTextChange(listEq.searchText)"
+        md-search-text="listEq.searchText"
+        md-selected-item-change="listEq.selectedItemChange(item)"
+        md-items="item in listEq.querySearch(listEq.searchText)"
+        md-item-text="item.name"
+        md-min-length="0"
+        placeholder="Search for an equipment">
+
+        <md-item-template>
+          <span class="item-metadata">
+            {{item.name}}
+          </span>
+        </md-item-template>
+
+      </md-autocomplete>
+    </form>
+  </md-content><!-- /AUTOCOMPLETE SEARCH -->
+
+
+
+  <!-- SELECTED ROWS -->
+  <md-toolbar
+    class="md-table-toolbar alternate"
+    ng-show="listEq.table.options.rowSelection && listEq.table.selected.length">
+    <div class="md-toolbar-tools">
+      <span>
+        {{listEq.table.selected.length}} {{listEq.table.selected.length > 1 ? 'equipments' : 'equipment'}} selected
+      </span>
+    </div>
+  </md-toolbar><!-- /SELECTED ROWS -->
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+
+
+
+  <!-- TABLE EQUIPMENTS -->
+  <md-table-container>
+    <table
+      class="c-table--actions"
+      md-table
+      md-progress="promise"
+      md-row-select="listEq.table.options.rowSelection"
+      multiple="{{listEq.table.options.multiSelect}}"
+      ng-model="listEq.table.selected">
+
+      <thead
+        ng-if="!listEq.table.options.decapitate"
+        md-head
+        md-order="listEq.query.order">
+        <tr md-row>
+          <th md-column md-order-by="name">Full Name</th>
+          <th md-column >Description</th>
+          <th md-column>Total Quantity</th>
+          <!-- <th md-column>Used</th> -->
+          <th md-column>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody md-body>
+        <tr
+          md-select="equipments"
+          md-auto-select ="listEq.table.options.autoSelect"
+          md-row
+          md-on-select="logItem"
+          ng-repeat="equipments in listEq.equipmentsList | filter:listEq.searchText | orderBy: listEq.query.order | limitTo: listEq.table.query.limit : (listEq.table.query.page - 1) * listEq.table.query.limit" >
+          <td md-cell>{{equipments.name}}</td>
+          <td md-cell>{{equipments.description | limitTo: 40}}</td>
+          <td md-cell>{{equipments.total}}</td>
+          <!--  <td md-cell>{{equipments.used}}</td> -->
+          <td md-cell>
+
+          <md-button
+            class="md-icon-button md-primary"
+            label="View Equipments"
+            aria-label="View Equipments"
+            ui-sref="equipmentsParent.details({id: equipments.id})">
+            <md-icon class="material-icons">visibility</md-icon>
+            <md-tooltip md-autohide="true">
+              View Equipments
+            </md-tooltip>
+          </md-button>
+
+          <md-button
+            class="md-icon-button md-primary"
+            label="Edit equipment"
+            aria-label="Edit equipment"
+            ng-click="listEq.editRow(equipments.id)">
+            <md-icon class="material-icons">create</md-icon>
+            <md-tooltip md-autohide="true">
+              Edit equipment
+            </md-tooltip>
+          </md-button>
+
+          <md-button
+            class="md-icon-button md-warn"
+            label="Remove equipment"
+            aria-label="Remove equipment"
+            ng-click="listEq.remove(equipments.id, $event, equipments.name)">
+            <md-icon class="material-icons">delete</md-icon>
+            <md-tooltip md-autohide="true">
+              Remove equipment
+            </md-tooltip>
+          </md-button>
+
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </md-table-container><!-- /TABLE EQUIPMENTS -->
+
+
+
+  <!-- TABLE PAGINATION -->
+  <md-table-pagination
+    md-limit="listEq.table.query.limit"
+    md-limit-options="listEq.table.limitOptions"
+    md-page="listEq.table.query.page"
+    md-total="{{listEq.equipmentsList.length}}"
+    md-page-select="listEq.table.options.pageSelect"
+    md-boundary-links="listEq.table.options.boundaryLinks">
+  </md-table-pagination><!-- /TABLE PAGINATION -->
+
+
+
+
+</section>
