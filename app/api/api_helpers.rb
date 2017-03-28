@@ -1,62 +1,50 @@
 module APIHelpers
-
-
   #Finds or create user by email
-  def createUser(result)
-
-    user = User.find_or_create_by(email: self.getParam(result.first.mail)) do |user|
-      user.first_name = self.getParam(result.first.givenName)
-      user.last_name  = self.getParam(result.first.sn)
-      user.uid        = self.getParam(result.first.uidNumber)
+  def create_user(ldap_info)
+    user = User.find_or_create_by(email: ldap_info.mail.first) do |user|
+      user.first_name = ldap_info.givenName.first
+      user.last_name  = ldap_info.sn.first
+      user.uid        = ldap_info.uidNumber.first
       user.skip_password_validation = true
-      user.roles << Role.find_by_name("employee") #default role -> employee
     end
+
+    user.roles << Role.find_by_name("employee") #default role -> employee
     user.ensure_authentication_token
     user.save
     data = {:user_id => user.id, :role_id => user.roles.first.id , :token => user.auth_token}
     user.auth_token = JWT.encode(data, Rails.application.secrets.secret_key_base)
 
     success user: user
-
   end
 
-  def getParam(data)
-    data[0].chomp('"')
-  end
-
-  def getOption key
+  def get_option key
     AppSetting::where(key: key).first[:value]
   end
 
   def decrypt var
     ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base).decrypt_and_verify(var) unless (var) == ""
   end
-  
+
   def ldap_login
-
-      email = params[:email]
-      password = params[:password]
-      env = Rails.env
-
-      ldap = Net::LDAP.new(:host => getOption("ldap_host"),
-                           :port => getOption("ldap_port"),
-                           :auth => {
-                              :method => :simple,
-                              :username => getOption("ldap_account"),
-                              :password => decrypt(getOption("ldap_password"))
-                                })
-      result = ldap.bind_as(
-        :base => "dc=test,dc=com",
-        :filter => "(mail=#{email})",
-        :password => password
-      )
-
+    email = params[:email]
+    password = params[:password]
+    env = Rails.env
+    ldap = Net::LDAP.new(:host => get_option("ldap_host"),
+                         :port => get_option("ldap_port"),
+                         :auth => {
+                            :method => :simple,
+                            :username => get_option("ldap_account"),
+                            :password => decrypt(get_option("ldap_password"))
+                              })
+    result = ldap.bind_as(
+      :base => "dc=test,dc=com",
+      :filter => "(mail=#{email})",
+      :password => password
+    )
   end
 
   def getPaginatedItemsFor model, relations = nil
-
     items = model.all.includes(relations).page(params[:page]).per(params[:per_page])
-
     {
       :items => items.as_json(include: relations),
       :paginate => url_paginate(items, params[:per_page])
@@ -71,9 +59,7 @@ module APIHelpers
   end
 
   def url_paginate(collection, per_page)
-
     @@per_page = per_page
-
     {
       :first => url_for(1),
       :previous => url_for(collection.prev_page),

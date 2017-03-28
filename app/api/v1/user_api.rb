@@ -84,27 +84,28 @@ module V1
         user.schedule ? user.schedule : {message: 'Schedule not found'}
       end
     end
-    
-      desc "User login"
 
-      params do
-        requires :email, type: String
-        requires :password, type: String
-      end
-      post "login" do
-        result = ldap_login
+    desc "User login"
 
-        if result
-          createUser result
-        else
-          error({ message: "Authentication FAILED." })
-        end
-      end
+    params do
+      requires :email, type: String
+      requires :password, type: String
+    end
 
-      desc "Return current user"
-      get "me" do
-        current_user
+    post "login" do
+      result = ldap_login
+
+      if result
+        create_user(result.first)
+      else
+        error({ message: "Authentication FAILED." })
       end
+    end
+
+    desc "Return current user"
+    get "me" do
+      current_user
+    end
   end
 end
 
