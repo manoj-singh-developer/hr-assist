@@ -38,9 +38,12 @@ config/initializers/secret_token.rb
 .rvmrc
 
 # if using bower-rails ignore default bower_components path bower.json files
-bower_components
-node_modules
-hr-assist-front-end/release
+b/ower_components
+/node_modules
+/release
+/dependencies
+/.sass-cache
+/.tmp
 
 *.bowerrc
 bower.json
