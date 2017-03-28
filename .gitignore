@@ -46,7 +46,6 @@ app/assets/hr-assist-front-end/release
 /.tmp
 
 *.bowerrc
-bower.json
 
 # Ignore pow environment settings
 .powenv
