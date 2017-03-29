@@ -1,10 +1,7 @@
 # Frontend SPA with angular 1
 
 #Install
+- use node bigger than 7 with NVM
 - npm install
-- gulp install
-- gulp
-
-# TODO
-- NO MORE TASKS ? Look for @!TODO in source files
-- Or look in TODO file for a TODO list
+- bower install
+- run gulp
