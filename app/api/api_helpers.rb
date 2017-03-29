@@ -8,7 +8,7 @@ module APIHelpers
       user.skip_password_validation = true
     end
 
-    user.roles << Role.find_by_name("employee") #default role -> employee
+    user.roles << Role.find_by_name("employee") if user.roles.empty?
     user.ensure_authentication_token
     user.save
     data = {:user_id => user.id, :role_id => user.roles.first.id , :token => user.auth_token}
