@@ -147,7 +147,8 @@
           break;
 
         case 'customers':
-          appUrl = apiUrl + "/customer";
+          appUrl = apiUrl + "/customers";
+          extraTypeUrl = "customers";
           break;
 
         default:

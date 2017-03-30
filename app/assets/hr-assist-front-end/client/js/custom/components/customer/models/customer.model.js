@@ -102,12 +102,12 @@
     // ------------------------------------------------------------------------
 
     function getAllCustomers() {
-      url = apiUrl + "/customer";
+      url = apiUrl + "/customers";
       return $resource(url).query();
     }
 
     function saveCustomer(data) {
-      url = apiUrl + "/customer";
+      url = apiUrl + "/customers";
       return $resource(url, data, {
         'save': {
           method: 'POST',
@@ -122,7 +122,7 @@
     }
 
     function removeCustomer(customer) {
-      url = apiUrl + "/customer";
+      url = apiUrl + "/customers";
       return $resource(url).delete(customer);
     }
 
