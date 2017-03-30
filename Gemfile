@@ -68,4 +68,4 @@ gem 'grape-swagger-rails'
 gem 'grape-swagger'
 gem 'activeadmin', github: 'activeadmin'
 
-gem 'jwt'
+gem 'jwt', '>= 1.5.6'
