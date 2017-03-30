@@ -41,9 +41,9 @@
       var processed = [];
 
       function promise(resolve, reject) {
-        getAllIndustries().$promise.then(
+        getAllIndustries().then(
           function(data) {
-            raw = data;
+            raw = data.items;
             angular.forEach(raw, function(item, index) {
               processed.push(Industries.create(item));
             });
@@ -105,12 +105,14 @@
     // ------------------------------------------------------------------------
 
     function getAllIndustries() {
-      url = apiUrl + "/industry";
-      return $resource(url).query();
+      url = apiUrl + "/industries";
+
+      var item = $resource(url).get();
+      return item.$promise;
     }
 
     function saveIndustry(data) {
-      url = apiUrl + "/industry";
+      url = apiUrl + "/industries";
       return $resource(url, data, {
         'save': {
           method: 'POST',
@@ -125,7 +127,7 @@
     }
 
     function removeIndustry(industry) {
-      url = apiUrl + "/industry";
+      url = apiUrl + "/industries";
       return $resource(url).delete(industry);
     }
 

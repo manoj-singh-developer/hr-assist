@@ -40,11 +40,12 @@
       var processed = [];
 
       function promise(resolve, reject) {
-        getAllCustomers().$promise.then(
-          function(data) {
-            raw = data;
-            angular.forEach(raw, function(item, index) {
-              processed.push(customerModel.create(item));
+        getAllCustomers()
+            .then(function(data) {
+                // console.log(data.items);
+                raw = data.items;
+                angular.forEach(raw, function(item, index) {
+                processed.push(customerModel.create(item));
             });
             return resolve(processed);
           },
@@ -102,12 +103,14 @@
     // ------------------------------------------------------------------------
 
     function getAllCustomers() {
-      url = apiUrl + "/customer";
-      return $resource(url).query();
+      url = apiUrl + "/customers";
+
+      var item = $resource(url).get();
+      return item.$promise;
     }
 
     function saveCustomer(data) {
-      url = apiUrl + "/customer";
+      url = apiUrl + "/customers";
       return $resource(url, data, {
         'save': {
           method: 'POST',
@@ -122,7 +125,7 @@
     }
 
     function removeCustomer(customer) {
-      url = apiUrl + "/customer";
+      url = apiUrl + "/customers";
       return $resource(url).delete(customer);
     }
 

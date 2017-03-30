@@ -28,10 +28,10 @@
     // ------------------------------------------------------------------------
     Extra.getAllExtra = function(extraType) {
       function promise(resolve, reject) {
-        getAllExtra(extraType).$promise.then(
+        getAllExtra(extraType).then(
           function(data) {
 
-            return resolve(data);
+            return resolve(data.items);
           },
           function(error) {
             return reject(error);
@@ -100,7 +100,9 @@
     // ------------------------------------------------------------------------
     function getAllExtra(extraType) {
       url = getURL(extraType);
-      return $resource(url).query();
+
+      var item = $resource(url).get();
+      return item.$promise;
     }
 
     function save(data, extraType) {
@@ -132,7 +134,7 @@
         data, {
           'save': {
             method: 'POST',
-            isArray: true
+            isArray: false
           }
         }).save(data);
     }
@@ -142,15 +144,15 @@
 
       switch (extraType) {
         case 'industries':
-          appUrl = apiUrl + "/industry";
+          appUrl = apiUrl + "/industries";
           break;
 
         case 'appTypes':
-          appUrl = apiUrl + "/applicationtype";
+          appUrl = apiUrl + "/applications_type";
           break;
 
         case 'customers':
-          appUrl = apiUrl + "/customer";
+          appUrl = apiUrl + "/customeres";
           break;
 
         default:
