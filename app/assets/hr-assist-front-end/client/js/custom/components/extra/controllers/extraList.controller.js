@@ -68,7 +68,6 @@
     $scope.$on('event:extraListChanged', function(event, args) {
       var extra = args[1];
       var extraIndex = '';
-      extra.id = vm.extraList.length+1;
       switch (args[0]) {
         case 'save':
           if (!vm.extraList) {

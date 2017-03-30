@@ -34,7 +34,7 @@
       function promise(resolve, reject) {
         getProjectData().$promise.then(
           function(data) {
-            raw = data.items;
+            raw = data;
             angular.forEach(raw, function(item, index) {
               processed.push(applicationType.create(item));
 

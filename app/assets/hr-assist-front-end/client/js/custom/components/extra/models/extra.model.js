@@ -30,7 +30,7 @@
       function promise(resolve, reject) {
         getAllExtra(extraType).$promise.then(
           function(data) {
-            return resolve(data.items);
+            return resolve(data);
           },
           function(error) {
             return reject(error);
@@ -58,7 +58,7 @@
       function promise(resolve, reject) {
         updateExtra(data, extraType).$promise.then(
           function(data) {
-            return resolve(data);
+            //return resolve(data);
           },
           function(error) {
             return reject(error);
@@ -99,7 +99,7 @@
     // ------------------------------------------------------------------------
     function getAllExtra(extraType) {
       url = getURL(extraType);
-      return $resource(url,{'query':{method:'GET',isArray:false}}).get();
+      return $resource(url,{'query':{method:'GET',isArray:true}}).get();
     }
 
     function save(data, extraType) {

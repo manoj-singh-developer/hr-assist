@@ -18,7 +18,6 @@
     var extraType = data.extraType;
     vm.extratype = data.extraType;
     vm.extra = data.extra || {};
-    vm.extra1 = {};
 
 
     // Public methods
@@ -53,11 +52,9 @@
     // Private methods
     // ------------------------------------------------------------------------
     function addExtra() {
-      vm.extra1 = vm.extra;
-      console.log(vm.extra1)
       ExtraModel.save(vm.extra, extraType).then(
         function(data) {
-          onSaveSuccess('save', vm.extra1);
+          onSaveSuccess('save', data);
           $rootScope.showToast('Extra added');
         },
         function(error) {
