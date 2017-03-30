@@ -3,5 +3,7 @@
 #Install
 - use node bigger than 7 with NVM
 - npm install
+- sudo npm install -g bower
 - bower install
-- run gulp
+- sudo npm install -g gulp
+- gulp run
