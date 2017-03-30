@@ -2,22 +2,22 @@
 
   'use strict';
 
+
   angular
     .module('HRA')
     .factory('ExtraModel', ExtraModel);
 
   ExtraModel
-    .$inject = ['$q', '$resource', 'skillModel', 'Equipments', 'apiUrl'];
+    .$inject = ['$q', '$resource', 'skillModel', 'Equipments', 'apiUrl', 'updateModel'];
 
-  function ExtraModel($q, $resource, skillModel, Equipments, apiUrl) {
+  function ExtraModel($q, $resource, skillModel, Equipments, apiUrl, updateModel) {
 
     // Constructor
     // ------------------------------------------------------------------------
     function Extra(employee) {}
     var url = '';
     var holidayTransferIndex = 0;
-
-
+    var extraTypeUrl = "";
 
     // Public methods asigned to prototype
     // ------------------------------------------------------------------------
@@ -30,8 +30,7 @@
       function promise(resolve, reject) {
         getAllExtra(extraType).$promise.then(
           function(data) {
-
-            return resolve(data);
+            return resolve(data.items);
           },
           function(error) {
             return reject(error);
@@ -59,7 +58,7 @@
       function promise(resolve, reject) {
         updateExtra(data, extraType).$promise.then(
           function(data) {
-            //resolve(data);
+            return resolve(data);
           },
           function(error) {
             return reject(error);
@@ -100,29 +99,26 @@
     // ------------------------------------------------------------------------
     function getAllExtra(extraType) {
       url = getURL(extraType);
-      return $resource(url).query();
+      return $resource(url,{'query':{method:'GET',isArray:false}}).get();
     }
 
     function save(data, extraType) {
       url = getURL(extraType);
-      return $resource(url).save(data);
+      var url2 = url + '/new'; 
+      return $resource(url2,data).save(data);
     }
 
     function updateExtra(data, extraType) {
       url = getURL(extraType);
       var url2 = url + '/' + data.id;
-      return $resource(url2,
-        data, {
-          'update': {
-            method: 'PUT'
-          }
-        }).save();
+      return updateModel.update({path:extraTypeUrl,id:data.id},data);
     }
 
     function removeExtra(id, extraType) {
 
       url = getURL(extraType);
-      return $resource(url).delete(id);
+      var url2 = url + "/" + id.id;
+      return $resource(url2).delete(id);
     }
 
     function saveFromJson(data, extraType) {
@@ -146,7 +142,8 @@
           break;
 
         case 'appTypes':
-          appUrl = apiUrl + "/applicationtype";
+          appUrl = apiUrl + "/application_types";
+          extraTypeUrl = "application_types";
           break;
 
         case 'customers':

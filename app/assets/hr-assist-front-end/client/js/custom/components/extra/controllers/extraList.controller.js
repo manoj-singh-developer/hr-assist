@@ -68,6 +68,7 @@
     $scope.$on('event:extraListChanged', function(event, args) {
       var extra = args[1];
       var extraIndex = '';
+      extra.id = vm.extraList.length+1;
       switch (args[0]) {
         case 'save':
           if (!vm.extraList) {
@@ -158,7 +159,7 @@
       appType.getAll().then(function(data) {
         vm.appType = data;
         return autocompleteService.buildList(vm.appType, ['name']);
-      }, function(err) {})
+      }, function(err) {});
       Industries.getAllIndustries().then(function(data) {
         vm.industryes = data;
         return autocompleteService.buildList(vm.industryes, ['name']);
@@ -172,7 +173,7 @@
         vm.techs = res;
         autocompleteService.buildList(vm.skillList, ['name']);
       }, function(res) {
-        $rootScope.showToast('Error on loading data! Please refresh!');
+        $rootScope.showToast('Error on loading data! Please refresh! ');
       });
     }
 
