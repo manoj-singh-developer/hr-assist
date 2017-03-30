@@ -6,4 +6,5 @@
 - sudo npm install -g bower
 - bower install
 - sudo npm install -g gulp
-- gulp run
+- sudo npm install -g gulp-cli
+- gulp default
