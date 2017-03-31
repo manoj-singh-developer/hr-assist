@@ -240,7 +240,7 @@ const rootTemplatePath = './views/custom/';
       // @EQUIPMENTS
       .state('equipmentsParent', {
         url: '/equipments',
-        templateUrl: rootTemplatePath + 'components/equipments/views/equipmentParentView.html',
+        templateUrl: rootTemplatePath + 'components/equipments/views/equipmentParent.view.html',
         data: {
           permissions: {
             only: ['ADMIN'],

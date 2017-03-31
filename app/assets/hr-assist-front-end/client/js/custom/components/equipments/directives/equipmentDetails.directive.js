@@ -14,7 +14,7 @@
     return {
       restrict: 'EA',
       controller: 'equipmentDetailsController',
-      templateUrl: rootTemplatePath + 'components/equipments/views/equipmentDetails.html'
+      templateUrl: rootTemplatePath + 'components/equipments/views/equipmentDetails.view.html'
     }
   }
 }());

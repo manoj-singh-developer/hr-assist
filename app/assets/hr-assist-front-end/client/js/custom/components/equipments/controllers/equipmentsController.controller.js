@@ -71,7 +71,7 @@
 		function showAddForm(data) {
 			$mdDialog
 				.show({
-					templateUrl: rootTemplatePath + '/components/equipments/views/equipmentsAdd.html',
+					templateUrl: rootTemplatePath + '/components/equipments/views/equipmentsAdd.view.html',
 					controller: 'equipmentsAdd',
 					clickOutsideToClose: true,
 					data: {}
@@ -119,7 +119,7 @@
 			})[0] || {};
 
 			$mdDialog.show({
-				templateUrl: rootTemplatePath + '/components/equipments/views/equipmentsAdd.html',
+				templateUrl: rootTemplatePath + '/components/equipments/views/equipmentsAdd.view.html',
 				controller: 'equipmentsAdd',
 				clickOutsideToClose: true,
 				data: {
@@ -169,7 +169,7 @@
 
 			$mdDialog.show({
 				parent: angular.element(document.body),
-				templateUrl: rootTemplatePath + '/components/equipments/views/equipmentsFromJson.html',
+				templateUrl: rootTemplatePath + '/components/equipments/views/equipmentsFromJson.view.html',
 				controller: 'equipmentsAddFromJson',
 				targetEvent: event,
 				clickOutsideToClose: true,

@@ -42,7 +42,7 @@
       function promise(resolve, reject) {
         getAllEquipments().$promise.then(
           function(data) {
-            raw = data;
+            raw = data.items;
             angular.forEach(raw, function(item, index) {
               processed.push(Equipments.create(item));
             });
@@ -140,17 +140,23 @@
     // ------------------------------------------------------------------------
 
     function getAllEquipments() {
-      url = apiUrl + "/equipment";
-      return $resource(url).query();
+      url = apiUrl + "/devices";
+      
+      return $resource(url, {
+        'query': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
     }
 
     function saveEquipments(data) {
-      url = apiUrl + "/equipment";
+      url = apiUrl + "/devices/new";
       return $resource(url).save(data);
     }
 
     function updateEquipments(equipmentToUpdate) {
-      url = apiUrl + "/equipment/" + equipmentToUpdate.id;
+      url = apiUrl + "/devices/" + equipmentToUpdate.id;
       return $resource(url,
         equipmentToUpdate, {
           'update': {
@@ -160,7 +166,7 @@
     }
 
     function saveFromJson(data) {
-      url = apiUrl + "/equipment";
+      url = apiUrl + "/devices";
       return $resource(url,
         data, {
           'save': {
@@ -172,12 +178,12 @@
 
     function removeEquipments(equipmentToRemove) {
       console.log(equipmentToRemove);
-      url = apiUrl + "/equipment";
+      url = apiUrl + "/devices";
       return $resource(url).delete(equipmentToRemove);
     }
 
     function getEquipmentsById(id) {
-      url = apiUrl + "/equipment/" + id;
+      url = apiUrl + "/devices/" + id;
       return $resource(url).get();
     }
 
