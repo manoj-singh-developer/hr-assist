@@ -209,10 +209,6 @@
           isArray: false
         }
       }).get();
-
-
-
-      // return $resource(url).query();
     }
 
     function getEmployeeById(id, candidate) {

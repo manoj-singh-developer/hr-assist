@@ -30,9 +30,9 @@ function autocompleteService() {
     var index = 0;
     var myList = [];
 
-    if(list.length > 0) {
-      myList = list;
+    if(list.length) {
       console.log("The list provided is empty");
+      return myList = list;
     } 
 
     return myList.map(function(item) {

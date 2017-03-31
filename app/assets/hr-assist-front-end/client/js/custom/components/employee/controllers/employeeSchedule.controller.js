@@ -281,12 +281,8 @@
         vm.copyCatWednesday = angular.copy(vm.selectedSchedualeWednesday);
         vm.copyCatThursday = angular.copy(vm.selectedSchedualeThursday);
         vm.copyCatFriday = angular.copy(vm.selectedSchedualeFriday);
-        debugger
 
         console.log("'vm.employee.schedule'"+" empty");
-
-        // vm.selectedSchedualeMonday undefined
-
 
         for (var j = 0; j < vm.selectedSchedualeMonday.length; j++) {
           $(".monday").find('li').each(function() {
