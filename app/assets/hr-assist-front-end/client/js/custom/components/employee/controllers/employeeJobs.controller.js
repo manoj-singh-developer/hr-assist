@@ -66,7 +66,9 @@
     });
 
     $rootScope.$on('event:employeeResourcesLoaded', function(event, employeeResources) {
-      setAllSkills(employeeResources.skills);
+      if (employeeResources.skills) {
+        setAllSkills(employeeResources.skills);
+      }
     });
 
     $scope.$on('$destroy', function() {

@@ -269,7 +269,7 @@
 
     function updateSchaduale() {
 
-      if (vm.employee.schedule !== "" && vm.employee.schedule !== undefined && vm.employee.schedule !== null) {
+      if (vm.employee.schedule !== "" && vm.employee.schedule !== undefined && vm.employee.schedule !== null && vm.employee.schedule.length!=0) {
         vm.selectedSchedualeMonday = vm.employee.schedule.monday;
         vm.selectedSchedualeTuesday = vm.employee.schedule.tuesday;
         vm.selectedSchedualeWednesday = vm.employee.schedule.wednesday;
@@ -281,6 +281,12 @@
         vm.copyCatWednesday = angular.copy(vm.selectedSchedualeWednesday);
         vm.copyCatThursday = angular.copy(vm.selectedSchedualeThursday);
         vm.copyCatFriday = angular.copy(vm.selectedSchedualeFriday);
+        debugger
+
+        console.log("'vm.employee.schedule'"+" empty");
+
+        // vm.selectedSchedualeMonday undefined
+
 
         for (var j = 0; j < vm.selectedSchedualeMonday.length; j++) {
           $(".monday").find('li').each(function() {

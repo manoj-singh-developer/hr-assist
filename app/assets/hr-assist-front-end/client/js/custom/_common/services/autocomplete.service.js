@@ -28,13 +28,22 @@ function autocompleteService() {
   //  Build `components` list of key/value pairs
   function buildList(list, attributes) {
     var index = 0;
-    return list.map(function(item) {
+    var myList = [];
+
+    if(list.length > 0) {
+      myList = list;
+      console.log("The list provided is empty");
+    } 
+
+    return myList.map(function(item) {
       item.autoCompleteVal = '';
       for (index = 0; index < attributes.length; index++) {
         if (index !== 0) {
-          item.autoCompleteVal = item.autoCompleteVal + ' ' + item[attributes[index]].toLowerCase();
+          // item.autoCompleteVal = item.autoCompleteVal + ' ' + item[attributes[index]].toLowerCase(); crapa la valorile undefined   
+          item.autoCompleteVal = item.autoCompleteVal + ' ' + item[attributes[index]];
         } else {
-          item.autoCompleteVal = item.autoCompleteVal + item[attributes[index]].toLowerCase();
+          // item.autoCompleteVal = item.autoCompleteVal + item[attributes[index]].toLowerCase(); crapa la valorile undefined   
+          item.autoCompleteVal = item.autoCompleteVal + item[attributes[index]];
         }
       }
 

@@ -125,7 +125,7 @@
     }
 
     function getEquipments() {
-      Equipments.list()
+      Device.list()
         .then(function(res) {
           vm.equipmentsList = res;
           updateAutocompleteEquipments(vm.equipmentsList);

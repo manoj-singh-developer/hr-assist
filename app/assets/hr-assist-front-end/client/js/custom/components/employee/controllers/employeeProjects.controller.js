@@ -90,7 +90,10 @@
     $rootScope.$on('event:employeeResourcesLoaded', function(event, employeeResources, employee) {
 
       vm.employee = employee;
-      setAllProjects(employeeResources.projects);
+
+      if (employeeResources.projects) {
+        setAllProjects(employeeResources.projects);
+      }
       setAllSkills(employeeResources.skills);
 
     });
@@ -201,8 +204,8 @@
     // ----------------------------------------------------------------------
 
     function setAllProjects(projects) {
-      vm.allProjects = projects;
-
+      vm.allProjects = projects; // undefined projects
+      // debugger
       return autocompleteService.buildList(vm.allProjects, ['name']);
 
     }
