@@ -45,12 +45,12 @@
       var processed = [];
 
       function promise(resolve, reject) {
-        getAllProjects().$promise.then(function(data) {
-          raw = data;
+        getAllProjects().then(function(data) {
+          raw = data.items;
           Employee.getAll().then(function(data) {
             angular.forEach(raw, function(item, index) {
-              employees = data;
-              if (item.employees[0] === '') {
+              employees = data.items;
+              if (item === '') {
                 item.employees = [];
               }
               processed.push(Project.create(item));
@@ -232,7 +232,9 @@
     // ------------------------------------------------------------------------
     function getAllProjects() {
       url = apiUrl + "/projects";
-      return $resource(url).query();
+
+      var item = $resource(url).get();
+      return item.$promise;
     }
 
     function getCustomers() {

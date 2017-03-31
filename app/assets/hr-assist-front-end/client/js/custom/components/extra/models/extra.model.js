@@ -45,7 +45,7 @@
       function promise(resolve, reject) {
         save(data, extraType).$promise.then(
           function(data) {
-              // $state.reload();
+              $state.reload();
               return resolve(data);
           },
           function(error) {
@@ -203,7 +203,7 @@
           break;
 
         case 'customers':
-          appUrl = apiUrl + "/customeres";
+          appUrl = apiUrl + "/customers";
           break;
 
         default:

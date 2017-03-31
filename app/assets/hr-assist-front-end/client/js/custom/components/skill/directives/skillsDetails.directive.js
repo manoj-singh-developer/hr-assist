@@ -8,9 +8,9 @@
   // ------------------------------------------------------------------------
   angular
     .module('HRA')
-    .directive('hraSkillDetails', hraSkillDetails);
+    .directive('hraSkillDetailsBis', hraSkillDetailsBis);
 
-  function hraSkillDetails() {
+  function hraSkillDetailsBis() {
     return {
       restrict: 'EA',
       scope: {},
@@ -80,17 +80,17 @@
     }
 
     function getStatistics() {
-      if (vm.viewObject[0].employees.length > 0)
-        vm.employees = vm.viewObject[0].employees;
+        if(vm.viewObject.length > 0)
+            vm.employees = vm.viewObject[0];
 
-      if (vm.viewObject[0].candidates.length > 0)
-        vm.candidates = vm.viewObject[0].candidates;
+        if(vm.viewObject.length > 0)
+            vm.candidates = vm.viewObject[0];
 
-      for (var i = 0; i < vm.allProjects.length; i++) {
-        for (var j = 0; j < vm.allProjects[i].technologies.length; j++)
-          if (vm.allProjects[i].technologies[j] === vm.viewObject[0].label)
-            vm.projects.push(vm.allProjects[i].name);
-      }
+        for(var i = 0; i < vm.allProjects.length; i++){
+            for(var j = 0; j< vm.allProjects[i].technologies.length; j++)
+                if(vm.allProjects[i].technologies[j] === vm.viewObject[0].label)
+                    vm.projects.push(vm.allProjects[i].name);
+        }
     }
 
     vm.getSkills();

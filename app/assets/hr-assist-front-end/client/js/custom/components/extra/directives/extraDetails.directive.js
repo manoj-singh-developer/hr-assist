@@ -16,7 +16,7 @@
       scope: {},
       controller: 'skillDetailsController',
       controllerAs: 'skillDetails',
-      templateUrl: rootTemplatePath + '/components/skill/views/skillDetails.view.html'
+      templateUrl: rootTemplatePath + '/components/skill/views/skillDetails1.view.html'
     };
   }
 
@@ -58,6 +58,7 @@
     function getSkills() {
       skillModel.getAll().then(
         function(res) {
+            console.log(res);
           vm.viewObject = res.filter(function(obj) {
             return obj.id == ids;
           });
@@ -80,11 +81,11 @@
     }
 
     function getStatistics(){      
-      if(vm.viewObject[0].employees.length > 0)
-        vm.employees = vm.viewObject[0].employees;
+      if(vm.viewObject.length > 0)
+        vm.employees = vm.viewObject[0];
 
-      if(vm.viewObject[0].candidates.length > 0)
-        vm.candidates = vm.viewObject[0].candidates;
+      if(vm.viewObject.length > 0)
+        vm.candidates = vm.viewObject[0];
 
       for(var i = 0; i < vm.allProjects.length; i++){
           for(var j = 0; j< vm.allProjects[i].technologies.length; j++)
