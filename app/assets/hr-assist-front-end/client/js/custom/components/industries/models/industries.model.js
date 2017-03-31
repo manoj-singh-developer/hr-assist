@@ -112,7 +112,7 @@
     }
 
     function saveIndustry(data) {
-      url = apiUrl + "/industries";
+      url = apiUrl + "/industries/new";
       return $resource(url, data, {
         'save': {
           method: 'POST',

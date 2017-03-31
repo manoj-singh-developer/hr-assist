@@ -441,6 +441,13 @@ const rootTemplatePath = './views/custom/';
         }
       });
 
+      if (/*@cc_on!@*/false || !!document.documentMode) {
+          var $common = $httpProvider.defaults.headers.common;
+          $common['Cache-Control'] = 'no-cache';
+          $common.Pragma = 'no-cache';
+          $common['If-Modified-Since'] = '0';
+      }
+
   }
 
   // ------------------------------------------------------------------------
