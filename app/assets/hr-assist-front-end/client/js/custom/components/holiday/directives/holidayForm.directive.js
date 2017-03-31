@@ -462,7 +462,7 @@
     //           }
     //         }).then(function(resp) {
     //           $timeout(function() {
-    //             vm.employee.picture = '/images/' + resp.data.file[0].fd.substr(resp.data.file[0].fd.lastIndexOf('/') + 1);
+    //             vm.employee.picture = '/assets/images/' + resp.data.file[0].fd.substr(resp.data.file[0].fd.lastIndexOf('/') + 1);
     //           });
     //         }, null, function(evt) {
     //           var progressPercentage = parseInt(100.0 *
