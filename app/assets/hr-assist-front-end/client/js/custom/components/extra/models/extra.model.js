@@ -45,7 +45,7 @@
       function promise(resolve, reject) {
         save(data, extraType).$promise.then(
           function(data) {
-              $state.reload();
+              // $state.reload();
               return resolve(data);
           },
           function(error) {
@@ -171,15 +171,23 @@
     }
 
     function saveFromJson(data, extraType) {
-      url = getURL(extraType);
 
-      return $resource(url,
-        data, {
-          'save': {
-            method: 'POST',
-            isArray: false
-          }
-        }).save(data);
+        if(extraType === 'industries'){
+
+            url = apiUrl + '/industries/new';
+            return $resource(url).save(data);
+
+        } else {
+            url = getURL(extraType);
+
+            return $resource(url,
+                data, {
+                    'save': {
+                        method: 'POST',
+                        isArray: false
+                    }
+                }).save(data);
+        }
     }
 
     function getURL(extraType) {
