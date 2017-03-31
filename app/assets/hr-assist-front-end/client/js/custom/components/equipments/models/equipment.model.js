@@ -156,13 +156,11 @@
     }
 
     function updateEquipments(data) {
-      console.log(data);
       url = apiUrl + "/devices/" + data.id;
        return $http.put(url, data);
     }
 
     function saveFromJson(data) {
-      console.log(data);
       url = apiUrl + "/devices/new";
       return $resource(url,
         data, {
