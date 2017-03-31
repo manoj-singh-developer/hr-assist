@@ -10,9 +10,9 @@
     .factory('Equipments', equipmentsModel);
 
   equipmentsModel
-    .$inject = ['$resource', '$q', 'apiUrl'];
+    .$inject = ['$resource', '$q', 'apiUrl', '$http'];
 
-  function equipmentsModel($resource, $q, apiUrl) {
+  function equipmentsModel($resource, $q, apiUrl, $http) {
 
     // Constructor
     // ------------------------------------------------------------------------
@@ -107,7 +107,7 @@
       }
 
       function promise(resolve, reject) {
-        updateEquipments(data).$promise.then(
+        updateEquipments(data).then(
           function(data) {
             resolve('User was updated successfuly!');
           },
@@ -141,7 +141,7 @@
 
     function getAllEquipments() {
       url = apiUrl + "/devices";
-      
+
       return $resource(url, {
         'query': {
           method: 'GET',
@@ -155,18 +155,15 @@
       return $resource(url).save(data);
     }
 
-    function updateEquipments(equipmentToUpdate) {
-      url = apiUrl + "/devices/" + equipmentToUpdate.id;
-      return $resource(url,
-        equipmentToUpdate, {
-          'update': {
-            method: 'PUT'
-          }
-        }).save();
+    function updateEquipments(data) {
+      console.log(data);
+      url = apiUrl + "/devices/" + data.id;
+       return $http.put(url, data);
     }
 
     function saveFromJson(data) {
-      url = apiUrl + "/devices";
+      console.log(data);
+      url = apiUrl + "/devices/new";
       return $resource(url,
         data, {
           'save': {
@@ -177,9 +174,8 @@
     }
 
     function removeEquipments(equipmentToRemove) {
-      console.log(equipmentToRemove);
-      url = apiUrl + "/devices";
-      return $resource(url).delete(equipmentToRemove);
+      url = apiUrl + "/devices/"+equipmentToRemove.id;
+      return $resource(url).delete();
     }
 
     function getEquipmentsById(id) {
