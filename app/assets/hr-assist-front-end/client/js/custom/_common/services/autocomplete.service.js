@@ -28,14 +28,13 @@ function autocompleteService() {
   //  Build `components` list of key/value pairs
   function buildList(list, attributes) {
     var index = 0;
-    var myList = [];
 
-    if(list.length) {
+    if(!list.length) {
       console.log("The list provided is empty");
-      return myList = list;
+      return;
     } 
 
-    return myList.map(function(item) {
+    return list.map(function(item) {
       item.autoCompleteVal = '';
       for (index = 0; index < attributes.length; index++) {
         if (index !== 0) {
