@@ -87,7 +87,7 @@
       function promise(resolve, reject) {
         getAllEmployees(candidate).$promise.then(
           function(data) {
-            raw = data;
+            raw = data.items;
 
             angular.forEach(raw, function(item, index) {
               processed.push(Employee.create(item));
@@ -95,7 +95,7 @@
             return resolve(processed);
           },
           function(error) {
-            return reject('Something gone wrong!');
+            return reject('Something gone wrong: ', error);
           });
       }
 
@@ -181,7 +181,7 @@
             return resolve(data);
           },
           function(error) {
-            return reject('Something gone wrong!');
+            return reject('Something gone wrong!', error);
           });
       }
 
@@ -203,7 +203,12 @@
         url = apiUrl + "/users";
       }
 
-      return $resource(url).query();
+      return $resource(url, {
+        'query': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
     }
 
     function getEmployeeById(id, candidate) {
@@ -300,8 +305,15 @@
     }
 
     function getAllLanguages() {
-      url = rootTemplatePath + "/_common/data/languages.json";
-      return $resource(url).query();
+      url = apiUrl + "/languages";
+      
+      return $resource(url, {
+        'query': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
+
     }
 
     return Employee;

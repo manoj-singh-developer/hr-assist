@@ -7,9 +7,9 @@
     .factory('ExtraModel', ExtraModel);
 
   ExtraModel
-    .$inject = ['$q', '$resource', 'skillModel', 'Equipments', 'apiUrl'];
+    .$inject = ['$q', '$resource', 'skillModel', 'Equipments', 'apiUrl', '$http', '$state'];
 
-  function ExtraModel($q, $resource, skillModel, Equipments, apiUrl) {
+  function ExtraModel($q, $resource, skillModel, Equipments, apiUrl, $http, $state) {
 
     // Constructor
     // ------------------------------------------------------------------------
@@ -28,10 +28,10 @@
     // ------------------------------------------------------------------------
     Extra.getAllExtra = function(extraType) {
       function promise(resolve, reject) {
-        getAllExtra(extraType).$promise.then(
+        getAllExtra(extraType).then(
           function(data) {
 
-            return resolve(data);
+            return resolve(data.items);
           },
           function(error) {
             return reject(error);
@@ -45,7 +45,8 @@
       function promise(resolve, reject) {
         save(data, extraType).$promise.then(
           function(data) {
-            return resolve(data);
+              // $state.reload();
+              return resolve(data);
           },
           function(error) {
             return reject(error);
@@ -56,16 +57,34 @@
     };
 
     Extra.update = function(data, extraType) {
-      function promise(resolve, reject) {
-        updateExtra(data, extraType).$promise.then(
-          function(data) {
-            //resolve(data);
-          },
-          function(error) {
-            return reject(error);
-          });
-      }
-      return $q(promise);
+
+        if(extraType === 'industries'){
+
+            function promise(resolve, reject) {
+                updateExtra(data, extraType).then(
+                    function(data) {
+                        resolve(data);
+                    },
+                    function(error) {
+                        return reject(error);
+                    });
+            }
+            return $q(promise);
+
+        } else {
+
+            function promise(resolve, reject) {
+                updateExtra(data, extraType).$promise.then(
+                    function(data) {
+                        resolve(data);
+                    },
+                    function(error) {
+                        return reject(error);
+                    });
+            }
+            return $q(promise);
+
+        }
     };
 
     Extra.remove = function(id, extraType) {
@@ -100,41 +119,75 @@
     // ------------------------------------------------------------------------
     function getAllExtra(extraType) {
       url = getURL(extraType);
-      return $resource(url).query();
+      var item = $resource(url).get();
+      return item.$promise;
     }
 
     function save(data, extraType) {
-      url = getURL(extraType);
-      return $resource(url).save(data);
+
+        if(extraType === 'industries'){
+
+           url = apiUrl + '/industries/new';
+           return $resource(url).save(data);
+        } else {
+
+            url = getURL(extraType);
+            return $resource(url).save(data);
+        }
     }
 
     function updateExtra(data, extraType) {
-      url = getURL(extraType);
-      var url2 = url + '/' + data.id;
-      return $resource(url2,
-        data, {
-          'update': {
-            method: 'PUT'
-          }
-        }).save();
+
+        if(extraType === 'industries'){
+
+            var industriesId = data.id;
+            url = apiUrl + '/industries/' + industriesId;
+
+            return $http.put(url, data);
+        } else {
+
+            url = getURL(extraType);
+            var url2 = url + '/' + data.id;
+            return $resource(url2,
+                data, {
+                    'update': {
+                        method: 'PUT'
+                    }
+                }).save();
+        }
+
     }
 
     function removeExtra(id, extraType) {
 
-      url = getURL(extraType);
-      return $resource(url).delete(id);
+        if(extraType === 'industries'){
+            var industriesId = id.id;
+            url = apiUrl + '/industries/' + industriesId;
+            return $resource(url).delete();
+        } else {
+            url = getURL(extraType);
+            return $resource(url).delete(id);
+        }
     }
 
     function saveFromJson(data, extraType) {
-      url = getURL(extraType);
 
-      return $resource(url,
-        data, {
-          'save': {
-            method: 'POST',
-            isArray: true
-          }
-        }).save(data);
+        if(extraType === 'industries'){
+
+            url = apiUrl + '/industries/new';
+            return $resource(url).save(data);
+
+        } else {
+            url = getURL(extraType);
+
+            return $resource(url,
+                data, {
+                    'save': {
+                        method: 'POST',
+                        isArray: false
+                    }
+                }).save(data);
+        }
     }
 
     function getURL(extraType) {
@@ -142,15 +195,15 @@
 
       switch (extraType) {
         case 'industries':
-          appUrl = apiUrl + "/industry";
+          appUrl = apiUrl + "/industries";
           break;
 
         case 'appTypes':
-          appUrl = apiUrl + "/applicationtype";
+          appUrl = apiUrl + "/applications_type";
           break;
 
         case 'customers':
-          appUrl = apiUrl + "/customer";
+          appUrl = apiUrl + "/customeres";
           break;
 
         default:
