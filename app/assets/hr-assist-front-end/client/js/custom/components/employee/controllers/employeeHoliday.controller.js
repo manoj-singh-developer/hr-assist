@@ -91,10 +91,11 @@
       vm.currentHoliday.employee = employee;
       vm.currentHoliday.employeeId = employee.id;
 
-      setAllProjects(employeeResources.projects);
-      setAllEmployees(employeeResources.employees);
-      setEployeeHolidays(employeeResources.holidays);
-
+      if (employeeResources.projects || employeeResources.employees || employeeResources.holidays) {
+        setAllProjects(employeeResources.projects);
+        setAllEmployees(employeeResources.employees);
+        setEployeeHolidays(employeeResources.holidays);
+      }
     });
 
 

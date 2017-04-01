@@ -91,37 +91,37 @@
       <p class="c-card-profile__info u-clearfix">
         <strong>Birthday: </strong>
         <span class="u-float-right">
-          {{employeeGeneralInfo.employee.birthday | date: 'dd MMMM yyyy'}}
+          {{ employeeGeneralInfo.employee.birthday | date: 'dd MMMM yyyy' }}
         </span>
       </p>
 
       <p class="c-card-profile__info c-card-profile__phone u-clearfix">
         <strong>Phone: </strong>
         <span class="u-float-right">
-          {{employeeGeneralInfo.employee.phone}}
+          {{ employeeGeneralInfo.employee.phone }}
         </span>
       </p>
 
       <p class="c-card-profile__info c-card-profile__email u-clearfix">
         <strong>Other email: </strong>
         <span class="u-float-right">
-          {{employeeGeneralInfo.employee.emailOther}}
+          {{ employeeGeneralInfo.employee.email_other }}
         </span>
       </p>
 
       <p class="c-card-profile__info c-card-profile__address u-clearfix">
         <strong>Address: </strong>
         <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.address.adresa}}
-          {{ employeeGeneralInfo.employee.address.zip }}
-          {{ employeeGeneralInfo.employee.address.city }}
+          {{ employeeGeneralInfo.employee.address }}
+<!--           {{ employeeGeneralInfo.employee.address.zip }}
+          {{ employeeGeneralInfo.employee.address.city }} -->
         </span>
       </p>
 
       <p class="c-card-profile__info u-clearfix">
         <strong>Car's license plate: </strong>
         <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.carPlate }}
+          {{ employeeGeneralInfo.employee.car_plate }}
         </span>
       </p>
 
@@ -133,7 +133,7 @@
         ng-hide="employeeGeneralInfo.candidate">
         <strong>Start date at ASSIST: </strong>
         <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.assistStartDate | date: 'MMMM yyyy' }}
+          {{ employeeGeneralInfo.employee.assist_start_date | date: 'MMMM yyyy' }}
         </span>
       </p>
 
@@ -147,7 +147,7 @@
       <p class="c-card-profile__info c-card-profile__email u-clearfix">
         <strong>ASSIST email: </strong>
          <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.emailAssist }}
+          {{ employeeGeneralInfo.employee.email }}
         </span>
       </p>
 
@@ -181,7 +181,7 @@
       <p class="c-card-profile__info">
         <strong>Urgent Contact Phone: </strong>
         <span class="u-float-right">
-            {{ employeeGeneralInfo.employee.urgentContact.ContactPhone }}
+            {{ employeeGeneralInfo.employee.urgent_contact }}
         </span>
       </p>
 
