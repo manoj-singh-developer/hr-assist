@@ -133,12 +133,12 @@
     // Private methods
     // ------------------------------------------------------------------------
     function getAllHolidays() {
-      url = apiUrl + "/holiday";
+      url = apiUrl + "/holidays";
       return $resource(url).query();
     }
 
     function getHolidayById(id) {
-      url = apiUrl + "/holiday/" + id;
+      url = apiUrl + "/holidays/" + id;
       return $resource(url).get();
     }
 
@@ -165,7 +165,7 @@
         data.teamLeader = data.teamLeader.id;
       }
 
-      url = apiUrl + "/holiday";
+      url = apiUrl + "/holidays";
 
       return $resource(url).save(data);
     }
@@ -173,7 +173,7 @@
 
     function saveFromJson(data) {
 
-      url = apiUrl + "/holiday";
+      url = apiUrl + "/holidays";
       return $resource(url,
         data, {
           'save': {
@@ -187,7 +187,7 @@
 
     function updateHoliday(data) {
 
-      url = apiUrl + "/holiday/" + data.id;
+      url = apiUrl + "/holidays/" + data.id;
 
       if (data.replacementEmployees) {
         data.replacementEmployees = data.replacementEmployees.map(function(item) {
@@ -219,7 +219,7 @@
 
 
     function removeHoliday(holidayToRemove) {
-      url = apiUrl + "/holiday";
+      url = apiUrl + "/holidays";
       return $resource(url).delete(holidayToRemove);
     }
 

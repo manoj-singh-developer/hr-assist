@@ -141,7 +141,6 @@
 
     function getAllEquipments() {
       url = apiUrl + "/devices";
-
       return $resource(url, {
         'query': {
           method: 'GET',
@@ -166,13 +165,13 @@
         data, {
           'save': {
             method: 'POST',
-            isArray: true
+            isArray: false
           }
         }).save(data);
     }
 
     function removeEquipments(equipmentToRemove) {
-      url = apiUrl + "/devices/"+equipmentToRemove.id;
+      url = apiUrl + "/devices/" + equipmentToRemove.id;
       return $resource(url).delete();
     }
 

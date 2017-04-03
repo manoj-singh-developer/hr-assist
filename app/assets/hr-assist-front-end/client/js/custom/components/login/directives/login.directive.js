@@ -27,15 +27,17 @@
     .module('HRA')
     .controller('loginController', loginController);
 
-  loginController.$inject = ['UserFactory', '$state', '$scope', '$window', 'tokenService'];
+  loginController.$inject = ['UserFactory', '$state', '$scope', '$window', 'tokenService', '$rootScope'];
 
-  function loginController(UserFactory, $state, $scope, $window, tokenService) {
+  function loginController(UserFactory, $state, $scope, $window, tokenService, $rootScope) {
     var vm = this;
     vm.login = login;
 
     function login(username, password) {
       //var user = false;
       UserFactory.login(username, password).then(function(data) {
+
+        if (data.status === "error") return;
         vm.user = data.user;
 
         // Set two tokens
@@ -51,7 +53,7 @@
           id: vm.user.id
         });
 
-      }, function(date) {
+      }, function(data) {
         console.log('Wrong credentials!');
       });
     }

@@ -29,7 +29,9 @@
 
     function getAllSkills() {
       url = apiUrl + "/technologies";
-      return $resource(url).query();
+
+      var item = $resource(url).get();
+      return item.$promise;
     }
 
     function getSkillById(id) {
@@ -82,9 +84,9 @@
       var processed = [];
 
       function promise(resolve, reject) {
-        getAllSkills().$promise.then(
+        getAllSkills().then(
           function(data) {
-            raw = data;
+            raw = data.items;
             angular.forEach(raw, function(item, index) {
               processed.push(Skill.create(item));
             });

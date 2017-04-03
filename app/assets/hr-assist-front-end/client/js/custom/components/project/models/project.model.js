@@ -46,11 +46,11 @@
 
       function promise(resolve, reject) {
         getAllProjects().$promise.then(function(data) {
-          raw = data;
+          raw = data.items;
           Employee.getAll().then(function(data) {
             angular.forEach(raw, function(item, index) {
               employees = data;
-              if (item.employees[0] === '') {
+              if (item.employees === undefined) {
                 item.employees = [];
               }
               processed.push(Project.create(item));
@@ -58,7 +58,7 @@
             });
           }, function(data) {});
         }, function(error) {
-          return reject('Something gone wrong!');
+          return reject('Something gone wrong to get projects!');
         });
       }
       return $q(promise);
@@ -72,7 +72,7 @@
         getProjectById(id).$promise.then(function(data) {
           return resolve(Project.create(data));
         }, function(error) {
-          return reject('Something gone wrong!');
+          return reject('Something gone wrong to get project by id!');
         });
       }
       return $q(promise);
@@ -90,7 +90,7 @@
           });
           return resolve(processed);
         }, function(error) {
-          return reject('Something gone wrong!');
+          return reject('Something gone wrong to get technologies!');
         });
       }
       return $q(promise);
@@ -232,7 +232,13 @@
     // ------------------------------------------------------------------------
     function getAllProjects() {
       url = apiUrl + "/projects";
-      return $resource(url).query();
+       return $resource(url, {
+         'query': {
+           method: 'GET',
+           isArray: false
+         }
+       }).get();
+      // return $resource(url).query();
     }
 
     function getCustomers() {
@@ -341,7 +347,7 @@
     }
 
     function removeProject(projectToRemove) {
-      url = apiUrl + "/project";
+      url = apiUrl + "/projects";
       return $resource(url).delete(projectToRemove);
     }
 

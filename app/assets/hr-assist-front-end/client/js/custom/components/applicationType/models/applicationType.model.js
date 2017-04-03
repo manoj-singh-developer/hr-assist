@@ -32,9 +32,9 @@
       var processed = [];
 
       function promise(resolve, reject) {
-        getProjectData().$promise.then(
+        getProjectData().then(
           function(data) {
-            raw = data;
+            raw = data.items;
             angular.forEach(raw, function(item, index) {
               processed.push(applicationType.create(item));
 
@@ -118,17 +118,19 @@
     // ------------------------------------------------------------------------
 
     function getProjectData() {
-      url = apiUrl + "/applicationtype";
-      return $resource(url).query();
+      url = apiUrl + "/application_types";
+
+      var item = $resource(url).get();
+      return item.$promise;
     }
 
     function getProjectDataById(id) {
-      url = apiUrl + "/applicationtype/" + id;
+      url = apiUrl + "/application_types/" + id;
       return $resource(url).get();
     }
 
     function saveProjectData(data) {
-      url = apiUrl + "/applicationtype";
+      url = apiUrl + "/application_types";
       return $resource(url, data, {
         'save': {
           method: 'POST',
@@ -138,7 +140,7 @@
     }
 
     function updateProjectData(appToUpdate) {
-      url = apiUrl + "/applicationtype/" + appToUpdate.id;
+      url = apiUrl + "/application_types/" + appToUpdate.id;
 
       return $resource(url,
         appToUpdate, {
@@ -149,7 +151,7 @@
     }
 
     function removeProjectData(appToRemove) {
-      url = apiUrl + "/applicationtype";
+      url = apiUrl + "/application_types";
       return $resource(url).delete(appToRemove);
     }
 
