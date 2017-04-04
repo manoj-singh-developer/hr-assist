@@ -122,23 +122,22 @@
           <td md-cell>
 
             <md-button
-              class="md-icon-button md-primary"
+              class="md-icon-button md-primary md-button md-ink-ripple"
               label="Edit industry"
               aria-label="Edit industry"
               ng-click="extraList.showFormDialog($event, industry, industry.id)">
-                <md-icon class="material-icons">Edit</md-icon>
+                <md-icon class="material-icons">create</md-icon>
                 <md-tooltip md-autohide="true">
                   Edit industry
                 </md-tooltip>
               </md-button>
 
             <md-button
-              class="md-icon-button md-warn ind-btn"
+              class="md-icon-button md-warn md-button md-ink-ripple"
               label="Remove industry"
-              style="width:120px;"
               aria-label="Remove industry"
               ng-click="extraList.deleteConfirm($event, industry.name, industry.id, $index)">
-              <md-icon class="material-icons" style="width:100%;">Remove</md-icon>
+              <md-icon class="material-icons">delete</md-icon>
               <md-tooltip md-autohide="true">
                 Remove industry
               </md-tooltip>
