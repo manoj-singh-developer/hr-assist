@@ -6,7 +6,7 @@ module V1
 
         mount V1::ActivityAPI
         mount V1::ApplicationTypeAPI
-        mount V1::CountryAPI
+        # mount V1::CountryAPI
         mount V1::CustomerAPI
         mount V1::DepartmentAPI
         mount V1::DeviceAPI
