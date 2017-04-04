@@ -54,8 +54,9 @@ module APIHelpers
   def authorizeAndCreate(model, postParams, &block)
     authorize! :create, model
     block.call if block_given?
-    model.create!(postParams)
+    object = model.create!(postParams)
     success
+    return object
   end
 
   def url_paginate(collection, per_page)
