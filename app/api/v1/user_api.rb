@@ -106,6 +106,33 @@ module V1
     get "me" do
       current_user
     end
+
+    desc "Update profile user"
+      params do
+        optional :first_name, type: String
+        optional :middle_name, type: String
+        optional :last_name, type: String
+        optional :address, type: String
+        optional :birthday, type: Date
+        optional :phone, type: String
+        optional :picture, type: String
+        optional :observations, type: String
+        optional :email_other, type: String
+        optional :urgent_contact, type: String
+        optional :car_plate, type: String
+        optional :assist_start_date, type: Date
+        optional :courses_and_certifications, type: String
+        optional :courses_date, type: Date
+        optional :skills_level, type: String
+        optional :skills_type, type: String
+        optional :project_dates, type: Date
+        optional :status, type: Integer
+      end
+
+      put "me" do
+        current_user.update(postParams)
+        success
+      end
   end
 end
 
