@@ -203,7 +203,7 @@
           break;
 
         case 'customers':
-          appUrl = apiUrl + "/customeres";
+          appUrl = apiUrl + "/customers";
           break;
 
         default:
