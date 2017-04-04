@@ -5,15 +5,6 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-languages = [{long_name: "English", short_name: "en"}, {long_name: "German", short_name: "de"},{ long_name: "French", short_name: "fr"}]
-
-languages.each do |lang|
-  Language.populate 1 do |language|
-      language.long_name = lang[:long_name]
-      language.short_name = lang[:short_name]
-  end
-end
-
 roles = [{name: :admin, description: "Administrator role"},{name: :employee, description: "Employee role"}]
 
 roles.each do |role|
