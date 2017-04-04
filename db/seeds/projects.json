@@ -1,0 +1,1487 @@
+[
+    {
+        "name": "MWTM",
+        "description": "<p dir=\"ltr\"><span id=\"docs-internal-guid-c98b2e04-2632-0414-8b70-723f803dec9c\"><a href=\"https://mixwiththemasters.com/\">MWTM</a> is a web platform that contains  audio/video material with the most important producers from the music industry. The content of the videos are tutorials about music production. Beside the video material, in this project are also implemented periodic meetings (webinars / seminars) that are paid and programmed through the site.</span></p>\n<p dir=\"ltr\"><span id=\"docs-internal-guid-c98b2e04-2632-0414-8b70-723f803dec9c\">The videos can also have custom subtitles for different languages uploaded through admin interface. The video is loaded at the best resolution (1080p), but the platform generates 2 videos with different qualities: 720p and 480p. The user has the ability to choose the desired format.</span></p>\n<p dir=\"ltr\"><span id=\"docs-internal-guid-c98b2e04-2632-0414-8b70-723f803dec9c\">We can filter the video material 2 big categories:</span></p>\n<ul style=\"list-style-type:disc;\"><li dir=\"ltr\">\n<p dir=\"ltr\"><span id=\"docs-internal-guid-c98b2e04-2632-0414-8b70-723f803dec9c\">By masters</span></p>\n</li>\n<li dir=\"ltr\">\n<p dir=\"ltr\"><span id=\"docs-internal-guid-c98b2e04-2632-0414-8b70-723f803dec9c\">By topic and subtopic</span></p>\n</li>\n</ul><p><span id=\"docs-internal-guid-c98b2e04-2632-0414-8b70-723f803dec9c\">The project is implemented in a CMS (<a href=\"https://assist-software.net/portfolio/technologies-skills/drupal\">Drupal 7</a>) and is hosted on Amazon Web Service.</span></p>\n<p><span id=\"docs-internal-guid-c98b2e04-2632-0414-8b70-723f803dec9c\">The payment of the annual subscription for the video material is made through Stripe or Paypal. The payments for the webinar and/or seminar are made only through Stripe.</span></p>\n<p dir=\"ltr\"><span id=\"docs-internal-guid-c98b2e04-2632-0414-8b70-723f803dec9c\">The content of the project is also transposed in a IOS application that can be free downloaded from Store. The connection between the WEB platform and the IOS application is made through an API. </span></p>\n<div> </div>\n",
+        "customers": [
+            "FR"
+        ],
+        "year": "2015",
+        "industries": [
+            "Education"
+        ],
+        "mainActivities": [
+            "Web app development",
+            "Mobile Application Development",
+            "API Development"
+        ],
+        "technologies": [
+            "Drupal",
+            "PHP",
+            "HTML5",
+            "CSS",
+            "Amazon AWS"
+        ],
+        "projectUrl": "https://assist-software.net/project/mwtm",
+        "applicationTypes": [
+            "Cloud Platform",
+            "Database system",
+            "Mobile app",
+            "Web app"
+        ]
+    },
+    {
+        "name": "Verb Dash ",
+        "description": "<p><a href=\"http://english-attack.com/game/verb-dash\" target=\"_blank\">Verb Dash</a> is the first game of the <a href=\"https://assist-software.net/project/english-attack\" target=\"_blank\">English Attack</a> language learning service which has been developed as a multi-platform application both for the web browsers and the <a href=\"https://assist-software.net/portfolio/application-type/mobile-app\" target=\"_blank\">mobile</a> market. For the entire development cycle we used Unity 5 game engine due to its improved efficiency in creating 2D/3D games and its great multi-platform support.</p>\n<p>For the web we used WebGL as the exported platform due to the fact that this new technology brings hardware accelerated graphics to the browsers without the need of any plugins. This will enable the creation of simple 3D/2D games and interactive tools on the web that will be more app-like: smother, simpler, faster and more responsive. At the same time the game has been developed for iOS and Android device and exported native applications.</p>\n<p>Due to the multi-platform support the efficiency in the production is greatly increased due to the fact that one team develops the entire app without the drawbacks of a hybrid application especially from an optimization stand of point.</p>\n<p>This project has been a milestone in using the latest technologies especially for creating interactive web content and getting comfortable with <a href=\"https://assist-software.net/portfolio/technologies-skills/webgl\" target=\"_blank\">WebGL</a>, a futureproof technology that its perceived as the next revolution in web content creation.</p>\n",
+        "customers": [
+            "FR"
+        ],
+        "year": "2016",
+        "industries": [
+            "Social",
+            "Education"
+        ],
+        "mainActivities": [
+            "3D Game Development",
+            "iOS Game Development",
+            "Android Application Development",
+            "Web app development"
+        ],
+        "technologies": [
+            "iOS",
+            "Android",
+            "WebGL",
+            "Unity 3D"
+        ],
+        "projectUrl": "https://assist-software.net/project/verb-dash",
+        "applicationTypes": [
+            "Mobile Games",
+            "Web app"
+        ]
+    },
+    {
+        "name": "Airwavz.tv",
+        "description": "<p><a href=\"http://Airwavz.tv\" target=\"_blank\">Airwavz.tv</a> is a web application created to display dynamic, context-aware and timeline-based news showing what is happening in the world right now in an easy-to-use &amp; intuitive interface. It represents a timeline with hyper-precise headline and breaking news that is free for basic functionalities, and also has a paid version with custom functionalities.</p>\n<p>In fact, airwavz.tv is a “gaming platform” where users can scroll, pan zoom in or out, choose from a range of avatars or upload their own. Also, users can create their own “reading list” and “archive” list to keep the most important news there, always at hand.</p>\n<p>There are two ways to display news: as a timeline or as a list of news, to match with all user’s preferences. No matter which one you’ll chose, you’ll always get the latest stories. The application provides the posibility to filter and search for news in the simplest, most easy way possible.</p>\n<p>Furthermore, there are many options that allow users to indicate that they enjoy or they do not enjoy seeing events similar to that one, such as thumbs up, thumbs down, favorite, etc. The interface used for reading stories is crystal clear, users can see images and videos directly from the news.</p>\n<p> </p>\n<h3>Benefits for using Airwavz.tv platform:</h3>\n<ul><li>Users always have access to the latest news</li>\n<li>Users are able to create their own “reading list”</li>\n<li>Users have the ability to customize their theme in order to match their preferences</li>\n<li>There are many options that allow users to indicate that they enjoy or they do not enjoy seeing events similar to that one, such as thumbs up, thumbs down, favorite, etc.</li>\n<li>Users can easily search and filter news</li>\n<li>Smooth, easy navigation through the “gaming” features and the response time of the platform</li>\n</ul><p>\nFrom the technical point of view the platform was built using <a href=\"https://assist-software.net/portfolio/technologies-skills/angular\" target=\"_blank\"><strong>AngularJS</strong></a> and the back-end API was developed in <a href=\"https://assist-software.net/portfolio/technologies-skills/nodejs\"><strong>NodeJS</strong></a> using two databases: PostgreSQL and  RethinkDB.</p>\n",
+        "customers": [
+            "US"
+        ],
+        "year": "2016",
+        "industries": [
+            "Entertainment",
+            "Media"
+        ],
+        "mainActivities": [
+            "API Development",
+            "Architecture &amp; Design",
+            "Data organization"
+        ],
+        "technologies": [
+            "Angular",
+            "Nodejs",
+            "PostgreSQL",
+            "RethinkDB",
+            "Sass",
+            "Redis"
+        ],
+        "projectUrl": "https://assist-software.net/project/airwavztv",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "RiteApp",
+        "description": "<p><a href=\"https://riteapp.com/\">RiteApp</a> is a mobile application developed by ASSIST Software for Android and iOS. <br />\nRiteApp is designed as a great companion for all handymen around the world. The app was developed only for Canada at first, but it will soon be ready to expand its availability all around the world.</p>\n<p><a href=\"https://riteapp.com/\">RiteApp</a> is, in fact, a social platform designed for handymen, customers and professional tradesmen altogether. It interconnects these entities to provide a reliable solution for meeting everyone's needs. It helps customers find the right handyman to get their job done, it promotes handymen and their skills and it can even go one step further helping with hiring professional companies with employees certified in specific fields. The reputation you gain on RiteApp as a handyman or a professional company is registered from customer to customer. Before hiring a handyman, the customer can review his profile, including details about his experience, previous jobs, reviews and many others.</p>\n<p>Advertising in the app is designed to benefit everyone. Customers can view special deals from nearby handymen and handymen receive local deals from stores or material suppliers to help them get the best tools available.</p>\n<p>Benefits:</p>\n<ul><li>Customers keep track of the handyman's progress and see other satisfied clients</li>\n<li>Handyman chat with clients to keep them aware of their current status</li>\n<li>Handymen can maintain your work where they go, customers can find them based on their current position</li>\n<li>Get the latest deals as a handyman or a customer, everyone is happy<br />\n\t </li>\n</ul><p>The app was built for both iOS and Android platforms. The website was built using AngularJS and the <a href=\"https://assist-software.net/portfolio/technologies-skills/nodejs\">back-end API was developed in NodeJS</a> using a PostgreSQL database.</p>\n",
+        "customers": [
+            "CA"
+        ],
+        "year": "2016",
+        "industries": [
+            "Business",
+            "e-Commerce",
+            "Social",
+            "Manufacturing"
+        ],
+        "mainActivities": [
+            "Android Application Development",
+            "iOS Application Development",
+            "API Development"
+        ],
+        "technologies": [
+            "iOS",
+            "Android",
+            "Angular",
+            "Nodejs",
+            "PostgreSQL"
+        ],
+        "projectUrl": "https://assist-software.net/project/riteapp",
+        "applicationTypes": [
+            "Mobile app",
+            "Web app"
+        ]
+    },
+    {
+        "name": "COMEET Plus",
+        "description": "<p><strong>COMEET+</strong> is an Erasmus Plus KA2 programme funded by The European Commission under Cooperation for Innovation and exchange of Good Practises in Adult education.</p>\n<p>We are a international partnership from 6 countries in Europe: Italy, Holland, Romania, Cyprus and Belgium. The Regional Government of Extremadura in Spain leads the project. Together we have expertise in entrepreneurship, adult education and e‐learning solutions. This project is running from Octouber 2015 until September 2017.</p>\n<p><strong>COMEET+</strong> is promoting an holistic approach to entrepreneurship education based on the idea that community actors (parents, teachers, youth educators, people working in associations active at community level) have a responsibility when it comes to shape young people mindset and vision of the future and the possibility for them to be more active and entrepreneurial in their every day life.</p>\n<p><strong>We believe</strong> that the educational community, specially families and school teachers, have an essential role to foster entrepreneurship skills in young people. These skills will be decisive to increase new chances for developing future scenarios and employment in young people. In addition, these skills will help them to imagine and create a better environment and new opportunities.</p>\n<p><strong>Our aim is to create a useful social learning platform</strong> for different community actors, available for other countries working with entrepreneurial education at community level. This learning platform will be adapted to the treining needs of different community actors such as teachers, families, youth workers and entrepreneurship facilitators needs.</p>\n<p>The partnership will share good practices and methodologies, creating specific tools and training resources about acquisition of entrepreneurial skills among young people. Those will be dynamic and open contents, and there will be available for any member of our learning communities at national and european level through the online platform.</p>\n",
+        "customers": [
+            "EU"
+        ],
+        "year": "2016",
+        "industries": [
+            "Education"
+        ],
+        "mainActivities": [
+            "Software Development"
+        ],
+        "technologies": [
+            "HTML5",
+            "CSS",
+            "Cloud"
+        ],
+        "projectUrl": "https://assist-software.net/project/comeet-plus",
+        "applicationTypes": [
+            "Cloud Platform"
+        ]
+    },
+    {
+        "name": "Edumax",
+        "description": "<p><strong>Edumax</strong> is a team of trainers specialized in linguistic education. They focus on preparing students for EFL exams such as: CAE, CPE, TOEFL, IELTS, Bulats, ECL, Trinity etc. They also offer a wide range of alternative courses and activities to help students improve various soft skills.<br />\nThe Edumax project was a very short one focused on a presentation website with a content management panel. The combination of technologies used in this project is interesting in its nature and worth mentioning.<br />\nLaravel and AngularJS are well renowned web development tools used world-wide.<br />\nLaravel is a clean and modern PHP framework created by Taylor Otwell and released in 2011. Being a so-called “full stack” framework it handles everything from database migrations to HTML generation. Laravel is written in PHP 5 and is based on model-view-controller (MVC) pattern. <br />\nAngularJS is a javascript framework created by Google that is used for front-end web development. It aims to simplify both the development and the testing of such applications by providing a framework for client-side MVC and MVVM architectures, along with components commonly used in rich Internet applications.<br />\nCombining <strong>Laravel</strong> and <strong>AngularJS</strong> seems like the next logical step that not many developers dare to take. This is mostly due to the fact that it is not seen a standard choice, therefore there is a lack of extensive documentation.<br />\nWe learned that there are more ways of encapsulating the two but the best way is to use each of them where they excel most: AngularJS strictly for front-end development and Laravel strictly for back-end development.<br />\nThe integration is not the most straight-forward process, but once completed it unleashes the true advantages of this system:<strong> fast development time</strong> and a <strong>superior user experience</strong>. <br />\nConclusion: This pro-bono project was a great opportunity for us to experiment with these technologies and we learned a great deal of experience that we hope will serve us in the following projects. <br />\nWe believe this combination has a great potential for future applications.</p>\n",
+        "customers": [
+            "RO"
+        ],
+        "year": "2016",
+        "industries": [
+            "Education"
+        ],
+        "mainActivities": [
+            "Website Development"
+        ],
+        "technologies": [
+            "Angular",
+            "HTML5",
+            "CSS",
+            "Laravel",
+            "PHP"
+        ],
+        "projectUrl": "https://assist-software.net/project/edumax",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "L2L Entrepreneurship",
+        "description": "<p>„Learning to Learn Entrepreneurship for Low Skill Young People” (L2L entrepreneurship) is an EU wide partnership project designed to identify core and innovative learning methods that best encourages success in entrepreneurship activities. The project is based on the results and experience acquired in a previous project called <a href=\"http://startup-internationalization.eu/\">“Let's, Learning to learn” for senior workers</a>.</p>\n<p>Education of young people and entrepreneurship are one of the most important EU concerns. Indeed, in this period of crisis the level of education is very important for the employability and successful entrepreneurial initiatives of young people which could revive the economic growth.</p>\n<p>Through the guide of experts on this area, the partners are contributing with their wide experience finding best practices, case studies, lessons learnt and future opportunities. During the project we will deliver training and practical entrepreneurship education among training providers, from partner’s countries.</p>\n<p>Another innovative accomplishment will be the deployment of the training course for entrepreneurs that will serve as a guide to solve special needs for low skilled young people and entrepreneurs to get the proper training in essential aspects of the entrepreneurship process.</p>\n<p>All the course content will be complemented with an e-learning platform that works in two ways:</p>\n<ul><li>as a support for trainers in face-to-face courses;</li>\n<li>as an online e-learning platform training for low skilled young people.     </li>\n</ul><p>The project focuses on the development of trainer’s capability to motivate and enhance young employed and unemployed person’s participation in lifelong learning. Low skilled young people face many difficulties in acceding to training, mainly because of their low motivation/confidence in own capabilities to manage theoretical contents.</p>\n<p>They lack in the “Learning to learn” and entrepreneurship key competences. In order to develop their willingness to accede education, a team of specialized trainers are building the ladder to develop their own competencies through some different informal ways and a share of experiences with experts belonging to other countries.</p>\n<p>The direct and indirect recipients of the results of the project will be:</p>\n<ul><li>Low-skilled young learners</li>\n<li>Youth organizations</li>\n<li>Centre of competencies validation</li>\n<li>Youth employment organizations</li>\n<li>Young entrepreneurs</li>\n<li>Vocational Education &amp; Training Providers</li>\n<li>Entrepreneurship education development institutions</li>\n<li>Sports associations</li>\n<li>Human resources specialists</li>\n<li>Teachers, students, deans, rectors from Business Management courses</li>\n</ul>",
+        "customers": [
+            "EU",
+            "GR",
+            "IT",
+            "ES",
+            "RO",
+            "UK"
+        ],
+        "year": "2015",
+        "industries": [
+            "Education"
+        ],
+        "mainActivities": [
+            "Custom Software Development",
+            "Design"
+        ],
+        "technologies": [
+            "HTML5",
+            "CSS",
+            "Cloud"
+        ],
+        "projectUrl": "https://assist-software.net/project/l2l-entrepreneurship",
+        "applicationTypes": [
+            "Cloud Platform",
+            "Web app"
+        ]
+    },
+    {
+        "name": "BGame",
+        "description": "<p style=\"text-align: justify;\"><i>“</i><b><i>BGame</i></b><i>: Innovative Strategic Management Games as a teching methodology for entrepreneurship and business education” </i>is an European initiative funded by the European Commission (Erasmus+) that aims at creating a<strong> strategic management virtual game for SMEs to further improve the strategic management skills of SME employees and managers and extend the learning opportunities of individual adult learners in entrepreneurial contexts.</strong></p>\n<p style=\"text-align: justify;\">BGame will also offer a set of innovative learning resources (within the game) that further supports managers and entrepreneurs to take the best decisions for their businesses regarding strategic management. To achieve the above-mentioned objectives, the following target-groups will be approached:</p>\n<p class=\"rteindent1\" style=\"text-align: justify;\"><img alt=\"bgame_logo_72ppi\" class=\"alignnone wp-image-59\" height=\"20\" src=\"http://bgame-project.eu/wp-content/uploads/2015/12/bgame_logo_72ppi-300x246.png\" width=\"25\" />SME representatives, including managers, directors at primary level and employees at second level;</p>\n<p class=\"rteindent1\" style=\"text-align: justify;\"><img alt=\"bgame_logo_72ppi\" class=\"alignnone wp-image-59\" height=\"20\" src=\"http://bgame-project.eu/wp-content/uploads/2015/12/bgame_logo_72ppi-300x246.png\" width=\"25\" /> Trainers, especially in-company trainers, dealing with overall Business &amp; Management areas, and specifically with Strategic Management;</p>\n<p class=\"rteindent1\" style=\"text-align: justify;\"><img alt=\"bgame_logo_72ppi\" class=\"alignnone wp-image-59\" height=\"20\" src=\"http://bgame-project.eu/wp-content/uploads/2015/12/bgame_logo_72ppi-300x246.png\" width=\"25\" /> All those interested and/or operating in business, including entrepreneurs, start-up owners/representatives and others.</p>\n",
+        "customers": [
+            "EU"
+        ],
+        "year": "2015",
+        "industries": [
+            "Education"
+        ],
+        "mainActivities": [
+            "Software Development"
+        ],
+        "technologies": [
+            "HTML5",
+            "CSS",
+            "Cloud"
+        ],
+        "projectUrl": "https://assist-software.net/project/bgame",
+        "applicationTypes": [
+            "Cloud Platform"
+        ]
+    },
+    {
+        "name": "DriveNtell iOS App ",
+        "description": "<p>DriveNtell is one of the many IOS applications developed by ASSIST Software here in Romania.  </p>\n<p>DriveNtell represents a platform designed to organize car trips into a single place where everything is saved and managed for future understanding of what, where and how the cars of a company or individual are used.</p>\n<p>Everything is interconnected to obtain even the small details for each trip individually, starting from the car information like speed, acceleration and events (generated from driving behaviour) collected from the EPU continuing to the location of the car using the phone <a href=\"http://assist-software.net/products/gps-assist\">GPS </a>and finishing with the server. The car is connected to the phone by a bluetooth dongle which beside the values from the EPU has a build in system specialized in monitoring the forces that interact with the car when driving.</p>\n<p>All of this data is packed and uploaded to a cloud system that lets the user view his activity and make certain observations for each individual trip, along with viewing the route and the events he generated.</p>\n<p>The application has the purpose of guiding the driver to control his driving by giving audio advice when his driving style becomes more aggressive. If safety and precaution is the target here, why not use a scoring system to know which drivers are more careful behind the wheel and which need to learn some anger management techniques.</p>\n<p>This features are great when a company wants to have some control on how their cars are being used but I think this is great for an individual driver as he can understand how he is driving and where are the weak points in his driving style.</p>\n<h3>Benefits:</h3>\n<ul><li>Keep track of vehicle usage and drivers behaviour behind the wheel</li>\n<li>Organize business or personal trips</li>\n<li>Understand better how your driving actually is</li>\n<li>Try to see the app as a driving guide that improves your reflexe</li>\n</ul><h3>Features:</h3>\n<ul><li>Easy to use - drivers have just to set up the app, connect it with their bluetooth device and enter the odometer values of the car, then they are all set to go</li>\n<li>Customizable functionality - users that have specific preferences regarding the way the app behaves, can customize and personalize it for their needs</li>\n<li>Simple and intuitive functionality - the app has two main purposes regarding the user, first is the journey monitoring device and the second a portal which helps the driver and company to organise each trip.</li>\n<li>Score history - generates a graph of the last 7 days score to make very obvious the progression or regression the driver is making</li>\n<li>Tips - depending on the score, every driver will get a tip which will help him to get rid of bad habits </li>\n</ul><p>Alexandru Boca, iOS mobile development team leader: </p>\n<p><em>Every challenge is a test of strength and a step forward to your evolution, this project had all the ingredients in the book enough to challenge us in completing key requirements without bothering about complexity. <br />\nIt’s a complete project with real practical usage and usability in a daily basis and the entire system of the application is a complex nexus that needs to work perfect in order to get the result we aimed at. Also every app needs to be a unique experience for the user, so the entire nexus behind it needs to be coated with the finest design to achieve a good workflow and a beautiful frontend.  <br />\nAll of these are just the tip of the iceberg when it comes to describing our passion for what we do and why we do it, but the complex things are what drive us to make stuff look great.</em></p>\n",
+        "customers": [
+            "IE"
+        ],
+        "year": "2015",
+        "industries": [
+            "Automotive"
+        ],
+        "mainActivities": [
+            "iOS Application Development"
+        ],
+        "technologies": [
+            "iOS",
+            "JSON",
+            "API"
+        ],
+        "projectUrl": "https://assist-software.net/project/driventell-ios-app",
+        "applicationTypes": [
+            "Mobile app"
+        ]
+    },
+    {
+        "name": "Start-Up Internationalization",
+        "description": "<p><a href=\"http://startup-internationalization.eu\" target=\"_blank\">Start-Up Internationalization</a> (SUI) is an EU wide partnership project designed to identify core and innovative learning methods that best encourages success in international activities for startup and entrepreneur.</p>\n<p>The project is based on the results and experience acquired in a previous project called “SUC – Start-Up Communities”. However, it goes one step further, promoting the international expansion and development of the start-ups and entrepreneurs communities. Through the guide of experts on this area, our partners countries will contribute with their wide experience finding best practices, case studies, lessons learnt and future opportunities.</p>\n<h3>Objectives:</h3>\n<ul><li>Deliver training and practical entrepreneurship education among training providers from partner’s countries</li>\n<li>Design an innovative training course for the internationalization of the startups that will serve as a guide to solve the special needs for startup and entrepreneurs to get the proper training in essential aspects of the internationalization process, through the cooperation of the partners</li>\n<li>An e-learning platform that will work in both ways, one as support for trainers in face to face course, but also in distance and on-line training.</li>\n</ul><h3>Benefits:</h3>\n<ul><li>To promote entrepreneurs attitude about the vital importance of internationalization of the startup in early stages, by a team of key actors playing vital roles as training providers, inspirational models, mentors, network facilitators and other feeders.</li>\n</ul>",
+        "customers": [
+            "EU",
+            "ES",
+            "RO",
+            "PT",
+            "UK",
+            "IT"
+        ],
+        "year": "2015",
+        "industries": [
+            "Education"
+        ],
+        "mainActivities": [
+            "Software Development"
+        ],
+        "technologies": [
+            "Django",
+            "Python",
+            "Cloud",
+            "Docker"
+        ],
+        "projectUrl": "https://assist-software.net/project/start-internationalization",
+        "applicationTypes": [
+            "Cloud Platform",
+            "Web app"
+        ]
+    },
+    {
+        "name": "HealthPoint",
+        "description": "<p>HealthPoint is a Health Management Platform focused on engaging patients, improving healthcare workflow – targeting treatments, procedures and training for medical professionals. Purposefully built as a medical application, HealthPoint boasts features meant to firstly ease the transition of medical personnel into the digital workings of the medical system and secondly to provide services and functionality while in step with medical technology and procedures.</p>\n<p>Among the features of HealthPoint, the current way to register and manage Patients has taken a step further, allowing for easy assignment of procedures to be performed by a clinician, scheduling hospital or home visits, all managed by a stable system. Customized interfaces designed to be built for a particular client of the platform goes a long way towards providing an excellent basis for several of the key services on HealthPoint: Refer a new Patient, Patient Referral Status and Programme Summary, supplemented by full support for Adverse Event Forms and Product Complaint forms, in step with the latest e-health standards. Its easy-going user interface makes getting used to it faster. There are a variety of advanced reports and charts available in order to visualize engagement of patients and also data analytics.</p>\n<p>Technically, HealthPoint is an ASP.NET web application, built in C# programming language and designed to use the Model-View-Controller pattern. <a href=\"http://assist-software.net/\" target=\"_blank\">ASSIST Software</a> had contributed to the responsive design, look and feel, migration to the Amazon platform and development of the platform. Amazon AWS solution provided had contributed to make the platform highly scalable, secure and affordable without a big upfront investment.</p>\n",
+        "customers": [
+            "IE"
+        ],
+        "year": "2014",
+        "industries": [
+            "e-Health"
+        ],
+        "mainActivities": [
+            "Development",
+            "Design",
+            "Software Testing"
+        ],
+        "technologies": [
+            "C#",
+            "NHibernate",
+            "ASP.NET",
+            "Amazon AWS",
+            "SQL Server",
+            "Bootstrap 3",
+            "jQuery",
+            "Responsive Design",
+            "ASP.NET MVC"
+        ],
+        "projectUrl": "https://assist-software.net/project/healthpoint",
+        "applicationTypes": [
+            "Cloud Platform",
+            "Healthcare",
+            "Web app"
+        ]
+    },
+    {
+        "name": "HealthXL",
+        "description": "<p>HealthXL platform intend to transform innovation in healthcare by connecting the most innovative digital health companies with established global leaders, investors and entrepreneurs. HealthXL want to drive innovation by working with senior executives from some of the biggest and most exciting companies in healthcare on the planet including: IBM, Novartis, Janssen, ICON, Silicon Valley Bank, Bupa, Cleveland Clinic, Partners HealthCare, ResMed, Linde Healthcare and EY.</p>\n<p>In order to provide an efficient web platform to manage the projects, ASSIST Team used the following technologies: Wordpress to ensure flexibility, Bootstrap3 to create a responsive web app, Amazon AWS for data safekeeping and storage, and RDS.</p>\n<h3>Features of the platform:</h3>\n<ul><li>Identify and engage leading healthcare investors, clinicians, and innovators.</li>\n<li>Build relationships with digital health innovators during our events for handpicked attendees.</li>\n<li>Access our 360-degree market overviews with the perspective of all key stakeholders.</li>\n<li>Business community, exchange of information and ideas</li>\n<li>File management for projects team</li>\n<li>Provides connection between company members and advisors</li>\n<li>View project activity and milestones</li>\n<li>Gateway between sponsors and companies</li>\n<li>All stakeholders for a company receive email updates.</li>\n<li>Possibility to vote a project</li>\n</ul><h3>Benefits provided by ASSIST:</h3>\n<ul><li>Scalable and cost-effective cloud solution</li>\n<li>Possibility to change and update the content of the website</li>\n<li>Admins can extend the platform with various plugins</li>\n</ul>",
+        "customers": [
+            "IE"
+        ],
+        "year": "2016",
+        "industries": [
+            "e-Health"
+        ],
+        "mainActivities": [
+            "Custom Software Development"
+        ],
+        "technologies": [
+            "Wordpress",
+            "Amazon AWS",
+            "Bootstrap 3",
+            "Drupal",
+            "Foundation",
+            "Intercom"
+        ],
+        "projectUrl": "https://assist-software.net/project/healthxl",
+        "applicationTypes": [
+            "Healthcare",
+            "Web app"
+        ]
+    },
+    {
+        "name": "GPS ASSIST",
+        "description": "<p>Nowadays, a very important aspect for businesses is to have a solution to track and locate the company's vehicles and employees through a GPS system.  </p>\n<p>GPS ASSIST is a fleet tracking application that gives you up-to-the-minute speed and location updates, including  email alerts based on parameters you set in advance.  </p>\n<p>The objective of the GPS project is to help companies to lower costs, improve their activities and increase productivity.</p>\n<p>The solution provided by ASSIST Software brings numerous advantages: it is very simple and easy to use the app, the user can receive email reports through the automated reports system and email notifications when an event occurs, for example when the car enters/exits the country, over speeds, doesn't have GPS signal or enters/exits the hotspot. </p>\n<h3>Benefits  </h3>\n<ul><li>Real-time GPS fleet tracking in a selected  time frame</li>\n<li>Tracking routes, distances (km), running time and speeds </li>\n<li>Visualize the last visited location for every car  </li>\n<li>Define points of interest easily </li>\n<li>Locate the nearest vehicle to a specific hotspot, or point of interest  </li>\n<li>Get the information about vehicles which visit a hotspot, or a point of interest </li>\n<li>Check whether employees use the cars for personal purposes </li>\n<li>Define the schedule for one vehicle or for a group of vehicles </li>\n<li>Calculate the deviations of schedule or/and perimeter  </li>\n<li>Get information about the locations where a vehicle was stationed more than the allowed time </li>\n</ul><h3>Features </h3>\n<ul><li>Locations - Offers information about the last known position of the car </li>\n<li>Track - View the track for all the cars or for one selected car </li>\n<li>Proximity - Offers information  about distances between vehicles and a specified address, point of interest, or hotspot</li>\n<li>Reports - Allows you to view many reports about: Parking time, Road map, Daily activity, Current Location, Perimeter/schedule deviation, Hotspot, Speeds</li>\n<li>Data management - Users can manage the information easily. They can add/edit and delete cars, drivers ,divisions , hotspots, etc through a friendly interface</li>\n</ul>",
+        "customers": [
+            "RO"
+        ],
+        "year": "2014",
+        "industries": [
+            "Automotive"
+        ],
+        "mainActivities": [
+            "Web app development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "HTML5",
+            "CSS3",
+            "Python",
+            "Django",
+            "Angular",
+            "Analytics",
+            "API"
+        ],
+        "projectUrl": "https://assist-software.net/project/gps-assist",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "School on the Cloud",
+        "description": "<p>Today, Cloud computing is everywhere. In its various forms, it is being adopted across all sectors. The massive growth of the affordable computers, Internet broadband connectivity and rich education content have created important differentiations related to the way we perceive Education and ICT. </p>\n<p><a href=\"http://www.schoolonthecloud.eu\" target=\"_blank\">School on the Cloud</a> is a project aimed to change the whole system of education. It motivates and engages school and university students as well as unemployed people/ VET trainees and prepares them for employment.</p>\n<p>The Network consists of 57 Partners, most of whom are leaders in their educational sectors. They represent 18 European countries and include 10 Schools, 21 Universities, Companies, NGOs, National Authorities, Research Centres, Associations and Adult Education providers.</p>\n<p><a href=\"http://www.schoolonthecloud.eu\" target=\"_blank\">SoC</a> is an ICT network with the main goal to develop new dynamic ways to educate.</p>\n<h3>Objectives:</h3>\n<ul><li>Participants will share knowledge with one another and jointly develop new knowledge.</li>\n<li>The project encourages teachers and educators to innovate creatively, using digital technology and resources.</li>\n<li>Both teachers and students are encouraged to learn with this new technology. Just as students learn new technologies, teachers are helped to catch up with them.</li>\n<li>It can dramatically increase opportunity for collaboration amongst learners and interaction with the teacher resulting into improved pedagogy.</li>\n<li>It overcomes the existing gap between Education and Cloud computing.</li>\n</ul><h3>Benefits:</h3>\n<ul><li>Students are guided toward the application of knowledge through the development of class-related assignments, original research studies, creative projects, and action-oriented work that applies knowledge to personally meaningful areas of interest.</li>\n<li>Teachers can use the cloud to set, collect and grade work online .They can teach from anywhere.</li>\n<li>Students will have instant access to grades, comments and work via a computer, smartphone or tablet. They can work and learn at any time and anywhere they want.</li>\n<li>Secured Access – Both teachers and students take benefit from a strong security system.</li>\n<li>It will increase student engagement and motivation.</li>\n</ul>",
+        "customers": [
+            "EU"
+        ],
+        "year": "2014",
+        "industries": [
+            "Education",
+            "Social"
+        ],
+        "mainActivities": [
+            "Software Development"
+        ],
+        "technologies": [
+            "Cloud"
+        ],
+        "projectUrl": "https://assist-software.net/project/school-cloud",
+        "applicationTypes": [
+            "Cloud Platform",
+            "Mobile app",
+            "Web app"
+        ]
+    },
+    {
+        "name": "TickerFit ",
+        "description": "<p>Today, many people are experiencing weight problems or obesity. In this century the weight issue has become a significant healthcare challenge throughout society all around the world.</p>\n<p>The TickerFit application provides simple and easy to use access to offer individualised physical activity programms for patients, access a social support community and also other features designed to assist the patient lead a more active, healthy life.</p>\n<p>By using TickerFit’s app the healthcare professionals can empower patients to take control of their wellness using exercise to complement, and in some cases eliminate, pharmaceutical medication.</p>\n<p>With this app the patient can view their activity over time, and they can view their progress day by day.</p>\n<p><a href=\"http://assist-software.net/\" target=\"_blank\">ASSIST Software</a>’s contribution to the project is the development of TickerFit mobile app, which brings highly innovative advantages. The solution provided by ASSIST Software brings numerous advantages, like: the patient can use simple and easy the app, edit their profile, view their activity over time and receive or send short messages securely to health professional.</p>\n",
+        "customers": [
+            "IE"
+        ],
+        "year": "2014",
+        "industries": [
+            "e-Health"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Mobile Application Development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "Python",
+            "Scala",
+            "MongoDB",
+            "Android",
+            "iOS"
+        ],
+        "projectUrl": "https://assist-software.net/project/tickerfit",
+        "applicationTypes": [
+            "Healthcare"
+        ]
+    },
+    {
+        "name": "Sefaira",
+        "description": "<p>Buildings consume about 40% of global energy, which makes the design of high-performing buildings a priority for reducing global energy consumption.</p>\n<p>Based on deep expertise in building physics and the close work with building designers, Sefaira’s goal is to create software that helps them create great, high-performing buildings by developing leading software for high-performance building design.</p>\n<p>Learn more about <a href=\"http://sefaira.com/\" target=\"_blank\">Sefaira</a>’s tools here: <a href=\"http://sefaira.com/how-it-works/\" target=\"_blank\">http://sefaira.com/how-it-works/</a></p>\n<p><a href=\"http://assist-software.net/\" target=\"_blank\">ASSIST Software</a>’s contribution to the project is the development of Sefaira’s corporate website, newsletter system, and the auto scaling of the website on amazon web services, which brings highly innovative advantages. The AWS solution provided by ASSIST Software brings numerous advantages, like: on-demand delivery of IT resources, pay-as-you-go pricing, no upfront investment, low ongoing cost, flexible capacity, speed &amp; agility and global reach. It also allows the team to focus on projects that differentiate the business, not on the infrastructure.</p>\n",
+        "customers": [
+            "US",
+            "UK"
+        ],
+        "year": "2014",
+        "industries": [
+            "Business"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Website Development"
+        ],
+        "technologies": [
+            "Bootstrap 3",
+            "Wordpress",
+            "Responsive Design",
+            "HubSpot",
+            "Scala",
+            "Amazon AWS"
+        ],
+        "projectUrl": "https://assist-software.net/project/sefaira",
+        "applicationTypes": [
+            "Cloud Platform"
+        ]
+    },
+    {
+        "name": "HealthBeacon",
+        "description": "<p>The global challenge to address the unsustainable increase in healthcare spending, added to a growing and ageing population drives the need to change how healthcare can be delivered.</p>\n<p><a href=\"http://www.healthbeacon.com/\" target=\"_blank\">HealthBeacon</a> is a smart sharps bin which observes patient compliance, identifies patient behavior and subsequently engages the patient to achieve higher medication adherence for patients on home injectable medication.</p>\n<p><a href=\"http://assist-software.net/\" target=\"_blank\">ASSIST Software</a>'s role in the project is to create the platform and ensure the cloud services database and communication.<br />\nAs well as processing data received daily from the devices, the platform offers the following benefits:</p>\n<ul><li>Communication between system and device - when the device sends data, the system responds back to the device monitor according to the calculations</li>\n<li>User management - the platform can be accessed by multiple user types and each have customizable permissions</li>\n<li>Patient and treatment management - patients can be tracked and ensure that the patient is adherent to their treatment</li>\n<li>Injections management - when drop data is received, injections are categorized and verified</li>\n<li>Reminders - the system sends scheduled emails and SMS messages to patients in order to remind them to take their medication</li>\n<li>Analysis and reports - the plaform aggregates the data offering various filters and the possibility to export the data in multiple formats, such as PDF, PPT or Excel</li>\n<li>API for Mobile App - API provide access to mobile devices to cloud services and notifications for business metrics</li>\n</ul>",
+        "customers": [
+            "IE"
+        ],
+        "year": "2014",
+        "industries": [
+            "e-Health"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Custom Software Development",
+            "Website Development",
+            "Platform Development"
+        ],
+        "technologies": [
+            "Python",
+            "Django",
+            "CoffeeScript",
+            "Less-CSS",
+            "Amazon AWS",
+            "SMS Integration",
+            "Analytics"
+        ],
+        "projectUrl": "https://assist-software.net/project/healthbeacon",
+        "applicationTypes": [
+            "Cloud Platform",
+            "Database system",
+            "Healthcare",
+            "Web app"
+        ]
+    },
+    {
+        "name": "City Guide",
+        "description": "<p>City Guide is a mobile platform that helps finding local attractions, restaurants, hotels, available events and promotions. It adresses both tourists and the bussiness environment, offering businesses the possibility to maintain permanent contact with their customers and also promote in a dynamic manner. As a Business to Consumer platform it aims to promote the area in both terms of tourism and business. It provides an authentic experience while helps on planning vacations and trips. </p>\n<h3>​​Features:</h3>\n<ul><li>Comprehensive guide </li>\n<li>Location based navigation \"Near By\"</li>\n<li>Directions and route on map</li>\n<li>Bilingual interface (Romanian, English)</li>\n<li>Create tour with personal \"Favorites\"</li>\n<li>Get news and updates with \"Track\"</li>\n</ul>",
+        "customers": [
+            "RO"
+        ],
+        "year": "2012",
+        "industries": [
+            "Social",
+            "Entertainment"
+        ],
+        "mainActivities": [
+            "Design",
+            "Software Development",
+            "Unit Testing"
+        ],
+        "technologies": [
+            "PHP",
+            "MySQL",
+            "Android",
+            "iOS",
+            "Objective-C",
+            "Unit Testing",
+            "Jenkins"
+        ],
+        "projectUrl": "https://assist-software.net/project/city-guide",
+        "applicationTypes": [
+            "Mobile app"
+        ]
+    },
+    {
+        "name": "HealthSnap ",
+        "description": "<p><a href=\"http://healthsnap.it\" target=\"_blank\">HealthSnap</a> is an e-Health application created to record short personal video messages on any device and share them via social media or email with your family and friends. They don't have to download the received videos as they can watch them online on any browser on any device.</p>\n<p>HealthSnap was built as an easy tool to bring the personal and emotional layers into business interactions, even if partners have never stand face to face with each other. This electronic health application is recommended to people like customers, investors, prospective partners and team members. </p>\n<h3>Benefits:</h3>\n<ul><li>HealthSnap makes it very easy to send short video messages.</li>\n<li>Each healthSnap is maximum 60 seconds long.</li>\n<li>The HealthSnap website allows tweeting out video messages.</li>\n<li>Storing &amp; managing healthSnaps can be done from the website.</li>\n<li>Light analytics can be seen on the website (visualisation number, impressions).</li>\n<li>Users can access the application on a computer, a smartphone and/or a tablet.</li>\n<li>Users can pre-record healthSnaps and send them at different times &amp; dates. </li>\n</ul><h3>​<br />\nFeatures:</h3>\n<ul><li>Users can attach other files from Dropbox to a healthSnap video.</li>\n<li>HealthSnap videos can be shared to email addresses from the local contacts.</li>\n<li>Users can access the application on Android and/or iOS devices.</li>\n<li>Users can record a public healthSnap signature, a version for their profile page.</li>\n<li>Scheduling option is available to send healthSnaps at varying times &amp; dates. </li>\n<li>Recipients can watch healthSnaps without having to sign-in or download the video.</li>\n<li>Recipients can send feedback according to their impression on the videos.</li>\n</ul>",
+        "customers": [
+            "IE"
+        ],
+        "year": "2013",
+        "industries": [
+            "e-Health",
+            "Social"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Mobile Application Development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "Android",
+            "iOS",
+            "PhoneGap",
+            "Groovy",
+            "PostgreSQL",
+            "Grails",
+            "Cloud",
+            "Wowza",
+            "Webfonts",
+            "Tomcat",
+            "Stripe",
+            "Linux",
+            "Parse"
+        ],
+        "projectUrl": "https://assist-software.net/project/healthsnap",
+        "applicationTypes": [
+            "Healthcare"
+        ]
+    },
+    {
+        "name": "Bonafide",
+        "description": "<p>Today, consumers consider several factors, besides cost, when making buying decisions such as origin, production practices and environmental impacts.</p>\n<p>Currently, no commercial solution exists that integrates whole supply chain, interoperable information based on traceability, and environmental sustainability of food products that enables communication of this information to the end consumers of the food products. Current systems mainly focus on delivering information to the responsible supply chain partners directly involved with the trade and transport logistics.</p>\n<p>The BONAFIDE application will provide simple and easy to use access to the supply chain data available in a Business Cloud System that is being developed by partner iMonit. This data is a key for providing consumers with transparent information needed for trust in the food supply chain. </p>\n",
+        "customers": [
+            "EU",
+            "IS",
+            "RO"
+        ],
+        "year": "2013",
+        "industries": [
+            "Food",
+            "e-Health"
+        ],
+        "mainActivities": [
+            "Platform Development",
+            "Mobile Application Development"
+        ],
+        "technologies": [
+            "Android",
+            "iOS",
+            "Java",
+            "Cloud",
+            "Objective-C",
+            "Windows Phone",
+            "Facebook API",
+            "Angular",
+            "Django",
+            "Google App Engine",
+            "NoSQL"
+        ],
+        "projectUrl": "https://assist-software.net/project/bonafide",
+        "applicationTypes": [
+            "Cloud Platform",
+            "Mobile app",
+            "Web app"
+        ]
+    },
+    {
+        "name": "Loopme",
+        "description": "<p>Loopme is a platform aimed at turning teachers and parents into partners in their children’s education. It’s consisted of teacher app, parent app and web based back-end.<br />\nThe platform enables teachers to easily update parents about what happened in class today by using video, pictures and text. Also, social media features were integrated into to the system in order to ease the communication between teachers to parents and among the parents themselves. And since information security is of the essence here, Loopme has two layers of security in order to protect the children’s information. Contact us</p>\n<h3>Benefits</h3>\n<ul><li>Parents can quickly review what their child learned today</li>\n<li>Strengthening teacher-parent communication</li>\n<li>Strengthening parent-parent communication</li>\n</ul><h3>​​Features</h3>\n<ul><li>Easy-to-use tools – Teachers are able to take videos, photos, add text, update schedule and keep in touch with parents swiftly and easily</li>\n<li>Secured Access – Both parents and teachers enjoy double layerd security system</li>\n<li>Social Tools – Parents and teachers can communicate with each other privately or en masse</li>\n<li>Calendar – Complete sync between the preschool and parent’s calendar</li>\n<li>Roster – Connect easily with whomever you’ll like</li>\n</ul>",
+        "customers": [
+            "US",
+            "IL"
+        ],
+        "year": "2013",
+        "industries": [
+            "Education",
+            "Social"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "iOS Application Development",
+            "Android Application Development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "iOS",
+            "Android",
+            "Django",
+            "Python",
+            "MySQL",
+            "JSON",
+            "Linux"
+        ],
+        "projectUrl": "https://assist-software.net/project/loopme",
+        "applicationTypes": [
+            "Mobile app"
+        ]
+    },
+    {
+        "name": "Qualsyst ",
+        "description": "<p>QUALSYST was developed to effectively manage the quality management system ISO 9001. The application could be successfully used for food safety management system ISO 22000, information security management system ISO 27001 and other ISO-type management systems.</p>\n<p>QUALSYST allows the organization to ensure staff access to procedures, work instructions and forms via computer network, without resorting to classical printing or copying, distribution on broadcast signature register, etc. Access is controlled according to ISO certificate.</p>\n<p>Initiation of records compliance, corrective and preventive actions you can do through the application. Those responsible will be automatically notified via email by QUALSYST when they analyzed, approved or verified the document. QUALSYST will be a very useful and effective worker for training programs and internal or external audits.</p>\n<p>QUALSYST offers an effective communication interface between your consultant or auditor and make the same time easy and enjoyable collaboration between members. Now an important part of consultation meetings regarding documents and monitoring system operation, can be replaced by remote checking and access. </p>\n<p>The main features of QUALSYST:</p>\n<ul><li>Manages the entire lifecycle of documents: creating, analysis, approval, distribution, access control and archiving</li>\n<li>Registers operations history, providing automated traceability and control</li>\n<li>Quickly resolves the initiation and management of preventive and corrective actions</li>\n<li>Effectively manages the awareness programs, increasing the competence and the quality of training</li>\n<li>Provides a friendly interface and is an easy to use application</li>\n</ul>",
+        "customers": [
+            "RO"
+        ],
+        "year": "2013",
+        "industries": [
+            "Business",
+            "e-Commerce"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Software Testing"
+        ],
+        "technologies": [
+            "Django",
+            "MySQL",
+            "jQuery",
+            "CoffeeScript",
+            "Python",
+            "Linux"
+        ],
+        "projectUrl": "https://assist-software.net/project/qualsyst",
+        "applicationTypes": [
+            "Database system",
+            "Web app"
+        ]
+    },
+    {
+        "name": "Durafile ",
+        "description": "<p>The objective of the DURAFILE project is the development of a platform made by intelligent agents that exchanges dynamic knowledge and information among them (as a type of social search) with the goal of finding suitable preservation plans for obsolete multimedia digital objects. This represents a complete solution for multimedia digital preservation, that is extensible and flexible, always up-to-date as the information it contains is alive and real time accessible.</p>\n<p>Through digital preservation the DURAFILE project aims to ensure access to information and all types of records, scientific and cultural heritage existing in digital formats. Digital preservation offers assurance that digital information can be accessed continuously at any time and across shifts of technical generations that occur approximately every 5 to 15 years.</p>\n<p>DURAFILE project consortium: Ateknea Solutions (Spain), ABACCUS DOING INNOVATION (Spain), Easy Innova (Spain), Assist Software (Romania), IDEC (Greece), Highlands Technologies Solutions (France) , EES- Entegre Enformasyon Sistemleri (Turkey), Tallin University (Estonia) and Universitat de Girona (Spain). </p>\n",
+        "customers": [
+            "EU",
+            "ES",
+            "RO",
+            "FR",
+            "TR",
+            "GR",
+            "EE"
+        ],
+        "year": "2013",
+        "industries": [
+            "Business",
+            "Media",
+            "Education"
+        ],
+        "mainActivities": [
+            "Security issues",
+            "Field test and platform validation"
+        ],
+        "technologies": [
+            "Cloud",
+            "Java",
+            "MySQL",
+            "PHP"
+        ],
+        "projectUrl": "https://assist-software.net/project/durafile",
+        "applicationTypes": [
+            "Cloud Platform",
+            "Desktop app",
+            "Web app"
+        ]
+    },
+    {
+        "name": "assist-software.net",
+        "description": "<p>This is a dynamic and complex web site, which requires frequent updates and a menu structure with a continuously expanding number of levels. Multiple landing pages with editable content have been designed and implemented for the company's main areas of expertise. Most of the site content can be effortlessly maintained by employees with little or no understanding of web design and technologies. It was designed to reveal our forward-thinking insight to create new digital platforms, products and services.</p>\n",
+        "customers": [
+            "RO"
+        ],
+        "year": "2013",
+        "industries": [
+            "Business"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Custom Software Development"
+        ],
+        "technologies": [
+            "Responsive Design",
+            "Drupal",
+            "HTML5",
+            "CSS",
+            "jQuery",
+            "PHP",
+            "MySQL",
+            "Webfonts",
+            "Linux"
+        ],
+        "projectUrl": "https://assist-software.net/project/assist-softwarenet",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "Child Life International",
+        "description": "<p><a href=\"http://www.childlifeinternational.org/\" target=\"_blank\">Child Life International</a> was established in 1997 as an international non-profit organization dedicated to assisting the needy of Romania: the children, the elderly, the poor, and displaced. In a country struggling to recover from years of devastation brought by the oppressive communist rule, many of the people have found themselves in a desperate situation. Through the distribution of food, clothing, and medical care, it is our desire to extend life and hope to those faced by unfortunate circumstances. ASSIST has supported Child Life International by building the website.</p>\n",
+        "customers": [
+            "US"
+        ],
+        "year": "2013",
+        "industries": [
+            "Social"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Website Development"
+        ],
+        "technologies": [
+            "Wordpress"
+        ],
+        "projectUrl": "https://assist-software.net/project/child-life-international",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "VINBOT",
+        "description": "<p>The VinBot represents a powerful precision viticulture tool, which does not exist today: the cloud-computing agricultural robot.</p>\n<p>By means of a novel, all-terrain, autonomous robot, VinBot automates the traditional visual yield estimation process throughout the entire vineyard, estimating the amount of leaves and grapes on the vine via computer vision and other sensors. Data-intensive computer vision algorithms are offloaded to external internet servers (the cloud).</p>\n<p>The VinBot extends visual leaf and fruit estimation throughout the entire vineyard, and centralises yield management in the SME-AGs by providing them with online yield maps of their members' vineyards.</p>\n",
+        "customers": [
+            "EU",
+            "PT",
+            "IT",
+            "ES",
+            "RO"
+        ],
+        "year": "2013",
+        "industries": [
+            "Manufacturing",
+            "Food"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design"
+        ],
+        "technologies": [
+            "Cloud"
+        ],
+        "projectUrl": "https://assist-software.net/project/vinbot",
+        "applicationTypes": [
+            "Cloud Platform",
+            "Web app"
+        ]
+    },
+    {
+        "name": "NetRX",
+        "description": "<p>NetRX offers access to significantly discounted prices on everyday drugs by using a NetRX Card. It's free, easy to use and recognized by a network of over 60,000 pharmacies nationwide. So, you can enjoy the peace of mind that comes with affordable prescriptions. NetRX is available to groups and individuals alike. For groups, NetRX offers an added benefit of providing a return on every claim to the affiliated organization.</p>\n<p>In this project we used CodeIgnater for developing the platform, MySQL for database we used MySQL and Bootstrap framework for front-end customization.</p>\n",
+        "customers": [
+            "US"
+        ],
+        "year": "2011",
+        "industries": [
+            "Business",
+            "e-Health",
+            "e-Commerce"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Design",
+            "Custom Software Development"
+        ],
+        "technologies": [
+            "CSS3",
+            "PHP",
+            "MySQL",
+            "CodeIgniter"
+        ],
+        "projectUrl": "https://assist-software.net/project/netrx",
+        "applicationTypes": [
+            "Healthcare"
+        ]
+    },
+    {
+        "name": "PigWaves",
+        "description": "<p>PigWaves project aims to develop the technology that will enable existing pipe crawling robots (pigs) to provide internal inspection of pipe walls using Long Range Ultrasound Guided waves (LRUG) deployed in pipe segments of about fifty metre length.</p>\n<p>The objective of the project is to perform total volume inspection far more rapidly, accurately and cheaply than is presently achieved with magnetic and ultrasonic pigs by developing a circumferential collar of LRUG sensors and novel time reversal focussing to produce a map of the circumferential and axial pipe corrosion and cracks.</p>\n<p>ASSIST contributed to the project by their expertise in the fields of advanced software and wireless platform development, to the development of the wireless in-pipe communication and in the development of the signal processing software.</p>\n",
+        "customers": [
+            "EU",
+            "UK",
+            "GR",
+            "RO",
+            "ES"
+        ],
+        "year": "2013",
+        "industries": [
+            "Manufacturing"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design"
+        ],
+        "technologies": [
+            "Microcontroller Programming",
+            "C++",
+            "C#"
+        ],
+        "projectUrl": "https://assist-software.net/project/pigwaves",
+        "applicationTypes": [
+            "Cloud Platform"
+        ]
+    },
+    {
+        "name": "SafeWire",
+        "description": "<p>The <a href=\"http://cordis.europa.eu/projects/rcn/106814_en.html\" target=\"_blank\">Safewire</a> project proposes to develop a new generation of novel Non-Destructive Testing sensors and systems that can inspect ageing aircraft wiring for faults in wiring and insulation without the need to dismantle the aircraft structures.</p>\n<p>The proposed techniques are:</p>\n<ul><li>Enhanced time-domain reflectometry to detect impedance changes in wiring system without disassembly of the harness and wires;</li>\n<li>Wideband ultrasonic guided wave technology (using piezocomposites and electromagnetic sensors) to inspect ageing wires to detect insulation damages combining advanced signal processing and pattern recognition technique;</li>\n<li>Pulsed thermography system to detect temperature changes to detect cracks, chafe, cuts, burns, delamination, embrittlement in bundle of wires.</li>\n</ul>",
+        "customers": [
+            "EU",
+            "NL",
+            "PL",
+            "RO",
+            "UK",
+            "GR"
+        ],
+        "year": "2013",
+        "industries": [
+            "Manufacturing"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design"
+        ],
+        "technologies": [
+            "Microcontroller Programming",
+            "C#",
+            "C++"
+        ],
+        "projectUrl": "https://assist-software.net/project/safewire",
+        "applicationTypes": [
+            "Cloud Platform"
+        ]
+    },
+    {
+        "name": "SemCloud ",
+        "description": "<p>The aim of <a href=\"http://www.celtic-initiative.org\" target=\"_blank\">SemCloud</a> is to build a next-generation context-aware service platform able to operate directly at the semantic level. Traditional service platforms incorporate semantics as a way to allow a more powerful interaction among services and to automate some tasks, but in the end, they always serialize their interactions using non-semantic technologies using grounding operations. SemCloud pretends to investigate and develop a prototype of a middleware to allow native semantic operation of services, in which they are grouped forming a service cloud in which interactions among services are not directed towards a specific endpoint, but instead defined at a semantic level and routed from one node of the cloud to another using semantic reasoning. </p>\n",
+        "customers": [
+            "EU",
+            "ES",
+            "TR",
+            "FR",
+            "PT",
+            "RO"
+        ],
+        "year": "2013",
+        "industries": [
+            "Media"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Custom Software Development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "NLP",
+            "Cloud",
+            "Java",
+            "Tomcat",
+            "Hadoop",
+            "Python"
+        ],
+        "projectUrl": "https://assist-software.net/project/semcloud",
+        "applicationTypes": [
+            "Cloud Platform",
+            "Web app"
+        ]
+    },
+    {
+        "name": "Senso",
+        "description": "<p><a href=\"http://www.senso-connect.com/\" target=\"_blank\">SENSO</a> is a device with an automatic fall detector and an inbuilt panic alarm. Offering a complete fall detection system, SENSO detects falls and automatically raises an alarm. When a fall is detected or the emergency button is pressed, SENSO automatically sends a text message through the users mobile phone to pre-selected emergency contact(s) saved on the phone. Action is immediate and automatic with no need for user interaction or call centre support.</p>\n<p>We build a website to present the device and sell it. Also all the content was desired to be easy to customize by the client's staff. For online store component we customized an E-Commerce solution to fit their needs.</p>\n",
+        "customers": [
+            "IE"
+        ],
+        "year": "2012",
+        "industries": [
+            "Business",
+            "e-Health",
+            "e-Commerce"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Website Development"
+        ],
+        "technologies": [
+            "PHP",
+            "Drupal",
+            "Drupal Commerce",
+            "MySQL",
+            "jQuery",
+            "Linux"
+        ],
+        "projectUrl": "https://assist-software.net/project/senso",
+        "applicationTypes": [
+            "Healthcare"
+        ]
+    },
+    {
+        "name": "PR2.0 ",
+        "description": "<p>Reputation management has always been a concern for companies and has traditionally been handled by public relations and communications firms, which monitored mentions of their clients and their respective brands in print and audiovisual media. As the importance of the Internet has become more apparent, most of these firms have turned to monitoring digital media as well, scouring the Internet daily for clips related to the client or the client's brand, with Google as their most powerful weapon.</p>\n<p>The objective of the PR 2.0 project was to design an application that allows for centralized, effective management of a company and/or a brand’s reputation online combined with a powerful tool to administer proactive social media campaigns. Through the effective monitoring and management of its online reputation, an enterprise will be able to identify patterns that will result in better decision support for corporate communications agendas and unexpected consumer relations issues.</p>\n",
+        "customers": [
+            "EU",
+            "ES",
+            "UK",
+            "RO",
+            "FI",
+            "CY",
+            "MT"
+        ],
+        "year": "2012",
+        "industries": [
+            "Social"
+        ],
+        "mainActivities": [
+            "Advanced Opinion Mining",
+            "Information Extraction",
+            "Centralised Control of all company’s social media promotional activities",
+            "Sentiment Analysis",
+            "Tracking Online Reputation"
+        ],
+        "technologies": [
+            "Hadoop",
+            "NLP",
+            "Social Media",
+            "Java",
+            "MySQL"
+        ],
+        "projectUrl": "https://assist-software.net/project/pr20",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "Open-air Museums",
+        "description": "<p>Open-air Museums is a software development project developed in 2011 by <strong>ASSIST Software in Bucovina</strong>. We used the following technologies: Flash, Drupal, CSS.</p>\n<p>The project \"COMMON TRADITIONAL PATRIMONY – EUROPEAN PROMOTION ELEMENT\" aims to bring cultural institutions – <strong>Bucovina Museum</strong> and the Regional Museum of Folk Architecture and Life Chernivtsi, – closer together and to strengthen human relationships through common actions and activities which will lead to a better understanding, valorization and promotion of the traditional architectural heritage from both sides of the border.</p>\n<p>We are involved in designning and implementing the <a href=\"http://www.muzeeinaerliber.ro/\" target=\"_blank\">Open-air Museums</a> website by including new and effective technologies in order to improve its role as architectural cultural patrimony inventory between the two outdoor museums, with a view to improving the museum offer and to stimulate the interest of possible visitors in the cross-Carpathian area.</p>\n",
+        "customers": [
+            "RO"
+        ],
+        "year": "2011",
+        "industries": [
+            "Education",
+            "Entertainment"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Custom Software Development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "Flash",
+            "Drupal",
+            "CSS"
+        ],
+        "projectUrl": "https://assist-software.net/project/open-air-museums",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "Zelgor iPhone game",
+        "description": "<p>Zelgor is a free to play iOS mobile world conquest game. The core game features three distinct mini games with different mechanics and gameplay that interact with each other in a natural way.To conquer new territories the player needs to expand his army numbers to have the necessary paratroopers for the missions, by attacking other commanders on the battlefield. During the game the player gains the necessary equipment to conquer further territories.</p>\n<p>The mini games have been built from the ground up in Unity 3D engine, giving the development team lots of flexibility from the point of adding new features and fixes to the games. Due to the fact that each game can be installed as a standalone application, testing and optimization is done without affecting the developing workflow Cocos2D minor tweaks.</p>\n<p>The frontend of <strong>mobile game development</strong> has two branches. The first one represents the native iOS application developed using the following technologies: Protobuf, CoreLocation, and GoogleMaps SDK Kit for iOS, Cocos2D, while the last one corresponds to the 3D games section where we used Unity 3D engine.The backend component used Open Street Maps, Foursquare API along with our own developed server and algorithm system to create the backbone for the game.</p>\n<p>The 3D and 2D assets, animations, special effects, GUI are created with the help of the graphics pipeline made of the following applications: 3D Studio Max, ZBrush, Topogun, Motion Builder, Photoshop.</p>\n",
+        "customers": [
+            "US"
+        ],
+        "year": "2013",
+        "industries": [
+            "Entertainment",
+            "Social"
+        ],
+        "mainActivities": [
+            "iOS Game Development",
+            "3D Design",
+            "3D Game Development"
+        ],
+        "technologies": [
+            "iOS",
+            "Unity 3D",
+            "C#",
+            "Objective-C",
+            "Protocol Buffers",
+            "Cocos 2D",
+            "Scala",
+            "PostgreSQL",
+            "PostGIS",
+            "Analytics",
+            "3D Modelling",
+            "MongoDB",
+            "Nodejs",
+            "Linux"
+        ],
+        "projectUrl": "https://assist-software.net/project/zelgor-iphone-game",
+        "applicationTypes": [
+            "Mobile app",
+            "Mobile Games"
+        ]
+    },
+    {
+        "name": "Tiptd.com",
+        "description": "<p><a href=\"http://www.tiptd.com/\" target=\"_blank\">Tiptd</a> is a website for tracking things (commitments) that people promise to do to other people. Users can easily manage their privacy, get closer to people they know, also meet new people or group with people of specific interests.</p>\n<p>We developed the underlying platform and frontend website. The accounts are integrated with Facebook and Twitter. </p>\n",
+        "customers": [
+            "US"
+        ],
+        "year": "2011",
+        "industries": [
+            "Social",
+            "Entertainment",
+            "Media"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Software Testing"
+        ],
+        "technologies": [
+            "PHP",
+            "jQuery",
+            "MySQL",
+            "Social Media"
+        ],
+        "projectUrl": "https://assist-software.net/project/tiptdcom",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "Netplayer.com ",
+        "description": "<p><a href=\"http://www.netplayer.com\" target=\"_blank\">Netplayer</a> is a platform that enables video/audio chat between random people from the Internet over a Flash platform. Premium features like tips are available that are integrated with <a href=\"http://www.netwire.com\" target=\"_blank\">netwire</a> payment system. The tight integration was possible by combining the netwire API with latest technologies like OAuth for authentication. We also developed a Facebook application that integrates the platform with Facebook. This will enable to video chat with your friends from Facebook.</p>\n",
+        "customers": [
+            "US"
+        ],
+        "year": "2011",
+        "industries": [
+            "Entertainment",
+            "Media"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Audio/Video platform Development"
+        ],
+        "technologies": [
+            "Flex",
+            "Flash",
+            "PHP",
+            "MySQL",
+            "WebSockets",
+            "Facebook API",
+            "Wowza",
+            "Nodejs"
+        ],
+        "projectUrl": "https://assist-software.net/project/netplayercom",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "Realtime.ie",
+        "description": "<p><a href=\"http://www.realtime.ie\" target=\"_blank\">Realtime Technologies</a> is an electronics contract manufacturer and services provider.<br />\nWe designed and implemented their company website. The features required were to be a platform that can be edited by the website editors and integrated with most popular social websites like Twitter, Facebook, LinkedIn.<br />\nAlso we designed the website to include elements of corporate identity of the client and designed a new logo.</p>\n",
+        "customers": [
+            "IE"
+        ],
+        "year": "2011",
+        "industries": [
+            "Business",
+            "e-Commerce"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Software Testing"
+        ],
+        "technologies": [
+            "PHP",
+            "Joomla",
+            "MySQL"
+        ],
+        "projectUrl": "https://assist-software.net/project/realtimeie",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "Chess.net",
+        "description": "<p><a href=\"http://www.chess.net\" target=\"_blank\">Chess.net</a> is today one of the most popular online chess platform. It is really the best place to play chess online, chat, and meet new friends all around the world.<br />\nThe website was dramatically upgraded, the graphical layout was improved, the payment system was completely changed. New programming techniques and features were applied to old chess.net website, so the new website has a modern, reliable and effective functionality and attractive design. The payment system was also upgraded to reflect the new trends of the payments gateways.</p>\n",
+        "customers": [
+            "US"
+        ],
+        "year": "2011",
+        "industries": [
+            "Entertainment"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Software Testing"
+        ],
+        "technologies": [
+            "PHP",
+            "Ajax",
+            "Javascript",
+            "CSS",
+            "MySQL",
+            "Paypal",
+            "C++"
+        ],
+        "projectUrl": "https://assist-software.net/project/chessnet",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "Surge Trading ",
+        "description": "<p><a href=\"http://www.surgetrading.com/\" target=\"_blank\">Surge Trading</a> is a New York-based broker-dealer and offers financial services.<br />\nThe website was built to meet customer expectations in a short timeframe. The design was incorporated in a Joomla template and all customer feedback was integrated in the final website.</p>\n<p>Some Joomla modules have been customized to provide the key functionality of the website's features: calendar, events planner, customized menu.<br />\nWe also provided branding and visual identity package for <a href=\"http://www.surgetrading.com/\" target=\"_blank\">Surge Trading</a>, including graphical layout of website.</p>\n",
+        "customers": [
+            "US"
+        ],
+        "year": "2010",
+        "industries": [
+            "Business"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Custom Software Development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "PHP",
+            "Joomla",
+            "Javascript",
+            "MySQL",
+            "Flash",
+            "Design"
+        ],
+        "projectUrl": "https://assist-software.net/project/surge-trading",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "OSI - Terra Nova",
+        "description": "<p>The purpose of this project was to update TNFG’s applications programs, data interfaces, SQL Database objects, screens, reports, web sites and other impacted entities to meet the requirements of the Option Clearing Corporation’s Option Symbology Initiative (OSI). The products successfully meet the following requirements: successfully compiling, rendering or assembling, successfully unit tested, documented in code comments, meet the remediation approach and test result requirements.<br />\nThe project required code modification written in C#, ASP, ASP.NET, PowerBuilder. Database modification were also done on MSSQL servers, modification applied to tables, stored procedures, triggers, views. All codes and database scripts were tested and commented.</p>\n",
+        "customers": [
+            "US"
+        ],
+        "year": "2011",
+        "industries": [
+            "Financial"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Custom Software Development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "C#",
+            "ASP.NET",
+            "SQL Server"
+        ],
+        "projectUrl": "https://assist-software.net/project/osi-terra-nova",
+        "applicationTypes": [
+            "Database system",
+            "Web app"
+        ]
+    },
+    {
+        "name": "Shimmer CTRL Module",
+        "description": "<p><a href=\"http://www.shimmer-research.com\" target=\"_blank\">Shimmer</a> is a small wireless sensor platform that can record and transmit physiological and kinematic data in real-time.</p>\n<p>For the rapid development of applications we developed a module that reads and logs data from a <a href=\"http://www.shimmer-research.com\" target=\"_blank\">Shimmer</a> device. This was achieved by creating a LabVIEW Datalogging and Supervisory Control Module that reads data from <a href=\"http://www.shimmer-research.com\" target=\"_blank\">Shimmer</a> and uses shared variables.</p>\n<p>The captured data can be displayed and handled by any LabView program.</p>\n",
+        "customers": [
+            "IE"
+        ],
+        "year": "2011",
+        "industries": [
+            "e-Health"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Custom Software Development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "Labview",
+            "Bluetooth"
+        ],
+        "projectUrl": "https://assist-software.net/project/shimmer-ctrl-module",
+        "applicationTypes": [
+            "Healthcare"
+        ]
+    },
+    {
+        "name": "Love Factory",
+        "description": "<p><a href=\"http://www.lovefactory.ro\" target=\"_blank\">Love Factory</a> is the first social game created and developed in Romania for Facebook players worldwide, in collaboration with Digital Cookies. The beneficiary of this project is <a href=\"http://www.love-plus.ro/\" target=\"_blank\">Love Plus Romania</a>.</p>\n<p>ASSIST Team has contributed to this project in 3 major tasks:</p>\n<ul><li>Game development (the game, the CMS, the communication between game and CMS, the database);</li>\n<li>The art of the game;</li>\n<li>Testing of the game.</li>\n</ul>",
+        "customers": [
+            "RO"
+        ],
+        "year": "2012",
+        "industries": [
+            "Entertainment",
+            "Social"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Facebook Game Development"
+        ],
+        "technologies": [
+            "CakePHP",
+            "ActionScript",
+            "3D Modelling",
+            "Flash",
+            "MySQL",
+            "Linux",
+            "Flex",
+            "Analytics"
+        ],
+        "projectUrl": "https://assist-software.net/project/love-factory",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "Netcapital Network",
+        "description": "<p><a href=\"http://www.netcapital.com\" target=\"_blank\">Netcapital Network</a> is a powerful business tool developed both as desktop and web application to manage business contacts of a company.<br />\nDesktop application is an agent that collects contacts from Outlook and adds them to a central database.<br />\nWeb application allows to manage the business contacts and relations between them and users.<br />\nThe users of the manager will interact with that contact or add new information and/or will assign tasks for other user to continue the communication. </p>\n",
+        "customers": [
+            "US"
+        ],
+        "year": "2011",
+        "industries": [
+            "Business"
+        ],
+        "mainActivities": [
+            "Outlook Plugin",
+            "Analysis",
+            "Architecture &amp; Design",
+            "Custom Software Development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "ASP.NET",
+            "SQL Server",
+            "C#",
+            "Ajax",
+            "Linux"
+        ],
+        "projectUrl": "https://assist-software.net/project/netcapital-network",
+        "applicationTypes": [
+            "Database system",
+            "Web app"
+        ]
+    },
+    {
+        "name": "shimmer-research.com",
+        "description": "<p>The main goal of the project was to update the website, by including new and effective technologies in order to improve its role as instrumental marketing and sales tool for the company.</p>\n<p>According with the requirements from client’s SOW, we successfully implemented the following features:</p>\n<ul><li>The <a href=\"http://getshopped.org/\" target=\"_blank\">WordPress e-Commerce Plugin</a> was integrated in the current website structure</li>\n<li>Look and feel was kept and links became more <a href=\"http://en.wikipedia.org/wiki/Search_engine_optimization\" target=\"_blank\">SEO</a> friendly - the products layout was improved and all aspects of the plug-in have been changed to reflect the new vision</li>\n<li>Shopping chart was redesigned by integrating a custom payment gateway for <a href=\"http://www.realex.ie/\" target=\"_blank\">Realex</a></li>\n<li>The website was dramatically improved from security issues perspective</li>\n</ul>",
+        "customers": [
+            "IE"
+        ],
+        "year": "2011",
+        "industries": [
+            "Business",
+            "e-Commerce"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Custom Software Development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "Linux",
+            "PHP",
+            "Wordpress",
+            "SEO"
+        ],
+        "projectUrl": "https://assist-software.net/project/shimmer-researchcom",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "Jessica Wu portal ",
+        "description": "<p>We designed and implemented a portal for <a href=\"http://www.jessicawu.com/\" target=\"_blank\">Jessica Wu</a> which is board-certified dermatologist in Los Angeles who specializes in medical and cosmetic dermatology. The portal is composed from multiple websites with different purposes like medical advices, store for Jessica Wu products, presentation of Jessica Wu's book.</p>\n<p>The portal goal was to combine the medical advices and tips of Jessica Wu with an engaging community.</p>\n<p>Also every homepage has a dynamic Flash animation to highlight different sections of the website and each website was custom designed by us to satisfy client expectations. For the TV appearances section we edited and delivered the videos in which <a href=\"http://www.jessicawu.com/\" target=\"_blank\">Jessica Wu</a> appeared and integrated them with Youtube video service provider. Also parts of the portal are integrated with Twitter and Facebook.</p>\n",
+        "customers": [
+            "US"
+        ],
+        "year": "2011",
+        "industries": [
+            "Business",
+            "e-Health",
+            "e-Commerce"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Custom Software Development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "Flash",
+            "PHP",
+            "Joomla",
+            "jQuery",
+            "MySQL",
+            "Linux"
+        ],
+        "projectUrl": "https://assist-software.net/project/jessica-wu-portal",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "OR Manager ",
+        "description": "<p>OR Manager is an application dedicated to hospitals operating rooms management, that focuses on maximizing operational efficiency and number of surgical cases that can be done on a given day and also optimising the related resources to expected workload.</p>\n<p>OR Manager was successfully finalized in partnership with Suceava Emergency Hospital. We developed OR Manager as an application aiming to raise efficiency in managing human and material resources of hospital’s operatory rooms, considering the number of patients treated by specialty, cancellations, OR time availability, bed capacity, wait times, wait lists, post-surgical resource constraints.</p>\n<p>OR Manager has two main components: a web application used for managing resources – the backend service, and a desktop application used to display the LIVE activity from operatory block – the frontend service. OR Manager is designed to optimise the activity and resources of any operatory block.</p>\n<h3>Benefits</h3>\n<ul><li>Ensure surgeons with appropriate access to the operating room schedule</li>\n<li>Ensure patients to have operations in a timely manner</li>\n<li>Maximize the efficiency of operating rooms utilization, staff and materials</li>\n<li>Decrease patient operation delays caused by cancellations or wait times</li>\n<li>Hospitals can handle more cases without increasing post-surgical resources</li>\n<li>Enhance satisfaction among patients and staff</li>\n</ul>",
+        "customers": [
+            "RO"
+        ],
+        "year": "2011",
+        "industries": [
+            "e-Health"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Custom Software Development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "Drupal",
+            "C#",
+            "JSON",
+            "jQuery",
+            "PHP",
+            "Web Services",
+            "Linux"
+        ],
+        "projectUrl": "https://assist-software.net/project/or-manager",
+        "applicationTypes": [
+            "Healthcare"
+        ]
+    },
+    {
+        "name": "English Attack!",
+        "description": "<p><a href=\"http://ro.english-attack.com/\" target=\"_blank\">English Attack!</a> is the first English-language learning service specifically designed for the digital generation. Our approach features a worldwide community of learners of English; and uses short-session online entertainment to encourage frequent digital immersion in real everyday English, with fresh content published daily.</p>\n<p>We are involved in developing and improving current version of English Attack!. One of our important goals is to optimize the website, increasing its performance by using CDN and special caching techniques.</p>\n<p>A challenging task was to develop the new coaching feature, where we used intensively <a href=\"http://assist-software.net/portfolio/technologies-skills/nodejs\" target=\"_blank\">Node.js</a> and <a href=\"http://assist-software.net/portfolio/technologies-skills/mongodb\" target=\"_blank\">MongoDB</a>.</p>\n<p>ASSIST is also English Attack! commercial and marketing partner for Romania and Moldavia. Using advanced SEO techniques and social media marketing, we engage people to use English Attack! platform and to enjoy learning English daily.</p>\n<p>In 2016, ASSIST team managed to complete the design revamp of the platform. We tried a more modular approach. We tried to work in terms of components and not in terms of pages. Implementing a design using components is a more reliable method if we take in consideration how many developers work on this project. We used Sass with some cool mixins to make thinks easy and also some custom Javascript plugins for more specific English Attack needs.</p>\n<p>Check out the achievements by accessing <a href=\"http://ro.english-attack.com/\" style=\"line-height: 20.8px;\" target=\"_blank\">English Attack!</a>, or browse through screenshots. </p>\n",
+        "customers": [
+            "FR"
+        ],
+        "year": "2016",
+        "industries": [
+            "Education",
+            "Entertainment",
+            "Social"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Custom Software Development",
+            "Software Testing",
+            "Search Engine Optimization"
+        ],
+        "technologies": [
+            "PHP",
+            "Drupal",
+            "MySQL",
+            "jQuery",
+            "CDN",
+            "HTML5",
+            "MongoDB",
+            "Nodejs",
+            "Jenkins",
+            "New Relic",
+            "JMeter",
+            "SaltStack",
+            "Linux",
+            "Flash",
+            "WebGL",
+            "Sass",
+            "Flask"
+        ],
+        "projectUrl": "https://assist-software.net/project/english-attack",
+        "applicationTypes": [
+            "Mobile app",
+            "Mobile Games",
+            "Web app"
+        ]
+    },
+    {
+        "name": "Netcapital.com ",
+        "description": "<p><a href=\"http://www.netcapital.com/login\" target=\"_blank\">NetCapital.com</a> is a business/entrepreneurial social network, which connects entrepreneurs, investors and experts; is the place where entrepreneurs can look for help and start growing their business.</p>\n<p>The platform has two major sections dedicated to Companies and People offering the following features:</p>\n<ul><li>Library - users share all kind of useful stuff, and comment it, news, latest articles on the Dashboard</li>\n<li>Featured companies/people - Premium users displayed on the featured page; promote companies as featured. Service under a subscription</li>\n<li>Build network - build networks (collect friends/contacts from social media)</li>\n<li>Invitations - send invitations to friends, and ask them to join PLATFORM</li>\n<li>Ratings - rate people/companies, based on some categories; view who rated what</li>\n<li>Updates - post updates, on user profile, or on user companies’ wall</li>\n<li>Track - track companies/people; the updates are displayed chronologically on user Dashboard</li>\n<li>Add connection - send connection requests to users for posting messages on other user profile walls</li>\n<li>Messages - message system, send internal messages to users (multiple recipients allowed)</li>\n</ul>",
+        "customers": [
+            "US"
+        ],
+        "year": "2011",
+        "industries": [
+            "Business",
+            "Media",
+            "Social"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Architecture &amp; Design",
+            "Custom Software Development",
+            "Software Testing"
+        ],
+        "technologies": [
+            "CakePHP",
+            "CoffeeScript",
+            "jQuery",
+            "Javascript",
+            "CSS3",
+            "MySQL",
+            "Stripe",
+            "Paypal"
+        ],
+        "projectUrl": "https://assist-software.net/project/netcapitalcom",
+        "applicationTypes": [
+            "Web app"
+        ]
+    },
+    {
+        "name": "MM devices for tours ",
+        "description": "<p>The purpose of this project was to make available for the visitors of the two museums of Bucovina Village Museum and Regional Museum Of Folk Architecture Chernovtsy a smart multimedia device to guide them through the visit, providing extra information and images about each attraction point, audio guide to provide feedback and a interactive map that helps the visitors to navigate easier and provide information before they reach the desired objective.</p>\n<p>The software development team included multi language support specific to the zones that is used (Romanian, English and Ukrainian). We integrated a touch screen tablet (running Android OS) that can provide video, text and audio guide for the visitors but also can be portable. To accomplish this we used the latest WEB technologies available like HTML5, mobile optimized frameworks.</p>\n<p>Also we developed the CMS solution for all of the content to be administered by the museum staff using their web site content to be organized and to be added very easily on the devices.</p>\n",
+        "customers": [
+            "RO"
+        ],
+        "year": "2012",
+        "industries": [
+            "Education",
+            "Entertainment"
+        ],
+        "mainActivities": [
+            "Analysis",
+            "Data organization",
+            "Design",
+            "Development"
+        ],
+        "technologies": [
+            "Android",
+            "HTML5",
+            "CSS3",
+            "Javascript",
+            "Drupal",
+            "PHP",
+            "jQuery"
+        ],
+        "projectUrl": "https://assist-software.net/project/mm-devices-tours",
+        "applicationTypes": [
+            "Mobile app"
+        ]
+    },
+    {
+        "name": "iPhone App",
+        "description": "<p>We developed an iPhone version of a popular website with interesting features like face recognition, location based data. The application is integrated with the website's API and also Facebook and LinkedIn.</p>\n<p>We used REST API for the iPhone application, so the application communicates with backend services. Common API calls send photos from the iPhone to the web services which processes the photos and returns the results.</p>\n",
+        "customers": [
+            "US"
+        ],
+        "year": "2010",
+        "industries": [
+            "Business",
+            "Entertainment"
+        ],
+        "mainActivities": [
+            "iOS Game Development",
+            "3D Design",
+            "3D Game Development"
+        ],
+        "technologies": [
+            "JSON",
+            "iOS",
+            "Face Recognition",
+            "Location Aware"
+        ],
+        "projectUrl": "https://assist-software.net/project/iphone-app",
+        "applicationTypes": [
+            "Mobile app"
+        ]
+    }
+]
