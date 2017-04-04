@@ -53,8 +53,8 @@
         md-search-text-change="holidays.searchTextChange(holidays.searchText)"
         md-search-text="holidays.searchText"
         md-selected-item-change="holidays.selectedItemChange(item)"
-        md-items="item in holidays.querySearch(holidays.searchText)"
-        md-item-text="item.getFullName()"
+        md-items="item in holidays"
+        md-item-text="item"
         md-min-length="0"
         placeholder="Search for an employee">
 
@@ -167,7 +167,7 @@
 
 
 
-  <!-- TABLE HOLIDAYS -->
+   <!--TABLE HOLIDAYS -->
   <md-table-container>
     <table
       class="c-table--actions"
@@ -183,11 +183,11 @@
         md-order="holidays.query.order">
         <tr md-row>
           <th md-column>Employee</th>
-          <th md-column>Team Leader</th>
-          <th md-column>Replacement</th>
-          <th md-column>Period</th>
-          <th md-column>Signing Date</th>
-          <th md-column>Nr. of days</th>
+          <th md-column>Start Date</th>
+          <th md-column>End Date</th>
+          <th md-column>No. of days</th>
+          <!--<th md-column>Signing Date</th>-->
+          <!--<th md-column>Nr. of days</th>-->
           <th md-column>Actions</th>
         </tr>
       </thead>
@@ -200,39 +200,25 @@
           md-auto-select="holidays.options.autoSelect"
           ng-repeat="holiday in holidays.holidays | filter:holidays.searchText | orderBy: holidays.table.query.order | limitTo: holidays.table.query.limit : (holidays.table.query.page - 1) * holidays.table.query.limit">
 
-          <td md-cell ng-repeat="item in holiday.employee track by $index">
-            {{item.firstName+" "+item.lastName}}
-          </td>
-
-          <td md-cell ng-repeat="item in holiday.teamLeader track by $index">
-            {{item.firstName+" "+item.lastName}}
+          <td md-cell>
+            {{holiday.employee}}
           </td>
 
           <td md-cell>
-            <ul class="c-list">
-              <li ng-repeat = "item in holiday.replacement track by $index">
-
-                <p><strong>Project: </strong>{{item.project.name}}</p>
-                <p><strong>Employee: </strong>{{item.employee.firstName+" "+item.employee.lastName}}</p>
-                <hr>
-
-              </li>
-            </ul>
+            {{holiday.startDate}}
           </td>
 
           <td md-cell>
-            <ul class="c-list">
-              <li ng-repeat = "item in holiday.period track by $index">
-                <p><strong>From: </strong>{{item.from | date: 'MMM d, y'}}</p>
-                <p><strong>Until: </strong>{{item.to | date: 'MMM d, y'}}</p>
-                <hr>
-              </li>
-            </ul>
+            {{holiday.endDate}}
           </td>
 
-          <td md-cell>{{holiday.signingDate | date: 'MMM d, y'}}</td>
+          <td md-cell>
+            {{holiday.days}}
+          </td>
 
-          <td md-cell>{{ holiday.days }}</td>
+          <!--<td md-cell>{{holiday.signingDate | date: 'MMM d, y'}}</td>-->
+
+          <!--<td md-cell>{{ holiday.days }}</td>-->
 
           <td md-cell>
 
@@ -240,7 +226,7 @@
               class="md-icon-button md-primary"
               label="View Holiday"
               aria-label="View Holiday"
-              ui-sref="holidayParent.details({id: holiday.id})">
+              ui-sref="holidayParent.details({id: holiday.holidayId})">
               <md-icon class="material-icons">visibility</md-icon>
               <md-tooltip md-autohide="true">
                 View Holiday
@@ -258,16 +244,16 @@
               </md-tooltip>
             </md-button>-->
 
-            <md-button
-              class="md-icon-button md-primary md-warn"
-              label="Remove holiday"
-              aria-label="Remove holiday"
-              ng-click="holidays.deleteConfirm($event, holiday, holiday.id)">
-              <md-icon class="material-icons">delete</md-icon>
-              <md-tooltip md-autohide="true">
-                Remove holiday
-              </md-tooltip>
-            </md-button>
+            <!--<md-button-->
+              <!--class="md-icon-button md-primary md-warn"-->
+              <!--label="Remove holiday"-->
+              <!--aria-label="Remove holiday"-->
+              <!--ng-click="holidays.deleteConfirm($event, holiday, holiday.id)">-->
+              <!--<md-icon class="material-icons">delete</md-icon>-->
+              <!--<md-tooltip md-autohide="true">-->
+                <!--Remove holiday-->
+              <!--</md-tooltip>-->
+            <!--</md-button>-->
 
           </td>
 
@@ -276,8 +262,6 @@
 
     </table>
   </md-table-container><!-- /TABLE HOLIDAYS -->
-
-
 
 
   <!-- TABLE PAGINATION -->

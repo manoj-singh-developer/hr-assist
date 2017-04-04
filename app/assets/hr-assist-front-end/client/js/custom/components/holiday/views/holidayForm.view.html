@@ -25,12 +25,13 @@
               md-search-text-change="holidayForm.searchTextChange(holidayForm.searchUser[$index])"
               md-selected-item-change="holidayForm.addUser(item, holidayForm.holiday, $index)"
               md-items="item in holidayForm.querySearch(holidayForm.searchUser[$index])"
-              md-item-text="item.getFullName()"
+              md-item-text="item.first_name +' '+ item.last_name"
               md-min-length="0"
               placeholder="Select User">
                     <md-item-template >
                       <span class="item-metadata">
-                        {{item.getFullName()}}
+                        {{item.first_name}}
+                        {{item.last_name}}
                     </md-item-template>
                   </md-autocomplete>
             </form>
@@ -50,7 +51,7 @@
                       placeholder="Select a team leader">
                     <md-item-template >
                       <span class="item-metadata">
-                        {{item.getFullName()}}
+                        {{item | json}}
                     </md-item-template>
                   </md-autocomplete>
             </form>

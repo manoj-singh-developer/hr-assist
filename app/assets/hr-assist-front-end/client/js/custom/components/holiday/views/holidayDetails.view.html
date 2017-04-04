@@ -9,12 +9,12 @@
     <h1 style="text-align: center; font-size: 26px;">Cerere pentru concediu de odihna</h1>
     <p>Stimate Domnule Director,</p>
     <p>
-        Subsemnatul <strong>{{se.viewObject[0].employee[0].firstName}} {{se.viewObject[0].employee[0].lastName}}</strong>, angajat al firmei SC ASSIST Software SRL, vă rog să-mi aprobaţi <strong>{{se.viewObject[0].days}}</strong> <span ng-if="se.viewObject[0].days === 1">zi</span> <span ng-if="se.viewObject[0].days > 1">zile</span> de concediu pentru odihna conform contractului de muncă in data de 30 Septembrie 2016.
+        Subsemnatul <strong>{{holidayPaper[0].firstName}} {{holidayPaper[0].lastName}}</strong>, angajat al firmei SC ASSIST Software SRL, vă rog să-mi aprobaţi <strong>{{holidayPaper[0].holidays}}</strong> <span ng-if="holidayPaper[0].holidays === 1">zi</span> <span ng-if="holidayPaper[0].holidays > 1">zile</span> de concediu pentru odihna conform contractului de muncă in data de 30 Septembrie 2016.
     </p>
     <p style="text-align: left">Va multumesc.</p>
 
     <p style="text-align: left">Cu consideratie,</p>
-    <p style="text-align: left"><strong>{{se.viewObject[0].employee[0].firstName}} {{se.viewObject[0].employee[0].lastName}}</strong></p>
+    <p style="text-align: left"><strong>{{holidayPaper[0].firstName}} {{holidayPaper[0].lastName}}</strong></p>
     <p style="text-align: right">APROBAT, </p>
     <p style="text-align: left">Semnatura, </p>
     <p style="text-align: left">Data: <strong>{{se.viewObject[0].signingDate | date }}</strong></p>
@@ -22,7 +22,7 @@
     <h4><strong>Mentiuni</strong></h4>
     <br>
     <p><strong>1.</strong> Task-urile din proiectele la care sunt implicat vor fi preluate de:</p>
-    <table style="border: 1px solid #000;"">
+    <table style="border: 1px solid #000;">
         <thead>
             <tr style="border: 1px solid #000;">
                 <th>Proiect</th>

@@ -26,9 +26,9 @@
     .controller('HolidaysController', HolidaysController);
 
   HolidaysController
-    .$inject = ['$rootScope', '$scope', '$mdDialog', 'autocompleteService', 'miscellaneousService', 'HolidayModel', 'Employee'];
+    .$inject = ['$rootScope', '$scope', '$mdDialog', 'autocompleteService', 'miscellaneousService', 'HolidayModel', 'Employee', '$timeout'];
 
-  function HolidaysController($rootScope, $scope, $mdDialog, autocompleteService, miscellaneousService, HolidayModel, Employee) {
+  function HolidaysController($rootScope, $scope, $mdDialog, autocompleteService, miscellaneousService, HolidayModel, Employee, $timeout) {
 
 
     var vm = this;
@@ -65,6 +65,7 @@
       "limitOptions": [10, 15, 20],
       selected: []
     };
+    var empArray;
 
     getHoliday();
     getEmployees();
@@ -152,7 +153,7 @@
     function getEmployees() {
       Employee.getAll().then(
         function(data) {
-          vm.empList = data;
+          empArray = vm.empList = data;
           return autocompleteService.buildList(vm.empList, ['firstName', 'lastName']);
         },
         function(data) {
@@ -200,10 +201,42 @@
 
 
     function getHoliday() {
+
       HolidayModel.getAll().then(
         function(data) {
-          vm.holidays = data;
-          holCopy = angular.copy(vm.holidays);
+
+            $scope.holidaysTable = [];
+            var holidaysArr = data;
+            empArray;
+
+            holidaysArr.forEach(function (h, index) {
+                $timeout(function () {
+                    empArray.forEach(function (u, index) {
+
+                        if(u.id === h.user_id){
+                            var employee =  u.first_name + ' ' + u.last_name;
+                            var startDate = h.start_date;
+                            var endDate = h.end_date;
+                            var days = h.days;
+                            var holidayId= h.id;
+
+                            var holidayObj = {
+                                employee: employee,
+                                startDate: startDate,
+                                endDate: endDate,
+                                days: days,
+                                holidayId: holidayId
+                            };
+
+                            $scope.holidaysTable.push(holidayObj);
+                        }
+                    });
+                }, 100)
+            });
+
+            vm.holidays =  $scope.holidaysTable;
+
+          // holCopy = angular.copy(vm.holidays);
           //return autocompleteService.buildList(vm.holidays, ['employee']);
         },
         function(data) {});
@@ -248,7 +281,6 @@
           getHoliday();
       }
     });
-
   }
 
 }());
