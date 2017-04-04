@@ -54,3 +54,12 @@ positions.each do |pos|
     position.name = pos
   end
 end
+
+countries = ActiveSupport::JSON.decode(File.read("db/seeds/countries.json"))
+
+countries.each do |coun|
+  Country.populate 1 do |country|
+    country.short_name = coun[0]
+    country.long_name = coun[1]
+  end
+end
