@@ -81,4 +81,12 @@ module APIHelpers
     url += "&per_page=#{@@per_page}" if @@per_page
     url
   end
+
+  def create_object_for_user(model, params)
+    object = model.find_by_id(params[:id])
+    user = User.find_by_id(params[:user_id])
+    objects = model.to_s.downcase.pluralize
+    user.send(objects.to_sym) << object
+    return object
+  end
 end

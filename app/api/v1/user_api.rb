@@ -59,9 +59,17 @@ module V1
         user.devices.any? ? user.devices : nil_error("devices")
       end
 
+      post ':user_id/devices/:id' do
+        create_object_for_user(Device, params)
+      end
+
       get ':id/languages' do
         user = User.find_by_id(params[:id])
         user.languages.any? ? user.languages : nil_error("languages")
+      end
+
+      post ':user_id/languages/:id' do
+        create_object_for_user(Language, params)
       end
 
       get ':id/positions' do
@@ -74,6 +82,10 @@ module V1
         user.educations.any? ? user.educations : nil_error("educations")
       end
 
+      post ':user_id/educations/:id' do
+        create_object_for_user(Education, params)
+      end
+
       get ':id/uploads' do
         user = User.find_by_id(params[:id])
         user.uploads.any? ? user.uploads : nil_error("uploads")
@@ -82,6 +94,38 @@ module V1
       get ':id/schedules' do
         user = User.find_by_id(params[:id])
         user.schedule ? user.schedule : {message: 'Schedule not found'}
+      end
+
+      post ':user_id/schedule/:id' do
+        schedule = Schedule.find_by_id(params[:id])
+        user = User.find_by_id(params[:user_id])
+        user.schedule = schedule
+        return schedule
+      end
+
+      get ':id/projects' do
+        user = User.find_by_id(params[:id])
+        user.projects.any? ? user.projects : nil_error("projects")
+      end
+
+      post ':user_id/projects/:id' do
+        create_object_for_user(Project, params)
+      end
+
+      get ':id/technologies' do
+        user = User.find_by_id(params[:id])
+        user.technologies.any? ? user.technologies : nil_error("projects")
+      end
+      post ':user_id/technologies/:id' do
+        create_object_for_user(Technology, params)
+      end
+
+      get ':id/holidays' do
+        user = User.find_by_id(params[:id])
+        user.holidays.any? ? user.holidays : nil_error("holidays")
+      end
+      post ':user_id/holidays/:id' do
+        create_object_for_user(Holiday, params)
       end
     end
 
@@ -106,6 +150,35 @@ module V1
     get "me" do
       current_user
     end
+
+    desc "Update profile user"
+      params do
+        optional :first_name, type: String
+        optional :middle_name, type: String
+        optional :last_name, type: String
+        optional :address, type: String
+        optional :birthday, type: Date
+        optional :phone, type: String
+        optional :picture, type: String
+        optional :observations, type: String
+        optional :email_other, type: String
+        optional :urgent_contact, type: String
+        optional :car_plate, type: String
+        optional :assist_start_date, type: Date
+        optional :courses_and_certifications, type: String
+        optional :courses_date, type: Date
+        optional :skills_level, type: String
+        optional :skills_type, type: String
+        optional :project_dates, type: Date
+        optional :status, type: Integer
+      end
+
+      put "me" do
+        authenticate!
+        current_user.update(postParams)
+        success
+        return current_user
+      end
   end
 end
 
