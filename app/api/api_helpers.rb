@@ -44,18 +44,23 @@ module APIHelpers
   end
 
   def getPaginatedItemsFor model, relations = nil
-    items = model.all.includes(relations).page(params[:page]).per(params[:per_page])
-    {
-      :items => items.as_json(include: relations),
-      :paginate => url_paginate(items, params[:per_page])
-    }
+    if params[:page] && params[:per_page]
+      items = model.all.includes(relations).page(params[:page]).per(params[:per_page])
+      {
+          :items => items.as_json(include: relations),
+          :paginate => url_paginate(items, params[:per_page])
+      }
+    else
+      { items:  model.all.includes(relations) }
+    end
   end
 
   def authorizeAndCreate(model, postParams, &block)
     authorize! :create, model
     block.call if block_given?
-    model.create!(postParams)
+    object = model.create!(postParams)
     success
+    return object
   end
 
   def url_paginate(collection, per_page)

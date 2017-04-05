@@ -57,7 +57,7 @@ module V1
         optional :assist_url, type: String
       end
       post 'new' do
-        authorizeAndCreate Project postParams
+        authorizeAndCreate(Project, postParams)
       end
 
       desc "Update project"

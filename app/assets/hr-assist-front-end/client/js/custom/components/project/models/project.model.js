@@ -58,7 +58,7 @@
             });
           }, function(data) {});
         }, function(error) {
-          return reject('Something gone wrong!');
+          return reject('Something gone wrong to get projects!');
         });
       }
       return $q(promise);
@@ -72,7 +72,7 @@
         getProjectById(id).$promise.then(function(data) {
           return resolve(Project.create(data));
         }, function(error) {
-          return reject('Something gone wrong!');
+          return reject('Something gone wrong to get project by id!');
         });
       }
       return $q(promise);
@@ -90,7 +90,7 @@
           });
           return resolve(processed);
         }, function(error) {
-          return reject('Something gone wrong!');
+          return reject('Something gone wrong to get technologies!');
         });
       }
       return $q(promise);
@@ -228,6 +228,20 @@
       }
       return $q(promise);
     };
+
+    Project.getProjectSkill = function () {
+        function promise(resolve, reject){
+            getProjectsSkills()
+                .then(function (response) {
+                    var raw = response.items;
+                    return resolve(raw);
+                })
+                .catch(function (error){
+                    return reject;
+                });
+        }
+        return $q(promise);
+    };
     // Private methods
     // ------------------------------------------------------------------------
     function getAllProjects() {
@@ -343,8 +357,15 @@
     }
 
     function removeProject(projectToRemove) {
-      url = apiUrl + "/project";
+      url = apiUrl + "/projects";
       return $resource(url).delete(projectToRemove);
+    }
+
+    function getProjectsSkills() {
+        url = apiUrl + '/projects?with[]=technologies';
+
+        var item = $resource(url).get();
+        return item.$promise;
     }
 
     return Project;

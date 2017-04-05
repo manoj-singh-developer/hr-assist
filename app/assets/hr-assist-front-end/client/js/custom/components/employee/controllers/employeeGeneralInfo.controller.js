@@ -239,7 +239,7 @@
       }).then(function(resp) {
         if (resp.data.file.length === 1) {
           vm.showToLargeImage = false;
-          vm.pictures = '/images/' + resp.data.file[0].fd.substr(resp.data.file[0].fd.lastIndexOf('/') + 1);
+          vm.pictures = '/assets/images/' + resp.data.file[0].fd.substr(resp.data.file[0].fd.lastIndexOf('/') + 1);
           vm.showSuccessMsg = true;
         }
       }, function(err) {

@@ -36,7 +36,9 @@
 
     function getSkillById(id) {
       url = apiUrl + "/technologies/" + id;
-      return $resource(url).get();
+
+      var item = $resource(url).get();
+      return item.$promise;
     }
 
     function saveSkill(data) {
@@ -69,6 +71,13 @@
         return $resource(url).delete();
     }
 
+    function getUsersSkills(){
+        url = apiUrl + '/users?with[]=technologies';
+
+        var item = $resource(url).get();
+        return item.$promise;
+    }
+
 
 
     // Static methods asigned to class
@@ -96,6 +105,43 @@
       }
       return $q(promise);
     };
+
+    Skill.getUsers = function () {
+        var processed = [];
+        function promise(resolve, reject){
+            getUsersSkills()
+                .then(function (response) {
+                    var raw  = response.items;
+                    angular.forEach(raw, function (item, index){
+                        processed.push(item);
+                    });
+                    return resolve(processed)
+                })
+                .catch(function (error){
+                    console.log(error);
+                    return reject();
+                })
+        }
+
+        return $q(promise);
+    };
+
+      Skill.getOneSkill = function (id) {
+          var processed = [];
+          function promise(resolve, reject){
+              getSkillById(id)
+                  .then(function (response) {
+                      var raw  = response;
+                      return resolve(raw)
+                  })
+                  .catch(function (error){
+                      console.log(error);
+                      return reject();
+                  })
+          }
+
+          return $q(promise);
+      };
 
     Skill.save = function(data) {
       function promise(resolve, reject) {

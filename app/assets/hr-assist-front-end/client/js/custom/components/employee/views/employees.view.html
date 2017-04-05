@@ -527,15 +527,15 @@
           ng-repeat="employee in employees.employees | filter: employees.searchText | orderBy: employees.table.query.order | limitTo: employees.table.query.limit : (employees.table.query.page - 1) * employees.table.query.limit track by $index">
 
           <td md-cell>
-            <p>{{employee.firstName}}</p>
+            <p>{{employee.first_name}}</p>
           </td>
 
           <td md-cell>
-            <p>{{employee.lastName}}</p>
+            <p>{{employee.last_name}}</p>
           </td>
 
           <td md-cell>
-            <p>{{employee.emailAssist}}</p>
+            <p>{{employee.email}}</p>
             <p>{{employee.phone}}</p>
           </td>
 

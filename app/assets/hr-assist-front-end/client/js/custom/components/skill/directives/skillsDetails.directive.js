@@ -29,9 +29,9 @@
     .controller('skillDetailsController', skillDetailsController);
 
   skillDetailsController
-    .$inject = ['$rootScope', '$scope', '$stateParams', 'skillModel', '$mdToast', 'ProjectModel'];
+    .$inject = ['$rootScope', '$scope', '$stateParams', 'skillModel', '$mdToast', 'ProjectModel', '$timeout'];
 
-  function skillDetailsController($rootScope, $scope, $stateParams, skillModel, $mdToast, ProjectModel) {
+  function skillDetailsController($rootScope, $scope, $stateParams, skillModel, $mdToast, ProjectModel, $timeout) {
 
     var vm = this;
     vm.viewLists = null;
@@ -41,11 +41,12 @@
     vm.candidates = [];
     vm.allProjects = [];
     vm.projects = [];
+    var technologies = [];
 
     // public methods
     // ------------------------------------------------------------------------
     vm.getSkills = getSkills;
-
+    vm.getUsersProjectsSkills = getUsersProjectsSkills;
 
     // public methods declaration
     // ------------------------------------------------------------------------
@@ -66,6 +67,103 @@
         function (err) {
           $rootScope.showToast('Error on loading data! Please refresh!');
         });
+    }
+
+    function getUsersProjectsSkills() {
+        var techArr = [];
+        var id = $stateParams.id;
+        var oneTech;
+        $scope.employeeSameSkills = [];
+        var projArr = [];
+        $scope.projectSameSkills = [];
+
+        skillModel.getOneSkill(id)
+            .then(function (response){
+                oneTech = response;
+            })
+            .catch(function (error){
+                console.log(error);
+            });
+
+        skillModel.getUsers()
+            .then(function (response){
+                techArr = response;
+
+                techArr.forEach(function (users, index) {
+                    var usersTech = users.technologies;
+
+                    usersTech.forEach(function (userT, index){
+                        userT.name;
+                        $timeout(function () {
+                            if(oneTech.name !== undefined) {
+                                if(oneTech.name === userT.name) {
+                                    var firstName = users.first_name;
+                                    var lastName = users.last_name;
+
+                                    var skillsObj = {
+                                        firstName: firstName,
+                                        lastName: lastName
+                                    };
+
+                                    $scope.employeeSameSkills.push(skillsObj);
+                                }
+                            }
+
+                            if($scope.employeeSameSkills.length > 0) {
+                                $scope.showText = true;
+                            } else {
+                                $scope.showText = false;
+                            }
+
+                        }, 100);
+
+                    })
+                })
+            })
+            .catch(function (error){
+                console.log(error);
+            });
+
+        ProjectModel.getProjectSkill()
+            .then(function (response){
+                projArr = response;
+
+                projArr.forEach(function (proj, index){
+                    var projTech = proj.technologies;
+
+                    projTech.forEach(function (projT, index) {
+                       projT.name;
+
+                        $timeout(function () {
+                            if(oneTech.name !== undefined) {
+                                if (oneTech.name === projT.name) {
+
+                                    var projectName = proj.name;
+                                    var projectDesc = proj.desc;
+
+                                    var projObj = {
+                                        projectName: projectName,
+                                        projectDesc: projectDesc
+                                    };
+
+                                    $scope.projectSameSkills.push(projObj)
+
+                                }
+                            }
+
+                            if($scope.projectSameSkills.length > 0) {
+                                $scope.showTextP = true;
+                            } else {
+                                $scope.showTextP = false;
+                            }
+
+                        });
+                    })
+                })
+            })
+            .catch(function (error){
+                console.log(error)
+            })
     }
 
     function getProjects() {
@@ -94,6 +192,7 @@
     }
 
     vm.getSkills();
+    vm.getUsersProjectsSkills();
 
   }
 } ());

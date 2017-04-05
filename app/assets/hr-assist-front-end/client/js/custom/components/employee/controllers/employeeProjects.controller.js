@@ -90,7 +90,10 @@
     $rootScope.$on('event:employeeResourcesLoaded', function(event, employeeResources, employee) {
 
       vm.employee = employee;
-      setAllProjects(employeeResources.projects);
+
+      if (employeeResources.projects) {
+        setAllProjects(employeeResources.projects);
+      }
       setAllSkills(employeeResources.skills);
 
     });
@@ -187,9 +190,7 @@
     }
 
     function saveEmployee(employee) {
-
       $rootScope.$emit("callSaveMethodCards", employee);
-
     }
 
 
@@ -202,23 +203,17 @@
 
     function setAllProjects(projects) {
       vm.allProjects = projects;
-
       return autocompleteService.buildList(vm.allProjects, ['name']);
-
     }
 
 
     function setAllSkills(technologies) {
-
       vm.allTechnologies = technologies;
-
     }
 
 
     function addNewTechnology(technology, index) {
-
       vm.currentProject.projectDates[index] = technology;
-
     }
 
     function addEmptyTechnology(index) {
