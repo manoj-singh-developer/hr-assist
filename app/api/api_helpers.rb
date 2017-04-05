@@ -89,4 +89,9 @@ module APIHelpers
     user.send(objects.to_sym) << object
     return object
   end
+
+  def project_with(objects, params)
+    project = Project.find_by_id(params[:project_id])
+    project.send(objects.to_sym)
+  end
 end

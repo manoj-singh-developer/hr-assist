@@ -45,6 +45,30 @@ module V1
         authorize! :read, Project.find(params[:id])
       end
 
+      get ':project_id/application_types' do
+        project_with("application_types", params)
+      end
+
+      get ':project_id/activities' do
+        project_with("activities", params)
+      end
+
+      get ':project_id/industries' do
+        project_with("industries", params)
+      end
+
+      get ':project_id/technologies' do
+        project_with("technologies", params)
+      end
+
+      get ':project_id/customers' do
+        project_with("customers", params)
+      end
+
+      get ':project_id/users' do
+        project_with("users", params)
+      end
+
       desc "Create new project"
       params do
         requires :name, allow_blank: false, type: String
