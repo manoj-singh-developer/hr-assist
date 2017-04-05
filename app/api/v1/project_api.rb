@@ -34,7 +34,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Project
+        getPaginatedItemsFor Project, params[:with]
       end
 
       desc "Returns a project"
