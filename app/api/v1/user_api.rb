@@ -59,9 +59,17 @@ module V1
         user.devices.any? ? user.devices : nil_error("devices")
       end
 
+      post ':user_id/devices/:id' do
+        create_object_for_user(Device, params)
+      end
+
       get ':id/languages' do
         user = User.find_by_id(params[:id])
         user.languages.any? ? user.languages : nil_error("languages")
+      end
+
+      post ':user_id/languages/:id' do
+        create_object_for_user(Language, params)
       end
 
       get ':id/positions' do
@@ -74,6 +82,10 @@ module V1
         user.educations.any? ? user.educations : nil_error("educations")
       end
 
+      post ':user_id/educations/:id' do
+        create_object_for_user(Education, params)
+      end
+
       get ':id/uploads' do
         user = User.find_by_id(params[:id])
         user.uploads.any? ? user.uploads : nil_error("uploads")
@@ -82,6 +94,38 @@ module V1
       get ':id/schedules' do
         user = User.find_by_id(params[:id])
         user.schedule ? user.schedule : {message: 'Schedule not found'}
+      end
+
+      post ':user_id/schedule/:id' do
+        schedule = Schedule.find_by_id(params[:id])
+        user = User.find_by_id(params[:user_id])
+        user.schedule = schedule
+        return schedule
+      end
+
+      get ':id/projects' do
+        user = User.find_by_id(params[:id])
+        user.projects.any? ? user.projects : nil_error("projects")
+      end
+
+      post ':user_id/projects/:id' do
+        create_object_for_user(Project, params)
+      end
+
+      get ':id/technologies' do
+        user = User.find_by_id(params[:id])
+        user.technologies.any? ? user.technologies : nil_error("projects")
+      end
+      post ':user_id/technologies/:id' do
+        create_object_for_user(Technology, params)
+      end
+
+      get ':id/holidays' do
+        user = User.find_by_id(params[:id])
+        user.holidays.any? ? user.holidays : nil_error("holidays")
+      end
+      post ':user_id/holidays/:id' do
+        create_object_for_user(Holiday, params)
       end
     end
 
@@ -130,8 +174,10 @@ module V1
       end
 
       put "me" do
+        authenticate!
         current_user.update(postParams)
         success
+        return current_user
       end
   end
 end
