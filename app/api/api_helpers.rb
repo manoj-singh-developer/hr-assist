@@ -51,7 +51,7 @@ module APIHelpers
           :paginate => url_paginate(items, params[:per_page])
       }
     else
-      { items:  model.all.includes(relations) }
+      { items:  model.all.includes(relations).as_json(include: relations) }
     end
   end
 
