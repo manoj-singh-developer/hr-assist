@@ -45,6 +45,11 @@ module V1
         authorize! :read, Device.find(params[:id])
       end
 
+      get ':id/users' do
+        device = Device.find_by_id(params[:id])
+        device.users
+      end
+
       desc "Create new device"
       params do
         requires :name, allow_blank: false, type: String
