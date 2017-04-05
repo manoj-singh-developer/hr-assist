@@ -36,13 +36,15 @@ module V1
 
     resource :users do
 
+      before { authenticate! }
+
       desc "Return all users"
       params do
         use :pagination # aliases: includes, use_scope
         use :other
       end
       get do
-        getPaginatedItemsFor User, params[:with]
+        getPaginatedItemsFor User, params[:with] , "auth_token"
       end
 
       desc "Returns a user"
@@ -50,7 +52,6 @@ module V1
         requires :id, type: Integer , desc: "User id"
       end
       get ':id' do
-        authenticate!
         authorize! :read, User.find(params[:id])
       end
 
@@ -104,6 +105,7 @@ module V1
 
     desc "Return current user"
     get "me" do
+      authenticate!
       current_user
     end
   end

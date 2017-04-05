@@ -43,15 +43,15 @@ module APIHelpers
     )
   end
 
-  def getPaginatedItemsFor model, relations = nil
+  def getPaginatedItemsFor model, relations = nil, exception = nil
     if params[:page] && params[:per_page]
       items = model.all.includes(relations).page(params[:page]).per(params[:per_page])
       {
-          :items => items.as_json(include: relations),
+          :items => items.as_json(include: relations, except: exception),
           :paginate => url_paginate(items, params[:per_page])
       }
     else
-      { items:  model.all.includes(relations).as_json(include: relations) }
+      { items:  model.all.includes(relations).as_json(include: relations, except: exception) }
     end
   end
 
