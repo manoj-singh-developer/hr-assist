@@ -120,16 +120,13 @@
     };
 
     Equipments.getEquipmentsById = function(id) {
-      var raw = [];
-      var processed = [];
-
       function promise(resolve, reject) {
         getEquipmentsById(id).$promise.then(
           function(data) {
             return resolve(Equipments.create(data));
           },
           function(error) {
-            return reject('Something gone wrong!');
+            return reject('Something gone wrong!'+error);
           });
       }
 
@@ -137,17 +134,13 @@
     };
 
     Equipments.getEquipmentsEmployeeById = function(id) {
-      var raw = [];
-      var processed = [];
-
       function promise(resolve, reject) {
         getEquipmentsEmployeeById(id).$promise.then(
           function(data) {
-                        // debugger
             return resolve(Equipments.create(data));
           },
           function(error) {
-            return reject('Something gone wrong!');
+            return reject('Something gone wrong!'+error);
           });
       }
 
