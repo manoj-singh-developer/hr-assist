@@ -11,9 +11,9 @@
     .factory('skillModel', skillModel);
 
   skillModel
-    .$inject = ['$resource', '$q', 'apiUrl'];
+    .$inject = ['$resource', '$q', 'apiUrl', '$state', '$http'];
 
-  function skillModel($resource, $q, apiUrl) {
+  function skillModel($resource, $q, apiUrl, $state, $http) {
 
 
 
@@ -35,28 +35,23 @@
     }
 
     function getSkillById(id) {
-      url = apiUrl + "/skill/" + id;
+      url = apiUrl + "/technologies/" + id;
       return $resource(url).get();
     }
 
     function saveSkill(data) {
-      url = apiUrl + "/skill";
+      url = apiUrl + "/technologies/new";
       return $resource(url).save(data);
     }
 
-    function updateSkill(skillToUpdate) {
-      url = apiUrl + "/skill/" + skillToUpdate.id;
-      return $resource(url,
-        skillToUpdate, {
-          'update': {
-            method: 'PUT'
-          }
+    function updateSkill(data) {
+      url = apiUrl + "/technologies/" + data.id;
 
-        }).save();
+      return $http.put(url, data);
     }
 
     function saveJson(data) {
-      url = apiUrl + "/skill";
+      url = apiUrl + "/technologies";
       return $resource(url,
         data, {
           'save': {
@@ -67,8 +62,11 @@
     }
 
     function removeSkill(skillToRemove) {
-      url = apiUrl + "/skill";
-      return $resource(url).delete(skillToRemove);
+
+        var techId = skillToRemove.id;
+        url = apiUrl + "/technologies/" + techId;
+
+        return $resource(url).delete();
     }
 
 
@@ -77,7 +75,7 @@
     // ------------------------------------------------------------------------
     Skill.create = function(data) {
       return angular.extend(new Skill(), data);
-    }
+    };
 
     Skill.getAll = function() {
       var raw = [];
@@ -103,6 +101,7 @@
       function promise(resolve, reject) {
         saveSkill(data).$promise.then(
           function(data) {
+            $state.reload();
             return resolve(data);
           },
           function(error) {
@@ -127,12 +126,12 @@
     };
 
     Skill.update = function(data) {
-      data.owners = data.owners.map(function(item) {
-        return item.id;
-      });
+      // data = data.map(function(item) {
+      //   return item.id;
+      // });
 
       function promise(resolve, reject) {
-        updateSkill(data).$promise.then(
+        updateSkill(data).then(
           function(data) {
             resolve('The skill has been updated!');
           },
