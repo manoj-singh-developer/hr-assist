@@ -43,15 +43,15 @@ module APIHelpers
     )
   end
 
-  def getPaginatedItemsFor model, relations = nil
+  def getPaginatedItemsFor model, relations = nil, exception = nil
     if params[:page] && params[:per_page]
       items = model.all.includes(relations).page(params[:page]).per(params[:per_page])
       {
-          :items => items.as_json(include: relations),
+          :items => items.as_json(include: relations, except: exception),
           :paginate => url_paginate(items, params[:per_page])
       }
     else
-      { items:  model.all.includes(relations) }
+      { items:  model.all.includes(relations).as_json(include: relations, except: exception) }
     end
   end
 
@@ -80,5 +80,18 @@ module APIHelpers
     url = request.base_url + request.path + "/?page=#{page}"
     url += "&per_page=#{@@per_page}" if @@per_page
     url
+  end
+
+  def create_object_for_user(model, params)
+    object = model.find_by_id(params[:id])
+    user = User.find_by_id(params[:user_id])
+    objects = model.to_s.downcase.pluralize
+    user.send(objects.to_sym) << object
+    return object
+  end
+
+  def project_with(objects, params)
+    project = Project.find_by_id(params[:project_id])
+    project.send(objects.to_sym)
   end
 end

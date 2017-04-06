@@ -8,3 +8,5 @@ module YourFileReader
     YAML.load_file("#{Rails.root}/config/ldap.yml")
   end
 end
+
+Rails.application.config.expiration_token_time = 1.day

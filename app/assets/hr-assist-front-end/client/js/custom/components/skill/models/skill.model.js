@@ -69,6 +69,7 @@
         url = apiUrl + "/technologies/" + techId;
 
         return $resource(url).delete();
+
     }
 
     function getUsersSkills(){
@@ -186,7 +187,7 @@
           });
       }
       return $q(promise);
-    }
+    };
 
     Skill.remove = function(id) {
       function promise(resolve, reject) {
@@ -199,7 +200,7 @@
           });
       }
       return $q(promise);
-    }
+    };
 
     return Skill;
   }
