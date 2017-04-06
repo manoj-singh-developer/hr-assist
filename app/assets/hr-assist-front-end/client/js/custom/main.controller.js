@@ -4,14 +4,10 @@
 
   // main controller
   // ------------------------------------------------------------------------
-  angular
-    .module('HRA')
-    .controller('mainController', mainController);
 
-  mainController
-    .$inject = ['$rootScope', '$mdToast', '$scope'];
+  function mainController($rootScope, $mdToast, $scope, $state, $timeout) {
 
-  function mainController($rootScope, $mdToast, $scope) {
+    var self = this;
 
     $rootScope.showToast = function(message) {
       $mdToast.show(
@@ -21,6 +17,32 @@
         .hideDelay(1200)
       );
     };
+
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams){
+
+        if(toState.name === 'landing-page'){
+            self.isLanding = true;
+        } else if (toState.name !== 'landing-page'){
+            self.isLanding = false;
+        }
+    });
+
+    self.logOut = function () {
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('user_token');
+
+        self.isLanding = true;
+    };
+
+    return $scope.mainCtrl = self;
+
   }
+
+    mainController
+        .$inject = ['$rootScope', '$mdToast', '$scope', '$state', '$timeout'];
+
+    angular
+        .module('HRA')
+        .controller('mainController', mainController);
 
 }());

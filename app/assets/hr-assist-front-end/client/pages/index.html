@@ -24,16 +24,14 @@
       </style>
 
 
-
-
-
       <md-content class="c-navigation">
 
         <md-nav-bar
-          ng-if="isAdmin"
-          class="[ c-navbar c-navbar--admin ] [ js-navbar-admin ]"
-          md-selected-nav-item="currentNavItem"
-          nav-bar-aria-label="navigation links">
+                ng-if="isAdmin"
+                class="[ c-navbar c-navbar--admin ] [ js-navbar-admin ]"
+                md-selected-nav-item="currentNavItem"
+                nav-bar-aria-label="navigation links"
+                ng-hide="mainCtrl.isLanding">
 
           <md-nav-item md-nav-sref="dashboard" name="Dashboard">
             <md-icon class="material-icons">dashboard</md-icon>
@@ -60,17 +58,18 @@
             Holidays
           </md-nav-item>
 
-          <md-nav-item md-nav-sref="logout" name="logout">
-            Logout
+          <md-nav-item md-nav-sref="landing-page" name="logout" ng-click="mainCtrl.logOut()">
+            <span>Logout</span>
           </md-nav-item>
 
         </md-nav-bar>
 
         <md-nav-bar
-          ng-if="isAdmin"
-          class="[ c-navbar c-navbar--admin c-navbar--secondary ] [ js-navbar-admin ]"
-          md-selected-nav-item="currentNavItem"
-          nav-bar-aria-label="navigation links">
+                ng-if="isAdmin"
+                class="[ c-navbar c-navbar--admin c-navbar--secondary ] [ js-navbar-admin ]"
+                md-selected-nav-item="currentNavItem"
+                nav-bar-aria-label="navigation links"
+                ng-hide="mainCtrl.isLanding">
 
           <md-nav-item md-nav-sref="equipmentsParent.list" name="equipments">
             Equipments
@@ -99,13 +98,13 @@
         </md-nav-bar>
 
         <md-nav-bar
-          ng-if="!isAdmin"
-          class="[ c-navbar--employee ]  [ js-navbar-employee ]"
-          md-selected-nav-item="currentNavItem"
-          nav-bar-aria-label="navigation links">
+                ng-show="mainCtrl.isLanding"
+                class="[ c-navbar--employee ]  [ js-navbar-employee ]"
+                md-selected-nav-item="currentNavItem"
+                nav-bar-aria-label="navigation links">
 
-          <md-nav-item md-nav-sref="logout" name="equipments">
-            Logout
+          <md-nav-item md-nav-sref="login" name="equipments">
+            Login
           </md-nav-item>
 
         </md-nav-bar>
@@ -121,17 +120,11 @@
       </section>
 
 
-
-
-
     </section>
 
     <!--SCRIPTS-->
      <script src="./vendor.js"></script>
      <script src="./app.js"></script>
-
-
-
 
   </body>
 </html>
