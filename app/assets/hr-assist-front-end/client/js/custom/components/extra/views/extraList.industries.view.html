@@ -17,17 +17,19 @@
         ng-show="extraList.api"
         md-no-ink
         class="md-primary"
+        name="add-industry"
         ng-click="extraList.showFormDialog($event, {})">
           Add Industry
       </md-button>
 
-      <md-button
-        ng-show="extraList.api"
-        md-no-ink
-        class="md-primary"
-        ng-click="extraList.showFormJsonDialog($event)">
-          Add from JSON
-      </md-button>
+      <!--TODO: Implement Add industry from JSON -->
+      <!--<md-button-->
+        <!--ng-show="extraList.api"-->
+        <!--md-no-ink-->
+        <!--class="md-primary"-->
+        <!--ng-click="extraList.showFormJsonDialog($event)">-->
+          <!--Add from JSON-->
+      <!--</md-button>-->
 
       <md-button
         ng-hide="extraList.api"
@@ -125,6 +127,7 @@
               class="md-icon-button md-primary md-button md-ink-ripple"
               label="Edit industry"
               aria-label="Edit industry"
+              name="edit-industry"
               ng-click="extraList.showFormDialog($event, industry, industry.id)">
                 <md-icon class="material-icons">create</md-icon>
                 <md-tooltip md-autohide="true">
@@ -166,16 +169,16 @@
 
 
 
-
+  <!--TODO: Implement Add industry from JSON-->
   <!-- TEMPLATES -->
   <script type="text/ng-template" id="extraJsonForm.tmpl.html">
     <section layout="column">
 
-      <md-toolbar class="md-table-toolbar">
-        <div class="md-toolbar-tools ">
-          Add Industry from JSON
-        </div>
-      </md-toolbar>
+      <!--<md-toolbar class="md-table-toolbar">-->
+        <!--<div class="md-toolbar-tools ">-->
+          <!--Add Industry from JSON-->
+        <!--</div>-->
+      <!--</md-toolbar>-->
 
       <section class="md-padding">
 
