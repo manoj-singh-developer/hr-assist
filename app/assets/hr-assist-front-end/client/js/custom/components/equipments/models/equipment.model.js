@@ -136,6 +136,24 @@
       return $q(promise);
     };
 
+    Equipments.getEquipmentsEmployeeById = function(id) {
+      var raw = [];
+      var processed = [];
+
+      function promise(resolve, reject) {
+        getEquipmentsEmployeeById(id).$promise.then(
+          function(data) {
+                        // debugger
+            return resolve(Equipments.create(data));
+          },
+          function(error) {
+            return reject('Something gone wrong!');
+          });
+      }
+
+      return $q(promise);
+    };
+
     // Private methods
     // ------------------------------------------------------------------------
 
@@ -178,6 +196,16 @@
     function getEquipmentsById(id) {
       url = apiUrl + "/devices/" + id;
       return $resource(url).get();
+    }
+
+    function getEquipmentsEmployeeById(id) {
+      url = apiUrl + "/devices/" + id+"/users";
+      return $resource(url, {
+        'query': {
+          method: 'GET',
+          isArray: true
+        }
+      }).query();
     }
 
     return Equipments;

@@ -22,12 +22,12 @@
 	       </p>
 
 	       <p class="c-card-profile__info c-card-profile__email">
-	         <strong>Updated at: </strong>{{detailsCtrl.equipmentInfo.updated_at | date}}
+	         <strong>Updated at: </strong>{{detailsCtrl.equipmentInfo.updated_at | date:"dd-MM-yyyy"}}
 	       </p>
 
 	       <p class="c-card-profile__info c-card-profile__phone">
 	         <strong>Created at: </strong>
-	         {{detailsCtrl.equipmentInfo.created_at | date}}
+	         {{detailsCtrl.equipmentInfo.created_at | date:"dd-MM-yyyy"}}
 	       </p>
 
 	     </div>
@@ -38,7 +38,6 @@
 </md-card><br>
 
 <md-card  class="employee-profile">
-
 	  <md-card-title>
 		   <md-card-title-text>
 		     <span class="md-headline">Employees with this equipment</span>
@@ -51,9 +50,9 @@
 
 	     <div flex="100" class="c-card-profile__general-info">
 
-	       <p class="c-card-profile__info c-card-profile__name" ng-repeat="employees in detailsCtrl.equipmentInfo.employees">
+	       <p class="c-card-profile__info c-card-profile__name" ng-repeat="employees in detailsCtrl.equipmentEmployeeInfo">
 	        Name:
-	         {{employees.firstName}} {{employees.lastName}}
+	         {{employees.first_name}} {{employees.last_name}}
 	       </p>
 	     </div>
 
