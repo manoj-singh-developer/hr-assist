@@ -1,14 +1,12 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  before_save :ensure_authentication_token
 
   devise :ldap_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
   attr_accessor :skip_password_validation
 
-  #before_validation :get_ldap_info
   def get_ldap_info
     self.email = Devise::LDAP::Adapter.get_ldap_param(self.email,"mail").first
     self.first_name = Devise::LDAP::Adapter.get_ldap_param(self.email,"givenName").first
@@ -34,6 +32,7 @@ class User < ApplicationRecord
   has_many :projects, through: :user_projects
 
   def ensure_authentication_token
+    self.last_sign_in_at = Time.now
     self.auth_token = generate_access_token
   end
 
