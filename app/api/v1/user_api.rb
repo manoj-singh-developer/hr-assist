@@ -55,78 +55,162 @@ module V1
         authorize! :read, User.find(params[:id])
       end
 
-      get ':id/devices' do
-        user = User.find_by_id(params[:id])
-        user.devices.any? ? user.devices : nil_error("devices")
+      get ':user_id/devices' do
+        user = find_user(params[:user_id])
+        user.as_json(include: :devices)
       end
 
-      post ':user_id/devices/:id' do
-        create_object_for_user(Device, params)
+      put ':user_id/devices/:device_id' do
+        user = add_object_for_user(Device, params[:user_id], params[:device_id])
+        user.to_json(include: :devices)
       end
 
-      get ':id/languages' do
-        user = User.find_by_id(params[:id])
-        user.languages.any? ? user.languages : nil_error("languages")
+      get ':user_id/languages' do
+        user = find_user(params[:user_id])
+        user.to_json(include: :languages)
       end
 
-      post ':user_id/languages/:id' do
-        create_object_for_user(Language, params)
+      params do
+        requires :language_id, type: Integer, desc: "Language id"
+      end
+      put ':user_id/languages' do
+        user = add_object_for_user(Language, params[:user_id], params[:language_id])
+        user.as_json(include: :languages)
       end
 
-      get ':id/positions' do
-        user = User.find_by_id(params[:id])
-        user.positions.any? ? user.positions : nil_error("positions")
+      get ':user_id/positions' do
+        user = find_user(params[:user_id])
+        user.as_json(include: :positions)
       end
 
-      get ':id/educations' do
-        user = User.find_by_id(params[:id])
-        user.educations.any? ? user.educations : nil_error("educations")
+      put ':user_id/positions/:position_id' do
+        user = add_object_for_user(Position, params[:user_id], params[:position_id])
+        user.as_json(include: :positions)
       end
 
-      post ':user_id/educations/:id' do
-        create_object_for_user(Education, params)
+      get ':user_id/educations' do
+        user = find_user(params[:user_id])
+        user.as_json(include: :educations)
       end
 
-      get ':id/uploads' do
-        user = User.find_by_id(params[:id])
-        user.uploads.any? ? user.uploads : nil_error("uploads")
+      params do
+        requires :name, type: String,  allow_blank: false
+        requires :degree, type: String, allow_blank: false
+        requires :description, type: String, allow_blank: false
+        requires :start_date, type: Date, allow_blank: false
+        requires :end_date, type: Date, allow_blank: false
+      end
+      post ':user_id/educations' do
+        education = Education.create(user_education_params)
+        user = find_user(params[:user_id])
+        user.educations << education
+        user.as_json(include: :educations)
       end
 
-      get ':id/schedules' do
-        user = User.find_by_id(params[:id])
-        user.schedule ? user.schedule : {message: 'Schedule not found'}
+      put ':user_id/educations/:education_id' do
+        user = add_object_for_user(Education, params[:user_id], params[:education_id])
+        user.as_json(include: :educations)
       end
 
-      post ':user_id/schedule/:id' do
-        schedule = Schedule.find_by_id(params[:id])
-        user = User.find_by_id(params[:user_id])
+      get ':user_id/uploads' do
+        user = find_user(params[:user_id])
+        user.as_json(include: :uploads)
+      end
+
+      get ':user_id/schedule' do
+        user = find_user(params[:user_id])
+        user.as_json(include: :schedule)
+      end
+
+      params do
+        optional :name, type: String
+        optional :timetable, type: String
+      end
+      put ':user_id/schedule/:schedule_id' do
+        schedule = Schedule.find_or_create_by(id: params[:schedule_id]) do |schedule|
+          schedule.name = params[:name]
+          schedule.timetable = params[:timetable]
+        end
+        schedule.update(user_schedule_params)
+        user = find_user(params[:user_id])
         user.schedule = schedule
-        return schedule
+        user.as_json(include: :schedule)
       end
 
-      get ':id/projects' do
-        user = User.find_by_id(params[:id])
-        user.projects.any? ? user.projects : nil_error("projects")
+      params do
+        requires :project_id, type: Integer, desc: "Pro id"
+      end
+      get ':user_id/projects' do
+        user = find_user(params[:user_id])
+        user.projects
       end
 
-      post ':user_id/projects/:id' do
-        create_object_for_user(Project, params)
+      params do
+        optional :start_date, type: Date
+        optional :end_date, type: Date
+        optional :technology_ids, type: Array[Integer]
+      end
+      put ':user_id/projects/:project_id' do
+        user = find_user(params[:user_id])
+        debugger
+        user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
+        user_project = UserProject.create(user_id: params[:user_id], project_id: params[:project_id]) if user_project.nil?
+        user_project.update(user_project_params)
+        technologies = Technology.where(id: params[:technology_ids]) - user_project.technologies
+        user_project.technologies << technologies if technologies.count > 0
+        user_project.as_json(include: :technologies)
       end
 
-      get ':id/technologies' do
-        user = User.find_by_id(params[:id])
-        user.technologies.any? ? user.technologies : nil_error("projects")
+      get ':user_id/technologies' do
+        user = find_user(params[:user_id])
+        user_project.as_json(include: :technologies)
       end
-      post ':user_id/technologies/:id' do
-        create_object_for_user(Technology, params)
+      put ':user_id/technologies/:technology_id' do
+        user = add_object_for_user(Technology, params)
+        user_project.as_json(include: :technologies)
       end
 
-      get ':id/holidays' do
-        user = User.find_by_id(params[:id])
-        user.holidays.any? ? user.holidays : nil_error("holidays")
+      get ':user_id/holidays' do
+        user = find_user(params[:user_id])
+        user_project.as_json(include: :holidays)
       end
       post ':user_id/holidays/:id' do
-        create_object_for_user(Holiday, params)
+        user = add_object_for_user(Holiday, params)
+        user_project.as_json(include: :holidays)
+      end
+
+      get ':user_id/holiday_replacements' do
+        user = find_user(params[:user_id])
+        user.holiday_replacements
+      end
+
+      desc "Update user by id"
+      params do
+        optional :first_name, type: String
+        optional :middle_name, type: String
+        optional :last_name, type: String
+        optional :address, type: String
+        optional :birthday, type: Date
+        optional :phone, type: String
+        optional :picture, type: String
+        optional :observations, type: String
+        optional :email_other, type: String
+        optional :urgent_contact, type: String
+        optional :car_plate, type: String
+        optional :assist_start_date, type: Date
+        optional :courses_and_certifications, type: String
+        optional :courses_date, type: Date
+        optional :skills_level, type: String
+        optional :skills_type, type: String
+        optional :project_dates, type: Date
+        optional :status, type: Integer
+      end
+      put ':id' do
+        user = User.find(params[:id])
+        authorize! :update, User
+        user.update(postParams)
+        success
+        return user
       end
     end
 
@@ -154,33 +238,33 @@ module V1
     end
 
     desc "Update profile user"
-      params do
-        optional :first_name, type: String
-        optional :middle_name, type: String
-        optional :last_name, type: String
-        optional :address, type: String
-        optional :birthday, type: Date
-        optional :phone, type: String
-        optional :picture, type: String
-        optional :observations, type: String
-        optional :email_other, type: String
-        optional :urgent_contact, type: String
-        optional :car_plate, type: String
-        optional :assist_start_date, type: Date
-        optional :courses_and_certifications, type: String
-        optional :courses_date, type: Date
-        optional :skills_level, type: String
-        optional :skills_type, type: String
-        optional :project_dates, type: Date
-        optional :status, type: Integer
-      end
+    params do
+      optional :first_name, type: String
+      optional :middle_name, type: String
+      optional :last_name, type: String
+      optional :address, type: String
+      optional :birthday, type: Date
+      optional :phone, type: String
+      optional :picture, type: String
+      optional :observations, type: String
+      optional :email_other, type: String
+      optional :urgent_contact, type: String
+      optional :car_plate, type: String
+      optional :assist_start_date, type: Date
+      optional :courses_and_certifications, type: String
+      optional :courses_date, type: Date
+      optional :skills_level, type: String
+      optional :skills_type, type: String
+      optional :project_dates, type: Date
+      optional :status, type: Integer
+    end
 
-      put "me" do
-        authenticate!
-        current_user.update(postParams)
-        success
-        return current_user
-      end
+    put "me" do
+      authenticate!
+      current_user.update(postParams)
+      success
+      return current_user
+    end
   end
 end
 
