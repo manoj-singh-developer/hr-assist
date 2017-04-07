@@ -10,9 +10,9 @@
     .factory('Equipments', equipmentsModel);
 
   equipmentsModel
-    .$inject = ['$resource', '$q', 'apiUrl'];
+    .$inject = ['$resource', '$q', 'apiUrl', '$http'];
 
-  function equipmentsModel($resource, $q, apiUrl) {
+  function equipmentsModel($resource, $q, apiUrl, $http) {
 
     // Constructor
     // ------------------------------------------------------------------------
@@ -42,7 +42,7 @@
       function promise(resolve, reject) {
         getAllEquipments().$promise.then(
           function(data) {
-            raw = data;
+            raw = data.items;
             angular.forEach(raw, function(item, index) {
               processed.push(Equipments.create(item));
             });
@@ -107,7 +107,7 @@
       }
 
       function promise(resolve, reject) {
-        updateEquipments(data).$promise.then(
+        updateEquipments(data).then(
           function(data) {
             resolve('User was updated successfuly!');
           },
@@ -120,16 +120,27 @@
     };
 
     Equipments.getEquipmentsById = function(id) {
-      var raw = [];
-      var processed = [];
-
       function promise(resolve, reject) {
         getEquipmentsById(id).$promise.then(
           function(data) {
             return resolve(Equipments.create(data));
           },
           function(error) {
-            return reject('Something gone wrong!');
+            return reject('Something gone wrong!'+error);
+          });
+      }
+
+      return $q(promise);
+    };
+
+    Equipments.getEquipmentsEmployeeById = function(id) {
+      function promise(resolve, reject) {
+        getEquipmentsEmployeeById(id).$promise.then(
+          function(data) {
+            return resolve(Equipments.create(data));
+          },
+          function(error) {
+            return reject('Something gone wrong!'+error);
           });
       }
 
@@ -141,44 +152,53 @@
 
     function getAllEquipments() {
       url = apiUrl + "/devices";
-      return $resource(url).query();
+      return $resource(url, {
+        'query': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
     }
 
     function saveEquipments(data) {
-      url = apiUrl + "/devices";
+      url = apiUrl + "/devices/new";
       return $resource(url).save(data);
     }
 
-    function updateEquipments(equipmentToUpdate) {
-      url = apiUrl + "/devices/" + equipmentToUpdate.id;
-      return $resource(url,
-        equipmentToUpdate, {
-          'update': {
-            method: 'PUT'
-          }
-        }).save();
+    function updateEquipments(data) {
+      url = apiUrl + "/devices/" + data.id;
+       return $http.put(url, data);
     }
 
     function saveFromJson(data) {
-      url = apiUrl + "/devices";
+      url = apiUrl + "/devices/new";
       return $resource(url,
         data, {
           'save': {
             method: 'POST',
-            isArray: true
+            isArray: false
           }
         }).save(data);
     }
 
     function removeEquipments(equipmentToRemove) {
-      console.log(equipmentToRemove);
-      url = apiUrl + "/devices";
-      return $resource(url).delete(equipmentToRemove);
+      url = apiUrl + "/devices/" + equipmentToRemove.id;
+      return $resource(url).delete();
     }
 
     function getEquipmentsById(id) {
       url = apiUrl + "/devices/" + id;
       return $resource(url).get();
+    }
+
+    function getEquipmentsEmployeeById(id) {
+      url = apiUrl + "/devices/" + id+"/users";
+      return $resource(url, {
+        'query': {
+          method: 'GET',
+          isArray: true
+        }
+      }).query();
     }
 
     return Equipments;

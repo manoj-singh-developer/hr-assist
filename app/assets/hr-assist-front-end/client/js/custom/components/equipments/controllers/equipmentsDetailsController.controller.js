@@ -29,6 +29,13 @@
 			});
 
 
+		Equipments.getEquipmentsEmployeeById(id)
+			.then(function(data) {
+			self.equipmentEmployeeInfo = data;
+			}, function(err) {
+				Callback.error();
+			});
+
 
 		return ($scope.detailsCtrl = self);
 	}
