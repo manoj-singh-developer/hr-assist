@@ -23,6 +23,7 @@
 
 
   // holidayDetailsController controller
+  //  Todo: Move Controller from directive! Make an separate file for each controller.
   // ------------------------------------------------------------------------
   angular
     .module('HRA')
@@ -38,7 +39,8 @@
     vm.viewObject = null;
     var ids = $stateParams.id;
     var empArr = [];
-    var holidayId, days;
+    var holidayId, days, signingDay, startDate, endDate;
+    $scope.today = new Date();
 
     // public methods
     // ------------------------------------------------------------------------
@@ -61,11 +63,17 @@
                            var firstName = employee.first_name;
                            var lastName = employee.last_name;
                            var holidays = days;
+                           var signing = signingDay;
+                           var start = startDate;
+                           var end = endDate;
 
                            var employeeObj = {
                                firstName: firstName,
                                lastName: lastName,
-                               holidays: days
+                               holidays: holidays,
+                               signing: signing,
+                               startDate: start,
+                               endDate: end
                            };
 
                            $scope.holidayPaper.push(employeeObj);
@@ -81,7 +89,10 @@
     function getHolidays() {
       HolidayModel.getHolidayById(ids)
           .then(function(response) {
+              startDate = response.start_date;
+              endDate = response.end_date;
               days = response.days;
+              signingDay = response.signing_day;
               holidayId = response.user_id;
           })
           .catch(function (error){

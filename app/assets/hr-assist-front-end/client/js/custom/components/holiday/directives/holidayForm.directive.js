@@ -26,6 +26,7 @@
 
 
   // holidayFormController controller
+  //  Todo: Move Controller from directive! Make an separate file for each controller.
   // ------------------------------------------------------------------------
   angular
     .module('HRA')
@@ -145,12 +146,14 @@
       var day = datesCalculator();
       var start_date = vm.dateList[0].from;
       var end_date = vm.dateList[0].to;
+      var signing_day = new Date();
 
       holiday = {
         user_id: user_id,
         days: day,
         start_date: start_date,
-        end_date: end_date
+        end_date: end_date,
+        signing_day: signing_day
       };
 
       var currentHoliday = angular.copy(holiday);

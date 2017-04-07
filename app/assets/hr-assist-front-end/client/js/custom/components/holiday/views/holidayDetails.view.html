@@ -9,15 +9,57 @@
     <h1 style="text-align: center; font-size: 26px;">Cerere pentru concediu de odihna</h1>
     <p>Stimate Domnule Director,</p>
     <p>
-        Subsemnatul <strong>{{holidayPaper[0].firstName}} {{holidayPaper[0].lastName}}</strong>, angajat al firmei SC ASSIST Software SRL, vă rog să-mi aprobaţi <strong>{{holidayPaper[0].holidays}}</strong> <span ng-if="holidayPaper[0].holidays === 1">zi</span> <span ng-if="holidayPaper[0].holidays > 1">zile</span> de concediu pentru odihna conform contractului de muncă in data de 30 Septembrie 2016.
+        Subsemnatul
+        <strong>{{holidayPaper[0].firstName}} {{holidayPaper[0].lastName}}</strong>,
+        angajat al firmei SC ASSIST Software SRL, vă rog să-mi aprobaţi
+        <strong>{{holidayPaper[0].holidays}}</strong>
+        <span ng-if="holidayPaper[0].holidays === 1">zi</span>
+        <span ng-if="holidayPaper[0].holidays > 1">zile</span>
+        din concediul de odihna
+        <span ng-if="holidayPaper[0].holidays === 1">aferenta</span>
+        <span ng-if="holidayPaper[0].holidays > 1">aferente</span> anului
+        <span>{{holidayPaper[0].signing | date: 'yyyy'}}</span>
+        <span ng-if="holidayPaper[0].holidays > 1">in intervalul
+            <span>
+                <strong>{{holidayPaper[0].startDate | date: 'dd.MM.yyyy'}} - {{holidayPaper[0].endDate | date: 'dd.MM.yyyy'}}</strong>
+            </span>.
+        </span>
+        <span ng-if="holidayPaper[0].holidays === 1">in data de <span>
+            <strong>{{holidayPaper[0].startDate | date: 'dd.MM.yyyy'}}</strong>
+        </span>.
+        </span>
     </p>
+    <br/>
     <p style="text-align: left">Va multumesc.</p>
 
-    <p style="text-align: left">Cu consideratie,</p>
-    <p style="text-align: left"><strong>{{holidayPaper[0].firstName}} {{holidayPaper[0].lastName}}</strong></p>
-    <p style="text-align: right">APROBAT, </p>
-    <p style="text-align: left">Semnatura, </p>
-    <p style="text-align: left">Data: <strong>{{se.viewObject[0].signingDate | date }}</strong></p>
+    <table style="width: 100%; border: 1px solid #000;">
+        <tr>
+            <td style="border-right:1px solid #000;">
+                <p style="text-align: left">Cu consideratie,</p>
+                <p style="text-align: left">
+                    <strong>{{holidayPaper[0].firstName}} {{holidayPaper[0].lastName}}</strong>
+                </p>
+                <p style="text-align: left">Semnatura, </p>
+                <p style="text-align: left">
+                    Data:
+                    <strong ng-if="holidayPaper[0].signing">
+                        {{holidayPaper[0].signing | date: 'dd.MM.yyyy'}}
+                    </strong>
+                    <strong ng-if="!holidayPaper[0].signing">
+                        {{today | date: 'dd.MM.yyyy'}}
+                    </strong>
+                </p>
+            </td>
+            <td>
+                <p >
+                    <strong>
+                        APROBAT,
+                    </strong>
+                </p>
+            </td>
+        </tr>
+    </table>
+
     <br>
     <h4><strong>Mentiuni</strong></h4>
     <br>
@@ -31,10 +73,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="item in se.viewObject[0].replacement" style="border: 1px solid #000;">
-                <td >{{item.project.name}}</td>
-                <td>{{item.employee.lastName}}</td>
-                <td></td>
+            <tr>
+                <td>
+
+                </td>
+                <td>
+
+                </td>
+                <td>
+
+                </td>
             </tr>
         </tbody>
     </table>
@@ -43,5 +91,15 @@
         <strong>2.</strong> Am luat notă de cererea de concediu și confirm că avem la dispoziție toate elementele de acces, resursele și informațiile necesare derulării corespunzătoare a proiectelor în care colegul meu, solicitant al prezentei cereri, este implicat.
     </p>
     <p>Team leader, <strong>{{se.viewObject[0].teamLeader[0].firstName}} {{se.viewObject[0].teamLeader[0].lastName}}</strong></p>
-    <p>Data: <strong>{{se.viewObject[0].signingDate | date }}</strong></p>
+    <br/>
+    <p>Semnatura:</p>
+    <p>
+        Data:
+        <strong ng-if="holidayPaper[0].signing">
+            {{holidayPaper[0].signing | date: 'dd.MM.yyyy'}}
+        </strong>
+        <strong ng-if="!holidayPaper[0].signing">
+            {{today | date: 'dd.MM.yyyy'}}
+        </strong>
+    </p>
 </section>
