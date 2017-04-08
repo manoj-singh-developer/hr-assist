@@ -237,10 +237,10 @@ const rootTemplatePath = './views/custom/';
           cssClassNames: 'view-skills-details'
         }
       })
-      // @EQUIPMENTS
-      .state('equipmentsParent', {
-        url: '/equipments',
-        templateUrl: rootTemplatePath + 'components/equipments/views/equipmentParent.view.html',
+      // @Devices
+      .state('devicesParent', {
+        url: '/devices',
+        template: '<section ui-view></section>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -249,28 +249,28 @@ const rootTemplatePath = './views/custom/';
           }
         }
       })
-      .state('equipmentsParent.list', {
+      .state('devicesParent.list', {
         url: '/list',
-        template: '<hra-equipments md-whiteframe="6"></hra-equipments>',
+        template: '<hra-devices md-whiteframe="6"></hra-devices>',
         data: {
           permissions: {
             only: ['ADMIN'],
             except: ['isAnonymous'],
             redirectTo: 'login'
           },
-          cssClassNames: 'view-equipments'
+          cssClassNames: 'view-devices'
         }
       })
-      .state('equipmentsParent.details', {
+      .state('devicesParent.details', {
         url: '/:id',
-        template: '<hra-equipment-details></hra-equipment-detail>',
+        template: '<hra-device-details></hra-device-detail>',
         data: {
           permissions: {
             only: ['ADMIN'],
             except: ['isAnonymous'],
             redirectTo: 'login'
           },
-          cssClassNames: 'view-equipment-details'
+          cssClassNames: 'view-device-details'
         }
       })
       // @CANDIDATES
