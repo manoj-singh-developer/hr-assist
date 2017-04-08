@@ -1,3 +1,4 @@
+// TODO: Remove the usage of this service from the project
 (function (  ) {
 
   'use strict';
