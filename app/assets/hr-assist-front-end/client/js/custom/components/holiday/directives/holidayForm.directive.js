@@ -26,15 +26,16 @@
 
 
   // holidayFormController controller
+  //  Todo: Move Controller from directive! Make an separate file for each controller.
   // ------------------------------------------------------------------------
   angular
     .module('HRA')
     .controller('holidayFormController', holidayFormController);
 
   holidayFormController
-    .$inject = ['$rootScope', '$scope', '$timeout', '$mdToast', '$mdDialog', 'Upload', 'autocompleteService', 'miscellaneousService', 'HolidayModel', 'Employee', 'ProjectModel'];
+    .$inject = ['$rootScope', '$scope', '$timeout', '$mdToast', '$mdDialog', 'Upload', 'autocompleteService', 'miscellaneousService', 'HolidayModel', 'Employee', 'ProjectModel', '$state'];
 
-  function holidayFormController($rootScope, $scope, $timeout, $mdToast, $mdDialog, Upload, autocompleteService, miscellaneousService, HolidayModel, Employee, ProjectModel) {
+  function holidayFormController($rootScope, $scope, $timeout, $mdToast, $mdDialog, Upload, autocompleteService, miscellaneousService, HolidayModel, Employee, ProjectModel, $state) {
 
 
     var vm = this;
@@ -138,22 +139,30 @@
     }
 
     function saveHoliday(holiday) {
+
       saveHolidayToArr(holiday);
-      holiday = vm.holidaySend;
-      holiday.teamLeader = angular.toJson(vm.holidayLeader);
-      holiday.replacement = angular.toJson(replaced);
-      holiday.employee = vm.user;
-      holiday.period = angular.toJson(vm.dateList);
+
+      var user_id = vm.user[0].id;
+      var day = datesCalculator();
+      var start_date = vm.dateList[0].from;
+      var end_date = vm.dateList[0].to;
+      var signing_day = new Date();
+
+      holiday = {
+        user_id: user_id,
+        days: day,
+        start_date: start_date,
+        end_date: end_date,
+        signing_day: signing_day
+      };
+
       var currentHoliday = angular.copy(holiday);
       vm.btnIsDisabled = true;
       if (!currentHoliday.id) {
         return HolidayModel.save(currentHoliday).then(
           function(data) {
             $rootScope.showToast('Holiday created successfuly!');
-            HolidayModel.getHolidayById(data.id).then(function(data) {
-              onSaveSuccess('save', HolidayModel.create(data));
-              $mdDialog.cancel();
-            }, function() {});
+            $state.reload();
           },
           function(error) {
             $rootScope.showToast('Holiday creation failed!');
@@ -199,6 +208,7 @@
     }
 
     function addUser(item, holiday, index) {
+
       var userIndex = '';
       if (item) {
         userIndex = miscellaneousService.getItemIndex(vm.empList, item.id);
@@ -372,15 +382,21 @@
     }
 
     function saveHolidayToArr(holiday) {
-      var day = datesCalculator();
+
       var sign = new Date();
       var idx = holiday.id;
-      for (var i = 0; i < vm.holidayRepProject.length; i++)
+
+      var user_id = vm.user[0].id;
+      var day = datesCalculator();
+
+
+        for (var i = 0; i < vm.holidayRepProject.length; i++)
         replaced.push({
           project: vm.holidayRepProject[i],
           employee: vm.holidayRepEmployee[i]
         });
       vm.holidaySend = {
+        user_id: user_id,
         days: day,
         signingDate: sign,
         id: idx
