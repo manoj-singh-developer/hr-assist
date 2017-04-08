@@ -28,7 +28,6 @@
     vm.clearButton = clearButton;
 
 
-
     // Public methods declaration
     // ------------------------------------------------------------------------
     function saveButton() {
@@ -87,6 +86,10 @@
       vm.serverErrors = true;
       vm.serverErrorsArray = message;
     }
+
+    $rootScope.$on('title', function (event, dialogTitle){
+        $scope.dialogTitle = dialogTitle;
+    })
 
   }
 }());

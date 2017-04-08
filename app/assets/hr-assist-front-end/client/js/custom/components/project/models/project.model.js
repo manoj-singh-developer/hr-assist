@@ -45,12 +45,12 @@
       var processed = [];
 
       function promise(resolve, reject) {
-        getAllProjects().$promise.then(function(data) {
+        getAllProjects().then(function(data) {
           raw = data.items;
           Employee.getAll().then(function(data) {
             angular.forEach(raw, function(item, index) {
-              employees = data;
-              if (item.employees === undefined) {
+              employees = data.items;
+              if (item === '') {
                 item.employees = [];
               }
               processed.push(Project.create(item));
@@ -228,17 +228,27 @@
       }
       return $q(promise);
     };
+
+    Project.getProjectSkill = function () {
+        function promise(resolve, reject){
+            getProjectsSkills()
+                .then(function (response) {
+                    var raw = response.items;
+                    return resolve(raw);
+                })
+                .catch(function (error){
+                    return reject;
+                });
+        }
+        return $q(promise);
+    };
     // Private methods
     // ------------------------------------------------------------------------
     function getAllProjects() {
       url = apiUrl + "/projects";
-       return $resource(url, {
-         'query': {
-           method: 'GET',
-           isArray: false
-         }
-       }).get();
-      // return $resource(url).query();
+
+      var item = $resource(url).get();
+      return item.$promise;
     }
 
     function getCustomers() {
@@ -349,6 +359,13 @@
     function removeProject(projectToRemove) {
       url = apiUrl + "/projects";
       return $resource(url).delete(projectToRemove);
+    }
+
+    function getProjectsSkills() {
+        url = apiUrl + '/projects?with[]=technologies';
+
+        var item = $resource(url).get();
+        return item.$promise;
     }
 
     return Project;

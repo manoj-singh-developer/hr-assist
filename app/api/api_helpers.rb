@@ -82,16 +82,34 @@ module APIHelpers
     url
   end
 
-  def create_object_for_user(model, params)
-    object = model.find_by_id(params[:id])
-    user = User.find_by_id(params[:user_id])
+  def add_object_for_user(model, user_id, id)
+    object = model.find_by_id(id)
+    user = User.find_by_id(user_id)
     objects = model.to_s.downcase.pluralize
+
+    return "Aready existing" if user.send(objects.to_sym).include?(object)
     user.send(objects.to_sym) << object
-    return object
+    return user
   end
 
   def project_with(objects, params)
     project = Project.find_by_id(params[:project_id])
     project.send(objects.to_sym)
+  end
+
+  def find_user(id)
+    user = User.find_by_id(id)
+  end
+
+  def user_project_params
+    ActionController::Parameters.new(params).permit(:start_date, :end_date)
+  end
+
+  def user_education_params
+    ActionController::Parameters.new(params).permit(:name, :degree, :description, :start_date, :end_date)
+  end
+
+  def user_schedule_params
+    ActionController::Parameters.new(params).permit(:name, :timetable)
   end
 end

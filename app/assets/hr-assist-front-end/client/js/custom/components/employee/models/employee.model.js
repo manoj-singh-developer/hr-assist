@@ -203,12 +203,7 @@
         url = apiUrl + "/users";
       }
 
-      return $resource(url, {
-        'query': {
-          method: 'GET',
-          isArray: false
-        }
-      }).get();
+      return $resource(url).get();
     }
 
     function getEmployeeById(id, candidate) {
