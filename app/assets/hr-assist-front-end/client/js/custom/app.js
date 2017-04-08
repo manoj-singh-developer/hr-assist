@@ -56,6 +56,14 @@ const rootTemplatePath = './views/custom/';
     $httpProvider.interceptors.push('AuthInterceptor');
 
     $stateProvider
+      .state('landing-page', {
+          url:'/',
+          templateUrl: rootTemplatePath + './components/landing-page/views/landing-page.view.html',
+          name: 'landing-page',
+          data: {
+              cssClassNames: 'view-landing-page'
+          }
+      })
     // @DASHBOARD
       .state('dashboard', {
         url: '/dashboard',
