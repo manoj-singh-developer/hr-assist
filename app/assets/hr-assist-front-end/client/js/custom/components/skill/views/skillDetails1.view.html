@@ -1,0 +1,131 @@
+<md-card class="employee-profile"> <!-- Skill details -->
+
+<md-card-title>
+       <md-card-title-text>
+         <span class="md-headline">Skill Details</span>
+       </md-card-title-text>
+</md-card-title>
+
+  <md-content
+    class="md-padding"
+    class="c-card-profile">
+
+    <section
+      layout-gt-xs="column"
+      layout-align="start left"
+      class="md-padding section-group">
+
+      <div class="md-list-item-text">
+        Name: {{ skillDetails.viewObject[0].name }} 
+      </div>
+      <div class="md-list-item-text" ng-if="skillDetails.viewObject[0].label">
+        Description: {{ skillDetails.viewObject[0].label }} 
+      </div>
+
+    </section>
+
+  </md-content>
+
+</md-card></br><!-- /Skill details -->
+
+
+
+
+<md-card class="employee-profile"> <!-- Employee list -->
+
+  <md-card-title>
+         <md-card-title-text>
+           <span class="md-headline">Employees with this skill</span>
+         </md-card-title-text>
+  </md-card-title>
+
+  <md-content
+    class="md-padding">
+
+    <section
+      layout-gt-xs="column"
+      layout-align="start left"
+      class="md-padding section-group">
+
+      <div class="md-list-item-text"
+           ng-repeat="employee in employeeSameSkills"
+           ng-show="showText">
+          {{$index + 1}}. {{employee.firstName + ' ' + employee.lastName}}
+      </div>
+
+      <div class="md-list-item-text" ng-show="!showText">
+          <h3>Techonoly is not used by any user.</h3>
+      </div>
+
+    </section>
+
+  </md-content>
+
+</md-card></br> <!-- /Employee list -->
+
+
+
+<!--No data for candidate !!!-->
+<!--<md-card class="employee-profile"> &lt;!&ndash; Candidate list &ndash;&gt;-->
+
+  <!--<md-card-title>-->
+         <!--<md-card-title-text>-->
+           <!--<span class="md-headline">Candidates with this skill</span>-->
+         <!--</md-card-title-text>-->
+  <!--</md-card-title>-->
+
+  <!--<md-content-->
+    <!--class="md-padding">-->
+
+    <!--<section-->
+      <!--layout-gt-xs="column"-->
+      <!--layout-align="start left"-->
+      <!--class="md-padding section-group">-->
+      <!--<div class="md-list-item-text"-->
+      <!--ng-repeat="candidate in skillDetails.candidates">-->
+       <!--{{$index+1}}. {{candidate}}-->
+      <!--</div>-->
+
+    <!--</section>-->
+
+  <!--</md-content>-->
+
+<!--</md-card></br> &lt;!&ndash; /Candidate list &ndash;&gt;-->
+
+
+
+
+<md-card class="employee-profile"> <!-- Project list -->
+
+  <md-card-title>
+         <md-card-title-text>
+           <span class="md-headline">Projects with this skill</span>
+         </md-card-title-text>
+  </md-card-title>
+
+  <md-content
+    class="md-padding">
+
+    <section
+      layout-gt-xs="column"
+      layout-align="start left"
+      class="md-padding section-group">
+
+      <div class="md-list-item-text"
+           ng-repeat="project in projectSameSkills"
+           ng-show="showTextP">
+          {{$index + 1}}. {{project.projectName}}
+      </div>
+
+        <div class="md-list-item-text"
+             ng-show="!showTextP">
+            <h3>Techonoly is not used by any project.</h3>
+        </div>
+    </section>
+
+  </md-content>
+
+</md-card> <!-- /Project list -->
+
+
+
