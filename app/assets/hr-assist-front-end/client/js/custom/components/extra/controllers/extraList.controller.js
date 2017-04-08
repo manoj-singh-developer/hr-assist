@@ -93,6 +93,20 @@
     // Public methods declaration
     // ------------------------------------------------------------------------
     function showFormDialog(event, data, id) {
+        var dialogTitle;
+
+        if(event.currentTarget.name === 'add-industry'){
+            $timeout(function () {
+                dialogTitle = "Add Industry";
+                $rootScope.$emit('title', dialogTitle);
+            }, 200);
+        } else if (event.currentTarget.name === 'edit-industry') {
+            $timeout(function () {
+                dialogTitle = 'Edit Industry';
+                $rootScope.$emit('title', dialogTitle);
+            }, 200);
+        }
+
       $mdDialog.show({
         templateUrl: rootTemplatePath + '/components/extra/views/extraForm.view.html',
         controller: 'extraFormCtrl',
@@ -311,6 +325,7 @@
       });
     }
 
+    //TODO: Implement Add industry from JSON
     function showFormJsonDialog(event) {
       event.stopPropagation();
       $mdDialog.show({
