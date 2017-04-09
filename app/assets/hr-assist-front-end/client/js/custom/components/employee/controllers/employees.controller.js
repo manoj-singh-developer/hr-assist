@@ -11,13 +11,13 @@
     .controller('employeesCtrl', employeesCtrl);
 
   employeesCtrl
-    .$inject = ['$rootScope', '$scope', '$mdDialog', 'autocompleteService', 'miscellaneousService', 'skillModel', 'Employee', 'ProjectModel', '$templateCache'];
+    .$inject = ['$rootScope', '$scope', '$mdDialog', 'autocompleteService', 'miscellaneousService', 'Technology', 'Employee', 'ProjectModel', '$templateCache'];
 
 
 
 
 
-  function employeesCtrl($rootScope, $scope, $mdDialog, autocompleteService, miscellaneousService, skillModel, Employee, ProjectModel, $templateCache) {
+  function employeesCtrl($rootScope, $scope, $mdDialog, autocompleteService, miscellaneousService, Technology, Employee, ProjectModel, $templateCache) {
 
     // ----------------------------------------------------------------------
     // VARIABLES
@@ -419,7 +419,7 @@
     // ----------------------------------------------------------------------
 
     function getSkills() {
-      skillModel.getAll().then(function(data) {
+      Technology.getAll().then(function(data) {
         vm.allSkills = data;
         return autocompleteService.buildList(vm.allSkills, ['name']);
       }, function(err) {});

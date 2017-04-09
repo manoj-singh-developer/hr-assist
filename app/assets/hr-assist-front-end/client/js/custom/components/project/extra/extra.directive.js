@@ -27,9 +27,9 @@
 		.module('HRA')
 		.controller('projectIndustryController', projectIndustryController);
 
-	projectIndustryController.$inject = ['$rootScope', '$scope', 'miscellaneousService', 'autocompleteService', 'appType', 'Industries', 'customerModel'];
+	projectIndustryController.$inject = ['$rootScope', '$scope', 'miscellaneousService', 'autocompleteService', 'AppType', 'Industry', 'Customer'];
 
-	function projectIndustryController($rootScope, $scope, miscellaneousService, autocompleteService, appType, Industries, customerModel) {
+	function projectIndustryController($rootScope, $scope, miscellaneousService, autocompleteService, AppType, Industry, Customer) {
 
 		var vm = this;
 		vm.applicationTypes = [];
@@ -71,7 +71,7 @@
 		//-------------------------------------------------------------------------
 
 		function getAppData() {
-			appType.getAll().then(
+			AppType.getAll().then(
 				function(data) {
 					vm.applicationTypes = data;
 				},
@@ -81,14 +81,14 @@
 		}
 
 		function getIndustries() {
-			Industries.getAllIndustries().then(function(data) {
+			Industry.getAll().then(function(data) {
 				vm.industries = data;
 				autocompleteService.buildList(vm.industries, ['name']);
 			}, function(error) {});
 		}
 
 		function getCustomers() {
-			customerModel.getAllCustomers().then(function(data) {
+			Customer.getAll().then(function(data) {
 				vm.customers = data;
 				autocompleteService.buildList(vm.customers, ['name']);
 			}, function(error) {});

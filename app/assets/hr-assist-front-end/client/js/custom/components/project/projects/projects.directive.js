@@ -9,15 +9,15 @@
       restrict: 'EA',
       replace: true,
       controller: 'projectsCtrl as projects',
-      templateUrl: rootTemplatePath + '/components/project/views/projects.view.html'
+      templateUrl: rootTemplatePath + 'components/project/projects/projects.view.html'
     };
   }
   // projectsList controller
   // ------------------------------------------------------------------------
   angular.module('HRA').controller('projectsCtrl', projectsCtrl);
-  projectsCtrl.$inject = ['$rootScope', '$scope', '$http', '$mdDialog', '$mdEditDialog', 'autocompleteService', 'miscellaneousService', 'ProjectModel', 'skillModel', 'customerModel', 'appType', 'Industries', '$timeout'];
+  projectsCtrl.$inject = ['$rootScope', '$scope', '$http', '$mdDialog', '$mdEditDialog', 'autocompleteService', 'miscellaneousService', 'ProjectModel', 'Technology', 'Customer', 'AppType', 'Industry', '$timeout'];
 
-  function projectsCtrl($rootScope, $scope, $http, $mdDialog, $mdEditDialog, autocompleteService, miscellaneousService, ProjectModel, skillModel, customerModel, appType, Industries, $timeout) {
+  function projectsCtrl($rootScope, $scope, $http, $mdDialog, $mdEditDialog, autocompleteService, miscellaneousService, ProjectModel, Technology, Customer, AppType, Industry, $timeout) {
 
     var vm = this;
     vm.selected = [];
@@ -283,28 +283,28 @@
     // Private methods declaration
     // ------------------------------------------------------------------------
     function getApps() {
-      appType.getAll().then(function(data) {
+      AppType.getAll().then(function(data) {
         vm.appType = data;
         return autocompleteService.buildList(vm.appType, ['name']);
       }, function(err) {})
     }
 
     function getIndustrie() {
-      Industries.getAllIndustries().then(function(data) {
+      Industry.getAll().then(function(data) {
         vm.industryes = data;
         return autocompleteService.buildList(vm.industryes, ['name']);
       }, function(err) {});
     }
 
     function getCustomers() {
-      customerModel.getAllCustomers().then(function(data) {
+      Customer.getAll().then(function(data) {
         vm.customers = data;
         return autocompleteService.buildList(vm.customers, ['name']);
       }, function(err) {});
     }
 
     function getTechs() {
-      skillModel.getAll().then(function(res) {
+      Technology.getAll().then(function(res) {
         vm.skillList = res;
         vm.techs = res;
         autocompleteService.buildList(vm.skillList, ['name']);
@@ -335,7 +335,7 @@
           }
         }
         vm.finalTechArr = removeDuplicates(vm.createSkill);
-        skillModel.saveJsons(vm.finalTechArr).then(function(data) {
+        Technology.saveJsons(vm.finalTechArr).then(function(data) {
           vm.newSkillFromApi = data;
         });
       });

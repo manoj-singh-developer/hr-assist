@@ -147,7 +147,7 @@ const rootTemplatePath = './views/custom/';
       // @PROJECTS
       .state('projectsParent', {
         url: '/projects',
-        templateUrl: rootTemplatePath + 'components/project/views/projectsParent.view.html',
+        template: '<section ui-view></section>',
         data: {
           permissions: {
             only: ['ADMIN'],
