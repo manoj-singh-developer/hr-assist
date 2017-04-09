@@ -40,7 +40,7 @@
 
     function showForm(appType) {
       $mdDialog.show({
-        templateUrl: rootTemplatePath + '/components/appType/views/appTypeForm.view.html',
+        templateUrl: rootTemplatePath + '/components/appType/form/appTypeForm.view.html',
         controller: 'appTypeFormCtrl',
         controllerAs: 'appTypeForm',
         clickOutsideToClose: true,

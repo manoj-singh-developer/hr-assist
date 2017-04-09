@@ -12,7 +12,7 @@
       scope: {},
       controller: 'appTypesCtrl',
       controllerAs: 'appTypes',
-      templateUrl: rootTemplatePath + '/components/appType/views/appTypes.view.html'
+      templateUrl: rootTemplatePath + '/components/appType/appTypes/appTypes.view.html'
     };
 
     return directive;
