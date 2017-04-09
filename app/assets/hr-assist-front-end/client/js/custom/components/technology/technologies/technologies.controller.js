@@ -38,7 +38,7 @@
 
     function showForm(technology) {
       $mdDialog.show({
-        templateUrl: rootTemplatePath + '/components/technology/views/technologyForm.view.html',
+        templateUrl: rootTemplatePath + '/components/technology/form/technologyForm.view.html',
         controller: 'technologyFormCtrl',
         controllerAs: 'technologyForm',
         clickOutsideToClose: true,

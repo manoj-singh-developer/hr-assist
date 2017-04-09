@@ -23,12 +23,12 @@
     function add() {
       if (vm.technology.id) {
         Technology.update(vm.technology).then((data) => {
-          $rootScope.$emit('upSkill', data);
+          $rootScope.$emit('event:technologyUpdate', data);
           $mdDialog.cancel();
         });
       } else {
         Technology.save(vm.technology).then((data) => {
-          $rootScope.$emit('newSkill', data);
+          $rootScope.$emit('event:technologyAdd', data);
           $mdDialog.cancel();
         });
       }

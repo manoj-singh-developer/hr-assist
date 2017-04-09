@@ -12,7 +12,7 @@
       scope: {},
       controller: 'technologyDetailsCtrl',
       controllerAs: 'technologyDetails',
-      templateUrl: rootTemplatePath + '/components/technology/views/technologyDetails.view.html'
+      templateUrl: rootTemplatePath + '/components/technology/details/technologyDetails.view.html'
     };
 
     return directive;
