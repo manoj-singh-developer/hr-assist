@@ -1,11 +1,7 @@
-(function() {
+(() => {
 
   'use strict';
 
-
-
-  // skillsCreateModal controller
-  // ------------------------------------------------------------------------
   angular
     .module('HRA')
     .controller('skillJsonM', skillJsonM);
@@ -21,28 +17,22 @@
     var raw = [];
 
 
-
-    // public methods
-    // ------------------------------------------------------------------------
+    /* beautify preserve:start */
     vm.saveFromJson = saveFromJson;
-    vm.clearFields = clearFields;
-    vm.closeDialog = closeDialog;
+    vm.clearFields  = clearFields;
+    vm.closeDialog  = closeDialog;
+    /* beautify preserve:end */
 
 
+    saveFromKnownFile();
 
-    // private methods
-    // ------------------------------------------------------------------------
+
     function saveFromKnownFile() {
       $http.get(url).success(function(data, status, headers, config) {
         raw = data;
       }).error(function(data, status, headers, config) {});
     }
-    saveFromKnownFile();
 
-
-
-    // public methods declaration
-    // ------------------------------------------------------------------------
     function saveFromJson(json) {
       json = angular.fromJson(json != undefined ? json : raw);
       skillModel.saveJsons(json).then(
@@ -59,6 +49,7 @@
     function closeDialog() {
       $mdDialog.cancel();
     }
+
   }
 
 })();

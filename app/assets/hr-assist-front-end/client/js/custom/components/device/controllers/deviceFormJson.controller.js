@@ -6,7 +6,8 @@
     .module('HRA')
     .controller('deviceFormJsonCtrl', deviceFormJsonCtrl);
 
-  deviceFormJsonCtrl.$inject = ['$scope', '$rootScope', '$mdDialog', 'Device'];
+  deviceFormJsonCtrl
+    .$inject = ['$scope', '$rootScope', '$mdDialog', 'Device'];
 
   function deviceFormJsonCtrl($scope, $rootScope, $mdDialog, Device) {
 

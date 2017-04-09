@@ -9,44 +9,38 @@
     layout-align="space-between center">
     <div class="md-toolbar-tools">
 
-      <div class="md-title">Skills</div>
+      <div class="md-title">Technologies</div>
 
       <div flex="" class="flex"></div>
 
       <md-button
         md-no-ink
         class="md-primary"
-        ng-click="sk.showAddForm()">
-          Add Skill
+        ng-click="technologies.showFormCreate()">
+          Add
       </md-button>
 
-      <!-- 
+      <!--
 
       TO DO!!! To implement the add from json functionality
 
       <md-button
         md-no-ink
         class="md-primary"
-        ng-click="sk.showJsonForm($event)">
+        ng-click="technologies.showJsonForm($event)">
           Add Skills from JSON
       </md-button>
  -->
-    <!--   <md-button
-        md-no-ink
-        class="md-primary"
-        ng-click="sk.showApiForm()">
-          Add Skills from API
-      </md-button> -->
 
-      <!-- 
-      
+      <!--
+
       TO DO!!! To implement  multiple delete functionality
 
       <md-button
         md-no-ink
         class="md-primary"
-        ng-click="sk.multipleDelete()">
-          Multiple Delete
+        ng-click="technologies.multipleRemove()">
+          Multiple remove
       </md-button> -->
 
     </div>
@@ -61,13 +55,13 @@
   <md-content class="md-padding">
     <form ng-submit="$event.preventDefault()">
       <md-autocomplete
-        ng-disabled = "sk.isDisabled"
-        ng-model="sk.searchText"
-        md-selected-item="sk.selectedItem"
-        md-search-text-change="sk.searchTextChange(sk.searchText)"
-        md-search-text="sk.searchText"
-        md-selected-item-change="sk.selectedItemChange(item)"
-        md-items="item in sk.querySearch(sk.searchText)"
+        ng-disabled = "technologies.isDisabled"
+        ng-model="technologies.searchText"
+        md-selected-item="technologies.selectedItem"
+        md-search-text-change="technologies.searchTextChange(technologies.searchText)"
+        md-search-text="technologies.searchText"
+        md-selected-item-change="technologies.selectedItemChange(item)"
+        md-items="item in technologies.querySearch(technologies.searchText)"
         md-item-text="item.name"
         md-min-length="0"
         placeholder="Search for a Skill">
@@ -87,10 +81,10 @@
   <!-- SELECTED ROWS -->
   <md-toolbar
     class="md-table-toolbar alternate"
-    ng-show="sk.table.options.rowSelection && sk.table.selected.length">
+    ng-show="technologies.tableSettings.options.rowSelection && technologies.tableSettings.selected.length">
     <div class="md-toolbar-tools">
       <span>
-        {{sk.table.selected.length}} {{sk.table.selected.length > 1 ? 'Skills' : 'Skill'}} selected
+        {{technologies.tableSettings.selected.length}} {{technologies.tableSettings.selected.length > 1 ? 'Technologies' : 'Technology'}} selected
       </span>
     </div>
   </md-toolbar><!-- /SELECTED ROWS -->
@@ -100,21 +94,22 @@
 
 
 
-  <!-- TABLE SKILLS -->
+  <!-- TABLE TECHNOLOGIES -->
   <md-table-container>
     <table
       class="c-table--actions"
       md-table
-      md-row-select="sk.table.options.rowSelection"
-      multiple="{{sk.table.options.multiSelect}}"
-      ng-model="sk.table.selected"
+      md-row-select="technologies.tableSettings.options.rowSelection"
+      multiple="{{technologies.tableSettings.options.multiSelect}}"
+      ng-model="technologies.tableSettings.selected"
       md-progress="promise">
 
       <thead
-        ng-if="!sk.table.options.decapitate"
+        ng-if="!technologies.tableSettings.options.decapitate"
         md-head
-        md-order="sk.table.query.order">
+        md-order="technologies.tableSettings.query.order">
         <tr md-row>
+          <th md-column>NR</th>
           <th md-column md-order-by="name">Name</th>
           <th md-column>Label</th>
           <th md-column>Actions</th>
@@ -124,46 +119,48 @@
       <tbody md-body>
         <tr
         md-row
-        md-select="skill"
+        md-select="technology"
         md-on-select="logItem"
-        md-auto-select="sk.table.options.autoSelect"
-        ng-repeat="skill in sk.skillList | filter: sk.searchText | orderBy: sk.table.query.order | limitTo: sk.table.query.limit : (sk.table.query.page -1) * sk.table.query.limit">
+        md-auto-select="technologies.tableSettings.options.autoSelect"
+        ng-repeat="technology in technologies.technologies | filter: technologies.searchText | orderBy: technologies.tableSettings.query.order | limitTo: technologies.tableSettings.query.limit : (technologies.tableSettings.query.page -1) * technologies.tableSettings.query.limit">
 
-          <td md-cell>{{skill.name}}</td>
+        <td md-cell>{{$index + 1}}</td>
 
-          <td md-cell>{{skill.label}}</td>
+          <td md-cell>{{technology.name}}</td>
+
+          <td md-cell>{{technology.label}}</td>
           <td md-cell>
 
             <md-button
               class="md-icon-button md-primary"
-              label="View Skill"
-              aria-label="View Skill"
-              ui-sref="skillsParent.details({id: skill.id})">
+              label="View technology"
+              aria-label="View technology"
+              ui-sref="technologyParent.details({id: technology.id})">
               <md-icon class="material-icons">visibility</md-icon>
               <md-tooltip md-autohide="true">
-                View Skill
+                View technology
               </md-tooltip>
             </md-button>
 
             <md-button
               class="md-icon-button md-primary"
-              label="Edit skill"
-              aria-label="Edit skill"
-              ng-click="sk.showEditForm(skill.id)">
+              label="Update technology"
+              aria-label="Update technology"
+              ng-click="technologies.showFormUpdate(technology.id)">
                 <md-icon class="material-icons">create</md-icon>
                 <md-tooltip md-autohide="true">
-                  Edit skill
+                  Update technology
                 </md-tooltip>
               </md-button>
 
             <md-button
               class="md-icon-button md-warn"
-              label="Remove skill"
-              aria-label="Remove skill"
-              ng-click="sk.deleteConfirm(skill.name, skill.id)">
+              label="Remove technology"
+              aria-label="Remove technology"
+              ng-click="technologies.remove(technology.name, technology.id, $event)">
               <md-icon class="material-icons">delete</md-icon>
               <md-tooltip md-autohide="true">
-                Remove skill
+                Remove technology
               </md-tooltip>
             </md-button>
 
@@ -173,19 +170,19 @@
       </tbody>
 
     </table>
-  </md-table-container><!-- TABLE SKILLS -->
+  </md-table-container><!-- TABLE TECHNOLOGIES -->
 
 
 
 
   <!-- TABLE PAGINATION -->
   <md-table-pagination
-    md-limit="sk.table.query.limit"
-    md-limit-options="sk.table.limitOptions"
-    md-page="sk.table.query.page"
-    md-total="{{sk.skillList.length}}"
-    md-page-select="sk.table.options.pageSelect"
-    md-boundary-links="sk.table.options.boundaryLinks">
+    md-limit="technologies.tableSettings.query.limit"
+    md-limit-options="technologies.tableSettings.limitOptions"
+    md-page="technologies.tableSettings.query.page"
+    md-total="{{technologies.technologies.length}}"
+    md-page-select="technologies.tableSettings.options.pageSelect"
+    md-boundary-links="technologies.tableSettings.options.boundaryLinks">
   </md-table-pagination><!-- TABLE PAGINATION -->
 
 

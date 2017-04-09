@@ -26,11 +26,9 @@ const rootTemplatePath = './views/custom/';
     'permission.ui'
   ]);
 
+
   angular.module('HRA').config(setConfig);
   angular.module('HRA').run(setRoles);
-
-
-
 
 
   if (location.hostname === 'localhost') {
@@ -38,9 +36,6 @@ const rootTemplatePath = './views/custom/';
   } else {
     angular.module('HRA').constant('apiUrl', 'http://192.168.200.115:3000/api/v1');
   }
-
-
-
 
 
   // ------------------------------------------------------------------------
@@ -57,14 +52,14 @@ const rootTemplatePath = './views/custom/';
 
     $stateProvider
       .state('landing-page', {
-          url:'/',
-          templateUrl: rootTemplatePath + './components/landing-page/views/landing-page.view.html',
-          name: 'landing-page',
-          data: {
-              cssClassNames: 'view-landing-page'
-          }
+        url: '/',
+        templateUrl: rootTemplatePath + './components/landing-page/views/landing-page.view.html',
+        name: 'landing-page',
+        data: {
+          cssClassNames: 'view-landing-page'
+        }
       })
-    // @DASHBOARD
+      // @DASHBOARD
       .state('dashboard', {
         url: '/dashboard',
         templateUrl: rootTemplatePath + 'components/dashboard/views/dashboard.view.html',
@@ -209,10 +204,10 @@ const rootTemplatePath = './views/custom/';
           cssClassNames: 'view-project-details'
         }
       })
-      // @SKILLS
-      .state('skillsParent', {
-        url: '/skills',
-        templateUrl: rootTemplatePath + 'components/skill/views/skillsParent.view.html',
+      // @TECHNOLOGIES
+      .state('technologyParent', {
+        url: '/technologies',
+        template: '<section ui-view></section>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -221,9 +216,9 @@ const rootTemplatePath = './views/custom/';
           }
         }
       })
-      .state('skillsParent.list', {
+      .state('technologyParent.list', {
         url: '/list',
-        templateUrl: rootTemplatePath + 'components/skill/views/skill.view.html',
+        template: '<hra-technologies></hra-technologies>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -233,9 +228,9 @@ const rootTemplatePath = './views/custom/';
           cssClassNames: 'view-skills'
         }
       })
-      .state('skillsParent.details', {
+      .state('technologyParent.details', {
         url: '/:id',
-        template: '<hra-skill-details></hra-skill-details>',
+        template: '<hra-technologies-details></hra-technologies-details>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -246,7 +241,7 @@ const rootTemplatePath = './views/custom/';
         }
       })
       // @Devices
-      .state('devicesParent', {
+      .state('deviceParent', {
         url: '/devices',
         template: '<section ui-view></section>',
         data: {
@@ -257,7 +252,7 @@ const rootTemplatePath = './views/custom/';
           }
         }
       })
-      .state('devicesParent.list', {
+      .state('deviceParent.list', {
         url: '/list',
         template: '<hra-devices md-whiteframe="6"></hra-devices>',
         data: {
@@ -269,7 +264,7 @@ const rootTemplatePath = './views/custom/';
           cssClassNames: 'view-devices'
         }
       })
-      .state('devicesParent.details', {
+      .state('deviceParent.details', {
         url: '/:id',
         template: '<hra-device-details></hra-device-detail>',
         data: {
@@ -449,12 +444,12 @@ const rootTemplatePath = './views/custom/';
         }
       });
 
-      if (/*@cc_on!@*/false || !!document.documentMode) {
-          var $common = $httpProvider.defaults.headers.common;
-          $common['Cache-Control'] = 'no-cache';
-          $common.Pragma = 'no-cache';
-          $common['If-Modified-Since'] = '0';
-      }
+    if ( /*@cc_on!@*/ false || !!document.documentMode) {
+      var $common = $httpProvider.defaults.headers.common;
+      $common['Cache-Control'] = 'no-cache';
+      $common.Pragma = 'no-cache';
+      $common['If-Modified-Since'] = '0';
+    }
 
   }
 

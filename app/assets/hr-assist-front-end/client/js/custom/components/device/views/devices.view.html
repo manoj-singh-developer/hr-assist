@@ -19,7 +19,7 @@
         <md-button
           md-no-ink
           class="md-primary"
-          ng-click="devices.showAddForm()">
+          ng-click="devices.showFormCreate()">
           Add
         </md-button>
 
@@ -27,7 +27,7 @@
         <!-- <md-button
           md-no-ink
           class="md-primary"
-          ng-click="devices.addFromJson($event)">
+          ng-click="devices.showFormJson($event)">
           Add Devices from JSON
         </md-button> -->
 
@@ -80,10 +80,10 @@
   <!-- SELECTED ROWS -->
   <md-toolbar
     class="md-table-toolbar alternate"
-    ng-show="devices.table.options.rowSelection && devices.table.selected.length">
+    ng-show="devices.tableSettings.options.rowSelection && devices.tableSettings.selected.length">
     <div class="md-toolbar-tools">
       <span>
-        {{devices.table.selected.length}} {{devices.table.selected.length > 1 ? 'devices' : 'device'}} selected
+        {{devices.tableSettings.selected.length}} {{devices.tableSettings.selected.length > 1 ? 'devices' : 'device'}} selected
       </span>
     </div>
   </md-toolbar><!-- /SELECTED ROWS -->
@@ -100,12 +100,12 @@
       class="c-table--actions"
       md-table
       md-progress="promise"
-      md-row-select="devices.table.options.rowSelection"
-      multiple="{{devices.table.options.multiSelect}}"
-      ng-model="devices.table.selected">
+      md-row-select="devices.tableSettings.options.rowSelection"
+      multiple="{{devices.tableSettings.options.multiSelect}}"
+      ng-model="devices.tableSettings.selected">
 
       <thead
-        ng-if="!devices.table.options.decapitate"
+        ng-if="!devices.tableSettings.options.decapitate"
         md-head
         md-order="devices.query.order">
         <tr md-row>
@@ -119,10 +119,10 @@
       <tbody md-body>
         <tr
           md-select="device"
-          md-auto-select ="devices.table.options.autoSelect"
+          md-auto-select ="devices.tableSettings.options.autoSelect"
           md-row
           md-on-select="logItem"
-          ng-repeat="device in devices.devices | filter:devices.searchText | orderBy: devices.query.order | limitTo: devices.table.query.limit : (devices.table.query.page - 1) * devices.table.query.limit" >
+          ng-repeat="device in devices.devices | filter:devices.searchText | orderBy: devices.query.order | limitTo: devices.tableSettings.query.limit : (devices.tableSettings.query.page - 1) * devices.tableSettings.query.limit" >
           <td md-cell>{{device.name}}</td>
           <td md-cell>{{device.description | limitTo: 40}}</td>
           <td md-cell>{{device.total}}</td>
@@ -132,7 +132,7 @@
             class="md-icon-button md-primary"
             label="View device"
             aria-label="View device"
-            ui-sref="devicesParent.details({id: device.id})">
+            ui-sref="deviceParent.details({id: device.id})">
             <md-icon class="material-icons">visibility</md-icon>
             <md-tooltip md-autohide="true">
               View devices
@@ -143,7 +143,7 @@
             class="md-icon-button md-primary"
             label="Update device"
             aria-label="Update device"
-            ng-click="devices.editRow(device.id)">
+            ng-click="devices.showFormUpdate(device.id)">
             <md-icon class="material-icons">create</md-icon>
             <md-tooltip md-autohide="true">
               Update device
@@ -172,12 +172,12 @@
 
   <!-- TABLE PAGINATION -->
   <md-table-pagination
-    md-limit="devices.table.query.limit"
-    md-limit-options="devices.table.limitOptions"
-    md-page="devices.table.query.page"
+    md-limit="devices.tableSettings.query.limit"
+    md-limit-options="devices.tableSettings.limitOptions"
+    md-page="devices.tableSettings.query.page"
     md-total="{{devices.devices.length}}"
-    md-page-select="devices.table.options.pageSelect"
-    md-boundary-links="devices.table.options.boundaryLinks">
+    md-page-select="devices.tableSettings.options.pageSelect"
+    md-boundary-links="devices.tableSettings.options.boundaryLinks">
   </md-table-pagination><!-- /TABLE PAGINATION -->
 
 

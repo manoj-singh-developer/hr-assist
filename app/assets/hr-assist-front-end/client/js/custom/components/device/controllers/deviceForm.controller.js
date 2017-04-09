@@ -2,12 +2,12 @@
 
   'use strict';
 
-  deviceFormCtrl
-    .$inject = ['$scope', '$rootScope', '$mdDialog', 'data', 'Device'];
-
   angular
     .module('HRA')
     .controller('deviceFormCtrl', deviceFormCtrl);
+
+  deviceFormCtrl
+    .$inject = ['$scope', '$rootScope', '$mdDialog', 'data', 'Device'];
 
   function deviceFormCtrl($scope, $rootScope, $mdDialog, data, Device) {
 
