@@ -15,6 +15,7 @@
     vm.ids = [];
     vm.selected = [];
     vm.tableSettings = tableSettings;
+    tableSettings.total = 0;
 
 
     _getDevices();
@@ -35,6 +36,7 @@
 
     $rootScope.$on('event:deviceAdd', (event, data) => {
       vm.devices = vm.devices.concat(data);
+      _updateTablePagination(vm.devices);
     });
 
     function showForm(device) {
@@ -74,6 +76,7 @@
           if (data) {
             let toRemove = _.findWhere(vm.devices, { id: device.id });
             vm.devices = _.without(vm.devices, toRemove);
+            _updateTablePagination(vm.devices);
           }
         });
       });
@@ -95,8 +98,13 @@
     function _getDevices() {
       Device.getAll().then((data) => {
         vm.devices = data;
+        _updateTablePagination(vm.devices);
         return autocompleteService.buildList(vm.devices, ['name']);
       });
+    }
+
+    function _updateTablePagination(data) {
+      tableSettings.total = data.length;
     }
 
   }

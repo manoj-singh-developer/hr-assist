@@ -170,16 +170,7 @@
 
 
 
-  <!-- TABLE PAGINATION -->
-  <md-table-pagination
-    md-limit="devices.tableSettings.query.limit"
-    md-limit-options="devices.tableSettings.limitOptions"
-    md-page="devices.tableSettings.query.page"
-    md-total="{{devices.devices.length}}"
-    md-page-select="devices.tableSettings.options.pageSelect"
-    md-boundary-links="devices.tableSettings.options.boundaryLinks">
-  </md-table-pagination><!-- /TABLE PAGINATION -->
-
-
+  <hra-table-pagination settings="devices.tableSettings">
+  <hra-table-pagination>
 
 </section>
