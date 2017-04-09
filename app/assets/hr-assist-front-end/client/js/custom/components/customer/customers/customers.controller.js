@@ -40,7 +40,7 @@
 
     function showForm(customer) {
       $mdDialog.show({
-        templateUrl: rootTemplatePath + '/components/customer/views/customerForm.view.html',
+        templateUrl: rootTemplatePath + '/components/customer/form/customerForm.view.html',
         controller: 'customerFormCtrl',
         controllerAs: 'customerForm',
         clickOutsideToClose: true,

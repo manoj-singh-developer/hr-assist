@@ -12,7 +12,7 @@
       scope: {},
       controller: 'customersCtrl',
       controllerAs: 'customers',
-      templateUrl: rootTemplatePath + '/components/customer/views/customers.view.html'
+      templateUrl: rootTemplatePath + '/components/customer/customers/customers.view.html'
     };
 
     return directive;
