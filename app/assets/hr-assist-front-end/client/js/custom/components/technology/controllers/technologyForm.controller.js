@@ -12,29 +12,25 @@
   function technologyFormCtrl($scope, Technology, $mdToast, $mdDialog, $rootScope, technology) {
 
     var vm = this;
-    vm.skill = technology || {};
+    vm.technology = technology || {};
 
 
-    /* beautify preserve:start */
-    vm.add         = add;
+    vm.add = add;
     vm.closeButton = closeButton;
     vm.clearButton = clearButton;
-    /* beautify preserve:end */
 
 
     function add() {
-      if (vm.skill.id) {
-        Technology.update(vm.skill).then(
-          function(res) {
-            $rootScope.$emit('upSkill', res);
-            $mdDialog.cancel();
-          });
+      if (vm.technology.id) {
+        Technology.update(vm.technology).then((data) => {
+          $rootScope.$emit('upSkill', data);
+          $mdDialog.cancel();
+        });
       } else {
-        Technology.save(vm.skill).then(
-          function(res) {
-            $rootScope.$emit('newSkill', res);
-            $mdDialog.cancel();
-          });
+        Technology.save(vm.technology).then((data) => {
+          $rootScope.$emit('newSkill', data);
+          $mdDialog.cancel();
+        });
       }
     }
 
@@ -43,7 +39,7 @@
     }
 
     function clearButton() {
-      vm.skill = {};
+      vm.technology = {};
     }
 
   }

@@ -25,17 +25,15 @@
 
     function add() {
       if (vm.device.id) {
-        Device.update(vm.device)
-          .then(function(data) {
-            $rootScope.$emit('event:deviceUpdate', data);
-            $mdDialog.cancel();
-          });
+        Device.update(vm.device).then((data) => {
+          $rootScope.$emit('event:deviceUpdate', data);
+          $mdDialog.cancel();
+        });
       } else {
-        Device.save(vm.device)
-          .then(function(data) {
-            $rootScope.$emit('event:deviceAdd', data);
-            vm.device = {};
-          });
+        Device.save(vm.device).then((data) => {
+          $rootScope.$emit('event:deviceAdd', data);
+          vm.device = {};
+        });
       }
     }
 

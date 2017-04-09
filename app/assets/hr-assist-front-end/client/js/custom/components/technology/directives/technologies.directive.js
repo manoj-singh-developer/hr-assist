@@ -6,9 +6,6 @@
     .module('HRA')
     .directive('hraTechnologies', hraTechnologies);
 
-  hraTechnologies
-    .$inject = [];
-
   function hraTechnologies() {
     let directive = {
       restrict: 'E',

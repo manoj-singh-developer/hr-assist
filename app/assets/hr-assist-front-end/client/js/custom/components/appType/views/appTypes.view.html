@@ -9,76 +9,41 @@
     layout-align="space-between center">
     <div class="md-toolbar-tools">
 
-      <div class="md-title">Industries</div>
+      <div class="md-title">Application types</div>
 
       <div flex="" class="flex"></div>
 
       <md-button
-        ng-show="extraList.api"
         md-no-ink
         class="md-primary"
-        name="add-industry"
-        ng-click="extraList.showFormDialog($event, {})">
-          Add Industry
-      </md-button>
-
-      <!--TODO: Implement Add industry from JSON -->
-      <!--<md-button-->
-        <!--ng-show="extraList.api"-->
-        <!--md-no-ink-->
-        <!--class="md-primary"-->
-        <!--ng-click="extraList.showFormJsonDialog($event)">-->
-          <!--Add from JSON-->
-      <!--</md-button>-->
-
-      <md-button
-        ng-hide="extraList.api"
-        md-no-ink
-        class="md-primary"
-        ng-click="extraList.addExtraListFromAPI()">
-          Load Extra from api
-      </md-button>
-
-      <md-button
-        ng-hide="extraList.api"
-        md-no-ink
-        class="md-primary"
-        ng-click="extraList.addProjectsFromAPI()">
-          Load projects from api
-      </md-button>
-
-      <md-button
-        ng-hide="extraList.api"
-        md-no-ink
-        class="md-primary"
-        ng-click="extraList.updateProjectsFromAPI()">
-          Update projects
+        name="add-app-type"
+        ng-click="appTypes.showForm()">
+          Add
       </md-button>
 
     </div>
-  </md-toolbar> <!-- /TITLE -->
-
+  </md-toolbar><!-- /TITLE -->
 
 
 
   <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
 
-  <!-- TABLE SEARCH -->
-  <md-input-container md-no-float class="simple-search">
-    <!--<md-icon class="material-icons">search</md-icon>-->
-    <input ng-model="extraList.searchText" placeholder="Search">
-  </md-input-container><!-- TABLE SEARCH -->
 
+
+
+  <md-input-container md-no-float class="simple-search">
+    <input ng-model="appTypes.searchText" placeholder="Search">
+  </md-input-container>
 
 
 
   <!-- SELECTED ROWS -->
   <md-toolbar
     class="md-table-toolbar alternate"
-    ng-show="sk.table.options.rowSelection && sk.table.selected.length">
+    ng-show="appTypes.tableSettings.options.rowSelection && appTypes.tableSettings.selected.length">
     <div class="md-toolbar-tools">
       <span>
-        {{sk.table.selected.length}} {{sk.table.selected.length > 1 ? 'Skills' : 'Skill'}} selected
+        {{appTypes.tableSettings.selected.length}} {{appTypes.tableSettings.selected.length > 1 ? 'appTypes' : 'Indusrey'}} selected
       </span>
     </div>
   </md-toolbar><!-- /SELECTED ROWS -->
@@ -88,20 +53,20 @@
 
 
 
-  <!-- TABLE INDUSTRIES -->
+  <!-- TABLE appTypes -->
   <md-table-container>
     <table
       class="c-table--actions"
       md-table
-      md-row-select="extraList.table.options.rowSelection"
-      multiple="{{extraList.table.options.multiSelect}}"
-      ng-model="extraList.table.selected"
+      md-row-select="appTypes.tableSettings.options.rowSelection"
+      multiple="{{appTypes.tableSettings.options.multiSelect}}"
+      ng-model="appTypes.tableSettings.selected"
       md-progress="promise">
 
       <thead
-        ng-if="!extraList.table.options.decapitate"
+        ng-if="!appTypes.tableSettings.options.decapitate"
         md-head
-        md-order="extraList.table.query.order">
+        md-order="appTypes.tableSettings.query.order">
         <tr md-row>
           <th md-column md-order-by="name">Name</th>
           <th md-column>Label</th>
@@ -111,11 +76,11 @@
 
       <tbody md-body>
         <tr
-        md-row
-        md-select="industry"
-        md-on-select="logItem"
-        md-auto-select="extraList.table.options.autoSelect"
-        ng-repeat="industry in extraList.extraList | filter: extraList.searchText | orderBy: extraList.table.query.order | limitTo: extraList.table.query.limit : (extraList.table.query.page -1) * extraList.table.query.limit">
+          md-row
+          md-select="industry"
+          md-on-select="logItem"
+          md-auto-select="appTypestableSettingsoptions.autoSelect"
+          ng-repeat="industry in appTypes.appTypes | filter: appTypes.searchText | orderBy: appTypes.tableSettings.query.order | limitTo: appTypes.tableSettings.query.limit : (appTypes.tableSettings.query.page -1) * appTypes.tableSettings.query.limit">
 
           <td md-cell>{{industry.name}}</td>
 
@@ -125,13 +90,13 @@
 
             <md-button
               class="md-icon-button md-primary md-button md-ink-ripple"
-              label="Edit industry"
-              aria-label="Edit industry"
+              label="Update industry"
+              aria-label="Update industry"
               name="edit-industry"
-              ng-click="extraList.showFormDialog($event, industry, industry.id)">
+              ng-click="appTypes.showForm(industry)">
                 <md-icon class="material-icons">create</md-icon>
                 <md-tooltip md-autohide="true">
-                  Edit industry
+                  Update industry
                 </md-tooltip>
               </md-button>
 
@@ -139,7 +104,7 @@
               class="md-icon-button md-warn md-button md-ink-ripple"
               label="Remove industry"
               aria-label="Remove industry"
-              ng-click="extraList.deleteConfirm($event, industry.name, industry.id, $index)">
+              ng-click="appTypes.remove(industry, $event)">
               <md-icon class="material-icons">delete</md-icon>
               <md-tooltip md-autohide="true">
                 Remove industry
@@ -152,19 +117,18 @@
       </tbody>
 
     </table>
-  </md-table-container><!-- TABLE INDUSTRIES -->
-
+  </md-table-container><!-- TABLE appTypes -->
 
 
 
   <!-- TABLE PAGINATION -->
   <md-table-pagination
-    md-limit="extraList.table.query.limit"
-    md-limit-options="extraList.table.limitOptions"
-    md-page="extraList.table.query.page"
-    md-total="{{extraList.extraList.length}}"
-    md-page-select="extraList.table.options.pageSelect"
-    md-boundary-links="extraList.table.options.boundaryLinks">
+    md-limit="appTypes.tableSettings.query.limit"
+    md-limit-options="appTypes.tableSettings.limitOptions"
+    md-page="appTypes.tableSettings.query.page"
+    md-total="{{appTypes.appTypes.length}}"
+    md-page-select="appTypes.tableSettings.options.pageSelect"
+    md-boundary-links="appTypes.tableSettings.options.boundaryLinks">
   </md-table-pagination><!-- TABLE PAGINATION -->
 
 

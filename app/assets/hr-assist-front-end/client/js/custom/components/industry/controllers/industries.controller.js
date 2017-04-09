@@ -28,13 +28,13 @@
     vm.querySearch = querySearch;
 
 
-    $rootScope.$on('event:industryUpdate', function() {
+    $rootScope.$on('event:industryUpdate', () => {
       // TODO: need a beeter approach here,
       // there is no need for an extra request on update
       _getIndustrie();
     });
 
-    $rootScope.$on('event:industryAdd', function(event, data) {
+    $rootScope.$on('event:industryAdd', (event, data) => {
       vm.industries = vm.industries.concat(data);
     });
 
@@ -50,18 +50,7 @@
       });
     }
 
-    function showFormJson(event) {
-      event.stopPropagation();
-
-      $mdDialog.show({
-        parent: angular.element(document.body),
-        templateUrl: rootTemplatePath + '/components/industry/views/industryFormJson.view.html',
-        controller: 'industryFormJsonCtrl',
-        controllerAs: 'industryFormJson',
-        targetEvent: event,
-        clickOutsideToClose: true,
-      });
-    }
+    function showFormJson() {}
 
     function remove(industry, event) {
       var confirm = $mdDialog.confirm()
@@ -71,20 +60,21 @@
         .cancel('No');
 
       $mdDialog.show(confirm).then(() => {
-        Industry.remove(industry.id).then(() => {
-          let toRemove = _.findWhere(vm.industries, { id: industry.id });
-          vm.industries = _.without(vm.industries, toRemove);
+        Industry.remove(industry.id).then((data) => {
+          if (data) {
+            let toRemove = _.findWhere(vm.industries, { id: industry.id });
+            vm.industries = _.without(vm.industries, toRemove);
+          }
         });
       });
     }
 
-    function multipleRemove() {
-
-    }
+    function multipleRemove() {}
 
     function querySearch(query) {
       return autocompleteService.querySearch(query, vm.industries);
     }
+
 
     function _getIndustrie() {
       Industry.getAll().then((data) => {

@@ -10,9 +10,6 @@
     let directive = {
       restrict: 'E',
       scope: {},
-      bindToController: {
-        extra: '='
-      },
       controller: 'industriesCtrl',
       controllerAs: 'industries',
       templateUrl: rootTemplatePath + '/components/industry/views/industries.view.html'

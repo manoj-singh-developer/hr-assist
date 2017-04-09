@@ -7,12 +7,15 @@
     .directive('hraDevices', hraDevices);
 
   function hraDevices() {
-    return {
-      restrict: 'EA',
+    let directive = {
+      restrict: 'E',
+      scope: {},
       controller: 'devicesCtrl',
       controllerAs: 'devices',
       templateUrl: rootTemplatePath + '/components/device/views/devices.view.html'
     };
+
+    return directive;
   }
 
 })();

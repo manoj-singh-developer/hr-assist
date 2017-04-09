@@ -19,7 +19,7 @@
         <md-button
           md-no-ink
           class="md-primary"
-          ng-click="devices.showFormCreate()">
+          ng-click="devices.showForm()">
           Add
         </md-button>
 
@@ -143,7 +143,7 @@
             class="md-icon-button md-primary"
             label="Update device"
             aria-label="Update device"
-            ng-click="devices.showFormUpdate(device.id)">
+            ng-click="devices.showForm(device)">
             <md-icon class="material-icons">create</md-icon>
             <md-tooltip md-autohide="true">
               Update device

@@ -373,9 +373,9 @@ const rootTemplatePath = './views/custom/';
         }
       })
       // @CUSTOMERS
-      .state('customersParent', {
+      .state('customerParent', {
         url: '/customers',
-        templateUrl: rootTemplatePath + 'components/extra/views/customersParent.view.html',
+        template: '<section ui-view></section>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -384,9 +384,9 @@ const rootTemplatePath = './views/custom/';
           }
         }
       })
-      .state('customersParent.list', {
+      .state('customerParent.list', {
         url: '/list',
-        template: '<hra-extra-list-customers extra="{\'type\': \'customers\'}">' + '</hra-extra-list-customers>',
+        template: '<hra-customers></hra-customers>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -397,9 +397,9 @@ const rootTemplatePath = './views/custom/';
         }
       })
       // @APP TYPES
-      .state('appTypesParent', {
+      .state('appTypeParent', {
         url: '/appTypes',
-        templateUrl: rootTemplatePath + 'components/extra/views/appTypesParent.view.html',
+        template: '<section ui-view></section>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -408,9 +408,9 @@ const rootTemplatePath = './views/custom/';
           }
         }
       })
-      .state('appTypesParent.list', {
+      .state('appTypeParent.list', {
         url: '/list',
-        template: '<hra-extra-list-app-types extra="{\'type\': \'appTypes\'}">' + '</hra-extra-list-app-types>',
+        template: '<hra-app-types></hra-app-types>',
         data: {
           permissions: {
             only: ['ADMIN'],

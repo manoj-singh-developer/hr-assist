@@ -16,7 +16,7 @@
       <md-button
         md-no-ink
         class="md-primary"
-        ng-click="technologies.showFormCreate()">
+        ng-click="technologies.showForm()">
           Add
       </md-button>
 
@@ -146,7 +146,7 @@
               class="md-icon-button md-primary"
               label="Update technology"
               aria-label="Update technology"
-              ng-click="technologies.showFormUpdate(technology.id)">
+              ng-click="technologies.showForm(technology)">
                 <md-icon class="material-icons">create</md-icon>
                 <md-tooltip md-autohide="true">
                   Update technology
@@ -157,7 +157,7 @@
               class="md-icon-button md-warn"
               label="Remove technology"
               aria-label="Remove technology"
-              ng-click="technologies.remove(technology.name, technology.id, $event)">
+              ng-click="technologies.remove(technology, $event)">
               <md-icon class="material-icons">delete</md-icon>
               <md-tooltip md-autohide="true">
                 Remove technology

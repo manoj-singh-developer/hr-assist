@@ -23,7 +23,7 @@
     function save(data) {
       var json = angular.fromJson(data);
 
-      Device.saveJson(json).then(function(data) {
+      Device.saveJson(json).then((data) => {
         $mdDialog.cancel();
         $rootScope.$emit('addlist', data);
       });

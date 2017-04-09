@@ -20,40 +20,24 @@
     _getDevices();
 
 
-    vm.showFormCreate = showFormCreate;
-    vm.showFormUpdate = showFormUpdate;
+    vm.showForm = showForm;
     vm.showFormJson = showFormJson;
     vm.remove = remove;
     vm.multipleRemove = multipleRemove;
     vm.querySearch = querySearch;
 
 
-    $rootScope.$on('event:deviceUpdate', function() {
+    $rootScope.$on('event:deviceUpdate', () => {
       // TODO: need a beeter approach here,
       // there is no need for an extra request on update
       _getDevices();
     });
 
-    $rootScope.$on('event:deviceAdd', function(event, data) {
+    $rootScope.$on('event:deviceAdd', (event, data) => {
       vm.devices = vm.devices.concat(data);
     });
 
-    function showFormCreate() {
-      $mdDialog
-        .show({
-          templateUrl: rootTemplatePath + '/components/device/views/deviceForm.view.html',
-          controller: 'deviceFormCtrl',
-          controllerAs: 'deviceForm',
-          clickOutsideToClose: true,
-          data: {}
-        });
-    }
-
-    function showFormUpdate(id) {
-      let device = vm.devices.filter(function(item) {
-        return item.id === id;
-      })[0] || {};
-
+    function showForm(device) {
       $mdDialog.show({
         templateUrl: rootTemplatePath + '/components/device/views/deviceForm.view.html',
         controller: 'deviceFormCtrl',
@@ -86,9 +70,11 @@
         .cancel('No');
 
       $mdDialog.show(confirm).then(() => {
-        Device.remove(device.id).then(() => {
-          let toRemove = _.findWhere(vm.devices, { id: device.id });
-          vm.devices = _.without(vm.devices, toRemove);
+        Device.remove(device.id).then((data) => {
+          if (data) {
+            let toRemove = _.findWhere(vm.devices, { id: device.id });
+            vm.devices = _.without(vm.devices, toRemove);
+          }
         });
       });
     }

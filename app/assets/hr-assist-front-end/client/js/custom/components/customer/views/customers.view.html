@@ -9,30 +9,20 @@
     layout-align="space-between center">
     <div class="md-toolbar-tools">
 
-      <div class="md-title">App types</div>
+      <div class="md-title">Customers</div>
 
       <div flex="" class="flex"></div>
 
       <md-button
-        ng-show="extraList.api"
         md-no-ink
         class="md-primary"
-        ng-click="extraList.showFormDialog($event, {})">
-          Add App type
+        name="add-customer"
+        ng-click="customers.showForm()">
+          Add
       </md-button>
-
-      <md-button
-        ng-show="extraList.api"
-        md-no-ink
-        class="md-primary"
-        ng-click="extraList.showFormJsonDialog($event)">
-          Add from JSON
-      </md-button>
-
 
     </div>
-  </md-toolbar> <!-- /TITLE -->
-
+  </md-toolbar><!-- /TITLE -->
 
 
 
@@ -41,14 +31,19 @@
 
 
 
+  <md-input-container md-no-float class="simple-search">
+    <input ng-model="customers.searchText" placeholder="Search">
+  </md-input-container>
+
+
 
   <!-- SELECTED ROWS -->
   <md-toolbar
     class="md-table-toolbar alternate"
-    ng-show="extraList.table.options.rowSelection && extraList.table.selected.length">
+    ng-show="customers.tableSettings.options.rowSelection && customers.tableSettings.selected.length">
     <div class="md-toolbar-tools">
       <span>
-        {{extraList.table.selected.length}} {{extraList.table.selected.length > 1 ? 'Skills' : 'Skill'}} selected
+        {{customers.tableSettings.selected.length}} {{customers.tableSettings.selected.length > 1 ? 'Customers' : 'Customer'}} selected
       </span>
     </div>
   </md-toolbar><!-- /SELECTED ROWS -->
@@ -58,58 +53,60 @@
 
 
 
-  <!-- TABLE SKILLS -->
+  <!-- TABLE INDUSTRIES -->
   <md-table-container>
     <table
       class="c-table--actions"
       md-table
-      md-row-select="extraList.table.options.rowSelection"
-      multiple="{{extraList.table.options.multiSelect}}"
-      ng-model="extraList.table.selected"
+      md-row-select="customers.tableSettings.options.rowSelection"
+      multiple="{{customers.tableSettings.options.multiSelect}}"
+      ng-model="customers.tableSettings.selected"
       md-progress="promise">
 
       <thead
-        ng-if="!extraList.table.options.decapitate"
+        ng-if="!customers.tableSettings.options.decapitate"
         md-head
-        md-order="extraList.table.query.order">
+        md-order="customers.tableSettings.query.order">
         <tr md-row>
           <th md-column md-order-by="name">Name</th>
-          <th md-column>Label</th>
+          <th md-column>Country id</th>
           <th md-column>Actions</th>
         </tr>
       </thead>
 
       <tbody md-body>
         <tr
-        md-row
-        md-select="appType"
-        md-on-select="logItem"
-        md-auto-select="extraList.table.options.autoSelect"
-        ng-repeat="appType in extraList.extraList | filter: extraList.searchText | orderBy: extraList.table.query.order | limitTo: extraList.table.query.limit : (extraList.table.query.page -1) * extraList.table.query.limit">
+          md-row
+          md-select="industry"
+          md-on-select="logItem"
+          md-auto-select="industriestableSettingsoptions.autoSelect"
+          ng-repeat="customer in customers.customers | filter: customers.searchText | orderBy: customers.tableSettings.query.order | limitTo: customers.tableSettings.query.limit : (customers.tableSettings.query.page -1) * customers.tableSettings.query.limit">
 
-          <td md-cell>{{appType.name}}</td>
-          <td md-cell>{{appType.label}}</td>
+          <td md-cell>{{customer.name}}</td>
+          <td md-cell>{{customer.country_id}}</td>
 
           <td md-cell>
+
             <md-button
-              class="md-icon-button md-primary"
-              label="Edit App type"
-              aria-label="Edit App type"
-              ng-click="extraList.showFormDialog($event, appType, appType.id)">
+              class="md-icon-button md-primary md-button md-ink-ripple"
+              label="Update customer"
+              aria-label="Update customer"
+              name="edit-customer"
+              ng-click="customers.showForm(customer)">
                 <md-icon class="material-icons">create</md-icon>
                 <md-tooltip md-autohide="true">
-                  Edit app type
+                  Update customer
                 </md-tooltip>
               </md-button>
 
             <md-button
-              class="md-icon-button md-warn"
-              label="Remove skill"
-              aria-label="Remove skill"
-              ng-click="extraList.deleteConfirm($event, appType.name, appType.id, $index)">
+              class="md-icon-button md-warn md-button md-ink-ripple"
+              label="Remove customer"
+              aria-label="Remove customer"
+              ng-click="customers.remove(customer, $event)">
               <md-icon class="material-icons">delete</md-icon>
               <md-tooltip md-autohide="true">
-                Remove app type
+                Remove customer
               </md-tooltip>
             </md-button>
 
@@ -119,33 +116,32 @@
       </tbody>
 
     </table>
-  </md-table-container><!-- TABLE SKILLS -->
-
+  </md-table-container><!-- TABLE INDUSTRIES -->
 
 
 
   <!-- TABLE PAGINATION -->
   <md-table-pagination
-    md-limit="extraList.table.query.limit"
-    md-limit-options="extraList.table.limitOptions"
-    md-page="extraList.table.query.page"
-    md-total="{{extraList.industries.length}}"
-    md-page-select="extraList.table.options.pageSelect"
-    md-boundary-links="extraList.table.options.boundaryLinks">
+    md-limit="customers.tableSettings.query.limit"
+    md-limit-options="customers.tableSettings.limitOptions"
+    md-page="customers.tableSettings.query.page"
+    md-total="{{customers.customers.length}}"
+    md-page-select="customers.tableSettings.options.pageSelect"
+    md-boundary-links="customers.tableSettings.options.boundaryLinks">
   </md-table-pagination><!-- TABLE PAGINATION -->
 
 
 
-
+  <!--TODO: Implement Add industry from JSON-->
   <!-- TEMPLATES -->
   <script type="text/ng-template" id="extraJsonForm.tmpl.html">
     <section layout="column">
 
-      <md-toolbar class="md-table-toolbar">
-        <div class="md-toolbar-tools ">
-          Add App Type from JSON
-        </div>
-      </md-toolbar>
+      <!--<md-toolbar class="md-table-toolbar">-->
+        <!--<div class="md-toolbar-tools ">-->
+          <!--Add Industry from JSON-->
+        <!--</div>-->
+      <!--</md-toolbar>-->
 
       <section class="md-padding">
 

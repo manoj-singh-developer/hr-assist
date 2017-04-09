@@ -19,13 +19,11 @@
 
 
     function _getDevice() {
-      Device.getById(deviceId)
-        .then(function(data) { vm.device = data; });
+      Device.getById(deviceId).then(data => vm.device = data);
     }
 
     function _getDeviceEmployees() {
-      Device.getEmployees(deviceId)
-        .then(function(data) { vm.employees = data; });
+      Device.getEmployees(deviceId).then(data => vm.employees = data);
     }
 
   }

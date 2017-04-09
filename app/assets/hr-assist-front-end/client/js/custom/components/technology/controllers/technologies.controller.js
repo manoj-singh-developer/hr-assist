@@ -15,8 +15,7 @@
     vm.tableSettings = tableSettings;
 
 
-    vm.showFormCreate = showFormCreate;
-    vm.showFormUpdate = showFormUpdate;
+    vm.showForm = showForm;
     vm.showFormJson = showFormJson;
     vm.remove = remove;
     vm.querySearch = querySearch;
@@ -26,40 +25,18 @@
     _getSkills();
 
 
-    // TODO: Use proper naming for event
-    // example: "event:technologyAdded"
-    // example: "event:eventName"
-    $rootScope.$on('newSkill', function(event, data) {
-      vm.technologies.push(data);
-    });
-
-    $rootScope.$on('json', function(event, data) {
-      for (var i = 0; i < data.length; i++) {
-        vm.technologies.push(data[i]);
-      }
-    });
-
-    $rootScope.$on('upSkill', function(event, data) {
+    $rootScope.$on('event:technologyUpdate', () => {
+      // TODO: need a beeter approach here,
+      // there is no need for an extra request on update
       _getSkills();
-      vm.tableSettings.selected = [];
+    });
+
+    $rootScope.$on('event:technologyAdd', (event, data) => {
+      vm.technologies = vm.technologies.concat(data);
     });
 
 
-    function showFormCreate() {
-      $mdDialog.show({
-        templateUrl: rootTemplatePath + '/components/technology/views/technologyForm.view.html',
-        controller: 'technologyFormCtrl',
-        controllerAs: 'technologyForm',
-        clickOutsideToClose: true,
-        technology: {}
-      });
-    }
-
-    function showFormUpdate(id) {
-      let technology = vm.technologies.filter(function(item) {
-        return item.id === id;
-      })[0] || {};
-
+    function showForm(technology) {
       $mdDialog.show({
         templateUrl: rootTemplatePath + '/components/technology/views/technologyForm.view.html',
         controller: 'technologyFormCtrl',
@@ -81,18 +58,19 @@
       });
     }
 
-    function remove(technology, id, event) {
-      event.stopPropagation();
-
+    function remove(technology, event) {
       var confirm = $mdDialog.confirm()
-        .title('Remove the ' + technology + ' technology ?')
+        .title('Remove the ' + technology.name + ' technology ?')
         .targetEvent(event)
         .cancel('No')
         .ok('Yes');
 
       $mdDialog.show(confirm).then(() => {
-        Technology.remove(id).then(() => {
-          vm.technologies = _.without(vm.technologies, _.findWhere(vm.technologies, { id: id }));
+        Technology.remove(technology.id).then((data) => {
+          if (data) {
+            let toRemove = _.findWhere(vm.technologies, { id: technology.id });
+            vm.technologies = _.without(vm.technologies, toRemove);
+          }
         });
       });
     }
