@@ -12,7 +12,7 @@
       scope: {},
       controller: 'devicesCtrl',
       controllerAs: 'devices',
-      templateUrl: rootTemplatePath + '/components/device/views/devices.view.html'
+      templateUrl: rootTemplatePath + '/components/device/devices/devices.view.html'
     };
 
     return directive;

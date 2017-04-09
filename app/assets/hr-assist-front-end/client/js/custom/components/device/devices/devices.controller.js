@@ -39,7 +39,7 @@
 
     function showForm(device) {
       $mdDialog.show({
-        templateUrl: rootTemplatePath + '/components/device/views/deviceForm.view.html',
+        templateUrl: rootTemplatePath + '/components/device/form/deviceForm.view.html',
         controller: 'deviceFormCtrl',
         controllerAs: 'deviceForm',
         clickOutsideToClose: true,
@@ -54,7 +54,7 @@
 
       $mdDialog.show({
         parent: angular.element(document.body),
-        templateUrl: rootTemplatePath + '/components/device/views/deviceFormJson.view.html',
+        templateUrl: rootTemplatePath + '/components/device/formJson/deviceFormJson.view.html',
         controller: 'deviceFormJsonCtrl',
         controllerAs: 'deviceFormJson',
         targetEvent: event,
