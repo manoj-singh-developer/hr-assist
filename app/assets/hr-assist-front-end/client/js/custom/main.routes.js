@@ -6,41 +6,17 @@ const rootTemplatePath = './views/custom/';
 
   'use strict';
 
-  // ------------------------------------------------------------------------
-  // @HRA MODULE
-  // ------------------------------------------------------------------------
-
-  angular.module('HRA', [
-    'ngMaterial',
-    'ngMessages',
-    'ngFileUpload',
-    'md.data.table',
+  angular.module('routes', [
     'ui.router',
     'ngResource',
-    'ngSelectable',
-    'ngSanitize',
-    'ngCsv',
-    'datePicker',
-    'angular-loading-bar',
+
     'permission',
     'permission.ui'
   ]);
 
+  angular.module('routes').config(setConfig);
+  angular.module('routes').run(setRoles);
 
-  angular.module('HRA').config(setConfig);
-  angular.module('HRA').run(setRoles);
-
-
-  if (location.hostname === 'localhost') {
-    angular.module('HRA').constant('apiUrl', 'http://192.168.200.115:3000/api/v1');
-  } else {
-    angular.module('HRA').constant('apiUrl', 'http://192.168.200.115:3000/api/v1');
-  }
-
-
-  // ------------------------------------------------------------------------
-  // @HRAssistConfig
-  // ------------------------------------------------------------------------
 
   setConfig
     .$inject = ['$stateProvider', '$urlRouterProvider', '$httpProvider'];
@@ -453,9 +429,6 @@ const rootTemplatePath = './views/custom/';
 
   }
 
-  // ------------------------------------------------------------------------
-  // @PERMISSIONS
-  // ------------------------------------------------------------------------
 
   setRoles
     .$inject = ['PermPermissionStore', 'PermRoleStore'];
@@ -487,19 +460,12 @@ const rootTemplatePath = './views/custom/';
     .$inject = ['tokenService'];
 
   function isLoggedIn(tokenService) {
-
     var token = tokenService.getToken('user_token');
-
     if (token) {
-
       return true;
-
     } else {
-
       return false;
-
     }
-
   }
 
 
@@ -508,19 +474,12 @@ const rootTemplatePath = './views/custom/';
     .$inject = ['tokenService'];
 
   function isAnonymous(tokenService) {
-
     var token = tokenService.getToken('user_token');
-
     if (!token) {
-
       return true;
-
     } else {
-
       return false;
-
     }
-
   }
 
 
@@ -529,7 +488,6 @@ const rootTemplatePath = './views/custom/';
     .$inject = ['tokenService', '$rootScope', 'transitionProperties'];
 
   function seeOwnProfileOnly(tokenService, $rootScope, transitionProperties) {
-
     var token = tokenService.getToken('user_token');
     var decodeToken = tokenService.decodeToken(token);
 
@@ -550,24 +508,15 @@ const rootTemplatePath = './views/custom/';
       isEmployee = (decodeToken.role_id === 2);
 
       if (isHisProfie && isEmployee) {
-
         toggleMenuClassesFor('EMPLOYEE');
         $rootScope.isAdmin = false;
-
         return true;
-
       } else {
-
         return false;
-
       }
-
     } else {
-
       return false;
-
     }
-
   }
 
 
@@ -576,22 +525,16 @@ const rootTemplatePath = './views/custom/';
     .$inject = ['tokenService', '$rootScope'];
 
   function seeEverything(tokenService, $rootScope) {
-
     var token = tokenService.getToken('user_token');
     var decodeToken = tokenService.decodeToken(token);
 
     if (decodeToken && decodeToken.role_id === 1) {
-
       toggleMenuClassesFor('ADMIN');
       $rootScope.isAdmin = true;
       return true;
-
     } else {
-
       return false;
-
     }
-
   }
 
 
@@ -600,7 +543,6 @@ const rootTemplatePath = './views/custom/';
     .$inject = ['$timeout', '$state', 'PermRoleStore', 'tokenService'];
 
   function removeToken($timeout, $state, PermRoleStore, tokenService) {
-
     // Removing token / Set an empty one
     tokenService.setAuthToken();
 
@@ -608,31 +550,20 @@ const rootTemplatePath = './views/custom/';
     $timeout(function() {
       $state.go('login');
     }, 1);
-
   }
-
-  // @PERMISSIONS @END PERMISSIONS
-  // ------------------------------------------------------------------------
 
 
   // Toggle menu extra classes for ADMIN or EMPLOYEE
   function toggleMenuClassesFor(menuType) {
-
     var $body = angular.element(document.getElementsByTagName('body'));
 
     if (menuType === 'ADMIN') {
-
       $body.removeClass('pages-employee pages-admin');
       $body.addClass('pages-admin');
-
     } else if (menuType === 'EMPLOYEE') {
-
       $body.removeClass('pages-employee pages-admin');
       $body.addClass('pages-employee');
-
-
     }
-
   }
 
 
@@ -640,7 +571,6 @@ const rootTemplatePath = './views/custom/';
     .$inject = ['$state'];
 
   function getCurrentState($state) {
-
     if ($state.current.name) {
       return $state.current.name;
     } else {
@@ -648,8 +578,6 @@ const rootTemplatePath = './views/custom/';
       $state.go('logout');
       return null;
     }
-
   }
-
 
 }());
