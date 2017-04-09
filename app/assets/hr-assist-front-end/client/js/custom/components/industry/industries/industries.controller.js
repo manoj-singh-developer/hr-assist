@@ -40,7 +40,7 @@
 
     function showForm(industry) {
       $mdDialog.show({
-        templateUrl: rootTemplatePath + '/components/industry/views/industryForm.view.html',
+        templateUrl: rootTemplatePath + '/components/industry/form/industryForm.view.html',
         controller: 'industryFormCtrl',
         controllerAs: 'industryForm',
         clickOutsideToClose: true,

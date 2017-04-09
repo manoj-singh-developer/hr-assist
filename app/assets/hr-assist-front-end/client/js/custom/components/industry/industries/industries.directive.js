@@ -12,7 +12,7 @@
       scope: {},
       controller: 'industriesCtrl',
       controllerAs: 'industries',
-      templateUrl: rootTemplatePath + '/components/industry/views/industries.view.html'
+      templateUrl: rootTemplatePath + '/components/industry/industries/industries.view.html'
     };
 
     return directive;
