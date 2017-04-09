@@ -1,0 +1,185 @@
+<section layout="column" md-whiteframe='6'>
+
+
+
+  <!-- TITLE -->
+  <md-toolbar
+    class="md-table-toolbar md-default"
+    layout="row"
+    layout-align="space-between center">
+
+    <div class="md-toolbar-tools">
+
+      <div class="md-title">Devices</div>
+
+      <div flex="" class="flex"></div>
+
+      <div layout="row" layout-align="right">
+
+        <md-button
+          md-no-ink
+          class="md-primary"
+          ng-click="devices.showForm()">
+          Add
+        </md-button>
+
+        <!-- TODO: To implement this -->
+        <!-- <md-button
+          md-no-ink
+          class="md-primary"
+          ng-click="devices.showFormJson($event)">
+          Add Devices from JSON
+        </md-button> -->
+
+<!--         <md-button
+          md-no-ink
+          class="md-primary"
+          ng-click="devices.multipleDelete()">
+          Multiple Delete
+        </md-button> -->
+
+      </div>
+
+    </div>
+
+  </md-toolbar><!-- /TITLE -->
+
+
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+
+
+  <!-- AUTOCOMPLETE SEARCH -->
+  <md-content class="md-padding">
+    <form ng-submit="$event.preventDefault()">
+      <md-autocomplete
+        ng-disabled="devices.isDisabled"
+        ng-model="devices.searchText"
+        md-selected-item="devices.selectedItem"
+        md-search-text-change="devices.searchTextChange(devices.searchText)"
+        md-search-text="devices.searchText"
+        md-selected-item-change="devices.selectedItemChange(item)"
+        md-items="item in devices.querySearch(devices.searchText)"
+        md-item-text="item.name"
+        md-min-length="0"
+        placeholder="Search for a device">
+
+        <md-item-template>
+          <span class="item-metadata">
+            {{item.name}}
+          </span>
+        </md-item-template>
+
+      </md-autocomplete>
+    </form>
+  </md-content><!-- /AUTOCOMPLETE SEARCH -->
+
+
+
+  <!-- SELECTED ROWS -->
+  <md-toolbar
+    class="md-table-toolbar alternate"
+    ng-show="devices.tableSettings.options.rowSelection && devices.tableSettings.selected.length">
+    <div class="md-toolbar-tools">
+      <span>
+        {{devices.tableSettings.selected.length}} {{devices.tableSettings.selected.length > 1 ? 'devices' : 'device'}} selected
+      </span>
+    </div>
+  </md-toolbar><!-- /SELECTED ROWS -->
+
+
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+
+
+  <!-- TABLE DEVICES -->
+  <md-table-container>
+    <table
+      class="c-table--actions"
+      md-table
+      md-progress="promise"
+      md-row-select="devices.tableSettings.options.rowSelection"
+      multiple="{{devices.tableSettings.options.multiSelect}}"
+      ng-model="devices.tableSettings.selected">
+
+      <thead
+        ng-if="!devices.tableSettings.options.decapitate"
+        md-head
+        md-order="devices.query.order">
+        <tr md-row>
+          <th md-column md-order-by="name">Name</th>
+          <th md-column >Description</th>
+          <th md-column>Quantity</th>
+          <th md-column>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody md-body>
+        <tr
+          md-select="device"
+          md-auto-select ="devices.tableSettings.options.autoSelect"
+          md-row
+          md-on-select="logItem"
+          ng-repeat="device in devices.devices | filter:devices.searchText | orderBy: devices.query.order | limitTo: devices.tableSettings.query.limit : (devices.tableSettings.query.page - 1) * devices.tableSettings.query.limit" >
+          <td md-cell>{{device.name}}</td>
+          <td md-cell>{{device.description | limitTo: 40}}</td>
+          <td md-cell>{{device.total}}</td>
+          <td md-cell>
+
+          <md-button
+            class="md-icon-button md-primary"
+            label="View device"
+            aria-label="View device"
+            ui-sref="deviceParent.details({id: device.id})">
+            <md-icon class="material-icons">visibility</md-icon>
+            <md-tooltip md-autohide="true">
+              View devices
+            </md-tooltip>
+          </md-button>
+
+          <md-button
+            class="md-icon-button md-primary"
+            label="Update device"
+            aria-label="Update device"
+            ng-click="devices.showForm(device)">
+            <md-icon class="material-icons">create</md-icon>
+            <md-tooltip md-autohide="true">
+              Update device
+            </md-tooltip>
+          </md-button>
+
+          <md-button
+            class="md-icon-button md-warn"
+            label="Remove device"
+            aria-label="Remove device"
+            ng-click="devices.remove(device, $event)">
+            <md-icon class="material-icons">delete</md-icon>
+            <md-tooltip md-autohide="true">
+              Remove device
+            </md-tooltip>
+          </md-button>
+
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </md-table-container><!-- /TABLE DEVICE -->
+
+
+
+  <!-- TABLE PAGINATION -->
+  <md-table-pagination
+    md-limit="devices.tableSettings.query.limit"
+    md-limit-options="devices.tableSettings.limitOptions"
+    md-page="devices.tableSettings.query.page"
+    md-total="{{devices.devices.length}}"
+    md-page-select="devices.tableSettings.options.pageSelect"
+    md-boundary-links="devices.tableSettings.options.boundaryLinks">
+  </md-table-pagination><!-- /TABLE PAGINATION -->
+
+
+
+</section>

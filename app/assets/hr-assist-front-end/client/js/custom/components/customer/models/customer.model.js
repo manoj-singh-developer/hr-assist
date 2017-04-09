@@ -1,135 +1,121 @@
-(function() {
+(() => {
 
   'use strict';
 
-  // customer Model
-  // ------------------------------------------------------------------------
   angular
     .module('HRA')
-    .factory('customerModel', customerModel);
+    .factory('Customer', Customer);
 
-  customerModel
-    .$inject = ['$resource', '$q', 'apiUrl'];
+  Customer
+    .$inject = ['$resource', 'apiUrl', 'alertService'];
 
-  function customerModel($resource, $q, apiUrl) {
+  function Customer($resource, apiUrl, alertService) {
 
-
-    // Constructor
-    // ------------------------------------------------------------------------
-    function customerModel() {
-
-    }
-    var url = '';
-
-    // angular.extend(Equipments.prototype, {
-    //   getFullName: function() {
-    //     return this.name + ' ' + this.description;
-    //   }
-    // });
+    function Customer() {}
 
 
+    let url = '';
+    let promise = null;
+    let resource = null;
+    let model = 'Customer';
 
-    // Static methods asigned to class
-    // ------------------------------------------------------------------------
-    customerModel.create = function(data) {
-      return angular.extend(new customerModel(), data);
+
+    Customer.save = (data) => {
+      url = apiUrl + '/customers/new';
+      resource = $resource(url, {}, {
+        'post': {
+          method: 'POST'
+        }
+      }).save(data);
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'save');
+          return data;
+        }).catch(() => alertService.error(model, 'save'));
+
+      return promise;
     };
 
-    customerModel.getAllCustomers = function() {
-      var raw = [];
-      var processed = [];
-
-      function promise(resolve, reject) {
-        getAllCustomers()
-            .then(function(data) {
-                // console.log(data.items);
-                raw = data.items;
-                angular.forEach(raw, function(item, index) {
-                processed.push(customerModel.create(item));
-            });
-            return resolve(processed);
-          },
-          function(error) {
-            return reject('Something gone wrong!');
-          });
-      }
-
-      return $q(promise);
-    };
-
-    customerModel.save = function(data) {
-      function promise(resolve, reject) {
-        saveCustomer(data).$promise.then(
-          function(data) {
-            return resolve(data);
-          },
-          function(error) {
-            return reject(error);
-          });
-      }
-
-      return $q(promise);
-    };
-
-    customerModel.getFromApi = function() {
-      var raw = [];
-      var processed = [];
-      // getAllIndustries();
-
-      function promise(resolve, reject) {
-        getIndustryFromApi().$promise.then(
-          function(data) {
-            raw = data.customers;
-            //console.log(raw);
-            angular.forEach(raw, function(item, index) {
-              processed.push({
-                name: item
-              });
-            });
-            //removeIndustry();
-            saveCustomer(processed);
-            //console.log(processed);
-            return resolve(processed);
-          },
-          function(error) {
-            return reject('Something gone wrong!');
-          });
-      }
-
-      return $q(promise);
-    };
-
-    // Private methods
-    // ------------------------------------------------------------------------
-
-    function getAllCustomers() {
-      url = apiUrl + "/customers";
-
-      var item = $resource(url).get();
-      return item.$promise;
-    }
-
-    function saveCustomer(data) {
-      url = apiUrl + "/customers";
-      return $resource(url, data, {
-        'save': {
+    Customer.saveJson = (data) => {
+      url = apiUrl + '/customers/new';
+      resource = $resource(url, data, {
+        'post': {
           method: 'POST',
           isArray: true
         }
       }).save(data);
-    }
 
-    function getIndustryFromApi() {
-      url = 'https://assist-software.net/api/technologiesandapplicationtypes';
-      return $resource(url).get();
-    }
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'saveJson');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'saveJson'));
 
-    function removeCustomer(customer) {
-      url = apiUrl + "/customers";
-      return $resource(url).delete(customer);
-    }
+      return promise;
+    };
 
+    Customer.update = (data) => {
+      url = apiUrl + '/customers/:id';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: data.id }, data);
 
-    return customerModel;
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'update');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'update'));
+
+      return promise;
+    };
+
+    Customer.getById = (id) => {
+      url = apiUrl + '/customers/:id';
+      resource = $resource(url).get({ id: id });
+
+      promise = resource.$promise
+        .then(data => data)
+        .catch(() => alertService.error(model, 'getById'));
+
+      return promise;
+    };
+
+    Customer.getAll = () => {
+      url = apiUrl + '/customers';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getAll'));
+
+      return promise;
+    };
+
+    // TODO: add and end point to api for this
+    Customer.remove = (id) => {
+      url = apiUrl + '/customers/:id';
+      resource = $resource(url).delete({ id: id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'remove');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'remove'));
+
+      return promise;
+    };
+
+    return Customer;
+
   }
-}());
+
+})();

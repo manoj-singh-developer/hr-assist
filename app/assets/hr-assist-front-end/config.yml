@@ -44,6 +44,7 @@ PATHS:
   javascriptCustom:
     - "client/js/custom/main.routes.js"
     - "client/js/custom/main.module.js"
+    - "client/js/custom/**/*.value.js"
     - "client/js/custom/**/*.service.js"
     - "client/js/custom/**/*.model.js"
     - "client/js/custom/**/*.directive.js"

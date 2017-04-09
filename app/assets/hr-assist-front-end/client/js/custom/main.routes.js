@@ -27,7 +27,15 @@ const rootTemplatePath = './views/custom/';
     $httpProvider.interceptors.push('AuthInterceptor');
 
     $stateProvider
-    // @DASHBOARD
+      .state('landing-page', {
+        url: '/',
+        templateUrl: rootTemplatePath + 'components/landing/views/landing.view.html',
+        name: 'landing',
+        data: {
+          cssClassNames: 'view-landing'
+        }
+      })
+      // @DASHBOARD
       .state('dashboard', {
         url: '/dashboard',
         templateUrl: rootTemplatePath + 'components/dashboard/views/dashboard.view.html',
@@ -172,10 +180,10 @@ const rootTemplatePath = './views/custom/';
           cssClassNames: 'view-project-details'
         }
       })
-      // @SKILLS
-      .state('skillsParent', {
-        url: '/skills',
-        templateUrl: rootTemplatePath + 'components/skill/views/skillsParent.view.html',
+      // @TECHNOLOGIES
+      .state('technologyParent', {
+        url: '/technologies',
+        template: '<section ui-view></section>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -184,9 +192,9 @@ const rootTemplatePath = './views/custom/';
           }
         }
       })
-      .state('skillsParent.list', {
+      .state('technologyParent.list', {
         url: '/list',
-        templateUrl: rootTemplatePath + 'components/skill/views/skill.view.html',
+        template: '<hra-technologies></hra-technologies>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -196,9 +204,9 @@ const rootTemplatePath = './views/custom/';
           cssClassNames: 'view-skills'
         }
       })
-      .state('skillsParent.details', {
+      .state('technologyParent.details', {
         url: '/:id',
-        template: '<hra-skill-details></hra-skill-details>',
+        template: '<hra-technologies-details></hra-technologies-details>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -208,10 +216,10 @@ const rootTemplatePath = './views/custom/';
           cssClassNames: 'view-skills-details'
         }
       })
-      // @EQUIPMENTS
-      .state('equipmentsParent', {
-        url: '/equipments',
-        templateUrl: rootTemplatePath + 'components/equipments/views/equipmentParentView.html',
+      // @Devices
+      .state('deviceParent', {
+        url: '/devices',
+        template: '<section ui-view></section>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -220,28 +228,28 @@ const rootTemplatePath = './views/custom/';
           }
         }
       })
-      .state('equipmentsParent.list', {
+      .state('deviceParent.list', {
         url: '/list',
-        template: '<hra-equipments md-whiteframe="6"></hra-equipments>',
+        template: '<hra-devices md-whiteframe="6"></hra-devices>',
         data: {
           permissions: {
             only: ['ADMIN'],
             except: ['isAnonymous'],
             redirectTo: 'login'
           },
-          cssClassNames: 'view-equipments'
+          cssClassNames: 'view-devices'
         }
       })
-      .state('equipmentsParent.details', {
+      .state('deviceParent.details', {
         url: '/:id',
-        template: '<hra-equipment-details></hra-equipment-detail>',
+        template: '<hra-device-details></hra-device-detail>',
         data: {
           permissions: {
             only: ['ADMIN'],
             except: ['isAnonymous'],
             redirectTo: 'login'
           },
-          cssClassNames: 'view-equipment-details'
+          cssClassNames: 'view-device-details'
         }
       })
       // @CANDIDATES
@@ -317,9 +325,9 @@ const rootTemplatePath = './views/custom/';
         }
       })
       // @INDUSTRIES
-      .state('industriesParent', {
+      .state('industryParent', {
         url: '/industries',
-        templateUrl: rootTemplatePath + 'components/extra/views/industriesParent.view.html',
+        template: '<section ui-view></section>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -328,9 +336,9 @@ const rootTemplatePath = './views/custom/';
           }
         }
       })
-      .state('industriesParent.list', {
+      .state('industryParent.list', {
         url: '/list',
-        template: '<hra-extra-list-industries extra="{\'type\': \'industries\'}">' + '</hra-extra-list-industries>',
+        template: '<hra-industries></hra-industries>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -341,9 +349,9 @@ const rootTemplatePath = './views/custom/';
         }
       })
       // @CUSTOMERS
-      .state('customersParent', {
+      .state('customerParent', {
         url: '/customers',
-        templateUrl: rootTemplatePath + 'components/extra/views/customersParent.view.html',
+        template: '<section ui-view></section>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -352,9 +360,9 @@ const rootTemplatePath = './views/custom/';
           }
         }
       })
-      .state('customersParent.list', {
+      .state('customerParent.list', {
         url: '/list',
-        template: '<hra-extra-list-customers extra="{\'type\': \'customers\'}">' + '</hra-extra-list-customers>',
+        template: '<hra-customers></hra-customers>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -365,9 +373,9 @@ const rootTemplatePath = './views/custom/';
         }
       })
       // @APP TYPES
-      .state('appTypesParent', {
+      .state('appTypeParent', {
         url: '/appTypes',
-        templateUrl: rootTemplatePath + 'components/extra/views/appTypesParent.view.html',
+        template: '<section ui-view></section>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -376,9 +384,9 @@ const rootTemplatePath = './views/custom/';
           }
         }
       })
-      .state('appTypesParent.list', {
+      .state('appTypeParent.list', {
         url: '/list',
-        template: '<hra-extra-list-app-types extra="{\'type\': \'appTypes\'}">' + '</hra-extra-list-app-types>',
+        template: '<hra-app-types></hra-app-types>',
         data: {
           permissions: {
             only: ['ADMIN'],

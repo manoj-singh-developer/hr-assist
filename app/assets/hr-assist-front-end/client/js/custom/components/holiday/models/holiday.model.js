@@ -42,9 +42,9 @@
       var newItem = {};
 
       function promise(resolve, reject) {
-        getAllHolidays().$promise.then(
+        getAllHolidays().then(
           function(data) {
-            raw = data;
+            raw = data.items;
             angular.forEach(raw, function(item, index) {
               processed.push(Holiday.create(item));
             });
@@ -60,7 +60,7 @@
 
     Holiday.getHolidayById = function(id) {
       function promise(resolve, reject) {
-        getHolidayById(id).$promise.then(
+        getHolidayById(id).then(
           function(data) {
             return resolve(Holiday.create(data));
           },
@@ -74,9 +74,9 @@
 
     Holiday.save = function(data) {
       function promise(resolve, reject) {
-        saveHoliday(data).$promise.then(
+        saveHoliday(data).then(
           function(data) {
-            return resolve(data);
+            return resolve(data.items);
           },
           function(error) {
             return reject(error);
@@ -134,12 +134,21 @@
     // ------------------------------------------------------------------------
     function getAllHolidays() {
       url = apiUrl + "/holidays";
-      return $resource(url).query();
+      var item = $resource(url).get();
+
+      return item.$promise;
     }
 
     function getHolidayById(id) {
+
       url = apiUrl + "/holidays/" + id;
-      return $resource(url).get();
+      var item = $resource(url).get();
+
+      return item.$promise;
+    }
+
+    function getHolidayReplacements(){
+        url = apiUrl + ''
     }
 
 
@@ -165,15 +174,16 @@
         data.teamLeader = data.teamLeader.id;
       }
 
-      url = apiUrl + "/holidays";
+      url = apiUrl + "/holidays/new";
+      var item = $resource(url).save(data);
 
-      return $resource(url).save(data);
+      return item.$promise;
     }
 
 
     function saveFromJson(data) {
 
-      url = apiUrl + "/holidays";
+      url = apiUrl + "/holidays/new";
       return $resource(url,
         data, {
           'save': {

@@ -13,6 +13,7 @@
    vm.holiday = data.holiday;
    vm.holidayIndex = data.holidayIndex;
 
+   //For what is that here?
    // if (!data.holiday) {
    //   vm.holiday = new HolidayModel();
    // } else {
