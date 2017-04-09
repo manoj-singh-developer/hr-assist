@@ -29,9 +29,9 @@
     .controller('skillDetailsController', skillDetailsController);
 
   skillDetailsController
-    .$inject = ['$rootScope', '$scope', '$stateParams', 'skillModel', '$mdToast', 'ProjectModel'];
+    .$inject = ['$rootScope', '$scope', '$stateParams', 'Technology', '$mdToast', 'ProjectModel'];
 
-  function skillDetailsController($rootScope, $scope, $stateParams, skillModel, $mdToast, ProjectModel) {
+  function skillDetailsController($rootScope, $scope, $stateParams, Technology, $mdToast, ProjectModel) {
 
     var vm = this;
     vm.viewLists = null;
@@ -56,7 +56,7 @@
     // ------------------------------------------------------------------------
 
     function getSkills() {
-      skillModel.getAll().then(
+      Technology.getAll().then(
         function(res) {
             console.log(res);
           vm.viewObject = res.filter(function(obj) {
@@ -80,7 +80,7 @@
         });
     }
 
-    function getStatistics(){      
+    function getStatistics(){
       if(vm.viewObject.length > 0)
         vm.employees = vm.viewObject[0];
 
@@ -95,6 +95,6 @@
     }
 
     vm.getSkills();
-    
+
   }
 }());

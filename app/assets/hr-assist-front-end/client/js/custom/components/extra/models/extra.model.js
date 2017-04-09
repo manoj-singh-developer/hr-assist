@@ -7,9 +7,9 @@
     .factory('ExtraModel', ExtraModel);
 
   ExtraModel
-    .$inject = ['$q', '$resource', 'skillModel', 'Equipments', 'apiUrl', '$http', '$state'];
+    .$inject = ['$q', '$resource', 'apiUrl', '$http', '$state'];
 
-  function ExtraModel($q, $resource, skillModel, Equipments, apiUrl, $http, $state) {
+  function ExtraModel($q, $resource, apiUrl, $http, $state) {
 
     // Constructor
     // ------------------------------------------------------------------------
@@ -18,10 +18,8 @@
     var holidayTransferIndex = 0;
 
 
-
     // Public methods asigned to prototype
     // ------------------------------------------------------------------------
-
 
 
     // Static methods asigned to class
@@ -45,8 +43,8 @@
       function promise(resolve, reject) {
         save(data, extraType).$promise.then(
           function(data) {
-              $state.reload();
-              return resolve(data);
+            $state.reload();
+            return resolve(data);
           },
           function(error) {
             return reject(error);
@@ -58,33 +56,33 @@
 
     Extra.update = function(data, extraType) {
 
-        if(extraType === 'industries'){
+      if (extraType === 'industries') {
 
-            function promise(resolve, reject) {
-                updateExtra(data, extraType).then(
-                    function(data) {
-                        resolve(data);
-                    },
-                    function(error) {
-                        return reject(error);
-                    });
-            }
-            return $q(promise);
-
-        } else {
-
-            function promise(resolve, reject) {
-                updateExtra(data, extraType).$promise.then(
-                    function(data) {
-                        resolve(data);
-                    },
-                    function(error) {
-                        return reject(error);
-                    });
-            }
-            return $q(promise);
-
+        function promise(resolve, reject) {
+          updateExtra(data, extraType).then(
+            function(data) {
+              resolve(data);
+            },
+            function(error) {
+              return reject(error);
+            });
         }
+        return $q(promise);
+
+      } else {
+
+        function promise(resolve, reject) {
+          updateExtra(data, extraType).$promise.then(
+            function(data) {
+              resolve(data);
+            },
+            function(error) {
+              return reject(error);
+            });
+        }
+        return $q(promise);
+
+      }
     };
 
     Extra.remove = function(id, extraType) {
@@ -115,8 +113,6 @@
       return $q(promise);
     };
 
-    // Private methods
-    // ------------------------------------------------------------------------
     function getAllExtra(extraType) {
       url = getURL(extraType);
       var item = $resource(url).get();
@@ -125,69 +121,69 @@
 
     function save(data, extraType) {
 
-        if(extraType === 'industries'){
+      if (extraType === 'industries') {
 
-           url = apiUrl + '/industries/new';
-           return $resource(url).save(data);
-        } else {
+        url = apiUrl + '/industries/new';
+        return $resource(url).save(data);
+      } else {
 
-            url = getURL(extraType);
-            return $resource(url).save(data);
-        }
+        url = getURL(extraType);
+        return $resource(url).save(data);
+      }
     }
 
     function updateExtra(data, extraType) {
 
-        if(extraType === 'industries'){
+      if (extraType === 'industries') {
 
-            var industriesId = data.id;
-            url = apiUrl + '/industries/' + industriesId;
+        var industriesId = data.id;
+        url = apiUrl + '/industries/' + industriesId;
 
-            return $http.put(url, data);
-        } else {
+        return $http.put(url, data);
+      } else {
 
-            url = getURL(extraType);
-            var url2 = url + '/' + data.id;
-            return $resource(url2,
-                data, {
-                    'update': {
-                        method: 'PUT'
-                    }
-                }).save();
-        }
+        url = getURL(extraType);
+        var url2 = url + '/' + data.id;
+        return $resource(url2,
+          data, {
+            'update': {
+              method: 'PUT'
+            }
+          }).save();
+      }
 
     }
 
     function removeExtra(id, extraType) {
 
-        if(extraType === 'industries'){
-            var industriesId = id.id;
-            url = apiUrl + '/industries/' + industriesId;
-            return $resource(url).delete();
-        } else {
-            url = getURL(extraType);
-            return $resource(url).delete(id);
-        }
+      if (extraType === 'industries') {
+        var industriesId = id.id;
+        url = apiUrl + '/industries/' + industriesId;
+        return $resource(url).delete();
+      } else {
+        url = getURL(extraType);
+        return $resource(url).delete(id);
+      }
     }
 
     function saveFromJson(data, extraType) {
 
-        if(extraType === 'industries'){
+      if (extraType === 'industries') {
 
-            url = apiUrl + '/industries/new';
-            return $resource(url).save(data);
+        url = apiUrl + '/industries/new';
+        return $resource(url).save(data);
 
-        } else {
-            url = getURL(extraType);
+      } else {
+        url = getURL(extraType);
 
-            return $resource(url,
-                data, {
-                    'save': {
-                        method: 'POST',
-                        isArray: false
-                    }
-                }).save(data);
-        }
+        return $resource(url,
+          data, {
+            'save': {
+              method: 'POST',
+              isArray: false
+            }
+          }).save(data);
+      }
     }
 
     function getURL(extraType) {

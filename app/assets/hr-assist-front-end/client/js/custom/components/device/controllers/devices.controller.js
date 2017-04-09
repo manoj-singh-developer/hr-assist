@@ -7,9 +7,9 @@
     .controller('devicesCtrl', devicesCtrl);
 
   devicesCtrl
-    .$inject = ['$scope', '$rootScope', '$mdToast', '$mdDialog', 'tableSettings', 'autocompleteService', 'Device'];
+    .$inject = ['$scope', '$rootScope', '$mdDialog', 'tableSettings', 'autocompleteService', 'Device'];
 
-  function devicesCtrl($scope, $rootScope, $mdToast, $mdDialog, tableSettings, autocompleteService, Device) {
+  function devicesCtrl($scope, $rootScope, $mdDialog, tableSettings, autocompleteService, Device) {
 
     var vm = this;
     vm.ids = [];
@@ -78,19 +78,18 @@
       });
     }
 
-    function remove(id, ev, name) {
+    function remove(device, event) {
       var confirm = $mdDialog.confirm()
-        .title('Would you like to delete ' + name + ' equipment?')
-        .ariaLabel('Lucky day')
-        .targetEvent(ev)
+        .title('Would you like to delete ' + device.name + ' equipment?')
+        .targetEvent(event)
         .ok('Yes')
         .cancel('No');
 
-      $mdDialog.show(confirm).then(function() {
-        Device.remove(id)
-          .then(function() {
-            vm.devices = _.without(vm.devices, _.findWhere(vm.devices, { id: id }));
-          });
+      $mdDialog.show(confirm).then(() => {
+        Device.remove(device.id).then(() => {
+          let toRemove = _.findWhere(vm.devices, { id: device.id });
+          vm.devices = _.without(vm.devices, toRemove);
+        });
       });
     }
 
@@ -99,8 +98,7 @@
         vm.ids.push(vm.table.selected[i].id);
         vm.devices = _.without(vm.devices, _.findWhere(vm.devices, { id: vm.table.selected[i].id }));
       }
-      Device.remove({ id: vm.ids })
-        .then(function() { vm.table.selected = []; });
+      Device.remove({ id: vm.ids }).then(() => { vm.table.selected = []; });
     }
 
     function querySearch(query) {
@@ -109,11 +107,10 @@
 
 
     function _getDevices() {
-      Device.getAll()
-        .then(function(data) {
-          vm.devices = data;
-          return autocompleteService.buildList(vm.devices, ['name']);
-        });
+      Device.getAll().then((data) => {
+        vm.devices = data;
+        return autocompleteService.buildList(vm.devices, ['name']);
+      });
     }
 
   }

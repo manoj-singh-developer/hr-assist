@@ -53,10 +53,10 @@ const rootTemplatePath = './views/custom/';
     $stateProvider
       .state('landing-page', {
         url: '/',
-        templateUrl: rootTemplatePath + './components/landing-page/views/landing-page.view.html',
-        name: 'landing-page',
+        templateUrl: rootTemplatePath + 'components/landing/views/landing.view.html',
+        name: 'landing',
         data: {
-          cssClassNames: 'view-landing-page'
+          cssClassNames: 'view-landing'
         }
       })
       // @DASHBOARD
@@ -349,9 +349,9 @@ const rootTemplatePath = './views/custom/';
         }
       })
       // @INDUSTRIES
-      .state('industriesParent', {
+      .state('industryParent', {
         url: '/industries',
-        templateUrl: rootTemplatePath + 'components/extra/views/industriesParent.view.html',
+        template: '<section ui-view></section>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -360,9 +360,9 @@ const rootTemplatePath = './views/custom/';
           }
         }
       })
-      .state('industriesParent.list', {
+      .state('industryParent.list', {
         url: '/list',
-        template: '<hra-extra-list-industries extra="{\'type\': \'industries\'}">' + '</hra-extra-list-industries>',
+        template: '<hra-industries></hra-industries>',
         data: {
           permissions: {
             only: ['ADMIN'],

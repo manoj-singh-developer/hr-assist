@@ -7,9 +7,9 @@
     .factory('ProjectModel', ProjectModel);
 
   ProjectModel
-    .$inject = ['Employee', '$q', '$resource', 'customerModel', 'Industries', 'appType', 'getIdsService', 'apiUrl'];
+    .$inject = ['Employee', '$q', '$resource', 'customerModel', 'Industry', 'appType', 'getIdsService', 'apiUrl'];
 
-  function ProjectModel(Employee, $q, $resource, customerModel, Industries, appType, getIdsService, apiUrl) {
+  function ProjectModel(Employee, $q, $resource, customerModel, Industry, appType, getIdsService, apiUrl) {
 
     // Constructor
     // ------------------------------------------------------------------------
@@ -78,96 +78,6 @@
       return $q(promise);
     };
 
-    Project.getTecho = function() {
-      var raw = [];
-      var processed = [];
-
-      function promise(resolve, reject) {
-        getProjectsFromApi().$promise.then(function(data) {
-          raw = data;
-          angular.forEach(raw, function(item, index) {
-            processed.push(item.technologies);
-          });
-          return resolve(processed);
-        }, function(error) {
-          return reject('Something gone wrong to get technologies!');
-        });
-      }
-      return $q(promise);
-    };
-
-    getCustomers();
-    Project.getFromApi = function(app, ind, cust, technologies) {
-      var raw = [];
-      var processed = [];
-      var numb = [];
-      var indAccumulator = [];
-      var appAccumulator = [];
-      var technologiesAccumulator = [];
-      var temp1 = [];
-      var temp2 = [];
-      var temp3 = [];
-      var temp4 = []; // Used to technologies
-      customers = cust;
-      industries = ind;
-      applicationTypes = app;
-
-      function promise(resolve, reject) {
-        getProjectsFromApi().$promise.then(function(data) {
-          getCustomers();
-          raw = data;
-          angular.forEach(raw, function(itm, indexx) {
-            angular.forEach(customers, function(item, index) {
-              for (var q = 0; q < itm.customers.length; q++)
-                if (item.name === itm.customers[q]) temp1.push(item.id);
-            });
-            numb[indexx] = temp1;
-            temp1 = [];
-            angular.forEach(industries, function(item, index) {
-              for (var w = 0; w < itm.industries.length; w++)
-                if (item.name === itm.industries[w]) temp2.push(item.id);
-            });
-            indAccumulator[indexx] = temp2;
-            temp2 = [];
-            angular.forEach(applicationTypes, function(item, index) {
-              for (var p = 0; p < itm.applicationTypes.length; p++)
-                if (item.name === itm.applicationTypes[p]) temp3.push(item.id);
-            });
-            appAccumulator[indexx] = temp3;
-            temp3 = [];
-            // Save technologies
-            angular.forEach(technologies, function(item, index) {
-              for (var techIndex = 0; techIndex < itm.technologies.length; techIndex++) {
-                var ceva = [];
-                if (item.name === itm.technologies[techIndex]) {
-                  temp4.push(parseInt(item.id));
-                }
-              }
-            });
-            technologiesAccumulator[indexx] = temp4;
-            temp4 = [];
-          });
-
-          angular.forEach(raw, function(item, index) {
-
-            processed.push(Project.create({
-              name: item.name,
-              //description: item.description,
-              industries: indAccumulator[index],
-              customers: numb[index],
-              technologies: technologiesAccumulator[index],
-              projectUrl: item.projectUrl,
-              mainActivities: item.mainActivities,
-              applicationTypes: appAccumulator[index]
-            }));
-          });
-          return resolve(processed);
-        }, function(error) {
-          return reject('Something gone wrong!');
-        });
-      }
-      return $q(promise);
-    };
     Project.save = function(data) {
       function promise(resolve, reject) {
         saveProject(data).$promise.then(function(data) {
