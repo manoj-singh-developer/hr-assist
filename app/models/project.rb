@@ -7,5 +7,5 @@ class Project < ApplicationRecord
   has_and_belongs_to_many :activities
   has_and_belongs_to_many :technologies
   has_and_belongs_to_many :application_types
-
+  belongs_to :team_leader, class_name: "User"
 end

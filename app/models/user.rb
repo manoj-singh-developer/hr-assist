@@ -45,6 +45,10 @@ class User < ApplicationRecord
     self.roles.first.name == 'employee' ? true : false
   end
 
+  def name
+    "#{self.first_name} #{self.last_name}"
+  end
+
   private
 
   def generate_access_token
