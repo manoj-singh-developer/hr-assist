@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320143401) do
+ActiveRecord::Schema.define(version: 20170407124336) do
 
   create_table "active_admin_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "namespace"
@@ -229,6 +229,8 @@ ActiveRecord::Schema.define(version: 20170320143401) do
     t.string   "assist_url",      limit: 120
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
+    t.integer  "team_leader_id"
+    t.index ["team_leader_id"], name: "index_projects_on_team_leader_id", using: :btree
   end
 
   create_table "projects_technologies", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -376,6 +378,7 @@ ActiveRecord::Schema.define(version: 20170320143401) do
   add_foreign_key "languages_users", "users"
   add_foreign_key "positions_users", "positions"
   add_foreign_key "positions_users", "users"
+  add_foreign_key "projects", "users", column: "team_leader_id"
   add_foreign_key "projects_technologies", "projects"
   add_foreign_key "projects_technologies", "technologies"
   add_foreign_key "roles_users", "roles"

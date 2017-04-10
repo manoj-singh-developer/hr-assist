@@ -12,7 +12,7 @@ module V1
         mount V1::DeviceAPI
         mount V1::EducationAPI
         mount V1::HolidayAPI
-        mount V1::HolidayReplacementAPI
+        # mount V1::HolidayReplacementAPI
         mount V1::IndustryAPI
         mount V1::LanguageAPI
         mount V1::PositionAPI

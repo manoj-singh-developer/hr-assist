@@ -55,6 +55,7 @@ Project.populate 5 do |project|
   project.main_activities = Faker::Lorem.sentence
   project.url = Faker::Internet.url
   project.assist_url = Faker::Internet.url('assist.ro')
+  project.team_leader = User.all[Random.new.rand(User.count)]
 end
 projects = Project.all
 # project = Project.all[Random.new.rand(Project.count)]
