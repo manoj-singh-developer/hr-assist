@@ -45,6 +45,12 @@ module V1
         authorize! :read, Customer.find(params[:id])
       end
 
+      get ':id/projects' do
+        customer = Customer.find_by_id(params[:id])
+        projects = customer.projects
+        projects
+      end
+
       desc "Create new customer"
       params do
         requires :name, allow_blank: false, type: String
@@ -70,6 +76,11 @@ module V1
         authorize! :update, Customer
         customer.update(postParams)
         success
+      end
+
+      desc "Delete a customer"
+      delete ':id' do
+        Customer.find(params[:id]).destroy
       end
     end
   end

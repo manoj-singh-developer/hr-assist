@@ -45,6 +45,12 @@ module V1
         authorize! :read, Industry.find(params[:id])
       end
 
+      get ':id/projects' do
+        industry = Industry.find_by_id(params[:id])
+        projects = industry.projects
+        projects
+      end
+
       desc "Create new industry"
       params do
         requires :name, allow_blank: false, type: String

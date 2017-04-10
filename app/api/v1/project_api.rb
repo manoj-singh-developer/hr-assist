@@ -94,6 +94,10 @@ module V1
         optional :main_activities, type: String
         optional :url, type: String
         optional :assist_url, type: String
+        optional :technology_ids, type: Array[Integer]
+        optional :application_type_ids, type: Array[Integer]
+        optional :industry_ids, type: Array[Integer]
+        optional :customer_ids, type: Array[Integer]
       end
 
       put ':id' do
@@ -101,6 +105,36 @@ module V1
         authorize! :update, Project
         project.update(postParams)
         success
+      end
+
+      #TODO refactor put routes
+
+      put ':id/technologies' do
+        project = Project.find_by_id(params[:id])
+        technologies = Technology.where(id: params[:technology_ids]) - project.technologies
+        project.technologies << technologies if technologies.count > 0
+        project.as_json(include: :technologies)
+      end
+
+      put ':id/application_types' do
+        project = Project.find_by_id(params[:id])
+        application_types = ApplicationType.where(id: params[:application_type_ids]) - project.application_types
+        project.application_types << application_types if application_types.count > 0
+        project.as_json(include: :application_types)
+      end
+
+      put ':id/industries' do
+        project = Project.find_by_id(params[:id])
+        industries = Industry.where(id: params[:industry_ids]) - project.industries
+        project.industries << industries if industries.count > 0
+        project.as_json(include: :industries)
+      end
+
+      put ':id/customers' do
+        project = Project.find_by_id(params[:id])
+        customers = Customer.where(id: params[:customer_ids]) - project.customers
+        project.customers << customers if customers.count > 0
+        project.as_json(include: :customers)
       end
 
       desc "Delete project"

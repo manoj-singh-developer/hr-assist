@@ -152,7 +152,6 @@ module V1
       end
       put ':user_id/projects/:project_id' do
         user = find_user(params[:user_id])
-        debugger
         user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
         user_project = UserProject.create(user_id: params[:user_id], project_id: params[:project_id]) if user_project.nil?
         user_project.update(user_project_params)
@@ -204,6 +203,7 @@ module V1
         optional :skills_type, type: String
         optional :project_dates, type: Date
         optional :status, type: Integer
+        optional :upload_ids, type: Array[Integer]
       end
       put ':id' do
         user = User.find(params[:id])
@@ -211,6 +211,13 @@ module V1
         user.update(postParams)
         success
         return user
+      end
+
+      put ':user_id/uploads' do
+        user = User.find_by_id(params[:user_id])
+        uploads = Upload.where(id: params[:upload_ids]) - user.uploads
+        user.uploads << uploads if uploads.count > 0
+        user.as_json(include: :uploads)
       end
     end
 
