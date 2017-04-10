@@ -45,18 +45,6 @@ Customer.populate 3 do |customer|
   customer.country_id = country.id
 end
 
-Project.populate 5 do |project|
-  project.name = Faker::Name.name
-  project.description = Faker::Lorem.sentence
-  project.start_date = Faker::Date.forward(3)
-  project.end_date = Faker::Date.forward(20)
-  project.deadline = Faker::Date.forward(22)
-  project.in_progress = Faker::Boolean.boolean
-  project.main_activities = Faker::Lorem.sentence
-  project.url = Faker::Internet.url
-  project.assist_url = Faker::Internet.url('assist.ro')
-  project.team_leader = User.all[Random.new.rand(User.count)]
-end
 projects = Project.all
 # project = Project.all[Random.new.rand(Project.count)]
 projects.each do |project|
@@ -159,6 +147,24 @@ User.populate 10 do |user|
     schedule.user_id = user.id
     schedule.timetable = Faker::Number.between(0,1).to_s
   end
+end
+
+projects.each do |project|
+  project.team_leader = User.all[Random.new.rand(User.count)]
+  project.save
+end
+
+Project.populate 5 do |project|
+  project.name = Faker::Name.name
+  project.description = Faker::Lorem.sentence
+  project.start_date = Faker::Date.forward(3)
+  project.end_date = Faker::Date.forward(20)
+  project.deadline = Faker::Date.forward(22)
+  project.in_progress = Faker::Boolean.boolean
+  project.main_activities = Faker::Lorem.sentence
+  project.url = Faker::Internet.url
+  project.assist_url = Faker::Internet.url('assist.ro')
+  project.team_leader_id = User.all[Random.new.rand(User.count)]
 end
 
 users = User.all
