@@ -51,7 +51,13 @@ module V1
         requires :label, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate(ApplicationType, postParams)
+        if params[:items]
+          params[:items].each do |x|
+            authorizeAndCreate(ApplicationType, {name: x[:name] , label: x[:label]})
+          end
+        else
+          authorizeAndCreate(ApplicationType, postParams)
+        end
       end
 
       desc "Update application type"

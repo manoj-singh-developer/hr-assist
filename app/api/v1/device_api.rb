@@ -52,9 +52,14 @@ module V1
         requires :total, allow_blank: false, type: Integer
       end
       post 'new' do
-        authorizeAndCreate(Device, postParams)
+        if params[:items]
+          params[:items].each do |x|
+            authorizeAndCreate(Device, {name: x[:name] , description: x[:description], total: x[:total]})
+          end
+        else
+          authorizeAndCreate(Device, postParams)
+        end
       end
-
       desc "Update device"
       params do
         optional :name, allow_blank: false, type: String
