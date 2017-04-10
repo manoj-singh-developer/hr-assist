@@ -2,9 +2,6 @@
 
 	'use strict';
 
-
-	// projectIndustry, Type, Customer directive
-	//--------------------------------------------------------------
 	angular
 		.module('HRA')
 		.directive('hraIndustryProject', hraIndustryProject);
@@ -15,14 +12,10 @@
 			scope: {},
 			controller: 'projectIndustryController',
 			controllerAs: 'projectIndustry',
-			templateUrl: rootTemplatePath + '/project/views/projectTypeIndustryCustomer.view.html',
+			templateUrl: rootTemplatePath + '/project/extra/extra.view.html',
 		};
 	}
 
-
-
-	// projectIndustry, Type, Customer controller
-	//--------------------------------------------------------------
 	angular
 		.module('HRA')
 		.controller('projectIndustryController', projectIndustryController);

@@ -1,27 +1,55 @@
 <section class="c-section">
-  <section class="md-padding">
-    <form name="projectform" class="form form-add-user md-inline-form">
+  <form name="projectform" class="form form-add-user md-inline-form">
 
-      <hra-general-info-project
-        class="c-card-profile"
-        md-whiteframe='6'>
-      </hra-general-info-project>
+    <hra-card
+      hra-project-general
+      class="c-card-profile"
+      md-whiteframe="6"
+      toggle-form="card.toggleForm"
+      query-search="card.querySearch"
+      settings="card.settings">
+    </hra-card>
 
-      <hra-industry-project
-        class="c-card-profile"
-        md-whiteframe='6'>
-      </hra-industry-project>
+    <hra-card
+      hra-project-technologies
+      class="c-card-profile"
+      md-whiteframe="6"
+      toggle-form="card.toggleForm"
+      query-search="card.querySearch"
+      settings="card.settings">
+    </hra-card>
 
-       <hra-technology-project
-        class="c-card-profile"
-        md-whiteframe='6'>
-      </hra-technology-project>
+    <hra-card
+      hra-project-industries
+      class="c-card-profile"
+      md-whiteframe="6"
+      toggle-form="card.toggleForm"
+      query-search="card.querySearch"
+      settings="card.settings">
+    </hra-card>
 
-      <hra-employees-project
-        class="c-card-profile"
-        md-whiteframe='6'>
-      </hra-employees-project>
+    <hra-card
+      hra-project-customers
+      class="c-card-profile"
+      md-whiteframe="6"
+      toggle-form="card.toggleForm"
+      query-search="card.querySearch"
+      settings="card.settings">
+    </hra-card>
 
-    </form>
-  </section>
+    <hra-card
+      hra-project-app-types
+      toggle-form="card.toggleForm"
+      query-search="card.querySearch"
+      settings="card.settings">
+    </hra-card>
+
+    <hra-card
+      hra-project-employees
+      toggle-form="card.toggleForm"
+      query-search="card.querySearch"
+      settings="card.settings">
+    </hra-card>
+
+  </form>
 </section>
