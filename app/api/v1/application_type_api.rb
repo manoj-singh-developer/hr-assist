@@ -45,6 +45,12 @@ module V1
         authorize! :read, ApplicationType.find(params[:id])
       end
 
+      get ':id/projects' do
+        application_type = ApplicationType.find_by_id(params[:id])
+        projects = application_type.projects
+        projects
+      end
+
       desc "Create new application type"
       params do
         requires :name, allow_blank: false, type: String

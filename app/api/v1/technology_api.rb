@@ -45,6 +45,18 @@ module V1
         authorize! :read, Technology.find(params[:id])
       end
 
+      get ':id/projects' do
+        technology = Technology.find_by_id(params[:id])
+        projects = technology.projects
+        projects
+      end
+
+      get ':id/users' do
+        technology = Technology.find_by_id(params[:id])
+        users = technology.users
+        users
+      end
+
       desc "Create new technology"
       params do
         requires :name, allow_blank: false, type: String
