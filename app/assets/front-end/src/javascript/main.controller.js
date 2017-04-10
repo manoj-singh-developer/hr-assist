@@ -8,7 +8,7 @@
   function mainController($rootScope, $mdToast, $scope, $state, $timeout) {
 
     var self = this;
-
+    $scope.nav = false;
     $rootScope.showToast = function(message) {
       $mdToast.show(
         $mdToast.simple()
@@ -33,6 +33,12 @@
 
         self.isLanding = true;
     };
+    $scope.secNavBar = function(){
+      $scope.nav = false;
+    }
+    $scope.firstNavBar = function(){
+      $scope.nav = true;
+    }
 
     return $scope.mainCtrl = self;
 

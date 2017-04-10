@@ -19,6 +19,7 @@ body
     width: 100%
     margin-right: auto
     margin-left: auto
+    flex-wrap: wrap
 
   &:after
     content: ''
@@ -46,7 +47,14 @@ md-nav-bar
   font-size: 12px
 
 .md-nav-bar
-  height: 40px
+  height: auto
+  &:after
+    content: ''
+    height: 1px
+    width: 100%
+    position: absolute
+    background: rgba(0, 0, 0, 0.117647)
+    top: 40px
 
 .md-button._md-nav-button
   line-height: 20px
@@ -85,3 +93,10 @@ md-nav-bar md-nav-ink-bar
 // FOR EMPLOYEES HIDE ADMIN NAVIGATION
 .view-user .c-navbar--admin
   display: none !important
+
+md-nav-ink-bar
+  top: 83px
+  transition: all 0.125s cubic-bezier(0.35, 0, 0.25, 1), right 0.25s cubic-bezier(0.35, 0, 0.25, 1) !important
+
+.secNavBar md-nav-ink-bar
+  top: 39px
