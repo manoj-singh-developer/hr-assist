@@ -29,31 +29,32 @@
         <md-nav-bar
           ng-if="isAdmin"
           class="[ c-navbar c-navbar--admin ] [ js-navbar-admin ]"
+          ng-class="{'secNavBar': nav === true}"
           md-selected-nav-item="currentNavItem"
           nav-bar-aria-label="navigation links"
           ng-hide="mainCtrl.isLanding">
 
-          <md-nav-item md-nav-sref="dashboard" name="Dashboard">
+          <md-nav-item md-nav-sref="dashboard" name="Dashboard" ng-click="firstNavBar()">
             <md-icon class="material-icons">dashboard</md-icon>
             Dashboard
           </md-nav-item>
 
-          <md-nav-item md-nav-sref="projectsParent.list" name="projects">
+          <md-nav-item md-nav-sref="projectsParent.list" name="projects" ng-click="firstNavBar()">
             <md-icon class="material-icons">work</md-icon>
             Projects
           </md-nav-item>
 
-          <md-nav-item md-nav-sref="employeesParent.list" name="employees">
+          <md-nav-item md-nav-sref="employeesParent.list" name="employees" ng-click="firstNavBar()">
             <md-icon class="material-icons">group</md-icon>
             Employees
           </md-nav-item>
 
-          <md-nav-item md-nav-sref="candidateParent.list" name="candidate">
+          <md-nav-item md-nav-sref="candidateParent.list" name="candidate" ng-click="firstNavBar()">
             <md-icon class="material-icons">school</md-icon>
             Candidates
           </md-nav-item>
 
-          <md-nav-item md-nav-sref="holidayParent.list" name="Holiday">
+          <md-nav-item md-nav-sref="holidayParent.list" name="Holiday" ng-click="firstNavBar()">
             <md-icon class="material-icons">mood</md-icon>
             Holidays
           </md-nav-item>
@@ -62,32 +63,25 @@
             <span>Logout</span>
           </md-nav-item>
 
-        </md-nav-bar>
+       
 
-        <md-nav-bar
-          ng-if="isAdmin"
-          class="[ c-navbar c-navbar--admin c-navbar--secondary ] [ js-navbar-admin ]"
-          md-selected-nav-item="currentNavItem"
-          nav-bar-aria-label="navigation links"
-          ng-hide="mainCtrl.isLanding">
-
-          <md-nav-item md-nav-sref="deviceParent.list" name="devices">
+          <md-nav-item class="coconut" md-nav-sref="deviceParent.list" name="devices" ng-click="secNavBar()">
             Devices
           </md-nav-item>
 
-          <md-nav-item md-nav-sref="technologyParent.list" name="technologies">
+          <md-nav-item md-nav-sref="technologyParent.list" name="technologies" ng-click="secNavBar()">
             Technologies
           </md-nav-item>
 
-          <md-nav-item md-nav-sref="industryParent.list" name="industries">
+          <md-nav-item md-nav-sref="industryParent.list" name="industries" ng-click="secNavBar()">
             Industries
           </md-nav-item>
 
-          <md-nav-item md-nav-sref="customerParent.list" name="customers">
+          <md-nav-item md-nav-sref="customerParent.list" name="customers" ng-click="secNavBar()">
             Customers
           </md-nav-item>
 
-          <md-nav-item md-nav-sref="appTypeParent.list" name="appTypes">
+          <md-nav-item md-nav-sref="appTypeParent.list" name="appTypes" ng-click="secNavBar()">
             App types
           </md-nav-item>
 
