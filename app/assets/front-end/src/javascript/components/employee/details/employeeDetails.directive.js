@@ -19,7 +19,7 @@
       },
       controller: 'employeeDetailsController',
       controllerAs: 'employeeDetails',
-      templateUrl: rootTemplatePath + '/employee/views/employeeDetails.view.html'
+      templateUrl: rootTemplatePath + '/employee/details/employeeDetails.view.html'
     };
   }
 

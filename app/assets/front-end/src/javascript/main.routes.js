@@ -29,7 +29,7 @@ const rootTemplatePath = './views/components/';
     $stateProvider
       .state('landing-page', {
         url: '/',
-        templateUrl: rootTemplatePath + 'c-sectionlanding/views/landing.view.html',
+        templateUrl: rootTemplatePath + 'landing/views/landing.view.html',
         name: 'landing',
         data: {
           cssClassNames: 'view-landing'
@@ -38,7 +38,7 @@ const rootTemplatePath = './views/components/';
       // @DASHBOARD
       .state('dashboard', {
         url: '/dashboard',
-        templateUrl: rootTemplatePath + 'c-sectiondashboard/views/dashboard.view.html',
+        templateUrl: rootTemplatePath + 'dashboard/views/dashboard.view.html',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -51,7 +51,7 @@ const rootTemplatePath = './views/components/';
       // @EMPLOYEES
       .state('employeesParent', {
         url: '/employees',
-        templateUrl: rootTemplatePath + 'c-sectionemployee/views/employeesParent.view.html',
+        template: '<section ui-view></section>',
         data: {
           permissions: {
             only: ['ADMIN', 'EMPLOYEE'],
@@ -111,7 +111,7 @@ const rootTemplatePath = './views/components/';
       // @HOLIDAYS
       .state('holidayParent', {
         url: '/holidays',
-        templateUrl: rootTemplatePath + 'c-sectionholiday/views/holidayParent.view.html',
+        templateUrl: rootTemplatePath + 'holiday/views/holidayParent.view.html',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -255,7 +255,7 @@ const rootTemplatePath = './views/components/';
       // @CANDIDATES
       .state('candidateParent', {
         url: '/candidate',
-        templateUrl: rootTemplatePath + 'c-sectionemployee/views/employeesParent.view.html',
+        templateUrl: rootTemplatePath + 'employee/views/employeesParent.view.html',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -303,7 +303,7 @@ const rootTemplatePath = './views/components/';
       // EXTRA
       .state('extraParent', {
         url: '/extra',
-        templateUrl: rootTemplatePath + 'c-sectionextra/views/extraParent.view.html',
+        templateUrl: rootTemplatePath + 'extra/views/extraParent.view.html',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -399,7 +399,7 @@ const rootTemplatePath = './views/components/';
       // @LOGIN
       .state('login', {
         url: '/login',
-        templateUrl: rootTemplatePath + 'c-sectionlogin/views/login.view.html',
+        templateUrl: rootTemplatePath + 'login/views/login.view.html',
         data: {
           permissions: {
             only: ['isAnonymous'],
