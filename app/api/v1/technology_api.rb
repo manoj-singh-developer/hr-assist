@@ -50,8 +50,15 @@ module V1
         requires :name, allow_blank: false, type: String
         requires :label, allow_blank: false, type: String
       end
+
       post 'new' do
-        authorizeAndCreate(Technology, postParams)
+        if params[:items]
+          params[:items].each do |x|
+            authorizeAndCreate(Technology, {name: x[:name] , label: x[:label]})
+          end
+        else
+          authorizeAndCreate(Technology, postParams)
+        end
       end
 
       desc "Update technology"

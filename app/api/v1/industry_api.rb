@@ -51,7 +51,13 @@ module V1
         requires :label, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate(Industry, postParams)
+        if params[:items]
+          params[:items].each do |x|
+            authorizeAndCreate(Industry, {name: x[:name] , label: x[:label]})
+          end
+        else
+          authorizeAndCreate(Industry, postParams)
+        end
       end
 
       desc "Update industry"

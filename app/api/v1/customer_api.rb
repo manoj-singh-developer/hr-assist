@@ -51,8 +51,12 @@ module V1
         requires :country_id, allow_blank: false, type: Integer
       end
       post 'new' do
-        authorizeAndCreate(Customer, postParams) do
-          Country.find(postParams[:country_id])
+        if params[:items]
+          params[:items].each do |x|
+            authorizeAndCreate(Customer, {name: x[:name] , country_id: x[:country_id]})
+          end
+        else
+          authorizeAndCreate(Customer, postParams)
         end
       end
 
