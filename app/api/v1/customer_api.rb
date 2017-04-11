@@ -51,6 +51,10 @@ module V1
         projects
       end
 
+      delete ':id/projects' do
+        delete_object(Customer, Project, params[:id], params[:project_ids])
+      end
+
       desc "Create new customer"
       params do
         requires :name, allow_blank: false, type: String

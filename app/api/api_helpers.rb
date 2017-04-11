@@ -92,6 +92,13 @@ module APIHelpers
     return user
   end
 
+  def delete_object(main_model, model, param, params)
+    main_object = main_model.find(param)
+    objects = model.where(id: params)
+    relation_object = model.to_s.underscore.downcase.pluralize.to_sym
+    main_object.send(relation_object).delete(objects)
+  end
+
   def project_with(objects, params)
     project = Project.find_by_id(params[:project_id])
     project.send(objects.to_sym)
