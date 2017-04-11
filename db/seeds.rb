@@ -100,9 +100,6 @@ User.populate 10 do |user|
   user.urgent_contact = Faker::Name.name_with_middle
   user.car_plate = Faker::Vehicle.vin
   user.assist_start_date = Faker::Date.backward(1000)
-  user.courses_and_certifications = Faker::Lorem.sentence
-  user.skills_level = Faker::Lorem.word
-  user.project_dates =Faker::Date.backward(20)
   user.status = Faker::Number.between(0,2)
   user.email = Faker::Internet.email
   user.encrypted_password = Faker::Internet.password

@@ -19,8 +19,7 @@ module V1
       def postParams
         ActionController::Parameters.new(params)
           .permit(:first_name, :middle_name, :last_name, :address, :birthday, :phone, :picture, :observations,
-          :email_other, :urgent_contact, :car_plate, :assist_start_date, :courses_and_certifications, :courses_date,
-          :schedule_id, :skills_level, :skills_type, :project_dates, :status, :email)
+          :email_other, :urgent_contact, :car_plate, :assist_start_date, :status, :email)
       end
 
       params :pagination do
@@ -197,11 +196,6 @@ module V1
         optional :urgent_contact, type: String
         optional :car_plate, type: String
         optional :assist_start_date, type: Date
-        optional :courses_and_certifications, type: String
-        optional :courses_date, type: Date
-        optional :skills_level, type: String
-        optional :skills_type, type: String
-        optional :project_dates, type: Date
         optional :status, type: Integer
         optional :upload_ids, type: Array[Integer]
       end
@@ -258,11 +252,6 @@ module V1
       optional :urgent_contact, type: String
       optional :car_plate, type: String
       optional :assist_start_date, type: Date
-      optional :courses_and_certifications, type: String
-      optional :courses_date, type: Date
-      optional :skills_level, type: String
-      optional :skills_type, type: String
-      optional :project_dates, type: Date
       optional :status, type: Integer
     end
 
