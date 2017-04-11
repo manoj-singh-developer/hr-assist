@@ -39,7 +39,7 @@
     vm.viewObject = null;
     var ids = $stateParams.id;
     var empArr = [];
-    var holidayId, days, signingDay, startDate, endDate;
+    var holidayId, days, signingDay, startDate, endDate, holidayReplace;
     $scope.today = new Date();
 
     // public methods
@@ -53,6 +53,8 @@
 
     function getUsers() {
         $scope.holidayPaper = [];
+        $scope.holidayRep;
+
         Employee.getAll()
            .then(function(data) {
                empArr = data;
@@ -76,7 +78,10 @@
                                endDate: end
                            };
 
+                           var replaceObj = holidayReplace;
+
                            $scope.holidayPaper.push(employeeObj);
+                           $scope.holidayRep = replaceObj;
                        }
                    });
                }, 1000);
@@ -89,11 +94,13 @@
     function getHolidays() {
       HolidayModel.getHolidayById(ids)
           .then(function(response) {
+
               startDate = response.start_date;
               endDate = response.end_date;
               days = response.days;
               signingDay = response.signing_day;
               holidayId = response.user_id;
+              holidayReplace = response.employee_replacements;
           })
           .catch(function (error){
               $rootScope.showToast('Error on loading data! Please refresh!');

@@ -44,7 +44,7 @@
       function promise(resolve, reject) {
         getAllHolidays().then(
           function(data) {
-            raw = data.items;
+            raw = data;
             angular.forEach(raw, function(item, index) {
               processed.push(Holiday.create(item));
             });
@@ -134,7 +134,7 @@
     // ------------------------------------------------------------------------
     function getAllHolidays() {
       url = apiUrl + "/holidays";
-      var item = $resource(url).get();
+      var item = $resource(url).query();
 
       return item.$promise;
     }

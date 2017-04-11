@@ -204,7 +204,6 @@
 
       HolidayModel.getAll().then(
         function(data) {
-
             $scope.holidaysTable = [];
             var holidaysArr = data;
             empArray;
@@ -218,7 +217,7 @@
                             var startDate = h.start_date;
                             var endDate = h.end_date;
                             var days = h.days;
-                            var holidayId= h.id;
+                            var holidayId= h.holiday_id;
 
                             var holidayObj = {
                                 employee: employee,
