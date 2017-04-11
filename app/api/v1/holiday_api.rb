@@ -34,18 +34,28 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
+        authorize! :read, Holiday
+        holidays = Holiday.all
         response = []
-        holidays = HolidayReplacement.all
-        holidays.each do |holiday_replacement|
+        holidays.each do |holiday|
+          holiday_replacements = holiday.holiday_replacements
           response << {
-            user_id: holiday_replacement.holiday.user_id,
-            team_leader: holiday_replacement.project.team_leader.name,
-            days: holiday_replacement.holiday.days,
-            start_date: holiday_replacement.holiday.start_date,
-            end_date: holiday_replacement.holiday.end_date,
-            employee_replacement: [holiday_replacement.replacer_id, holiday_replacement.replacer.name, holiday_replacement.project.name],
-            signing_day: holiday_replacement.holiday.signing_day
-          }
+          holiday_id: holiday.id,
+          user_id: holiday.user_id,
+          days: holiday.days,
+          start_date: holiday.start_date,
+          end_date: holiday.end_date,
+          signing_day: holiday.signing_day,
+          employee_replacements:
+            holiday_replacements.map do |holiday_replacement|
+              {
+                team_leader: holiday_replacement.project.team_leader.name,
+                replacer_id: holiday_replacement.replacer_id,
+                replacer_name: holiday_replacement.replacer.name,
+                project_name: holiday_replacement.project.name
+              }
+            end
+        }
         end
         return response
       end
@@ -55,17 +65,28 @@ module V1
         requires :id, type: Integer , desc: "Holiday id"
       end
       get ':id' do
-        authorize! :read, HolidayReplacement
-        holiday_replacement = HolidayReplacement.find(params[:id])
+        authorize! :read, Holiday
+        response = []
+        holiday = Holiday.find(params[:id])
+        holiday_replacements = holiday.holiday_replacements
         response = {
-          user_id: holiday_replacement.holiday.user_id,
-          team_leader: holiday_replacement.project.team_leader.name,
-          days: holiday_replacement.holiday.days,
-          start_date: holiday_replacement.holiday.start_date,
-          end_date: holiday_replacement.holiday.end_date,
-          employee_replacement: [holiday_replacement.replacer_id, holiday_replacement.replacer.name, holiday_replacement.project.name],
-          signing_day: holiday_replacement.holiday.signing_day
+          holiday_id: holiday.id,
+          user_id: holiday.user_id,
+          days: holiday.days,
+          start_date: holiday.start_date,
+          end_date: holiday.end_date,
+          signing_day: holiday.signing_day,
+          employee_replacements:
+            holiday_replacements.map do |holiday_replacement|
+              {
+                team_leader: holiday_replacement.project.team_leader.name,
+                replacer_id: holiday_replacement.replacer_id,
+                replacer_name: holiday_replacement.replacer.name,
+                project_name: holiday_replacement.project.name
+              }
+            end
         }
+        return response
       end
 
       desc "Create new holiday"
