@@ -18,9 +18,9 @@ module V1
 
       def postParams
         ActionController::Parameters.new(params)
-          .permit(:first_name, :middle_name, :last_name, :address, :birthday, :phone, :picture, :observations,
-          :email_other, :urgent_contact, :car_plate, :assist_start_date, :courses_and_certifications, :courses_date,
-          :schedule_id, :skills_level, :skills_type, :project_dates, :status, :email)
+            .permit(:first_name, :middle_name, :last_name, :address, :birthday, :phone, :picture, :observations,
+                    :email_other, :urgent_contact, :car_plate, :assist_start_date, :courses_and_certifications, :courses_date,
+                    :schedule_id, :skills_level, :skills_type, :project_dates, :status, :email)
       end
 
       params :pagination do
@@ -168,15 +168,15 @@ module V1
         optional :end_date, type: Date
         optional :technology_ids, type: Array[Integer]
       end
-      put ':user_id/projects' do
-        user = User.find(params[:user_id])
-        projects = Project.where(id: params[:project_ids]) - user.projects
-        user.projects << projects if projects.count > 0
-        {items: user.as_json(include: :projects)}
-      end
 
-      delete ':user_id/projects' do
-        delete_object(User, Project, params[:user_id], params[:project_ids])
+      put ':user_id/projects/:project_id' do
+        user = find_user(params[:user_id])
+        user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
+        user_project = UserProject.create(user_id: params[:user_id], project_id: params[:project_id]) if user_project.nil?
+        user_project.update(user_project_params)
+        technologies = Technology.where(id: params[:technology_ids]) - user_project.technologies
+        user_project.technologies << technologies if technologies.count > 0
+        user_project.as_json(include: :technologies)
       end
 
       get ':user_id/technologies' do
