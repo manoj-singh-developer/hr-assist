@@ -74,14 +74,14 @@ const rootTemplatePath = './views/components/';
       })
       .state('employeesParent.details', {
         url: '/:id',
-        template: '<hra-employee-details></hra-employee-details>',
+        template: '<hra-user-details></hra-user-details>',
         data: {
           permissions: {
             only: ['ADMIN', 'EMPLOYEE'],
             except: ['isAnonymous'],
             redirectTo: 'login'
           },
-          cssClassNames: 'view-employee-details'
+          cssClassNames: 'view-user-details'
         }
       })
       .state('employeesParent.cv', {

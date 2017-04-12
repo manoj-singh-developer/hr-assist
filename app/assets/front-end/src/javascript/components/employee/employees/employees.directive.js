@@ -19,7 +19,7 @@
       },
       controller: 'employeesCtrl',
       controllerAs: 'employees',
-      templateUrl: rootTemplatePath + '/employee/views/employees.view.html'
+      templateUrl: rootTemplatePath + '/employee/employees/employees.view.html'
     };
   }
 

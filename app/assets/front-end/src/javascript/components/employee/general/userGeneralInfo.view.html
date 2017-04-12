@@ -10,30 +10,30 @@
 
     <div class="c-profile-progress">
       <span class="c-profile-progress__info">
-        {{employeeGeneralInfo.progress}}% completed
+        {{userGeneralInfo.progress}}% completed
       </span>
-      <span class="c-profile-progress__bar" style="width: {{employeeGeneralInfo.progress}}%"></span>
+      <span class="c-profile-progress__bar" style="width: {{userGeneralInfo.progress}}%"></span>
     </div>
 
     <md-card-title-text>
       <span class="md-headline">General informations</span>
       <p class="u-font-small u-no-margin">
-        <strong>Last Update at: {{employeeGeneralInfo.employee.updatedAt | date: 'longDate'}}</strong>
+        <strong>Last Update at: {{userGeneralInfo.user.updatedAt | date: 'longDate'}}</strong>
       </p>
     </md-card-title-text>
 
     <md-button
-      ng-hide="employeeGeneralInfo.candidate"
+      ng-hide="userGeneralInfo.candidate"
       class="md-primary"
-      ui-sref="employeesParent.cv({id: employeeGeneralInfo.pId})">
+      ui-sref="usersParent.cv({id: userGeneralInfo.pId})">
       <!-- @!TODO: De adaugat info despre proiecte la CV -->
       Generate CV
     </md-button>
 
     <md-button
-      ng-show="employeeGeneralInfo.candidate"
+      ng-show="userGeneralInfo.candidate"
       class="md-primary"
-      ui-sref="candidateParent.cv({id: employeeGeneralInfo.pId})">
+      ui-sref="candidateParent.cv({id: userGeneralInfo.pId})">
       Generate CV
     </md-button>
 
@@ -56,22 +56,22 @@
 
   <!-- PREVIEW GENERAL INFO -->
   <md-content
-    ng-show="employeeGeneralInfo.disabledgeneralInfo"
+    ng-show="userGeneralInfo.disabledgeneralInfo"
     class="c-card-profile__preview">
    <section layout-gt-xs="row">
 
     <div class="c-card-profile__picture"
       flex="20"
-      ng-if="employeeGeneralInfo.employee.picture"
+      ng-if="userGeneralInfo.user.picture"
       layout-align="top center">
       <img
-        ng-src="{{employeeGeneralInfo.employee.picture}}"
+        ng-src="{{userGeneralInfo.user.picture}}"
         class="md-card-image cv-picture">
     </div>
 
     <div class="c-card-profile__picture"
       flex="20"
-      ng-if="!employeeGeneralInfo.employee.picture"
+      ng-if="!userGeneralInfo.user.picture"
       layout-align="top center">
       <img
         src="http://www.85percent.co.uk/wp-content/uploads/2015/08/default-placeholder-1024x1024-570x321.png"
@@ -83,7 +83,7 @@
       <p class="c-card-profile__info c-card-profile__name u-clearfix">
         <span class="c-card-profile__info-text u-float-right">
           <strong>
-            {{employeeGeneralInfo.employee.first_name}} {{employeeGeneralInfo.employee.middle_name}} {{employeeGeneralInfo.employee.last_name}}
+            {{userGeneralInfo.user.first_name}} {{userGeneralInfo.user.middle_name}} {{userGeneralInfo.user.last_name}}
           </strong>
         </span>
       </p>
@@ -91,37 +91,37 @@
       <p class="c-card-profile__info u-clearfix">
         <strong>Birthday: </strong>
         <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.birthday | date: 'dd MMMM yyyy' }}
+          {{ userGeneralInfo.user.birthday | date: 'dd MMMM yyyy' }}
         </span>
       </p>
 
       <p class="c-card-profile__info c-card-profile__phone u-clearfix">
         <strong>Phone: </strong>
         <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.phone }}
+          {{ userGeneralInfo.user.phone }}
         </span>
       </p>
 
       <p class="c-card-profile__info c-card-profile__email u-clearfix">
         <strong>Other email: </strong>
         <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.email_other }}
+          {{ userGeneralInfo.user.other_email }}
         </span>
       </p>
 
       <p class="c-card-profile__info c-card-profile__address u-clearfix">
         <strong>Address: </strong>
         <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.address }}
-<!--           {{ employeeGeneralInfo.employee.address.zip }}
-          {{ employeeGeneralInfo.employee.address.city }} -->
+          {{ userGeneralInfo.user.address }}
+<!--           {{ userGeneralInfo.user.address.zip }}
+          {{ userGeneralInfo.user.address.city }} -->
         </span>
       </p>
 
       <p class="c-card-profile__info u-clearfix">
         <strong>Car's license plate: </strong>
         <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.car_plate }}
+          {{ userGeneralInfo.user.car_plate }}
         </span>
       </p>
 
@@ -130,40 +130,40 @@
       </md-divider>
 
       <p class="c-card-profile__info c-card-profile__email u-clearfix"
-        ng-hide="employeeGeneralInfo.candidate">
+        ng-hide="userGeneralInfo.candidate">
         <strong>Start date at ASSIST: </strong>
         <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.assist_start_date | date: 'MMMM yyyy' }}
+          {{ userGeneralInfo.user.company_start_date | date: 'MMMM yyyy' }}
         </span>
       </p>
 
       <p class="c-card-profile__info c-card-profile__email u-clearfix">
         <strong>Position: </strong>
         <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.assistPositionTitle }}
+          {{ userGeneralInfo.userPosition.positions[0].name }}
         </span>
       </p>
 
       <p class="c-card-profile__info c-card-profile__email u-clearfix">
         <strong>ASSIST email: </strong>
          <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.email }}
+          {{ userGeneralInfo.user.email }}
         </span>
       </p>
 
       <p class="c-card-profile__info u-clearfix"
-        ng-hide="employeeGeneralInfo.candidate">
+        ng-hide="userGeneralInfo.candidate">
         <strong>Office: </strong>
         <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.office }}
+          {{ userGeneralInfo.user.office_nr }}
         </span>
       </p>
 
       <p class="c-card-profile__info u-clearfix"
-        ng-hide="employeeGeneralInfo.candidate">
+        ng-hide="userGeneralInfo.candidate">
         <strong>Contract type: </strong>
         <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.contractType }}
+          {{ userGeneralInfo.userSchedule.schedule.name }}
         </span>
        </p>
 
@@ -174,14 +174,14 @@
       <p class="c-card-profile__info u-clearfix">
         <strong>Urgent Contact Person:</strong>
         <span class="u-float-right">
-          {{ employeeGeneralInfo.employee.urgentContact.ContactName }}
+          {{ userGeneralInfo.user.urgent_contact_name }}
         </span>
       </p>
 
       <p class="c-card-profile__info">
         <strong>Urgent Contact Phone: </strong>
         <span class="u-float-right">
-            {{ employeeGeneralInfo.employee.urgent_contact }}
+            {{ userGeneralInfo.user.urgent_contact_phone }}
         </span>
       </p>
 
@@ -197,37 +197,37 @@
   <!-- FORM GENERAL INFO -->
   <md-content
     class="md-padding"
-    ng-hide="employeeGeneralInfo.disabledgeneralInfo">
+    ng-hide="userGeneralInfo.disabledgeneralInfo">
     <!-- @!TODO: Poza este intoarsa, de verificat -->
 
     <div layout-gt-xs="row">
       <md-input-container md-no-float class="md-block u-mb-20">
         <md-button
           class="md-raised u-no-margin"
-          ngf-select="employeeGeneralInfo.upload($file)"
+          ngf-select="userGeneralInfo.upload($file)"
           ngf-pattern="'image/*'"
           ngf-accept="'image/*'"
           ngf-max-size="1MB"
-          ng-disabled ="employeeGeneralInfo.disabledgeneralInfo">
+          ng-disabled ="userGeneralInfo.disabledgeneralInfo">
           Upload profile picture
           <!-- @!TODO: de aratat si in modul edit poza daca asceasta exista -->
        </md-button>
       </md-input-container>
     </div>
 
-    <div ng-show="employeeGeneralInfo.showSuccessMsg"
+    <div ng-show="userGeneralInfo.showSuccessMsg"
       class="alert-success fade"
       role="alert">
       Your picture has been successfully uploaded.
     </div>
 
-    <div ng-show="employeeGeneralInfo.showErrMsg"
+    <div ng-show="userGeneralInfo.showErrMsg"
       class="alert-error fade"
       role="alert">
       A problem occurred while uploading the prohile picture.
     </div>
 
-     <div ng-show="employeeGeneralInfo.showToLargeImage"
+     <div ng-show="userGeneralInfo.showToLargeImage"
       class="alert-error fade"
       role="alert">
       Image size is too big. The size limit is 1MB.
@@ -245,11 +245,12 @@
         <label>First Name</label>
         <input
           type="text"
-          ng-model="employeeGeneralInfo.employee.firstName"
+          ng-value="userGeneralInfo.user.first_name"
+          ng-model="userGeneralInfo.copyUser.first_name"
           name=firstName
-          ng-disabled ="employeeGeneralInfo.disabledgeneralInfo">
+          ng-disabled ="userGeneralInfo.disabledgeneralInfo">
 
-        <div ng-messages="employeeGeneralInfo.firstName.$error">
+        <div ng-messages="userGeneralInfo.firstName.$error">
           <div ng-message="required">This field is required</div>
         </div>
 
@@ -263,11 +264,12 @@
         <label>Middle Name</label>
         <input
           type="text"
-          ng-model="employeeGeneralInfo.employee.middleName"
+          ng-model="userGeneralInfo.copyUser.middle_name"
+          ng-value="userGeneralInfo.user.middle_name"
           name="middleName"
-          ng-disabled="employeeGeneralInfo.disabledgeneralInfo">
+          ng-disabled="userGeneralInfo.disabledgeneralInfo">
 
-        <div ng-messages="employeeGeneralInfo.middleName.$error">
+        <div ng-messages="userGeneralInfo.middleName.$error">
           <div ng-message="required">This field is required</div>
         </div>
 
@@ -281,11 +283,12 @@
         <label>Last Name</label>
         <input
           type="text"
-          ng-model="employeeGeneralInfo.employee.lastName"
+          ng-model="userGeneralInfo.copyUser.last_name"
+          ng-value="userGeneralInfo.user.last_name"
           name="lastName"
-          ng-disabled ="employeeGeneralInfo.disabledgeneralInfo">
+          ng-disabled ="userGeneralInfo.disabledgeneralInfo">
 
-        <div ng-messages="employeeGeneralInfo.lastName.$error">
+        <div ng-messages="userGeneralInfo.lastName.$error">
           <div ng-message="required">This field is required</div>
         </div>
 
@@ -297,7 +300,7 @@
 
       <label class="u-mr-20">Birthday</label>
       <hra-date-select
-        ng-model="employeeGeneralInfo.employee.birthday" >
+        ng-model="userGeneralInfo.copyUser.birthday" >
       </hra-date-select>
 
     </div><!-- /BIRTHDAY -->
@@ -316,8 +319,9 @@
         <input
           type="text"
           name=judet
-          ng-model="employeeGeneralInfo.employee.address.city"
-          ng-disabled ="employeeGeneralInfo.disabledgeneralInfo">
+          ng-value="userGeneralInfo.user.city"
+          ng-model="userGeneralInfo.copyUser.city"
+          ng-disabled ="userGeneralInfo.disabledgeneralInfo">
       </md-input-container>
 
       <md-input-container md-no-float class="md-block" flex-gt-xs="50">
@@ -325,8 +329,9 @@
         <input
           type="text"
           name=localitate
-          ng-model="employeeGeneralInfo.employee.address.zip"
-          ng-disabled="employeeGeneralInfo.disabledgeneralInfo">
+          ng-value="userGeneralInfo.user.zip_code"
+          ng-model="userGeneralInfo.copyUser.zip_code"
+          ng-disabled="userGeneralInfo.disabledgeneralInfo">
       </md-input-container>
 
     </div>
@@ -337,8 +342,9 @@
         <input
           type="text"
           name=adresa
-          ng-model="employeeGeneralInfo.employee.address.adresa"
-          ng-disabled="employeeGeneralInfo.disabledgeneralInfo">
+          ng-value="userGeneralInfo.user.address"
+          ng-model="userGeneralInfo.copyUser.address"
+          ng-disabled="userGeneralInfo.disabledgeneralInfo">
       </md-input-container>
     </div>
     <!-- /Address -->
@@ -350,8 +356,9 @@
 
         <label>Phone</label>
         <input
-          ng-model="employeeGeneralInfo.employee.phone"
-          ng-disabled ="employeeGeneralInfo.disabledgeneralInfo">
+          ng-value="userGeneralInfo.user.phone"
+          ng-model="userGeneralInfo.copyUser.phone"
+          ng-disabled ="userGeneralInfo.disabledgeneralInfo">
 
         <div ng-messages="serverErrors">
           {{serverErrorsArray.data.invalidAttributes.phone[0].message}}
@@ -363,12 +370,13 @@
 
         <label>Email</label>
         <input
-          ng-model="employeeGeneralInfo.employee.emailOther"
+          ng-value="userGeneralInfo.user.other_email"
+          ng-model="userGeneralInfo.copyUser.other_email"
           name="emailOther"
           type="email"
-          ng-disabled ="employeeGeneralInfo.disabledgeneralInfo">
+          ng-disabled ="userGeneralInfo.disabledgeneralInfo">
 
-        <div ng-messages="employeeGeneralInfo.email.$error">
+        <div ng-messages="userGeneralInfo.email.$error">
           <div ng-message="email">Please insert a valid email</div>
         </div>
 
@@ -383,8 +391,9 @@
         <label>Car's license plate</label>
         <input
           type="text"
-          ng-model="employeeGeneralInfo.employee.carPlate"
-          ng-disabled ="employeeGeneralInfo.disabledgeneralInfo">
+          ng-value="userGeneralInfo.user.car_plate"
+          ng-model="userGeneralInfo.copyUser.car_plate"
+          ng-disabled ="userGeneralInfo.disabledgeneralInfo">
 
       </md-input-container>
     </div><!-- CAR LICENSE -->
@@ -397,20 +406,20 @@
     <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
 
     <!-- STARTED WORKING ON -->
-    <div layout-gt-xs="row" layout-align="start center" ng-hide="employeeGeneralInfo.candidate">
+    <div layout-gt-xs="row" layout-align="start center" ng-hide="userGeneralInfo.candidate">
       <label flex-gt-xs="35" class="md-padding">
         <strong>Start date at ASSIST</strong>
       </label>
 
       <hra-date-select class="hide-days"
         flex-gt-xs="65"
-        ng-model="employeeGeneralInfo.employee.assistStartDate">
+        ng-model="userGeneralInfo.copyUser.company_start_date">
       </hra-date-select>
 
     </div><!-- STARTED WORKING ON -->
 
     <!-- ASSIST POSITION -->
-    <div layout-gt-xs="row" layout-align="start center" ng-hide="employeeGeneralInfo.candidate">
+    <div layout-gt-xs="row" layout-align="start center" ng-hide="userGeneralInfo.candidate">
 
       <label flex-gt-xs="35" class="md-padding">
         <strong>Position</strong>
@@ -418,12 +427,12 @@
 
       <md-input-container md-no-float class="md-block" flex-gt-xs="65">
         <md-select
-          aria-label="Positon"
-          ng-model="employeeGeneralInfo.employee.assistPositionTitle"
-          md-selected-text="employeeGeneralInfo.getSelectedText(employeeGeneralInfo.employee.assistPositionTitle, position=1)">
+          aria-label="Position"
+          ng-model="userGeneralInfo.copyUserPosition.positions[0].name"
+          md-selected-text="userGeneralInfo.getSelectedText(userGeneralInfo.copyUserPosition.positions[0].name, position=1)">
             <md-option
              ng-value="position"
-             ng-repeat="position in employeeGeneralInfo.employeeAssistPositionTitles track by $index">
+             ng-repeat="position in userGeneralInfo.userAssistPositionTitles track by $index">
                {{position}}
             </md-option>
         </md-select>
@@ -432,7 +441,7 @@
     </div><!-- ASSIST POSITION -->
 
     <!-- ASSIST CANDIDATE POSITION -->
-    <div layout-gt-xs="row" layout-align="start center" ng-show="employeeGeneralInfo.candidate">
+    <div layout-gt-xs="row" layout-align="start center" ng-show="userGeneralInfo.candidate">
 
       <label flex-gt-xs="35" class="md-padding u-mb-20">
         <strong>Position</strong>
@@ -441,11 +450,11 @@
       <md-input-container md-no-float class="md-block" flex-gt-xs="30">
         <md-select
           aria-label ="Position"
-          ng-model="employeeGeneralInfo.employee.assistPositionTitle"
-          md-selected-text="employeeGeneralInfo.getSelectedText(employeeGeneralInfo.employee.assistPositionTitle, position=1)">
+          ng-model="userGeneralInfo.user.assistPositionTitle"
+          md-selected-text="userGeneralInfo.getSelectedText(userGeneralInfo.user.assistPositionTitle, position=1)">
             <md-option
              ng-value="position"
-             ng-repeat="position in employeeGeneralInfo.candidatesPositionTitle">
+             ng-repeat="position in userGeneralInfo.candidatesPositionTitle">
                {{position}}
             </md-option>
         </md-select>
@@ -460,13 +469,14 @@
         <label>ASSIT email</label>
 
         <input
-          ng-model="employeeGeneralInfo.employee.emailAssist"
+          ng-value="userGeneralInfo.user.email"
+          ng-model="userGeneralInfo.copyUser.email"
           name="emailAssist"
           type="email"
-          ng-disabled ="employeeGeneralInfo.disabledgeneralInfo"
+          ng-disabled ="userGeneralInfo.disabledgeneralInfo"
           readonly>
 
-        <div ng-messages="employeeGeneralInfo.email.$error">
+        <div ng-messages="userGeneralInfo.email.$error">
           <div ng-message="email">Please insert a valid email</div>
         </div>
 
@@ -476,7 +486,7 @@
     <!-- OFFICE AND CONTRACT -->
     <div layout-gt-xs="row"
       layout-align="start center"
-      ng-hide="employeeGeneralInfo.candidate">
+      ng-hide="userGeneralInfo.candidate">
 
       <md-input-container md-no-float class="md-block" flex-gt-xs="50">
         <!-- @!TODO: De facut autocomplete aici, se cunosc birourile -->
@@ -484,18 +494,19 @@
         <input
           type="text"
           name="office"
-          ng-model="employeeGeneralInfo.employee.office"
-          ng-disabled ="employeeGeneralInfo.disabledgeneralInfo" />
+          ng-value="userGeneralInfo.user.office_nr"
+          ng-model="userGeneralInfo.copyUser.office_nr"
+          ng-disabled ="userGeneralInfo.disabledgeneralInfo" />
       </md-input-container>
 
       <md-input-container md-no-float flex-gt-xs="50">
         <md-select
           aria-label="contract type"
-          ng-model="employeeGeneralInfo.employee.contractType"
-          md-selected-text="employeeGeneralInfo.getSelectedText(employeeGeneralInfo.employee.contractType, contract=0)">
+          ng-model="userGeneralInfo.copyUserSchedule.schedule.name"
+          md-selected-text="userGeneralInfo.getSelectedText(userGeneralInfo.copyUserSchedule.schedule.name, contract=0)">
           <md-option
             ng-value="type"
-            ng-repeat="type in employeeGeneralInfo.contractType">
+            ng-repeat="type in userGeneralInfo.contractType">
               {{type}}
           </md-option>
         </md-select>
@@ -515,8 +526,9 @@
         <input
           type="text"
           name="urgentContactName"
-          ng-model="employeeGeneralInfo.employee.urgentContact.ContactName"
-          ng-disabled ="employeeGeneralInfo.disabledgeneralInfo" />
+          ng-value="userGeneralInfo.user.urgent_contact_name"
+          ng-model="userGeneralInfo.copyUser.urgent_contact_name"
+          ng-disabled ="userGeneralInfo.disabledgeneralInfo" />
       </md-input-container>
 
       <md-input-container md-no-float class="md-block" flex-gt-xs="50">
@@ -524,8 +536,9 @@
         <input
           type="text"
           name="urgentContactPhone"
-          ng-model="employeeGeneralInfo.employee.urgentContact.ContactPhone"
-          ng-disabled ="employeeGeneralInfo.disabledgeneralInfo" />
+          ng-value="userGeneralInfo.user.urgent_contact_phone"
+          ng-model="userGeneralInfo.copyUser.urgent_contact_phone"
+          ng-disabled ="userGeneralInfo.disabledgeneralInfo" />
       </md-input-container>
 
     </div><!-- /Urgent Contact -->
@@ -540,10 +553,10 @@
   <md-card-actions
     layout="column"
     layout-align="start"
-    ng-show="employeeGeneralInfo.disabledgeneralInfo">
+    ng-show="!userGeneralInfo.settings.showForm">
     <md-button
       class="c-card-profile__btn no-margin"
-      ng-click="employeeGeneralInfo.generalInfoShowHide('general'); employeeGeneralInfo.toggleCard($event, 'open')">
+      ng-click="userGeneralInfo.generalInfoShowHide('general'); userGeneralInfo.toggleForm()">
       Add/Edit general information
     </md-button>
   </md-card-actions>
@@ -551,19 +564,19 @@
   <md-card-actions
     layout="row"
     layout-align="center center"
-    ng-show="!employeeGeneralInfo.disabledgeneralInfo"
+    ng-show="!userGeneralInfo.disabledgeneralInfo"
     class="additional">
 
     <md-button
       class="md-raised md-primary"
-      ng-click="employeeGeneralInfo.saveEmployee(employeeGeneralInfo.employee); employeeGeneralInfo.toggleCard($event, 'close')"
+      ng-click="userGeneralInfo.save()"
       ng-disabled="btnIsDisabled">
       Save
     </md-button>
 
     <md-button
       class="md-raised"
-      ng-click="employeeGeneralInfo.cancelAdd(); employeeGeneralInfo.toggleCard($event, 'close')">
+      ng-click="userGeneralInfo.cancelAdd(); userGeneralInfo.toggleForm()">
       Cancel
     </md-button>
 

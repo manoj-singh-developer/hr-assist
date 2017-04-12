@@ -12,15 +12,18 @@
 
   function hraGeneralInfo() {
     return {
-      restrict: 'EA',
+      restrict: 'A',
       scope: {},
+      require: 'hraCard',
       bindToController: {
-        candidate: '=',
-        progress: '='
+        'toggleForm': '=',
+        'querySearch': '=',
+        'progress': '=',
+        'settings': '='
       },
-      controller: 'emplyeeGeneralInfoCtrl',
-      controllerAs: 'employeeGeneralInfo',
-      templateUrl: rootTemplatePath + '/employee/views/employeeGeneralInfo.view.html',
+      controller: 'userGeneralInfoCtrl',
+      controllerAs: 'userGeneralInfo',
+      templateUrl: rootTemplatePath + '/employee/general/userGeneralInfo.view.html'
     };
   }
 

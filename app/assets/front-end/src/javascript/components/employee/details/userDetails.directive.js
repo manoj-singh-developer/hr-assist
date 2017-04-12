@@ -3,23 +3,23 @@
   'use strict';
 
   // ------------------------------------------------------------------------
-  // @hraEmployeeDetails
+  // @hraUserDetails
   // ------------------------------------------------------------------------
 
   angular
     .module('HRA')
-    .directive('hraEmployeeDetails', hraEmployeeDetails);
+    .directive('hraUserDetails', hraUserDetails);
 
-  function hraEmployeeDetails() {
+  function hraUserDetails() {
     return {
       restrict: 'EA',
       scope: {},
       bindToController: {
         'candidate': '='
       },
-      controller: 'employeeDetailsController',
-      controllerAs: 'employeeDetails',
-      templateUrl: rootTemplatePath + '/employee/details/employeeDetails.view.html'
+      controller: 'userDetailsController',
+      controllerAs: 'userDetails',
+      templateUrl: rootTemplatePath + '/employee/details/userDetails.view.html'
     };
   }
 
