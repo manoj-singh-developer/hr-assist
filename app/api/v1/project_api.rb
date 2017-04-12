@@ -46,27 +46,27 @@ module V1
       end
 
       get ':project_id/application_types' do
-        project_with("application_types", params)
+        {items: project_with("application_types", params)}
       end
 
       get ':project_id/activities' do
-        project_with("activities", params)
+        {items: project_with("activities", params)}
       end
 
       get ':project_id/industries' do
-        project_with("industries", params)
+        {items: project_with("industries", params)}
       end
 
       get ':project_id/technologies' do
-        project_with("technologies", params)
+        {items: project_with("technologies", params)}
       end
 
       get ':project_id/customers' do
-        project_with("customers", params)
+        {items: project_with("customers", params)}
       end
 
       get ':project_id/users' do
-        project_with("users", params)
+        {items: project_with("users", params)}
       end
 
       desc "Create new project"
@@ -113,28 +113,44 @@ module V1
         project = Project.find_by_id(params[:id])
         technologies = Technology.where(id: params[:technology_ids]) - project.technologies
         project.technologies << technologies if technologies.count > 0
-        project.as_json(include: :technologies)
+        {items: project.as_json(include: :technologies)}
+      end
+
+      delete ':id/technologies' do
+        delete_object(Project, Technology, params[:id], params[:technology_ids])
       end
 
       put ':id/application_types' do
         project = Project.find_by_id(params[:id])
         application_types = ApplicationType.where(id: params[:application_type_ids]) - project.application_types
         project.application_types << application_types if application_types.count > 0
-        project.as_json(include: :application_types)
+        {items: project.as_json(include: :application_types)}
+      end
+
+      delete ':id/application_types' do
+        delete_object(Project, ApplicationType, params[:id], params[:application_type_ids])
       end
 
       put ':id/industries' do
         project = Project.find_by_id(params[:id])
         industries = Industry.where(id: params[:industry_ids]) - project.industries
         project.industries << industries if industries.count > 0
-        project.as_json(include: :industries)
+        {items: project.as_json(include: :industries)}
+      end
+
+      delete ':id/industries' do
+        delete_object(Project, Industry, params[:id], params[:industry_ids])
       end
 
       put ':id/customers' do
         project = Project.find_by_id(params[:id])
         customers = Customer.where(id: params[:customer_ids]) - project.customers
         project.customers << customers if customers.count > 0
-        project.as_json(include: :customers)
+        {items: project.as_json(include: :customers)}
+      end
+
+      delete ':id/customers' do
+        delete_object(Project, Customer, params[:id], params[:customer_ids])
       end
 
       desc "Delete project"

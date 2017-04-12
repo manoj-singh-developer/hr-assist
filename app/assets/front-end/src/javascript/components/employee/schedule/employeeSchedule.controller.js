@@ -62,12 +62,6 @@
 
 
 
-
-    // ----------------------------------------------------------------------
-    //  EXPOSED PUBLIC METHODS
-    // ----------------------------------------------------------------------
-
-    /* beautify preserve:start */
     vm.saveEmployee         = saveEmployee;
     vm.clearFields          = clearFields;
     vm.cancelAdd            = cancelAdd;
@@ -75,15 +69,9 @@
     vm.toggleScheduale      = toggleScheduale;
     vm.existsScheduale      = existsScheduale;
     vm.toggleCard           = toggleCard;
-    /* beautify preserve:end */
 
 
 
-
-
-    // ----------------------------------------------------------------------
-    // INVOKING PRIVATE METHODS
-    // ----------------------------------------------------------------------
 
     var getEmployee = $rootScope.$on('employeeIsLoadedEvent', function(event, employee) {
       vm.employee = employee;
@@ -157,18 +145,18 @@
       $(".monday").selectable({
         disabled: true
       });
-      $(".tuesday").selectable({
-        disabled: true
-      });
-      $(".wednesday").selectable({
-        disabled: true
-      });
-      $(".thursday").selectable({
-        disabled: true
-      });
-      $(".friday").selectable({
-        disabled: true
-      });
+      // $(".tuesday").selectable({
+      //   disabled: true
+      // });
+      // $(".wednesday").selectable({
+      //   disabled: true
+      // });
+      // $(".thursday").selectable({
+      //   disabled: true
+      // });
+      // $(".friday").selectable({
+      //   disabled: true
+      // });
 
     }
 

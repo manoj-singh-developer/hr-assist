@@ -4,22 +4,22 @@
 
   // hraCard directive
   // ------------------------------------------------------------------------
-  angular
-    .module('HRA')
-    .directive('hraCard', hraCard);
+  // angular
+  //   .module('HRA')
+  //   .directive('hraCard', hraCard);
 
-  function hraCard() {
-    return {
-      restrict: 'EA',
-      scope: {},
-      bindToController: {
-        card: '=',
-      },
-      controller: 'dashboardInfoController',
-      controllerAs: 'dashboardInfo',
-      templateUrl: rootTemplatePath + '/dashboard/views/card.view.html'
-    };
-  }
+  // function hraCard() {
+  //   return {
+  //     restrict: 'EA',
+  //     scope: {},
+  //     bindToController: {
+  //       card: '=',
+  //     },
+  //     controller: 'dashboardInfoController',
+  //     controllerAs: 'dashboardInfo',
+  //     templateUrl: rootTemplatePath + '/dashboard/views/card.view.html'
+  //   };
+  // }
 
 
 

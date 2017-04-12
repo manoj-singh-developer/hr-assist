@@ -1,0 +1,131 @@
+<md-card>
+
+
+
+  <md-card-title>
+     <md-card-title-text>
+       <span class="md-headline">
+        Technologies
+      </span>
+     </md-card-title-text>
+  </md-card-title>
+
+
+
+  <!-- PREVIEW  -->
+  <md-content
+    ng-show="!prjTechnologies.settings.showForm"
+    class="c-card-profile__preview">
+    <md-list layout="row" layout-wrap>
+      <md-list-item
+        flex="25"
+        class="md-2-line"
+        ng-repeat="technology in prjTechnologies.technologiesPreview track by $index">
+
+        <div class="md-list-item-text" layout="column">
+          <h4>{{technology.name}}</h4>
+        </div>
+
+        <div class="md-list-item-text" layout="column">
+          <span>{{technology.label}}</span>
+        </div>
+
+      </md-list-item>
+    </md-list>
+
+  </md-content><!-- /PREVIEW -->
+
+
+
+    <!-- EDIT -->
+    <md-content
+      class = "md-padding"
+      ng-show="prjTechnologies.settings.showForm">
+
+      <md-list layout="row" layout-wrap>
+
+        <md-list-item class="md-2-line c-filters__label">
+           <div class="md-list-item-text " layout="column">
+             <h4>Add/Remove Technology: </h4>
+           </div>
+         </md-list-item>
+
+         <md-list-item
+           class="md-2-line"
+           ng-repeat="item in prjTechnologies.technologiesEdit track by $index">
+           <div class="md-list-item-text" layout="column">
+             <p class="c-filters__item"
+              ng-click="prjTechnologies.removeFromQueue(item, prjTechnologies.project)" >
+               {{$index + 1}} {{item.name}}
+               <span class="material-icons c-filters__icon">close</span>
+             </p>
+           </div>
+         </md-list-item>
+
+      </md-list>
+
+      <md-content class="md-padding">
+        <form ng-submit="$event.preventDefault()">
+          <md-autocomplete
+            md-selected-item="prjTechnologies.selectedItem"
+            md-search-text-change="prjTechnologies.searchTextChange(prjTechnologies.searchText)"
+            md-search-text="prjTechnologies.searchText"
+            md-selected-item-change="prjTechnologies.addInQueue(item)"
+            md-items="item in prjTechnologies.querySearch(prjTechnologies.searchText, prjTechnologies.technologies)"
+            md-item-text="item.name"
+            md-min-length="0"
+            placeholder="Search">
+
+            <md-item-template>
+              <span
+              class="item-metadata"
+              md-highlight-text="prjTechnologies.searchText">
+                {{item.name}}
+              </span>
+            </md-item-template>
+
+          </md-autocomplete>
+        </form>
+      </md-content>
+
+    </md-content><!-- EDIT -->
+
+
+
+  <!-- CARD ACTIONS-->
+  <md-card-actions
+    layout="column"
+    layout-align="start"
+    ng-show="!prjTechnologies.settings.showForm">
+    <md-button
+      class="c-card-profile__btn no-margin"
+      ng-click="prjTechnologies.toggleForm()">
+      Add/Edit technologies
+    </md-button>
+  </md-card-actions>
+
+  <md-card-actions
+    layout="row"
+    layout-align="center center"
+    ng-show="prjTechnologies.settings.showForm"
+    class="additional">
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="prjTechnologies.save()"
+      ng-disabled="btnIsDisabled">
+      Save
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ng-click="prjTechnologies.toggleForm()">
+      Cancel
+    </md-button>
+
+  </md-card-actions>
+  <!-- /CARD ACTIONS-->
+
+
+
+</md-card>

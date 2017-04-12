@@ -51,10 +51,18 @@ module V1
         projects
       end
 
+      delete ':id/projects' do
+        delete_object(Technology, Project, params[:id], params[:project_ids])
+      end
+
       get ':id/users' do
         technology = Technology.find_by_id(params[:id])
         users = technology.users
         users
+      end
+
+      delete ':id/users' do
+        delete_object(Technology, User, params[:id], params[:user_ids])
       end
 
       desc "Create new technology"

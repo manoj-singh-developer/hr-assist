@@ -56,6 +56,23 @@
       return promise;
     };
 
+    Project.saveTechnologies = (project, technologies) => {
+      let id = project.id;
+      technologies = technologies.map(item => item.id);
+      url = apiUrl + '/projects/:id/technologies';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: id }, technologies);
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'save');
+          return data.technologies;
+        }).catch(() => alertService.error(model, 'saveTechnologies'));
+
+      return promise;
+    };
+
     Project.update = (data) => {
       url = apiUrl + '/projects/:id';
       resource = $resource(url, {}, {
@@ -95,6 +112,23 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch(() => alertService.error(model, 'getAll'));
+
+      return promise;
+    };
+
+    Project.getTechnologies = (project) => {
+      let id = project.id;
+      url = apiUrl + '/projects/:id/technologies';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: true
+        }
+      }).get({ id: id });
+
+      promise = resource.$promise
+        .then(data => data)
+        .catch(() => alertService.error(model, 'getTechnologies'));
 
       return promise;
     };
