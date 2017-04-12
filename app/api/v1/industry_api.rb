@@ -48,7 +48,7 @@ module V1
       get ':id/projects' do
         industry = Industry.find_by_id(params[:id])
         projects = industry.projects
-        projects
+        {items: projects}
       end
 
       delete ':id/projects' do
