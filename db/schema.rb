@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170411130938) do
+ActiveRecord::Schema.define(version: 20170412101809) do
 
   create_table "active_admin_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "namespace"
@@ -327,10 +327,10 @@ ActiveRecord::Schema.define(version: 20170411130938) do
     t.string   "phone",                  limit: 14
     t.string   "picture"
     t.text     "observations",           limit: 65535
-    t.string   "email_other",            limit: 120
-    t.text     "urgent_contact",         limit: 65535
+    t.string   "other_email",            limit: 120
+    t.text     "urgent_contact_name",    limit: 65535
     t.string   "car_plate",              limit: 25
-    t.date     "assist_start_date"
+    t.date     "company_start_date"
     t.integer  "schedule_id"
     t.integer  "status"
     t.integer  "uid"
@@ -347,6 +347,10 @@ ActiveRecord::Schema.define(version: 20170411130938) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
+    t.string   "city"
+    t.string   "zip_code"
+    t.integer  "office_nr"
+    t.string   "urgent_contact_phone"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
