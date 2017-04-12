@@ -18,8 +18,8 @@ module V1
 
       def postParams
         ActionController::Parameters.new(params)
-          .permit(:first_name, :middle_name, :last_name, :address, :birthday, :phone, :picture, :observations,
-                  :email_other, :urgent_contact, :car_plate, :assist_start_date, :status, :email)
+          .permit(:first_name, :middle_name, :last_name, :address, :city, :zip_code, :birthday, :phone, :picture, :observations,
+                  :other_email, :urgent_contact_name, :urgent_contact_phone, :car_plate, :company_start_date, :status, :email, :office_nr)
       end
 
       params :pagination do
@@ -218,11 +218,15 @@ module V1
         optional :phone, type: String
         optional :picture, type: String
         optional :observations, type: String
-        optional :email_other, type: String
-        optional :urgent_contact, type: String
+        optional :other_email, type: String
+        optional :urgent_contact_name, type: String
         optional :car_plate, type: String
-        optional :assist_start_date, type: Date
+        optional :company_start_date, type: Date
         optional :status, type: Integer
+        optional :city, type: String
+        optional :zip_code, type: String
+        optional :office_nr, type: Integer
+        optional :urgent_contact_phone, type: String
         optional :upload_ids, type: Array[Integer]
       end
       put ':id' do
@@ -278,11 +282,15 @@ module V1
       optional :phone, type: String
       optional :picture, type: String
       optional :observations, type: String
-      optional :email_other, type: String
-      optional :urgent_contact, type: String
+      optional :other_email, type: String
+      optional :urgent_contact_name, type: String
       optional :car_plate, type: String
-      optional :assist_start_date, type: Date
+      optional :company_start_date, type: Date
       optional :status, type: Integer
+      optional :city, type: String
+      optional :zip_code, type: String
+      optional :office_nr, type: Integer
+      optional :urgent_contact_phone, type: String
     end
 
     put "me" do
