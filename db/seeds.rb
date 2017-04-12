@@ -96,17 +96,18 @@ User.populate 10 do |user|
   user.phone = Faker::PhoneNumber.cell_phone
   user.picture = Faker::Avatar.image
   user.observations = Faker::Lorem.sentence
-  user.email_other = Faker::Internet.email
-  user.urgent_contact = Faker::Name.name_with_middle
+  user.other_email = Faker::Internet.email
+  user.urgent_contact_name = Faker::Name.name_with_middle
   user.car_plate = Faker::Vehicle.vin
-  user.assist_start_date = Faker::Date.backward(1000)
-  user.courses_and_certifications = Faker::Lorem.sentence
-  user.skills_level = Faker::Lorem.word
-  user.project_dates =Faker::Date.backward(20)
+  user.company_start_date = Faker::Date.backward(1000)
   user.status = Faker::Number.between(0,2)
   user.email = Faker::Internet.email
   user.encrypted_password = Faker::Internet.password
   user.sign_in_count = Faker::Number.between(0,10)
+  user.city = Faker::Address.city
+  user.zip_code = Faker::Address.zip_code
+  user.office_nr = Faker::Number.between(1,40)
+  user.urgent_contact_phone = Faker::PhoneNumber.phone_number
 
   Holiday.populate 2 do |holiday|
     holiday.user_id = user.id
