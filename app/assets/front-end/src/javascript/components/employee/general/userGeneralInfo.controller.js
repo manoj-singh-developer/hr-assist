@@ -70,11 +70,11 @@
     // vm.clearFields            = clearFields;
     vm.cancelAdd              = cancelAdd;
     vm.generalInfoShowHide    = generalInfoShowHide;
-    vm.upload                 = upload;
+    // vm.upload                 = upload;
     // vm.emplSearch             = emplSearch;
     vm.selectedItemChange     = selectedItemChange;
     vm.getSelectedText        = getSelectedText;
-    vm.removeYourTeam         = removeYourTeam;
+    // vm.removeYourTeam         = removeYourTeam;
     // vm.toggleCard             = toggleCard;
     /* beautify preserve:end */
 
@@ -93,14 +93,14 @@
       vm.copyUser = angular.copy(vm.user);
 
       // vm.name = vm.user.firstName + ' ' + vm.user.lastName;
-      if (vm.user.birthday !== null) {
-        vm.user.birthday = new Date(vm.user.birthday);
-      }
+      // if (vm.user.birthday !== null) {
+      //   vm.user.birthday = new Date(vm.user.birthday);
+      // }
 
-      if (vm.user.assistStartDate !== null) {
-        vm.user.assistStartDate = new Date(vm.user.assistStartDate);
-      }
-      vm.user.languages = angular.toJson(vm.user.languages);
+      // if (vm.user.assistStartDate !== null) {
+      //   vm.user.assistStartDate = new Date(vm.user.assistStartDate);
+      // }
+      // vm.user.languages = angular.toJson(vm.user.languages);
       _getUserPosition();
       _getUserSchedule();
     });
@@ -117,7 +117,7 @@
 
 
 
-    _getUserPosition();
+    _getPositions();
 
     // ----------------------------------------------------------------------
     // PUBLIC METHODS DECLARATION
@@ -145,27 +145,25 @@
     // }
 
     function save() {
+      if(!(JSON.stringify(vm.copyUser) === JSON.stringify(vm.user)))
+        User.update(vm.copyUser)
+          .then((data) => {
+            if (data) { vm.user = data }
+            vm.toggleForm();
+          });
+      if(!(JSON.stringify(vm.copyUserSchedule) === JSON.stringify(vm.userSchedule)))
+        User.updateSchedule(vm.copyUser.id, vm.copyUserSchedule)
+          .then((data) => {
+            if (data) { vm.userSchedule = data }
+          });
       
-      User.update(vm.copyUser)
-        .then((data) => {
-          if (data) { vm.user = data }
-          vm.toggleForm();
-        });
-      var copyUser = angular.copy(vm.copyUser);
-      copyUser["schedule"]=vm.copyUserSchedule.schedule;
-      vm.schedule["schedule"]
-      User.updateSchedule(copyUser)
-        .then((data) => {
-          if (data) { vm.userSchedule = data }
-        });
+      if(!(JSON.stringify(vm.copyUserPosition) === JSON.stringify(vm.userPosition)))
+        User.updatePosition(vm.copyUser.id,vm.copyUserPosition)
+          .then((data) => {
+            if (data) { vm.userPosition = data }
+          });
 
-      copyUser = angular.copy(vm.copyUser);
-      copyUser["positions"] = vm.copyUserPosition.positions;
-      
-      User.updatePosition(copyUser)
-        .then((data) => {
-          if (data) { vm.userPosition = data }
-        });
+        vm.disabledgeneralInfo = true;
     }
 
     // function clearFields() {
@@ -182,32 +180,32 @@
       vm.showSuccessMsg = false;
     }
 
-    function upload(file) {
-      if (file === null) {
-        vm.showToLargeImage = true;
-      }
-      console.log(file);
-      Upload.upload({
-        url: apiUrl + '/fileupload/uploadPic',
-        data: {
-          uploadFile: file
-        }
-      }).then(function(resp) {
-        if (resp.data.file.length === 1) {
-          vm.showToLargeImage = false;
-          vm.pictures = '/assets/images/' + resp.data.file[0].fd.substr(resp.data.file[0].fd.lastIndexOf('/') + 1);
-          vm.showSuccessMsg = true;
-        }
-      }, function(err) {
-        $timeout(function() {
-          vm.showErrMsg = true;
-        }, 1000);
-      }, function(evt) {
-        var progressPercentage = parseInt(100.0 *
-          evt.loaded / evt.total);
-        $scope.log = progressPercentage;
-      });
-    }
+    // function upload(file) {
+    //   if (file === null) {
+    //     vm.showToLargeImage = true;
+    //   }
+    //   console.log(file);
+    //   Upload.upload({
+    //     url: apiUrl + '/fileupload/uploadPic',
+    //     data: {
+    //       uploadFile: file
+    //     }
+    //   }).then(function(resp) {
+    //     if (resp.data.file.length === 1) {
+    //       vm.showToLargeImage = false;
+    //       vm.pictures = '/assets/images/' + resp.data.file[0].fd.substr(resp.data.file[0].fd.lastIndexOf('/') + 1);
+    //       vm.showSuccessMsg = true;
+    //     }
+    //   }, function(err) {
+    //     $timeout(function() {
+    //       vm.showErrMsg = true;
+    //     }, 1000);
+    //   }, function(evt) {
+    //     var progressPercentage = parseInt(100.0 *
+    //       evt.loaded / evt.total);
+    //     $scope.log = progressPercentage;
+    //   });
+    // }
 
     // function emplSearch(query) {
     //   return autocompleteService.querySearch(query, vm.users);
@@ -232,9 +230,9 @@
       }
     }
 
-    function removeYourTeam(item, index) {
-      vm.teamLeader.splice(index, 1);
-    }
+    // function removeYourTeam(item, index) {
+    //   vm.teamLeader.splice(index, 1);
+    // }
 
 
 

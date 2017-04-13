@@ -119,11 +119,11 @@
       return promise;
     };
 
-    User.updateSchedule = (data) => {
+    User.updateSchedule = (id,schedule) => {
       url = apiUrl + '/users/:id/schedule/:idSchedule';
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
-      }).update({ id: data.id, idSchedule:data.schedule.id }, data.schedule.name);
+      }).update({ id: id, idSchedule:schedule.id }, schedule);
 
       promise = resource.$promise
         .then((data) => {

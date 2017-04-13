@@ -27,7 +27,6 @@
     vm.userResources = {};
     vm.formTitle = 'User Profile';
     //vm.saveUser = saveUser;
-    vm.allPositions = [];
 
 
 

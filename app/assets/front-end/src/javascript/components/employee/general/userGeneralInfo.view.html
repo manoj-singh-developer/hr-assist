@@ -140,7 +140,7 @@
       <p class="c-card-profile__info c-card-profile__email u-clearfix">
         <strong>Position: </strong>
         <span class="u-float-right">
-          {{ userGeneralInfo.userPosition.positions[0].name }}
+          {{ userGeneralInfo.userPosition.name }}
         </span>
       </p>
 
@@ -163,7 +163,7 @@
         ng-hide="userGeneralInfo.candidate">
         <strong>Contract type: </strong>
         <span class="u-float-right">
-          {{ userGeneralInfo.userSchedule.schedule.name }}
+          {{ userGeneralInfo.userSchedule.name }}
         </span>
        </p>
 
@@ -428,8 +428,8 @@
       <md-input-container md-no-float class="md-block" flex-gt-xs="65">
         <md-select
           aria-label="Position"
-          ng-model="userGeneralInfo.copyUserPosition.positions[0].name"
-          md-selected-text="userGeneralInfo.getSelectedText(userGeneralInfo.copyUserPosition.positions[0].name, position=1)">
+          ng-model="userGeneralInfo.copyUserPosition.name"
+          md-selected-text="userGeneralInfo.getSelectedText(userGeneralInfo.copyUserPosition.name, position=1)">
             <md-option
              ng-value="position"
              ng-repeat="position in userGeneralInfo.userAssistPositionTitles track by $index">
@@ -502,8 +502,8 @@
       <md-input-container md-no-float flex-gt-xs="50">
         <md-select
           aria-label="contract type"
-          ng-model="userGeneralInfo.copyUserSchedule.schedule.name"
-          md-selected-text="userGeneralInfo.getSelectedText(userGeneralInfo.copyUserSchedule.schedule.name, contract=0)">
+          ng-model="userGeneralInfo.copyUserSchedule.name"
+          md-selected-text="userGeneralInfo.getSelectedText(userGeneralInfo.copyUserSchedule.name, contract=0)">
           <md-option
             ng-value="type"
             ng-repeat="type in userGeneralInfo.contractType">
@@ -569,7 +569,7 @@
 
     <md-button
       class="md-raised md-primary"
-      ng-click="userGeneralInfo.save()"
+      ng-click="userGeneralInfo.save(); userGeneralInfo.toggleForm()"
       ng-disabled="btnIsDisabled">
       Save
     </md-button>
