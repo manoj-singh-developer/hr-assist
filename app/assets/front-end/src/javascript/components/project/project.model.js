@@ -116,11 +116,8 @@
       let id = project.id;
       let data = {};
 
-      debugger;
-
       data.technology_ids = technologies.map(technology => technology.id);
       url = apiUrl + '/projects/:id/technologies';
-
 
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
@@ -136,7 +133,6 @@
     };
 
     Project.getTechnologies = (project) => {
-
       let id = project.id;
       url = apiUrl + '/projects/:id/technologies';
       resource = $resource(url, {}, {
@@ -149,6 +145,61 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch(() => alertService.error(model, 'getTechnologies'));
+
+      return promise;
+    };
+
+    Project.removeTechnologies = (project, technologies) => {
+      let id = project.id;
+      let data = {};
+
+      data.technology_ids = technologies.map(technology => technology.id);
+      url = apiUrl + '/projects/:id/technologies';
+      resource = $resource(url, data).delete({ id: id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'updateTechnologies');
+          return data.technologies;
+        }).catch(() => alertService.error(model, 'updateTechnologies'));
+
+      return promise;
+    };
+
+
+    Project.saveIndustries = (project, industries) => {
+      let id = project.id;
+      let data = {};
+
+      data.industry_ids = industries.map(industry => industry.id);
+      url = apiUrl + '/projects/:id/industries';
+
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: id }, data);
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'updateIndustries');
+          return data.technologies;
+        }).catch(() => alertService.error(model, 'updateIndustries'));
+
+      return promise;
+    };
+
+    Project.getIndustries = (project) => {
+      let id = project.id;
+      url = apiUrl + '/projects/:id/industries';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get({ id: id });
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getIndustries'));
 
       return promise;
     };
