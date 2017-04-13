@@ -5,7 +5,7 @@
 
 
   <!-- CARD NOTE -->
-  <md-card class="c-card-note u-mb-30">
+  <!-- <md-card class="c-card-note u-mb-30">
     <md-card-title>
       <md-card-title-text>
         <span class="md-headline">Note</span>
@@ -23,7 +23,7 @@
 
       <p><strong>Thank You!</strong></p>
     </section>
-  </md-card><!-- /CARD NOTE -->
+  </md-card> --><!-- /CARD NOTE -->
 
 
 
@@ -32,14 +32,16 @@
   <!-- EMPLOYEE CARDS -->
   <section>
 
-    <hra-general-info
-      candidate=employeeDetails.candidate
-      progress=employeeDetails.progress
-      class="c-card-profile [ js-employee-card ]"
-      md-whiteframe='6'>
-    </hra-general-info>
+    <hra-card
+      hra-user-general
+      class="c-card-profile"
+      md-whiteframe='6'
+      toggle-form="card.toggleForm"
+      query-search="card.querySearch"
+      settings="card.settings">
+    </hra-card>
 
-    <hra-language
+   <!--  <hra-language
       class="c-card-profile [ js-employee-card ]"
       md-whiteframe='6'>
     </hra-language>
@@ -96,7 +98,7 @@
       ng-hide="employeeDetails.candidate"
       class="c-card-profile [ js-employee-card ]"
       md-whiteframe='6'>
-    </hra-employee-holiday>
+    </hra-employee-holiday> -->
 
   </section><!-- EMPLOYEE CARDS -->
 

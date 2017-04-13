@@ -12,14 +12,14 @@
 
       <div class="md-title">
 
-        <span ng-show="!employees.candidate">Employees</span>
-        <span ng-show="employees.candidate">Candidates</span>
+        <span ng-show="!users.candidate">Employees</span>
+        <span ng-show="users.candidate">Candidates</span>
 
         <md-button
           class="md-primary"
           label="Toggle filters"
           aria-label="Toggle filters"
-          ng-click="employees.toggleFilters()">
+          ng-click="users.toggleFilters()">
           <md-icon class="material-icons">filter_list</md-icon>
           <md-tooltip md-autohide="true">
             Toggle filters
@@ -32,17 +32,17 @@
       <div layout="row" layout-align="right">
 
         <md-button
-          ng-show="employees.candidate"
+          ng-show="users.candidate"
           class="md-primary"
-          ng-click="employees.showFormDialog($event, {})">
-          {{employees.addTitle}}
+          ng-click="users.showFormDialog($event, {})">
+          {{users.addTitle}}
         </md-button>
 
         <md-button
           class="md-primary"
-          ng-csv="employees.getArray()"
-          csv-header="employees.getHeader()"
-          filename="RaportEmployees.csv">
+          ng-csv="users.getArray()"
+          csv-header="users.getHeader()"
+          filename="Raportusers.csv">
           Export in CSV
         </md-button>
 
@@ -60,20 +60,20 @@
   <md-content class="md-padding">
     <form ng-submit="$event.preventDefault()">
       <md-autocomplete
-        ng-disabled="employees.isDisabled"
-        ng-model="employees.searchText"
-        md-selected-item="employees.selectedItem"
-        md-search-text-change="employees.searchTextChange(employees.searchText)"
-        md-search-text="employees.searchText"
-        md-selected-item-change="employees.selectedItemChange(item)"
-        md-items="item in employees.querySearch(employees.searchText)"
-        md-item-text="item.getFullName()"
+        ng-disabled="users.isDisabled"
+        ng-model="users.searchText"
+        md-selected-item="users.selectedItem"
+        md-search-text-change="users.searchTextChange(users.searchText)"
+        md-search-text="users.searchText"
+        md-selected-item-change="users.selectedItemChange(item)"
+        md-items="item in users.querySearch(users.searchText)"
+        md-item-text="item.first_name + ' ' +  item.last_name"
         md-min-length="0"
         placeholder="Search">
 
         <md-item-template>
           <span class="item-metadata">
-            {{item.getFullName()}}
+            {{item.first_name}} {{item.last_name}}
         </md-item-template>
 
       </md-autocomplete>
@@ -86,10 +86,10 @@
   <!-- SELECTED ROWS -->
   <md-toolbar
     class="md-table-toolbar alternate"
-    ng-show="employees.table.options.rowSelection && employees.table.selected.length">
+    ng-show="users.table.options.rowSelection && users.table.selected.length">
     <div class="md-toolbar-tools">
       <span>
-        {{employees.table.selected.length}} {{employees.table.selected.length > 1 ? 'employees' : 'employee'}} selected
+        {{users.table.selected.length}} {{users.table.selected.length > 1 ? 'employees' : 'employee'}} selected
       </span>
     </div>
   </md-toolbar><!-- /SELECTED ROWS -->
@@ -98,7 +98,7 @@
 
 
   <!-- ALL FILTERS -->
-  <md-content class="c-filters c-filters--employee md-padding" ng-show="employees.showFilters">
+  <md-content class="c-filters c-filters--employee md-padding" ng-show="users.showFilters">
 
 
 
@@ -107,7 +107,7 @@
       class="md-warn"
       label="Reset all filters"
       aria-label="Reset all filters"
-      ng-click="employees.reset()">
+      ng-click="users.reset()">
       <md-icon class="material-icons">autorenew</md-icon>
       Reset filters
       <md-tooltip md-autohide="true">
@@ -119,18 +119,18 @@
 
 
     <!-- FILTER BY PROJECTS -->
-    <section layout="row" layout-align="center center" ng-hide="employees.candidate">
+    <section layout="row" layout-align="center center" ng-hide="users.candidate">
 
       <!-- SEARCH INPUT -->
       <div flex="50" flex-gt-sm="35" flex-gt-md="25">
         <md-content class="md-padding">
           <form ng-submit="$event.preventDefault()">
             <md-autocomplete
-              md-selected-item="employees.selectedProject"
-              md-search-text-change="employees.searchProjectChange(employees.searchProject)"
-              md-search-text="employees.searchProject"
-              md-selected-item-change="employees.selectedProjectChange(itemPr.name, employees.employees)"
-              md-items="itemPr in employees.querySearchProjects(employees.searchProject)"
+              md-selected-item="users.selectedProject"
+              md-search-text-change="users.searchProjectChange(users.searchProject)"
+              md-search-text="users.searchProject"
+              md-selected-item-change="users.selectedProjectChange(itemPr.name, users.employees)"
+              md-items="itemPr in users.querySearchProjects(users.searchProject)"
               md-item-text="itemPr.name"
               md-min-length="0"
               placeholder="Filter by projects">
@@ -156,9 +156,9 @@
           </md-list-item>
           <md-list-item
             class="md-2-line"
-            ng-repeat="project in employees.arrayProject track by $index">
+            ng-repeat="project in users.arrayProject track by $index">
             <div class="md-list-item-text" layout="column">
-              <p ng-click="employees.removeSearchProject($index)" class="c-filters__item">
+              <p ng-click="users.removeSearchProject($index)" class="c-filters__item">
                 {{$index + 1}} {{project}}
                 <span class="material-icons c-filters__icon">close</span>
               </p>
@@ -180,11 +180,11 @@
         <md-content class="md-padding">
           <form ng-submit="$event.preventDefault()">
             <md-autocomplete
-              md-selected-item="employees.selectedSkill"
-              md-search-text-change="employees.searchSkillChange(employees.searchSkill)"
-              md-search-text="employees.searchSkill"
-              md-selected-item-change="employees.selectedSkillChange(item.label, employees.employees)"
-              md-items="item in employees.querySearchSkills(employees.searchSkill)"
+              md-selected-item="users.selectedSkill"
+              md-search-text-change="users.searchSkillChange(users.searchSkill)"
+              md-search-text="users.searchSkill"
+              md-selected-item-change="users.selectedSkillChange(item.label, users.employees)"
+              md-items="item in users.querySearchSkills(users.searchSkill)"
               md-item-text="item.label"
               md-min-length="0"
               placeholder="Filter by skills">
@@ -210,9 +210,9 @@
           </md-list-item>
           <md-list-item
             class="md-2-line"
-            ng-repeat="skill in employees.arraySkill track by $index">
+            ng-repeat="skill in users.arraySkill track by $index">
             <div class="md-list-item-text" layout="column">
-              <p ng-click="employees.removeSearchSkills($index)">{{$index + 1}} {{skill}}
+              <p ng-click="users.removeSearchSkills($index)">{{$index + 1}} {{skill}}
                 <span class="material-icons c-filters__icon">close</span>
               </p>
             </div>
@@ -233,11 +233,11 @@
         <md-content class="md-padding">
           <form ng-submit="$event.preventDefault()">
             <md-autocomplete
-              md-selected-item="employees.selectedLanguage"
-              md-search-text-change="employees.searchLanguageChange(employees.searchLanguage)"
-              md-search-text="employees.searchLanguage"
-              md-selected-item-change="employees.selectedLanguageChange(itemLg.name, employees.employees)"
-              md-items="itemLg in employees.querySearchLanguage(employees.searchLanguage)"
+              md-selected-item="users.selectedLanguage"
+              md-search-text-change="users.searchLanguageChange(users.searchLanguage)"
+              md-search-text="users.searchLanguage"
+              md-selected-item-change="users.selectedLanguageChange(itemLg.name, users.employees)"
+              md-items="itemLg in users.querySearchLanguage(users.searchLanguage)"
               md-item-text="itemLg.name"
               md-min-length="0"
               placeholder="Filter by languages">
@@ -263,9 +263,9 @@
           </md-list-item>
           <md-list-item
             class="md-2-line"
-            ng-repeat="language in employees.arrayLanguage track by $index">
+            ng-repeat="language in users.arrayLanguage track by $index">
             <div class="md-list-item-text" layout="column">
-              <p ng-click="employees.removeSearchLanguage($index)">{{$index + 1}} {{language}}
+              <p ng-click="users.removeSearchLanguage($index)">{{$index + 1}} {{language}}
                 <span class="material-icons c-filters__icon">close</span>
               </p>
             </div>
@@ -289,17 +289,17 @@
       <div flex="50" flex-gt-sm="35" flex-gt-md="25">
         <md-content class="md-padding">
           <md-select
-            ng-click="employees.changeSkillLevelFilter()"
+            ng-click="users.changeSkillLevelFilter()"
             aria-label="skillLevel"
             class="u-no-margin"
-            ng-model="employees.selectedSkillLevel"
+            ng-model="users.selectedSkillLevel"
             placeholder="Skill Level"
-            md-selected-text="employees.selectedSkillLeve(employees.selectedSkillLevel, employees.employees)"
+            md-selected-text="users.selectedSkillLeve(users.selectedSkillLevel, users.employees)"
             class="md-select-level">
             <md-optgroup label="Level">
               <md-option
                 value="{{skillLevel}}"
-                ng-repeat="skillLevel in employees.skillLevels">
+                ng-repeat="skillLevel in users.skillLevels">
                 {{skillLevel}}
               </md-option>
             </md-optgroup>
@@ -311,7 +311,7 @@
       <div flex="50" flex-gt-sm="65" flex-gt-md="75">
         <md-button
           class="md-warn"
-          ng-click="employees.clearPositionTitle()">
+          ng-click="users.clearPositionTitle()">
           Clear
         </md-button>
       </div> <!-- /SEARCH OUPUT -->
@@ -322,21 +322,21 @@
 
 
     <!-- FILTER BY MANAGER -->
-   <!--  <section layout="row" layout-align="center center" ng-hide="employees.candidate"> -->
+   <!--  <section layout="row" layout-align="center center" ng-hide="users.candidate"> -->
 
       <!-- SEARCH INPUT -->
       <!-- <div flex="50" flex-gt-sm="35" flex-gt-md="25">
         <md-content class="md-padding">
           <md-select
             aria-label="manager"
-            ng-model="employees.selectedManager"
+            ng-model="users.selectedManager"
             placeholder ="Manager"
-            md-selected-text="employees.selectedManagerPr(employees.selectedManager, employees.employees)"
+            md-selected-text="users.selectedManagerPr(users.selectedManager, users.employees)"
             class="md-select-level">
           <md-optgroup label="Level">
             <md-option
               value="{{manager}}"
-              ng-repeat="manager in employees.manager">
+              ng-repeat="manager in users.manager">
               {{manager}}
             </md-option>
           </md-optgroup>
@@ -355,21 +355,21 @@
 
 
     <!-- FILTER BY POSITION -->
-    <section layout="row" layout-align="center center" ng-hide="employees.candidate">
+    <section layout="row" layout-align="center center" ng-hide="users.candidate">
 
       <!-- SEARCH INPUT -->
       <div flex="50" flex-gt-sm="35" flex-gt-md="25">
         <md-content class="md-padding">
           <md-select
             aria-label="positionTitle"
-            ng-model="employees.positionTitle"
+            ng-model="users.positionTitle"
             placeholder ="Position Title"
-            md-selected-text="employees.selectedPositionTitle(employees.positionTitle, employees.employees)"
+            md-selected-text="users.selectedPositionTitle(users.positionTitle, users.employees)"
             class="md-select-level">
               <md-optgroup label="Level">
                 <md-option
                   value="{{position}}"
-                  ng-repeat="position in employees.positionTitles">
+                  ng-repeat="position in users.positionTitles">
                     {{position}}
                 </md-option>
               </md-optgroup>
@@ -382,7 +382,7 @@
       <div flex="50" flex-gt-sm="65" flex-gt-md="75">
         <md-button
           class="md-warn"
-          ng-click="employees.clearPositionTitle()">
+          ng-click="users.clearPositionTitle()">
           Clear
         </md-button>
       </div> <!-- /SEARCH OUPUT -->
@@ -393,20 +393,20 @@
 
 
     <!-- FILTER BY CANDIDATE POSITION -->
-    <section layout="row" layout-align="center center" ng-show="employees.candidate">
+    <section layout="row" layout-align="center center" ng-show="users.candidate">
 
       <!-- SEARCH INPUT -->
       <div flex="50" flex-gt-sm="35" flex-gt-md="25">
         <md-select
           aria-label="positionTitle"
-          ng-model="employees.positionTitle"
+          ng-model="users.positionTitle"
           placeholder ="Position Title"
-          md-selected-text="employees.selectedPositionTitle(employees.positionTitle, employees.employees)"
+          md-selected-text="users.selectedPositionTitle(users.positionTitle, users.employees)"
           class="md-select-level">
             <md-optgroup label="Level">
               <md-option
                 value="{{position}}"
-                ng-repeat="position in employees.candidatesPositionTitle">
+                ng-repeat="position in users.candidatesPositionTitle">
                   {{position}}
               </md-option>
             </md-optgroup>
@@ -417,7 +417,7 @@
       <div flex="50" flex-gt-sm="65" flex-gt-md="75">
         <md-button
           class="md-warn"
-          ng-click="employees.clearPositionTitle()">
+          ng-click="users.clearPositionTitle()">
           Clear
         </md-button>
       </div> <!-- /SEARCH OUPUT -->
@@ -428,21 +428,21 @@
 
 
     <!-- FILTER BY BIRDHDAY -->
-    <section layout="row" layout-align="center center" ng-hide="employees.candidate">
+    <section layout="row" layout-align="center center" ng-hide="users.candidate">
 
       <!-- SEARCH INPUT -->
       <div flex="50" flex-gt-sm="50" flex-gt-md="25">
        <md-input-container md-no-float class="" flex-gt-md="50">
         <md-select
           aria-label="birthdayMonth"
-          ng-model="employees.birthdayMonth"
+          ng-model="users.birthdayMonth"
           placeholder ="Select month"
-          md-selected-text="employees.selectedbirthdayMonth(employees.birthdayMonth, employees.employees)"
+          md-selected-text="users.selectedbirthdayMonth(users.birthdayMonth, users.employees)"
           class="md-select-level">
             <md-optgroup label="Month">
               <md-option
                 value="{{month}}"
-                ng-repeat="month in employees.monthsList">
+                ng-repeat="month in users.monthsList">
                   {{month}}
               </md-option>
             </md-optgroup>
@@ -451,7 +451,7 @@
         <md-input-container md-no-float class="" flex-gt-md="50">
 
           <input
-          ng-model="employees.bornYear"
+          ng-model="users.bornYear"
           aria-label="bornYear"
           name="bornYear"
           placeholder="Birthday year">
@@ -459,9 +459,9 @@
         </md-input-container>
        <!--  <md-datepicker
           required
-          ng-model="employees.birthdayDate"
+          ng-model="users.birthdayDate"
           md-placeholder="Birthday"
-          ng-change="employees.searchBirthdayFilter(employees.employees, employees.birthdayDate)"
+          ng-change="users.searchBirthdayFilter(users.employees, users.birthdayDate)"
           md-open-on-focus>
         </md-datepicker> -->
       </div> <!-- /SEARCH INPUT -->
@@ -470,12 +470,12 @@
       <div flex="50" flex-gt-sm="65" flex-gt-md="75">
       <md-button
         class="md-warn"
-        ng-click="employees.searchBirthdayFilter(employees.bornYear,  employees.employees)">
+        ng-click="users.searchBirthdayFilter(users.bornYear,  users.employees)">
         Search
       </md-button>
         <md-button
           class="md-warn"
-          ng-click="employees.clearBirthdayFilter()">
+          ng-click="users.clearBirthdayFilter()">
           Clear
         </md-button>
       </div> <!-- /SEARCH OUPUT -->
@@ -497,23 +497,23 @@
     <table
       class="c-table--actions c-table--big table-employees"
       md-table
-      md-row-select="employees.table.options.rowSelection"
-      multiple="{{employees.table.options.multiSelect}}"
-      ng-model="employees.table.selected"
+      md-row-select="users.table.options.rowSelection"
+      multiple="{{users.table.options.multiSelect}}"
+      ng-model="users.table.selected"
       md-progress="promise">
 
       <thead
-        ng-if="!employees.table.options.decapitate"
+        ng-if="!users.table.options.decapitate"
         md-head
-        md-order="employees.table.query.order">
+        md-order="users.table.query.order">
         <tr md-row>
           <th md-column md-order-by="firstName">First Name</th>
           <th md-column md-order-by="lastName">Last Name</th>
           <th md-column>Email/Phone</th>
           <th md-column>Languages</th>
           <th md-column>Skills</th>
-          <th md-column ng-hide="employees.candidate">Projects</th>
-          <th md-column ng-hide="employees.candidate">Last update</th>
+          <th md-column ng-hide="users.candidate">Projects</th>
+          <th md-column ng-hide="users.candidate">Last update</th>
           <th md-column>Actions</th>
         </tr>
       </thead>
@@ -523,8 +523,8 @@
           md-row
           md-select="employee"
           md-on-select="logItem"
-          md-auto-select="employees.options.autoSelect"
-          ng-repeat="employee in employees.employees | filter: employees.searchText | orderBy: employees.table.query.order | limitTo: employees.table.query.limit : (employees.table.query.page - 1) * employees.table.query.limit track by $index">
+          md-auto-select="users.options.autoSelect"
+          ng-repeat="employee in users.users | filter: users.searchText | orderBy: users.table.query.order | limitTo: users.table.query.limit : (users.table.query.page - 1) * users.table.query.limit track by $index">
 
           <td md-cell>
             <p>{{employee.first_name}}</p>
@@ -555,7 +555,7 @@
             </ul>
           </td>
 
-          <td md-cell ng-hide="employees.candidate">
+          <td md-cell ng-hide="users.candidate">
             <ul class="c-list" ng-if="employee.projects">
               <li ng-repeat="project in employee.projects">
                 {{$index + 1}}. {{project.name}}
@@ -563,14 +563,14 @@
             </ul>
           </td>
 
-          <td md-cell ng-hide="employees.candidate">
+          <td md-cell ng-hide="users.candidate">
             {{employee.updatedAt | date: longDate}}
           </td>
 
           <td md-cell>
 
             <md-button
-              ng-hide="employees.candidate"
+              ng-hide="users.candidate"
               class="md-icon-button md-primary"
               label="View employee details"
               aria-label="View employee details"
@@ -582,7 +582,7 @@
             </md-button>
 
             <md-button
-              ng-show="employees.candidate"
+              ng-show="users.candidate"
               class="md-icon-button md-primary"
               label="View candidate details"
               aria-label="View candidate details"
@@ -594,11 +594,11 @@
             </md-button>
 
             <md-button
-              ng-show="employees.candidate"
+              ng-show="users.candidate"
               class="md-icon-button md-primary"
               label="Conver to employee"
               aria-label="Conver to employee"
-              ng-click="employees.sendToEmployee(employee, $index)">
+              ng-click="users.sendToEmployee(employee, $index)">
               <md-icon class="material-icons">send</md-icon>
               <md-tooltip md-autohide="true">
                 Convert to employee
@@ -607,13 +607,13 @@
 
             <md-button
               class="md-icon-button md-warn"
-              label="{{employees.candidate ? 'Remove candidate' : 'Remove employee'}}"
-              aria-label="{{employees.candidate ? 'Remove candidate' : 'Remove employee'}}"
-              ng-click="employees.deleteConfirm($event, employee, $index)">
+              label="{{users.candidate ? 'Remove candidate' : 'Remove employee'}}"
+              aria-label="{{users.candidate ? 'Remove candidate' : 'Remove employee'}}"
+              ng-click="users.deleteConfirm($event, employee, $index)">
               <md-icon class="material-icons">delete</md-icon>
               <md-tooltip md-autohide="true">
-                <span ng-show="!employees.candidate">Remove employee</span>
-                <span ng-show="employees.candidate">Remove candidate</span>
+                <span ng-show="!users.candidate">Remove employee</span>
+                <span ng-show="users.candidate">Remove candidate</span>
               </md-tooltip>
             </md-button>
 
@@ -630,12 +630,12 @@
 
   <!-- TABLE PAGINATION -->
   <md-table-pagination
-    md-limit="employees.table.query.limit"
-    md-limit-options="employees.table.limitOptions"
-    md-page="employees.table.query.page"
-    md-total="{{employees.employees.length}}"
-    md-page-select="employees.table.options.pageSelect"
-    md-boundary-links="employees.table.options.boundaryLinks">
+    md-limit="users.table.query.limit"
+    md-limit-options="users.table.limitOptions"
+    md-page="users.table.query.page"
+    md-total="{{users.users.length}}"
+    md-page-select="users.table.options.pageSelect"
+    md-boundary-links="users.table.options.boundaryLinks">
   </md-table-pagination><!-- /TABLE PAGINATION -->
 
 
