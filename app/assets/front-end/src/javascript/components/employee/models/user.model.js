@@ -103,11 +103,11 @@
       return promise;
     };
 
-    User.updatePosition = (data) => {
-      url = apiUrl + '/users/:id/positions';
+    User.updatePosition = (id,position) => {
+      url = apiUrl + '/users/:id/position';
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
-      }).update({ id: data.id }, data.positions);
+      }).update({ id: id }, position);
 
       promise = resource.$promise
         .then((data) => {
@@ -176,11 +176,11 @@
     };
 
     User.getPositionById = (id) => {
-      url = apiUrl + '/users/:id/positions';
+      url = apiUrl + '/users/:id/position';
       resource = $resource(url).get({ id: id });
 
       promise = resource.$promise
-        .then(data => data.items)
+        .then(data => data)
         .catch(() => alertService.error(model, 'getPositionById'));
 
       return promise;

@@ -158,10 +158,21 @@
           });
       
       if(!(JSON.stringify(vm.copyUserPosition) === JSON.stringify(vm.userPosition)))
-        User.updatePosition(vm.copyUser.id,vm.copyUserPosition)
+      {
+        var position = {};
+        angular.forEach(vm.positions, function(value, key){
+          if(value.name === vm.copyUserPosition.name ){
+            position["position_id"] = value.id;
+          }
+          
+        })
+        console.log(position);
+        User.updatePosition(vm.copyUser.id,position)
           .then((data) => {
             if (data) { vm.userPosition = data }
           });
+      }
+        
 
         vm.disabledgeneralInfo = true;
     }
@@ -312,7 +323,9 @@
     function _getPositions() {
       Position.getAll().then((data) => {
         vm.positions = data;
-        autocompleteService.buildList(vm.positions, ['name']);
+        angular.forEach(vm.positions, function(value, key){
+          vm.userAssistPositionTitles.push(value.name);
+        });
       });
     }
 
