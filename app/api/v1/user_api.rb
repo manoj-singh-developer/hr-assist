@@ -86,20 +86,29 @@ module V1
         delete_object(User, Language, params[:user_id], params[:language_ids])
       end
 
-      get ':user_id/positions' do
+      get ':user_id/position' do
         user = find_user(params[:user_id])
-        {items: user.positions}
+        user.positions.last ? user.positions.last : []
       end
 
-      put ':user_id/positions' do
+      params do
+        requires :position_id, type: Integer
+      end
+      put ':user_id/position' do
         user = User.find(params[:user_id])
-        positions = Position.where(id: params[:position_ids]) - user.positions
-        user.positions << positions if positions.count > 0
-        {items: user.positions}
+        position = Position.find(params[:position_id])
+        user.positions.delete_all
+        user.positions << position
+        user.positions.last
       end
 
-      delete ':user_id/positions' do
-        delete_object(User, Position, params[:user_id], params[:position_ids])
+      params do
+        requires :position_id, type: Integer
+      end
+      delete ':user_id/position' do
+        user = find_user(params[:user_id])
+        position = user.positions.find(params[:position_id])
+        user.positions.delete_all
       end
 
       get ':user_id/educations' do
