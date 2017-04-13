@@ -164,9 +164,8 @@
           if(value.name === vm.copyUserPosition.name ){
             position["position_id"] = value.id;
           }
-          
+
         })
-        console.log(position);
         User.updatePosition(vm.copyUser.id,position)
           .then((data) => {
             if (data) { vm.userPosition = data }
