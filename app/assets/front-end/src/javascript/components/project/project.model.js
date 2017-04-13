@@ -37,42 +37,6 @@
       return promise;
     };
 
-    Project.saveJson = (data) => {
-      url = apiUrl + '/projects/new';
-      resource = $resource(url, data, {
-        'post': {
-          method: 'POST',
-          isArray: true
-        }
-      }).save(data);
-
-      promise = resource.$promise
-        .then((data) => {
-          alertService.success(model, 'saveJson');
-          return data;
-        })
-        .catch(() => alertService.error(model, 'saveJson'));
-
-      return promise;
-    };
-
-    Project.saveTechnologies = (project, technologies) => {
-      let id = project.id;
-      technologies = technologies.map(item => item.id);
-      url = apiUrl + '/projects/:id/technologies';
-      resource = $resource(url, {}, {
-        'update': { method: 'PUT' }
-      }).update({ id: id }, technologies);
-
-      promise = resource.$promise
-        .then((data) => {
-          alertService.success(model, 'save');
-          return data.technologies;
-        }).catch(() => alertService.error(model, 'saveTechnologies'));
-
-      return promise;
-    };
-
     Project.update = (data) => {
       url = apiUrl + '/projects/:id';
       resource = $resource(url, {}, {
@@ -85,17 +49,6 @@
           return data;
         })
         .catch(() => alertService.error(model, 'update'));
-
-      return promise;
-    };
-
-    Project.getById = (id) => {
-      url = apiUrl + '/projects/:id';
-      resource = $resource(url).get({ id: id });
-
-      promise = resource.$promise
-        .then(data => data)
-        .catch(() => alertService.error(model, 'getById'));
 
       return promise;
     };
@@ -116,22 +69,31 @@
       return promise;
     };
 
-    Project.getTechnologies = (project) => {
-      let id = project.id;
-      url = apiUrl + '/projects/:id/technologies';
-      resource = $resource(url, {}, {
-        'get': {
-          method: 'GET',
-          isArray: true
-        }
-      }).get({ id: id });
+    Project.getById = (id) => {
+      url = apiUrl + '/projects/:id';
+      resource = $resource(url).get({ id: id });
 
       promise = resource.$promise
         .then(data => data)
-        .catch(() => alertService.error(model, 'getTechnologies'));
+        .catch(() => alertService.error(model, 'getById'));
 
       return promise;
     };
+
+    Project.remove = (id) => {
+      url = apiUrl + '/projects/:id';
+      resource = $resource(url).delete({ id: id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'remove');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'remove'));
+
+      return promise;
+    };
+
 
     Project.getEmployees = (id) => {
       url = apiUrl + '/projects/:id/users';
@@ -149,16 +111,112 @@
       return promise;
     };
 
-    Project.remove = (id) => {
-      url = apiUrl + '/projects/:id';
-      resource = $resource(url).delete({ id: id });
+
+    Project.saveTechnologies = (project, technologies) => {
+      let id = project.id;
+      let data = {};
+
+      data.technology_ids = technologies.map(technology => technology.id);
+      url = apiUrl + '/projects/:id/technologies';
+
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: id }, data);
 
       promise = resource.$promise
         .then((data) => {
-          alertService.success(model, 'remove');
-          return data;
-        })
-        .catch(() => alertService.error(model, 'remove'));
+          alertService.success(model, 'updateTechnologies');
+          return data.technologies;
+        }).catch(() => alertService.error(model, 'updateTechnologies'));
+
+      return promise;
+    };
+
+    Project.getTechnologies = (project) => {
+      let id = project.id;
+      url = apiUrl + '/projects/:id/technologies';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get({ id: id });
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getTechnologies'));
+
+      return promise;
+    };
+
+    Project.removeTechnologies = (project, technologies) => {
+      let id = project.id;
+      let data = {};
+
+      data.technology_ids = technologies.map(technology => technology.id);
+      url = apiUrl + '/projects/:id/technologies';
+      resource = $resource(url, data).delete({ id: id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'updateTechnologies');
+          return data.technologies;
+        }).catch(() => alertService.error(model, 'updateTechnologies'));
+
+      return promise;
+    };
+
+
+    Project.saveIndustries = (project, industries) => {
+      let id = project.id;
+      let data = {};
+
+      data.industry_ids = industries.map(industry => industry.id);
+      url = apiUrl + '/projects/:id/industries';
+
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: id }, data);
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'updateIndustries');
+          return data.technologies;
+        }).catch(() => alertService.error(model, 'updateIndustries'));
+
+      return promise;
+    };
+
+    Project.getIndustries = (project) => {
+      let id = project.id;
+      url = apiUrl + '/projects/:id/industries';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get({ id: id });
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getIndustries'));
+
+      return promise;
+    };
+
+    Project.removeTechnologies = (project, technologies) => {
+      let id = project.id;
+      let data = {};
+
+      data.technology_ids = technologies.map(technology => technology.id);
+      url = apiUrl + '/projects/:id/technologies';
+      resource = $resource(url, data).delete({ id: id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'updateTechnologies');
+          return data.technologies;
+        }).catch(() => alertService.error(model, 'updateTechnologies'));
 
       return promise;
     };
