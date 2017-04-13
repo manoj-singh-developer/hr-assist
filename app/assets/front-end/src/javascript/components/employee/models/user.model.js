@@ -107,7 +107,7 @@
       url = apiUrl + '/users/:id/positions';
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
-      }).update({ id: data.id }, data);
+      }).update({ id: data.id }, data.positions);
 
       promise = resource.$promise
         .then((data) => {
@@ -123,7 +123,7 @@
       url = apiUrl + '/users/:id/schedule/:idSchedule';
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
-      }).update({ id: data.id, idSchedule:data.schedule.id }, data);
+      }).update({ id: data.id, idSchedule:data.schedule.id }, data.schedule.name);
 
       promise = resource.$promise
         .then((data) => {

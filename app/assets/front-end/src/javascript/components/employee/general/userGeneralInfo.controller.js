@@ -25,12 +25,16 @@
 
     /* beautify preserve:start */
     var vm                  = this;
+    vm.user = {};
+    vm.userPosition = {};
+    vm.userSchedule = {};
+    
     vm.serverErrors         = false;
     vm.disabledgeneralInfo  = true;
     // vm.teamLeader           = [];
     // vm.users            = [];
     /* beautify preserve:end */
-
+    vm.schedule = {};
     vm.contractType = [
       'Full-time',
       'Part-time 4h',
@@ -66,7 +70,7 @@
     // vm.clearFields            = clearFields;
     vm.cancelAdd              = cancelAdd;
     vm.generalInfoShowHide    = generalInfoShowHide;
-    // vm.upload                 = upload;
+    vm.upload                 = upload;
     // vm.emplSearch             = emplSearch;
     vm.selectedItemChange     = selectedItemChange;
     vm.getSelectedText        = getSelectedText;
@@ -82,17 +86,12 @@
     // INVOKING PRIVATE METHODS
     // ----------------------------------------------------------------------
 
-    var getUser = $rootScope.$on('userIsLoadedEvent', function(event, user, userPosition, userSchedule, positions, candidate, progress) {
+    var getUser = $rootScope.$on('userIsLoadedEvent', function(event, user, candidate, progress) {
       vm.progress = progress;
       vm.user = user;
-      vm.userPosition = userPosition;
-      vm.userSchedule = userSchedule;
       // vm.user.officeTeamLider = vm.user.officeTeamLider;
       vm.copyUser = angular.copy(vm.user);
-      vm.copyCat = angular.copy(vm.user);
 
-      vm.copyUserPosition = angular.copy(vm.userPosition);
-      vm.copyUserSchedule = angular.copy(vm.userSchedule);
       // vm.name = vm.user.firstName + ' ' + vm.user.lastName;
       if (vm.user.birthday !== null) {
         vm.user.birthday = new Date(vm.user.birthday);
@@ -102,10 +101,8 @@
         vm.user.assistStartDate = new Date(vm.user.assistStartDate);
       }
       vm.user.languages = angular.toJson(vm.user.languages);
-      for(var position in positions){
-        vm.userAssistPositionTitles.push(positions[position].name);
-      }
-
+      _getUserPosition();
+      _getUserSchedule();
     });
 
     $scope.$on('$destroy', function() {
@@ -120,7 +117,7 @@
 
 
 
-
+    _getUserPosition();
 
     // ----------------------------------------------------------------------
     // PUBLIC METHODS DECLARATION
@@ -148,7 +145,7 @@
     // }
 
     function save() {
-      console.log(vm.copyUser);
+      
       User.update(vm.copyUser)
         .then((data) => {
           if (data) { vm.user = data }
@@ -156,8 +153,7 @@
         });
       var copyUser = angular.copy(vm.copyUser);
       copyUser["schedule"]=vm.copyUserSchedule.schedule;
-      console.log(vm.copyUserSchedule);
-      console.log(copyUser);
+      vm.schedule["schedule"]
       User.updateSchedule(copyUser)
         .then((data) => {
           if (data) { vm.userSchedule = data }
@@ -165,8 +161,7 @@
 
       copyUser = angular.copy(vm.copyUser);
       copyUser["positions"] = vm.copyUserPosition.positions;
-      console.log(vm.copyUserPosition);
-      console.log(copyUser);
+      
       User.updatePosition(copyUser)
         .then((data) => {
           if (data) { vm.userPosition = data }
@@ -187,32 +182,32 @@
       vm.showSuccessMsg = false;
     }
 
-    // function upload(file) {
-    //   if (file === null) {
-    //     vm.showToLargeImage = true;
-    //   }
-
-    //   Upload.upload({
-    //     url: apiUrl + '/fileupload/uploadPic',
-    //     data: {
-    //       uploadFile: file
-    //     }
-    //   }).then(function(resp) {
-    //     if (resp.data.file.length === 1) {
-    //       vm.showToLargeImage = false;
-    //       vm.pictures = '/assets/images/' + resp.data.file[0].fd.substr(resp.data.file[0].fd.lastIndexOf('/') + 1);
-    //       vm.showSuccessMsg = true;
-    //     }
-    //   }, function(err) {
-    //     $timeout(function() {
-    //       vm.showErrMsg = true;
-    //     }, 1000);
-    //   }, function(evt) {
-    //     var progressPercentage = parseInt(100.0 *
-    //       evt.loaded / evt.total);
-    //     $scope.log = progressPercentage;
-    //   });
-    // }
+    function upload(file) {
+      if (file === null) {
+        vm.showToLargeImage = true;
+      }
+      console.log(file);
+      Upload.upload({
+        url: apiUrl + '/fileupload/uploadPic',
+        data: {
+          uploadFile: file
+        }
+      }).then(function(resp) {
+        if (resp.data.file.length === 1) {
+          vm.showToLargeImage = false;
+          vm.pictures = '/assets/images/' + resp.data.file[0].fd.substr(resp.data.file[0].fd.lastIndexOf('/') + 1);
+          vm.showSuccessMsg = true;
+        }
+      }, function(err) {
+        $timeout(function() {
+          vm.showErrMsg = true;
+        }, 1000);
+      }, function(evt) {
+        var progressPercentage = parseInt(100.0 *
+          evt.loaded / evt.total);
+        $scope.log = progressPercentage;
+      });
+    }
 
     // function emplSearch(query) {
     //   return autocompleteService.querySearch(query, vm.users);
@@ -300,6 +295,27 @@
       if (data === 'general') {
         vm.disabledgeneralInfo = false;
       }
+    }
+
+    function _getUserPosition() {
+      User.getPositionById(vm.user.id).then((data) => {
+        vm.userPosition = data;
+        vm.copyUserPosition = angular.copy(vm.userPosition);
+      });
+    }
+
+    function _getUserSchedule() {
+      User.getScheduleById(vm.user.id).then((data) => {
+        vm.userSchedule = data;
+        vm.copyUserSchedule = angular.copy(vm.userSchedule);
+      });
+    }
+
+    function _getPositions() {
+      Position.getAll().then((data) => {
+        vm.positions = data;
+        autocompleteService.buildList(vm.positions, ['name']);
+      });
     }
 
   }

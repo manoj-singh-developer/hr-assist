@@ -10,13 +10,13 @@
     .controller('userDetailsController', userDetailsController);
 
   userDetailsController
-    .$inject = ['$rootScope', '$scope', '$stateParams', 'User', 'Position', 'Technology', 'Project'];
+    .$inject = ['$rootScope', '$scope', '$stateParams', 'User', 'Technology', 'Project'];
 
 
 
 
 
-  function userDetailsController($rootScope, $scope, $stateParams, User, Position, skillModel, Project) {
+  function userDetailsController($rootScope, $scope, $stateParams, User, Technology, Project) {
 
     // ----------------------------------------------------------------------
     // VARIABLES
@@ -93,42 +93,15 @@
       // User.getAllUsers(vm.candidate)
       //   .then(getAllPositions)
       //   .catch(handleErrorChain);
-      User.getPositionById(userId)
-        .then(getUserPositionById)
-        .catch(handleErrorChain);
-
-      User.getScheduleById(userId)
-        .then(getUserScheduleById)
-        .catch(handleErrorChain);
 
     }
-
-    function getPositionResource(){
-      Position.getAll()
-      .then(getAllPositions)
-      .catch(handleErrorChain);;
-    }
-
-    function getAllPositions(positions){
-      vm.allPositions = positions;
-      resourcesAreLoaded();
-    }
-
 
     function getUserById(user) {
       console.log('CONTROLLER: Load user by id');
       vm.user = user;
       vm.progress = getProfileProgress(vm.user);
+      resourcesAreLoaded();
       
-    }
-
-     function getUserScheduleById(userSchedule) {
-      vm.userSchedule = userSchedule;
-      getPositionResource();
-    }
-
-    function getUserPositionById(userPosition) {
-      vm.userPosition = userPosition;
     }
 
     function getAllSkills(skills) {
@@ -172,11 +145,11 @@
 
     function resourcesAreLoaded() {
       // Sa scap de primele doua si sa ramana doar ultima
-      $rootScope.$emit("userIsLoadedEvent", vm.user, vm.userPosition,vm.userSchedule,  vm.allPositions, vm.candidate, vm.progress);
+      $rootScope.$emit("userIsLoadedEvent", vm.user, vm.candidate, vm.progress);
 
-      $rootScope.$emit("event:userIsLoaded", vm.user, vm.userPosition, vm.userSchedule, vm.allPositions, vm.candidate, vm.progress);
+      $rootScope.$emit("event:userIsLoaded", vm.user, vm.candidate, vm.progress);
 
-      $rootScope.$emit("event:userResourcesLoaded", vm.userResources, vm.userSchedule, vm.position, vm.user, vm.candidate, vm.progress);
+      $rootScope.$emit("event:userResourcesLoaded", vm.userResources, vm.candidate, vm.progress);
     }
 
 
