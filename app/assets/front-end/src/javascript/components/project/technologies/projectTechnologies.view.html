@@ -20,7 +20,7 @@
       <md-list-item
         flex="25"
         class="md-2-line"
-        ng-repeat="technology in prjTechnologies.technologiesPreview track by $index">
+        ng-repeat="technology in prjTechnologies.prjTechnologies track by $index">
 
         <div class="md-list-item-text" layout="column">
           <h4>{{technology.name}}</h4>
@@ -52,11 +52,11 @@
 
          <md-list-item
            class="md-2-line"
-           ng-repeat="item in prjTechnologies.technologiesEdit track by $index">
+           ng-repeat="technology in prjTechnologies.prjTechnologies track by $index">
            <div class="md-list-item-text" layout="column">
              <p class="c-filters__item"
-              ng-click="prjTechnologies.removeFromQueue(item, prjTechnologies.project)" >
-               {{$index + 1}} {{item.name}}
+              ng-click="prjTechnologies.removeFromQueue(technology)" >
+               {{$index + 1}} {{technology.name}}
                <span class="material-icons c-filters__icon">close</span>
              </p>
            </div>

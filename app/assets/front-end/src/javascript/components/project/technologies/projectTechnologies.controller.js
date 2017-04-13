@@ -10,22 +10,17 @@
 
   function projectTechnologiesCtrl($rootScope, autocompleteService, Technology, Project) {
 
-    // 1. All technologies
-    // 2. Technologies to be added/removed
-    // 3. Specific project technologies in preview mode
-    // 4. Specific project technologies in edit mode
-    var vm = this;
+    let vm = this;
+    let technologiesToAdd = [];
+    let technologiesToRemove = [];
     vm.project = {};
-    vm.technologies = []; // [1]
-    vm.technologiesTemp = []; // [2]
-    vm.technologiesPreview = []; // [3]
-    vm.technologiesEdit = []; // [4]
+    vm.technologies = [];
+    vm.prjTechnologies = [];
 
 
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.save = save;
-    vm.remove = remove;
 
 
     _getTechnologies();
@@ -38,29 +33,39 @@
 
 
     function addInQueue(technology) {
-      vm.technologiesEdit.push(technology);
-      vm.technologiesTemp.push(technology);
-      vm.searchText = "";
+      if (technology) {
+        let toRemove = _.findWhere(technologiesToRemove, { id: technology.id });
+        technologiesToRemove = _.without(technologiesToRemove, toRemove);
+        technologiesToAdd.push(technology);
+        vm.prjTechnologies.push(technology);
+        vm.searchText = "";
+      }
     }
 
     function removeFromQueue(technology) {
-      let toRemove = _.findWhere(vm.technologiesPreview, { id: technology.id });
-      vm.technologiesEdit = _.without(vm.technologiesEdit, toRemove);
-      vm.technologiesTemp.push(technology);
+      let toRemove = _.findWhere(vm.prjTechnologies, { id: technology.id });
+      vm.prjTechnologies = _.without(vm.prjTechnologies, toRemove);
+      technologiesToAdd = _.without(technologiesToAdd, toRemove);
+      technologiesToRemove.push(technology);
       vm.searchText = "";
     }
 
-
     function save() {
-      Project.saveTechnologies(vm.project, vm.technologiesTemp)
-        .then((data) => {
-          if (data) { vm.technologiesPreview = data; }
-          vm.toggleForm();
-        });
-    }
+      if (technologiesToAdd.length) {
+        Project.saveTechnologies(vm.project, technologiesToAdd)
+          .then(() => {
+            _getProjectTechnologies();
+            vm.toggleForm();
+          });
+      }
 
-    function remove(item, project, index) {
-      vm.project.technologies.splice(index, 1);
+      if (technologiesToRemove.length) {
+        Project.removeTechnologies(vm.project, technologiesToRemove)
+          .then(() => {
+            _getProjectTechnologies();
+            vm.toggleForm();
+          });
+      }
     }
 
 
@@ -73,7 +78,7 @@
 
     function _getProjectTechnologies() {
       Project.getTechnologies(vm.project).then((data) => {
-        vm.technologiesPreview = data;
+        vm.prjTechnologies = data;
       });
     }
 
