@@ -1,26 +1,24 @@
-(function() {
+(() => {
 
   'use strict';
-
-  // ------------------------------------------------------------------------
-  // @hraUserDetails
-  // ------------------------------------------------------------------------
 
   angular
     .module('HRA')
     .directive('hraUserDetails', hraUserDetails);
 
   function hraUserDetails() {
-    return {
-      restrict: 'EA',
+    let directive = {
+      restrict: 'E',
       scope: {},
       bindToController: {
         'candidate': '='
       },
-      controller: 'userDetailsController',
+      controller: 'userDetailsCtrl',
       controllerAs: 'userDetails',
       templateUrl: rootTemplatePath + '/employee/details/userDetails.view.html'
     };
+
+    return directive;
   }
 
-}());
+})();

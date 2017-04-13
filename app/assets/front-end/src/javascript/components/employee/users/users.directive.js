@@ -17,9 +17,9 @@
       bindToController: {
         'candidate': '='
       },
-      controller: 'employeesCtrl',
-      controllerAs: 'employees',
-      templateUrl: rootTemplatePath + '/employee/employees/employees.view.html'
+      controller: 'usersCtrl',
+      controllerAs: 'users',
+      templateUrl: rootTemplatePath + 'employee/users/users.view.html'
     };
   }
 
