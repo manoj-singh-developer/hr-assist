@@ -48,7 +48,7 @@ module V1
       get ':id/projects' do
         application_type = ApplicationType.find_by_id(params[:id])
         projects = application_type.projects
-        projects
+        {items: projects}
       end
 
       delete ':id/projects' do

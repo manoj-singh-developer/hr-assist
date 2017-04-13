@@ -48,7 +48,7 @@ module V1
       get ':id/projects' do
         customer = Customer.find_by_id(params[:id])
         projects = customer.projects
-        projects
+        {items: projects}
       end
 
       delete ':id/projects' do
