@@ -14,7 +14,7 @@
     let vm = this;
     let languagesToAdd = [];
     let languagesToRemove = [];
-    vm.employee = {};
+    vm.user = {};
     vm.languages = [];
     vm.userLanguages = [];
     vm.addNewLanguage = addNewLanguage;
@@ -35,7 +35,7 @@
 
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
-      vm.employee = data.user;
+      vm.user = data.user;
       _getUserLanguages();
     });
 
@@ -66,7 +66,7 @@
 
     function save() {
       if (languagesToAdd.length) {
-        User.updateLanguages(vm.employee, languagesToAdd)
+        User.updateLanguages(vm.user, languagesToAdd)
           .then(() => {
             _getUserLanguages();
             vm.toggleForm();
@@ -74,7 +74,7 @@
       }
 
       if (languagesToRemove.length) {
-        User.removeLanguages(vm.employee, languagesToRemove)
+        User.removeLanguages(vm.user, languagesToRemove)
           .then(() => {
             _getUserLanguages();
             vm.toggleForm();
@@ -91,7 +91,7 @@
     }
 
     function _getUserLanguages() {
-      User.getUserLanguages(vm.employee).then((data) => {
+      User.getUserLanguages(vm.user).then((data) => {
         vm.userLanguages = data;
       });
     }
