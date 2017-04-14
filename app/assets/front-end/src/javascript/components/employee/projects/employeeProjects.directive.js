@@ -2,22 +2,27 @@
 
   'use strict';
 
-  // ------------------------------------------------------------------------
-  // @hraEmployeeProject
-  // ------------------------------------------------------------------------
 
   angular
     .module('HRA')
-    .directive('hraEmployeeProject', hraEmployeeProject);
+    .directive('hraUserProjects', hraUserProjects);
 
-  function hraEmployeeProject() {
-    return {
-      restrict: 'EA',
+  function hraUserProjects() {
+    let directive = {
+      restrict: 'A',
       scope: {},
-      controller: 'employeeProjectController',
-      controllerAs: 'employeeProject',
-      templateUrl: rootTemplatePath + '/employee/views/employeeProjects.view.html'
+      require: 'hraCard',
+      bindToController: {
+        'toggleForm': '=',
+        'querySearch': '=',
+        'settings': '='
+      },
+      controller: 'userProjectsCtrl',
+      controllerAs: 'userProjects',
+      templateUrl: rootTemplatePath + '/employee/projects/employeeProjects.view.html',
     };
+
+    return directive;
   }
 
 }());

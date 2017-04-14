@@ -6,20 +6,20 @@
   // Am inceput refactory aici dar nu am mai termina
 
   // ------------------------------------------------------------------------
-  // @employeeProjectController
+  // @userProjectsCtrl
   // ------------------------------------------------------------------------
   angular
     .module('HRA')
-    .controller('employeeProjectController', employeeProjectController);
+    .controller('userProjectsCtrl', userProjectsCtrl);
 
-  employeeProjectController
-    .$inject = ['$rootScope', '$scope', '$stateParams', 'ProjectModel', 'Employee', 'autocompleteService', 'miscellaneousService', '$location', '$log'];
-
-
+  userProjectsCtrl
+    .$inject = ['$rootScope', '$scope', '$stateParams','Project', 'User', 'autocompleteService', 'miscellaneousService', '$location', '$log'];
 
 
 
-  function employeeProjectController($rootScope, $scope, $stateParams, ProjectModel, Employee, autocompleteService, miscellaneousService, $location, $log) {
+
+
+  function userProjectsCtrl($rootScope, $scope, $stateParams, Project, User, autocompleteService, miscellaneousService, $location, $log) {
 
     // ----------------------------------------------------------------------
     // VARIABLES
@@ -77,7 +77,7 @@
     vm.querySearchTech = querySearchTech;
     vm.addEmptyTechnology = addEmptyTechnology;
     vm.toggleCard = toggleCard;
-    vm.saveProjectToEmployee = saveProjectToEmployee;
+    vm.saveProjectToUser = saveProjectToUser;
 
 
 
@@ -87,18 +87,18 @@
     // INVOKING PRIVATE METHODS
     // ----------------------------------------------------------------------
 
-    $rootScope.$on('event:employeeResourcesLoaded', function(event, employeeResources, employee) {
+    $rootScope.$on('event:userResourcesLoaded', function(event, userResources, user) {
 
-      vm.employee = employee;
+      vm.user = user;
 
-      if (employeeResources.projects) {
-        setAllProjects(employeeResources.projects);
+      if (userResources.projects) {
+        setAllProjects(userResources.projects);
       }
-      setAllSkills(employeeResources.skills);
+      setAllSkills(userResources.skills);
 
     });
 
-    $rootScope.$on('event:employeeDetailsUpdated', function(event, employee) {
+    $rootScope.$on('event:userDetailsUpdated', function(event, user) {
 
       debugger;
 
@@ -116,7 +116,7 @@
 
       var card = angular
         .element(event.currentTarget)
-        .closest('.js-employee-card');
+        .closest('.js-user-card');
 
       $rootScope.$emit("event:toggleCard", card, action);
 
@@ -148,20 +148,20 @@
 
     }
 
-    function saveProjectToEmployee(currentProject) {
+    function saveProjectToUser(currentProject) {
 
 
-      var employeeToUpdate = angular.copy(vm.employee);
+      var userToUpdate = angular.copy(vm.user);
 
       if (vm.isNewProject) {
-        employeeToUpdate.projects.push(currentProject);
+        userToUpdate.projects.push(currentProject);
       }
 
 
 
-      $rootScope.$emit("callSaveMethodCards", employeeToUpdate);
+      $rootScope.$emit("callSaveMethodCards", userToUpdate);
 
-      // saveEmployee(vm.employee);
+      // saveuser(vm.user);
 
     }
 
@@ -189,8 +189,8 @@
       return autocompleteService.querySearch(query, vm.allTechnologies);
     }
 
-    function saveEmployee(employee) {
-      $rootScope.$emit("callSaveMethodCards", employee);
+    function saveuser(user) {
+      $rootScope.$emit("callSaveMethodCards", user);
     }
 
 
