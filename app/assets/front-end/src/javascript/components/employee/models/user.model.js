@@ -154,7 +154,6 @@
       return promise;
     };
 
-
     User.getDevices = () => {
 
     };
@@ -169,16 +168,64 @@
 
 
     User.getLanguages = () => {
+      url = apiUrl + '/languages';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
 
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getLanguages'));
+
+      return promise;
     };
 
-    User.updateLanguages = () => {
+    User.getUserLanguages = (user) => {
+      url = apiUrl + '/users/:id/languages';
+      resource = $resource(url).get({ id: user.id });
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getUserLanguages'));
 
+      return promise;
     };
 
-    User.removeLanguages = () => {
+    User.updateLanguages = (user, languages) => {
+      let languageId = languages.map(language => language.id);
+      url = apiUrl + '/users/:id/languages';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: user.id }, { language_ids: languageId });
 
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'update');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'updateLanguages'));
+
+      return promise;
     };
+
+    User.removeLanguages = (user, languages) => {
+      let data = {};
+      data.language_ids = languages.map(language => language.id);
+      url = apiUrl + '/users/:id/languages';
+      resource = $resource(url, data).delete({ id: user.id });
+      
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'removeLanguages');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'removeLanguages'));
+
+      return promise;
+    };
+
 
 
     User.getEducations = () => {
