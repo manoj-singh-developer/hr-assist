@@ -61,7 +61,6 @@
           isArray: false
         }
       }).get();
-
       promise = resource.$promise
         .then(data => data.items)
         .catch(() => alertService.error(model, 'getAll'));

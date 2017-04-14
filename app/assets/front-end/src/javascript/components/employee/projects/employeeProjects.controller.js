@@ -1,225 +1,94 @@
-(function() {
+((_) => {
 
   'use strict';
 
-  // @WORK IN PROGRESS
-  // Am inceput refactory aici dar nu am mai termina
-
-  // ------------------------------------------------------------------------
-  // @userProjectsCtrl
-  // ------------------------------------------------------------------------
   angular
     .module('HRA')
     .controller('userProjectsCtrl', userProjectsCtrl);
 
   userProjectsCtrl
-    .$inject = ['$rootScope', '$scope', '$stateParams','Project', 'User', 'autocompleteService', 'miscellaneousService', '$location', '$log'];
+    .$inject = ['$rootScope', 'autocompleteService', 'Project', 'User'];
+
+  function userProjectsCtrl($rootScope, autocompleteService, Project, User) {
+
+    let vm = this;
+    let projectsToAdd = [];
+    let projectsToRemove = [];
+    vm.user = {};
+    vm.projects = [];
+    vm.userProjects = [];
+    vm.addNewProject = addNewProject;
+
+    vm.addInQueue = addInQueue;
+    vm.removeFromQueue = removeFromQueue;
+    vm.save = save;
 
 
+    _getProjects();
 
 
-
-  function userProjectsCtrl($rootScope, $scope, $stateParams, Project, User, autocompleteService, miscellaneousService, $location, $log) {
-
-    // ----------------------------------------------------------------------
-    // VARIABLES
-    // ----------------------------------------------------------------------
-
-    var vm = this;
-    var techIndex = 0;
-
-    vm.isNewProject = null; // If true we are adding a new project to the list
-    vm.showForm = false;
-    vm.disabledProjects = true;
-    vm.projectIncrement = [];
-    vm.techIncrement = [];
-    vm.searchedProject = ''; // this should be string for autocomplete to work
-    vm.searchTech = [];
-    vm.allProjects = [];
-    vm.projectDate = [];
-    vm.project = [];
-    vm.techs = [];
-    vm.acc = [];
-    vm.copyCat = [];
-    vm.allTech = [];
-    vm.selectedProject = '';
-
-    vm.projectIntervalDefault = {
-      'from': null,
-      'to': null,
-      'technologies': null
-    };
-
-    vm.currentProjectDefault = {
-      id: null,
-      projectDates: null,
-    };
-
-    vm.currentProject = angular.copy(vm.currentProjectDefault);
-    vm.currentProject.projectDates = angular.copy(vm.projectIntervalDefault);
-
-
-
-
-
-    // ----------------------------------------------------------------------
-    // EXPOSED PUBLIC METHODS
-    // ----------------------------------------------------------------------
-
-    vm.addEmptyProject = addEmptyProject;
-    vm.selectedProjectChanged = selectedProjectChanged;
-
-    vm.editProject = editProject;
-
-
-    vm.addNewTechnology = addNewTechnology;
-    vm.querySearchProject = querySearchProject;
-    vm.querySearchTech = querySearchTech;
-    vm.addEmptyTechnology = addEmptyTechnology;
-    vm.toggleCard = toggleCard;
-    vm.saveProjectToUser = saveProjectToUser;
-
-
-
-
-
-    // ----------------------------------------------------------------------
-    // INVOKING PRIVATE METHODS
-    // ----------------------------------------------------------------------
-
-    $rootScope.$on('event:userResourcesLoaded', function(event, userResources, user) {
-
-      vm.user = user;
-
-      if (userResources.projects) {
-        setAllProjects(userResources.projects);
-      }
-      setAllSkills(userResources.skills);
-
+    $rootScope.$on("event:userResourcesLoaded", (event, data) => {
+      vm.user = data.user;
+      _getUserProjects();
     });
 
-    $rootScope.$on('event:userDetailsUpdated', function(event, user) {
-
-      debugger;
-
-    });
-
-
-
-
-
-    // ----------------------------------------------------------------------
-    // PUBLIC METHODS DECLARATION
-    // ----------------------------------------------------------------------
-
-    function toggleCard(event, action) {
-
-      var card = angular
-        .element(event.currentTarget)
-        .closest('.js-user-card');
-
-      $rootScope.$emit("event:toggleCard", card, action);
-
-    }
-
-
-    function addEmptyProject() {
-
-      vm.isNewProject = true;
-      vm.showForm = true;
-
-    }
-
-    function editProject(project) {
-
-      vm.searchedProject = project.name;
-      vm.currentProject = project;
-      vm.showForm = true;
-      vm.isNewProject = false;
-
-    }
-
-
-    function selectedProjectChanged(project) {
-
-      if (vm.isNewProject) {
-        vm.currentProject = project;
+    function addNewProject() {
+      if (!vm.projectsToAdd) {
+        vm.projectsToAdd = [];
       }
+      vm.projectsToAdd.push({});
 
     }
 
-    function saveProjectToUser(currentProject) {
-
-
-      var userToUpdate = angular.copy(vm.user);
-
-      if (vm.isNewProject) {
-        userToUpdate.projects.push(currentProject);
-      }
-
-
-
-      $rootScope.$emit("callSaveMethodCards", userToUpdate);
-
-      // saveuser(vm.user);
-
-    }
-
-
-
-    function addNewTech(indP) {
-      if (!vm.acc[indP]) {
-        vm.acc[indP] = [];
-        vm.acc[indP][techIndex] = "";
-      } else {
-        techIndex = vm.acc[indP].length;
-        vm.acc[indP][techIndex] = "";
+    function addInQueue(project) {
+      if (project) {
+        let toRemove = _.findWhere(projectsToRemove, { id: project.id });
+        projectsToRemove = _.without(projectsToRemove, toRemove);
+        projectsToAdd.push(project);
+        vm.userProjects.push(project);
+        vm.searchText = "";
       }
     }
 
-    // function changeProjectView() {
-    //   vm.disabledProjects = false;
-    // }
-
-    function querySearchProject(query) {
-      return autocompleteService.querySearch(query, vm.allProjects);
+    function removeFromQueue(project) {
+      let toRemove = _.findWhere(vm.userProjects, { id: project.id });
+      vm.userProjects = _.without(vm.userProjects, toRemove);
+      projectsToAdd = _.without(projectsToAdd, toRemove);
+      projectsToRemove.push(project);
     }
 
-    function querySearchTech(query) {
-      return autocompleteService.querySearch(query, vm.allTechnologies);
-    }
+    function save() {
+      if (projectsToAdd.length) {
+        User.updateLanguages(vm.user, projectsToAdd)
+          .then(() => {
+            _getUserProjects();
+            vm.toggleForm();
+          });
+      }
 
-    function saveuser(user) {
-      $rootScope.$emit("callSaveMethodCards", user);
-    }
-
-
-
-
-
-    // ----------------------------------------------------------------------
-    // PRIVATE METHODS DECLARATION
-    // ----------------------------------------------------------------------
-
-    function setAllProjects(projects) {
-      vm.allProjects = projects;
-      return autocompleteService.buildList(vm.allProjects, ['name']);
+      if (projectsToRemove.length) {
+        User.removeLanguages(vm.user, projectsToRemove)
+          .then(() => {
+            _getUserProjects();
+            vm.toggleForm();
+          });
+      }
     }
 
 
-    function setAllSkills(technologies) {
-      vm.allTechnologies = technologies;
+    function _getProjects() {
+      Project.getAll().then((data) => {
+        vm.projects = data;
+        autocompleteService.buildList(vm.projects, ['name']);
+      });
     }
 
-
-    function addNewTechnology(technology, index) {
-      vm.currentProject.projectDates[index] = technology;
-    }
-
-    function addEmptyTechnology(index) {
-      vm.currentProject.projectDates[index] = {};
+    function _getUserProjects() {
+      User.getProjects(vm.user).then((data) => {
+        vm.userProjects = data;
+      });
     }
 
   }
 
-}());
+})(_);
