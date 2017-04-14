@@ -166,7 +166,7 @@
 
     };
 
-
+    /*TODO: To create a component Language and to add this to the language model*/
     User.getLanguages = () => {
       url = apiUrl + '/languages';
       resource = $resource(url, {}, {
@@ -194,15 +194,15 @@
     };
 
     User.updateLanguages = (user, languages) => {
-      let languageId = languages.map(language => language.id);
+      let languageIds = languages.map(language => language.id);
       url = apiUrl + '/users/:id/languages';
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
-      }).update({ id: user.id }, { language_ids: languageId });
+      }).update({ id: user.id }, { language_ids: languageIds });
 
       promise = resource.$promise
         .then((data) => {
-          alertService.success(model, 'update');
+          alertService.success(model, 'updateLanguages');
           return data;
         })
         .catch(() => alertService.error(model, 'updateLanguages'));
