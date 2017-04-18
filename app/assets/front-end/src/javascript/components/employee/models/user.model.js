@@ -204,9 +204,23 @@
         return promise;
       };
 
-    User.updateProjects = () => {
+      User.updateProjects = (user, project) => {
+        url = apiUrl + '/users/:id/projects/:project_id';
+        let projectId = project.map(project => project.id);
+        resource = $resource(url, {}, {
+          'update': { method: 'PUT' }
+        }).update({ id: user.id, project_id: projectId  }, project);
+debugger
+        promise = resource.$promise
+          .then((data) => {
+            alertService.success(model, 'updateProjects');
+            // return data;
+          })
+          .catch(() => alertService.error(model, 'updateProjects'));
 
-    };
+        return promise;
+      };
+
 
     User.removeProjects = () => {
 

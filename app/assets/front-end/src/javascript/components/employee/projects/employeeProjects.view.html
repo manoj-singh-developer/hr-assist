@@ -118,25 +118,27 @@
       <section layout="row" layout-align="start center">
         <div class="u-mr-5 u-ml-5 u-mb-20" flex-gt-xs="100">
           <label>Project {{userProjects.currentProject.name}}</label>
-          <form class="u-mt-5" ng-submit="$event.preventDefault()">
-            <md-autocomplete
-              ng-model="userProjects.currentProject"
-              ng-init="userProjects.currentProject.name"
-              md-no-cache="true"
-              md-selected-item="userProjects.selectedProject"
-              md-search-text="userProjects.searchedProject"
-              md-selected-item-change="userProjects.selectedProjectChanged(item)"
-              md-items="item in userProjects.querySearchProject(userProjects.searchedProject)"
-              md-item-text="item.name"
-              md-min-length="0"
-              placeholder="Select project">
+          <form ng-submit="$event.preventDefault()">
+          <md-autocomplete
+            md-selected-item="userProjects.selectedItem"
+            md-search-text-change="userProjects.searchTextChange(userProjects.searchText)"
+            md-search-text="userProjects.searchText"
+            md-selected-item-change="userProjects.addInQueue(item)"
+            md-items="item in userProjects.querySearch(userProjects.searchText, userProjects.projects)"
+            md-item-text="item.name"
+            md-min-length="0"
+            placeholder="Search">
 
-              <md-item-template >
+            <md-item-template>
+              <span
+              class="item-metadata"
+              md-highlight-text="userProjects.projects.searchText">
                 {{item.name}}
-              </md-item-template>
+              </span>
+            </md-item-template>
 
-            </md-autocomplete>
-          </form>
+          </md-autocomplete>
+        </form>
 
         </div>
       </section><!-- SELECT PROJECT -->
@@ -151,7 +153,7 @@
           <hra-date-select
             class="vertical hide-days"
             flex-gt-xs="50"
-            ng-model="userProjects.projectDate[$index].from">
+            ng-model="userProjects.projectsToAdd.start_date">
           </hra-date-select>
         </div>
 
@@ -160,7 +162,7 @@
           <hra-date-select
             class="vertical hide-days"
             flex-gt-xs="50"
-            ng-model="userProjects.projectDate[$index].to">
+            ng-model="userProjects.projectsToAdd.end_date">
           </hra-date-select>
         </div>
 
@@ -250,7 +252,7 @@
     ng-show="!userProjects.settings.showForm">
     <md-button
       class="c-card-profile__btn no-margin"
-      ng-click="userProjects.addEmptyProject(); userProjects.toggleCard($event, 'open')"
+      ng-click="userProjects.addEmptyProject(); userProjects.toggleCard($event, 'open'); userProjects.toggleForm()"
       ng-disabled="btnIsDisabled">
       Add Project
     </md-button>
@@ -264,13 +266,13 @@
 
     <md-button
       class="md-raised md-primary"
-      ng-click="userProjects.saveProjectToEmployee(userProjects.currentProject); userProjects.toggleCard($event, 'close')">
+      ng-click="userProjects.save(); userProjects.toggleCard($event, 'close')">
       Save
     </md-button>
 
     <md-button
       class="md-raised"
-      ng-click="userProjects.cancelAdd(); userProjects.toggleCard($event, 'close')">
+      ng-click="userProjects.cancelAdd(); userProjects.toggleCard($event, 'close'); userProjects.toggleForm()">
       Cancel
     </md-button>
 

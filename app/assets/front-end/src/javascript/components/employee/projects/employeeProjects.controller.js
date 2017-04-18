@@ -22,7 +22,7 @@
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.save = save;
-
+    vm.editProject = editProject;
 
     _getProjects();
 
@@ -46,7 +46,6 @@
         projectsToRemove = _.without(projectsToRemove, toRemove);
         projectsToAdd.push(project);
         vm.userProjects.push(project);
-        vm.searchText = "";
       }
     }
 
@@ -59,7 +58,9 @@
 
     function save() {
       if (projectsToAdd.length) {
-        User.updateLanguages(vm.user, projectsToAdd)
+        console.log(vm.user);
+        console.log( projectsToAdd);
+        User.updateProjects(vm.user, projectsToAdd)
           .then(() => {
             _getUserProjects();
             vm.toggleForm();
@@ -75,6 +76,15 @@
       }
     }
 
+    function editProject(project) {
+
+      vm.searchText = project.name;
+      vm.toggleForm();
+      // vm.currentProject = project;
+      // vm.showForm = true;
+      // vm.isNewProject = false;
+
+    }
 
     function _getProjects() {
       Project.getAll().then((data) => {
