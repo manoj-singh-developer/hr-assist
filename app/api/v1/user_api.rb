@@ -171,6 +171,21 @@ module V1
         {items: user.projects}
       end
 
+      get ':user_id/projects/:project_id/technologies' do
+        User.find(params[:user_id])
+        Project.find(params[:project_id])
+        user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
+        user_project ? {items: user_project.technologies} : []
+      end
+
+      get ':user_id/projects/:project_id/technologies/:technology_id' do
+        User.find(params[:user_id])
+        Project.find(params[:project_id])
+        Technology.find(params[:technology_id])
+        user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
+        user_project ? user_project.technologies.find(params[:technology_id]) : []
+      end
+
       params do
         optional :start_date, type: Date
         optional :end_date, type: Date
@@ -184,7 +199,34 @@ module V1
         user_project.update(user_project_params)
         technologies = Technology.where(id: params[:technology_ids]) - user_project.technologies
         user_project.technologies << technologies if technologies.count > 0
-        user_project.technologies
+        response = {
+          start_date: user_project.start_date,
+          end_date: user_project.end_date,
+          technologies:
+            user_project.technologies.map do |technology|
+              {
+                id: technology.id,
+                name: technology.name,
+                label: technology.label
+              }
+            end
+          }
+      end
+
+      delete ':user_id/projects/:project_id' do
+        user = User.find(params[:user_id])
+        user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
+        user_project.destroy
+      end
+
+      params do
+        optional :technology_ids, type: Array[Integer]
+      end
+      delete ':user_id/projects/:project_id/technologies' do
+        user = User.find(params[:user_id])
+        user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
+        technologies = Technology.where(id: params[:technology_ids])
+        user_project.technologies.delete(technologies)
       end
 
       get ':user_id/technologies' do
