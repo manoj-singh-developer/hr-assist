@@ -56,14 +56,14 @@ module V1
 
       get ':user_id/devices' do
         user = find_user(params[:user_id])
-        {items: user.as_json(include: :devices)}
+        {items: user.devices}
       end
 
       put ':user_id/devices' do
         user = User.find(params[:user_id])
         devices = Device.where(id: params[:device_ids]) - user.devices
         user.devices << devices if devices.count > 0
-        {items: user.as_json(include: :devices)}
+        {items: user.devices}
       end
 
       delete ':user_id/devices' do
@@ -72,39 +72,48 @@ module V1
 
       get ':user_id/languages' do
         user = find_user(params[:user_id])
-        {items: user.as_json(include: :languages)}
+        {items: user.languages}
       end
 
       put ':user_id/languages' do
         user = User.find(params[:user_id])
         languages = Language.where(id: params[:language_ids]) - user.languages
         user.languages << languages if languages.count > 0
-        {items: user.as_json(include: :languages)}
+        {items: user.languages}
       end
 
       delete ':user_id/languages' do
         delete_object(User, Language, params[:user_id], params[:language_ids])
       end
 
-      get ':user_id/positions' do
+      get ':user_id/position' do
         user = find_user(params[:user_id])
-        {items: user.as_json(include: :positions)}
+        user.positions.last ? user.positions.last : []
       end
 
-      put ':user_id/positions' do
+      params do
+        requires :position_id, type: Integer
+      end
+      put ':user_id/position' do
         user = User.find(params[:user_id])
-        positions = Position.where(id: params[:position_ids]) - user.positions
-        user.positions << positions if positions.count > 0
-        {items: user.as_json(include: :positions)}
+        position = Position.find(params[:position_id])
+        user.positions.delete_all
+        user.positions << position
+        user.positions.last
       end
 
-      delete ':user_id/positions' do
-        delete_object(User, Position, params[:user_id], params[:position_ids])
+      params do
+        requires :position_id, type: Integer
+      end
+      delete ':user_id/position' do
+        user = find_user(params[:user_id])
+        position = user.positions.find(params[:position_id])
+        user.positions.delete_all
       end
 
       get ':user_id/educations' do
         user = find_user(params[:user_id])
-        {items: user.as_json(include: :educations)}
+        {items: user.educations}
       end
 
       params do
@@ -118,14 +127,14 @@ module V1
         education = Education.create(user_education_params)
         user = find_user(params[:user_id])
         user.educations << education
-        {items: user.as_json(include: :educations)}
+        {items: user.educations}
       end
 
       put ':user_id/educations' do
         user = User.find(params[:user_id])
         educations = Education.where(id: params[:education_ids]) - user.educations
         user.educations << educations if educations.count > 0
-        {items: user.as_json(include: :educations)}
+        {items: user.educations}
       end
 
       delete ':user_id/educations' do
@@ -134,12 +143,12 @@ module V1
 
       get ':user_id/uploads' do
         user = find_user(params[:user_id])
-        {items: user.as_json(include: :uploads)}
+        {items: user.uploads}
       end
 
       get ':user_id/schedule' do
         user = find_user(params[:user_id])
-        user.as_json(include: :schedule)
+        user.schedule
       end
 
       params do
@@ -154,12 +163,27 @@ module V1
         schedule.update(user_schedule_params)
         user = find_user(params[:user_id])
         user.schedule = schedule
-        user.as_json(include: :schedule)
+        user.schedule
       end
 
       get ':user_id/projects' do
         user = find_user(params[:user_id])
         {items: user.projects}
+      end
+
+      get ':user_id/projects/:project_id/technologies' do
+        User.find(params[:user_id])
+        Project.find(params[:project_id])
+        user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
+        user_project ? {items: user_project.technologies} : []
+      end
+
+      get ':user_id/projects/:project_id/technologies/:technology_id' do
+        User.find(params[:user_id])
+        Project.find(params[:project_id])
+        Technology.find(params[:technology_id])
+        user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
+        user_project ? user_project.technologies.find(params[:technology_id]) : []
       end
 
       params do
@@ -175,19 +199,46 @@ module V1
         user_project.update(user_project_params)
         technologies = Technology.where(id: params[:technology_ids]) - user_project.technologies
         user_project.technologies << technologies if technologies.count > 0
-        user_project.as_json(include: :technologies)
+        response = {
+          start_date: user_project.start_date,
+          end_date: user_project.end_date,
+          technologies:
+            user_project.technologies.map do |technology|
+              {
+                id: technology.id,
+                name: technology.name,
+                label: technology.label
+              }
+            end
+          }
+      end
+
+      delete ':user_id/projects/:project_id' do
+        user = User.find(params[:user_id])
+        user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
+        user_project.destroy
+      end
+
+      params do
+        optional :technology_ids, type: Array[Integer]
+      end
+      delete ':user_id/projects/:project_id/technologies' do
+        user = User.find(params[:user_id])
+        user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
+        technologies = Technology.where(id: params[:technology_ids])
+        user_project.technologies.delete(technologies)
       end
 
       get ':user_id/technologies' do
         user = find_user(params[:user_id])
-        {items: user.as_json(include: :technologies)}
+        {items: user.technologies}
       end
 
       put ':user_id/technologies' do
         user = User.find(params[:user_id])
         technologies = Technology.where(id: params[:technology_ids]) - user.technologies
         user.technologies << technologies if technologies.count > 0
-        {items: user.as_json(include: :technologies)}
+        {items: user.technologies}
       end
 
       delete ':user_id/technologies' do
@@ -196,11 +247,11 @@ module V1
 
       get ':user_id/holidays' do
         user = find_user(params[:user_id])
-        {items: user.as_json(include: :holidays)}
+        {items: user.holidays}
       end
       post ':user_id/holidays/:id' do
         user = add_object_for_user(Holiday, params)
-        {items: user.as_json(include: :holidays)}
+        {items: user.holidays}
       end
 
       get ':user_id/holiday_replacements' do
@@ -241,7 +292,7 @@ module V1
         user = User.find_by_id(params[:user_id])
         uploads = Upload.where(id: params[:upload_ids]) - user.uploads
         user.uploads << uploads if uploads.count > 0
-        {items: user.as_json(include: :uploads)}
+        {items: user.uploads}
       end
 
       delete ':user_id/uploads' do

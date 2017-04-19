@@ -47,7 +47,7 @@ module V1
 
       get ':id/users' do
         device = Device.find_by_id(params[:id])
-        device.users
+        {items: device.users}
       end
 
       desc "Create new device"

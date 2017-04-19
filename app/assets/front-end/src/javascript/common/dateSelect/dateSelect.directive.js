@@ -18,7 +18,7 @@
       restrict: 'E',
       replace: true,
       scope: {},
-      templateUrl: rootTemplatePath + '/_common/dateSelect/dateSelect.view.html',
+      templateUrl: rootTemplatePath + '../common/dateSelect/dateSelect.view.html',
       require: 'ngModel',
 
       link: function(scope, elem, attrs, model) {
