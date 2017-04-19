@@ -7,9 +7,9 @@
     .factory('HolidayModel', HolidayModel);
 
   HolidayModel
-    .$inject = ['$q', '$resource', 'Employee', 'apiUrl'];
+    .$inject = ['$q', '$resource', 'User', 'apiUrl'];
 
-  function HolidayModel($q, $resource, Employee, apiUrl) {
+  function HolidayModel($q, $resource, User, apiUrl) {
 
     // Constructor
     // ------------------------------------------------------------------------

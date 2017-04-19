@@ -33,9 +33,9 @@
     .controller('holidayFormController', holidayFormController);
 
   holidayFormController
-    .$inject = ['$rootScope', '$scope', '$timeout', '$mdToast', '$mdDialog', 'Upload', 'autocompleteService', 'miscellaneousService', 'HolidayModel', 'Employee',  '$state', 'Project'];
+    .$inject = ['$rootScope', '$scope', '$timeout', '$mdToast', '$mdDialog', 'Upload', 'autocompleteService', 'miscellaneousService', 'HolidayModel', 'User',  '$state', 'Project'];
 
-  function holidayFormController($rootScope, $scope, $timeout, $mdToast, $mdDialog, Upload, autocompleteService, miscellaneousService, HolidayModel, Employee, $state, Project) {
+  function holidayFormController($rootScope, $scope, $timeout, $mdToast, $mdDialog, Upload, autocompleteService, miscellaneousService, HolidayModel, User, $state, Project) {
 
 
     var vm = this;
@@ -175,30 +175,30 @@
       vm.btnIsDisabled = true;
 
         if (!currentHoliday.id) {
-            return HolidayModel.save(currentHoliday).then(
-                  function(data) {
-                      $rootScope.showToast('Holiday created successfuly!');
-                      $state.reload();
-                  },
-                  function(error) {
-                      $rootScope.showToast('Holiday creation failed!');
-                      onSaveError(error);
-                  });
-          } else {
-              return HolidayModel.update(currentHoliday).then(
-                  function(data) {
-                      $rootScope.showToast('Holiday updated successfuly!');
-                      HolidayModel.getHolidayById(currentHoliday.id).then(function(data) {
-                              onSaveSuccess('update', data);
-                              $mdDialog.cancel();
-                          },
-                          function() {});
+          return HolidayModel.save(currentHoliday).then(
+            function(data) {
+              $rootScope.showToast('Holiday created successfuly!');
+              $state.reload();
+            },
+            function(error) {
+              $rootScope.showToast('Holiday creation failed!');
+              onSaveError(error);
+            });
+        } else {
+          return HolidayModel.update(currentHoliday).then(
+            function(data) {
+              $rootScope.showToast('Holiday updated successfuly!');
+              HolidayModel.getHolidayById(currentHoliday.id).then(function(data) {
+                onSaveSuccess('update', data);
+                  $mdDialog.cancel();
+                },
+                function() {});
 
-                  },
-                  function(error) {
-                      $rootScope.showToast('Holiday update failed!');
-                      onSaveError();
-                  });
+            },
+            function(error) {
+              $rootScope.showToast('Holiday update failed!');
+              onSaveError();
+            });
         }
     }
 
@@ -314,7 +314,7 @@
 
 
     function getEmployees() {
-      Employee.getAll().then(
+      User.getAll().then(
         function(data) {
           vm.empList = data;
           updateUser();
