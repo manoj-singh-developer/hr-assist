@@ -1,0 +1,161 @@
+<md-card>
+
+
+
+    <md-card-title>
+        <md-card-title-text>
+       <span class="md-headline">
+        Devices
+      </span>
+        </md-card-title-text>
+    </md-card-title>
+
+
+
+    <!-- PREVIEW  -->
+    <md-content
+            ng-show="!userDevices.showEditDevices"
+            class="c-card-profile__preview">
+        <md-list layout="row" layout-wrap>
+            <md-list-item
+                    flex="25"
+                    class="md-2-line"
+                    ng-repeat="device in userDevices.userDevices track by $index">
+
+                <div class="md-list-item-text" layout="column">
+                    <h4>{{device.name}}</h4>
+                </div>
+
+
+            </md-list-item>
+        </md-list>
+
+    </md-content><!-- /PREVIEW -->
+
+
+
+    <!-- EDIT -->
+    <md-content
+            class = "md-padding"
+            ng-show="userDevices.showEditDevices">
+
+        <md-list layout="row" layout-wrap>
+
+            <md-list-item class="md-2-line c-filters__label">
+                <div class="md-list-item-text " layout="column">
+                    <h4>Add/Remove device: </h4>
+                </div>
+            </md-list-item>
+
+            <md-list-item
+                    class="md-2-line"
+                    ng-repeat="device in userDevices.userDevices track by $index">
+                <div class="md-list-item-text" layout="column">
+                    <p class="c-filters__item"
+                       ng-click="userDevices.removeFromQueue(device)" >
+                        {{$index + 1}} {{device.name}}
+                        <span class="material-icons c-filters__icon">close</span>
+                    </p>
+                </div>
+            </md-list-item>
+
+        </md-list>
+
+        <!-- FILTER DEVICE -->
+        <section
+                layout-gt-xs="row"
+                layout-align="center center"
+                ng-repeat="device in userDevices.devicesToAdd track by $index" >
+
+
+
+            <!-- DEVICE INPUT-->
+            <div flex="100" >
+                <!-- DEVICE SELECT-->
+                <md-content class="md-padding">
+                    <form ng-submit="$event.preventDefault()">
+
+                        <md-autocomplete
+                                md-selected-item="userDevices.selectedItem"
+                                md-search-text-change="userDevices.searchTextChange(userDevices.searchText)"
+                                md-search-text="userDevices.searchText"
+                                md-selected-item-change="userDevices.addInQueue(item)"
+                                md-items="item in userDevices.querySearch(userDevices.searchText, userDevices.devices)"
+                                md-item-text="item.name"
+                                md-min-length="0"
+                                placeholder="Search">
+
+                            <md-item-template>
+                                <span class="item-metadata"
+                                      md-highlight-text="userDevices.searchText">
+                                  {{item.name}}
+                                </span>
+                            </md-item-template>
+
+                        </md-autocomplete>
+                    </form>
+                </md-content>
+                <!-- /DEVICE SELECT-->
+
+
+            </div>
+            <!-- DEVICE INPUT-->
+
+
+        </section>
+        <!-- /FILTER DEVICE -->
+
+
+        <section class="md-padding"
+                 ng-show="!showDetails">
+            <md-button
+                    md-no-ink
+                    class="md-primary small-text"
+                    ng-click="userDevices.addNewDevice(); showDetails = ! showDetails">
+                Add New Device
+            </md-button>
+        </section>
+
+
+
+    </md-content><!-- /EDIT -->
+
+
+
+    <!-- CARD ACTIONS-->
+    <md-card-actions
+            layout="column"
+            layout-align="start"
+            ng-show="!userDevices.showEditDevices">
+        <md-button
+                class="c-card-profile__btn no-margin"
+                ng-click="userDevices.displayEditDevices()">
+            Add/Edit devices
+        </md-button>
+    </md-card-actions>
+
+    <md-card-actions
+            layout="row"
+            layout-align="center center"
+            ng-show="userDevices.showEditDevices"
+            class="additional">
+
+        <md-button
+                class="md-raised md-primary"
+                ng-click="userDevices.saveDevices()"
+                ng-disabled="btnIsDisabled">
+            Save
+        </md-button>
+
+        <md-button
+                class="md-raised"
+                ng-click="userDevices.displayEditDevices()">
+            Cancel
+        </md-button>
+
+    </md-card-actions>
+    <!-- /CARD ACTIONS-->
+
+
+
+</md-card>
