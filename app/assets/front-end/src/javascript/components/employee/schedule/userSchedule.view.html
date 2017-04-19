@@ -37,7 +37,7 @@
         <li>Fri</li>
     </ul>
 
-    <md-list layout="row" layout-wrap class="c-schedule-list">
+    <md-list layout="row" class="c-schedule-list">
 
       <ul class="c-schedule c-schedule--hours">
           <li>09:00 - 10:00</li>
@@ -53,43 +53,11 @@
       </ul>
 
       <ul
-          class="monday c-schedule"
+          class="c-schedule c-shedule--right"
           selectable
-          selectable-list="hraSchedule.scheduale"
-          selectable-out="hraSchedule.selectedSchedualeMonday">
-          <li class="ui-widget-content" ng-repeat="schedule in hraSchedule.scheduale">{{ schedule.hours }}</li>
-      </ul>
-
-      <ul
-          class="tuesday c-schedule"
-          selectable
-          selectable-list="hraSchedule.scheduale"
-          selectable-out="hraSchedule.selectedSchedualeTuesday">
-          <li class="ui-widget-content" ng-repeat="schedule in hraSchedule.scheduale">{{ schedule.hours }}</li>
-      </ul>
-
-      <ul
-          class="wednesday c-schedule"
-          selectable
-          selectable-list="hraSchedule.scheduale"
-          selectable-out="hraSchedule.selectedSchedualeWednesday">
-          <li class="ui-widget-content" ng-repeat="schedule in hraSchedule.scheduale">{{ schedule.hours }}</li>
-      </ul>
-
-      <ul
-          class="thursday c-schedule"
-          selectable
-          selectable-list="hraSchedule.scheduale"
-          selectable-out="hraSchedule.selectedSchedualeThursday">
-          <li class="ui-widget-content" ng-repeat="schedule in hraSchedule.scheduale">{{ schedule.hours }}</li>
-      </ul>
-
-      <ul
-          class = "friday c-schedule"
-          selectable
-          selectable-list="hraSchedule.scheduale"
-          selectable-out="hraSchedule.selectedSchedualeFriday">
-          <li class="ui-widget-content" ng-repeat="schedule in hraSchedule.scheduale">{{ schedule.hours }}</li>
+          selectable-list="hraSchedule.numbersScheduleArray"
+          selectable-out="hraSchedule.selectedSchedule">
+          <li class="ui-widget-content" ng-repeat="schedule in hraSchedule.numbersScheduleArray track by $index">09:00 - 10:00</li>
       </ul>
 
    </md-list>
@@ -108,7 +76,7 @@
     <md-button
       id ="schedule"
       class="c-card-profile__btn no-margin"
-      ng-click="hraSchedule.generalInfoShowHide('schedule'); hraSchedule.toggleCard($event, 'open')">
+      ng-click="hraSchedule.generalInfoShowHide('schedule'); hraSchedule.toggleForm()">
       Edit Schedule
     </md-button>
   </md-card-actions>
@@ -121,14 +89,14 @@
 
     <md-button
       class="md-raised md-primary"
-      ng-click="hraSchedule.saveEmployee(hraSchedule.employee); hraSchedule.toggleCard($event, 'close')"
+      ng-click="hraSchedule.save(); hraSchedule.toggleForm()"
       ng-hide="hraSchedule.disabledSchedule">
       Save
     </md-button>
 
     <md-button
       class="md-raised"
-      ng-click="hraSchedule.cancelAdd(); hraSchedule.toggleCard($event, 'close')"
+      ng-click="hraSchedule.cancelAdd(); hraSchedule.toggleForm()"
       ng-hide="hraSchedule.disabledSchedule">
       Cancel
     </md-button>

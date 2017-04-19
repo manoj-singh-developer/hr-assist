@@ -94,9 +94,9 @@
     };
 
 
-    User.getSchedule = (user) => {
+    User.getSchedule = (id) => {
       url = apiUrl + '/users/:id/schedule';
-      resource = $resource(url).get({ id: user.id });
+      resource = $resource(url).get({ id: id });
 
       promise = resource.$promise
         .then(data => data)
