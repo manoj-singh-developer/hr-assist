@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   get '/users/sign_in' , to: 'admin/authenticate#index'
   devise_for :users
-  mount V1::UserAPI => '/api'
+  mount V1::Users::UserAPI => '/api'
+  mount V1::Users::UserRelationsAPI => '/api'
   mount V1::ProjectAPI => '/api'
   mount V1::CustomerAPI => '/api'
   mount V1::TechnologyAPI => '/api'
