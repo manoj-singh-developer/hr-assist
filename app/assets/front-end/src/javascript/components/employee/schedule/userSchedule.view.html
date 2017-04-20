@@ -27,7 +27,7 @@
 
 
   <!-- FORM SCHEDULE -->
-  <section layout-gt-xs="row" ng-disabled="hraSchedule.disabledSchedule" class="c-section-schedule">
+  <section layout-gt-xs="row" ng-disabled="!hraSchedule.showEditSchedule" class="c-section-schedule">
 
     <ul class="c-schedule-days">
         <li>Mon</li>
@@ -72,11 +72,11 @@
    <md-card-actions
     layout="column"
     layout-align="start"
-    ng-show="hraSchedule.disabledSchedule">
+    ng-show="!hraSchedule.showEditSchedule">
     <md-button
       id ="schedule"
       class="c-card-profile__btn no-margin"
-      ng-click="hraSchedule.generalInfoShowHide('schedule'); hraSchedule.toggleForm()">
+      ng-click="hraSchedule.displayEditSchedule()">
       Edit Schedule
     </md-button>
   </md-card-actions>
@@ -84,19 +84,19 @@
   <md-card-actions
     layout="row"
     layout-align="center center"
-    ng-show="!hraSchedule.disabledSchedule"
+    ng-show="hraSchedule.showEditSchedule"
     class="additional">
 
     <md-button
       class="md-raised md-primary"
-      ng-click="hraSchedule.save(); hraSchedule.toggleForm()"
+      ng-click="hraSchedule.save(); hraSchedule.displayEditSchedule()"
       ng-hide="hraSchedule.disabledSchedule">
       Save
     </md-button>
 
     <md-button
       class="md-raised"
-      ng-click="hraSchedule.cancelAdd(); hraSchedule.toggleForm()"
+      ng-click="hraSchedule.cancelAdd(); hraSchedule.displayEditSchedule()"
       ng-hide="hraSchedule.disabledSchedule">
       Cancel
     </md-button>
