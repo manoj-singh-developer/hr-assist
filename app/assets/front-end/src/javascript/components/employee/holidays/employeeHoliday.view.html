@@ -1,10 +1,6 @@
 <!-- CARD HOLIDAYS -->
 <md-card>
 
-
-
-
-
   <!-- CARD TITLE -->
   <md-card-title>
     <md-card-title-text>
@@ -13,142 +9,81 @@
   </md-card-title><!-- /CARD TITLE -->
 
 
-
-
-
   <!-- CARD NOTES -->
   <md-content class="c-card-profile__notes">
     <p>
       <strong>NOTE: </strong> Complete here your vacation requests.
     </p>
-
-
-      <pre>{{employeeHoliday.userHolidays | json}}</pre>
-
   </md-content> <!-- CARD NOTES -->
 
 
   <!-- PREVIEW HOLIDAY -->
-  <md-content
-    ng-show="!employeeHoliday.showForm"
-    class="c-card-profile__preview">
+  <md-content  class="md-padding"
+               ng-show="!employeeHoliday.displayOrHide">
+      <md-table-container>
 
-    <table
-      class=""
-      md-table
-      ng-show="employeeHoliday.employee.holidays.length > 0"
-      md-row-select="employeeHoliday.table.options.rowSelection"
-      multiple="{{employeeHoliday.table.options.multiSelect}}"
-      ng-model="employeeHoliday.table.selected"
-      md-progress="promise">
+          <table class="c-table--actions"
+                 md-table
+                 md-progress="promise">
 
-      <thead
-        ng-if="!employeeHoliday.table.options.decapitate"
-        md-head
-        md-order="employeeHoliday.query.order">
-        <tr md-row>
-          <th md-column>Period</th>
-          <th md-column>Project</th>
-          <th md-column>Replacement</th>
-          <th md-column></th>
-        </tr>
-      </thead>
+              <thead md-head
+                     md-order="query.order">
+                  <tr md-row>
+                      <th md-column>No</th>
+                      <th md-column>Start date</th>
+                      <th md-column>End date</th>
+                      <th md-column>Number of days</th>
+                      <th md-column>Action</th>
+                  </tr>
+              </thead>
 
-      <tbody md-body>
-        <tr
-          md-row
-          md-select="holiday"
-          md-on-select="logItem"
-          md-auto-select="employeeHoliday.options.autoSelect"
-          ng-repeat="holiday in employeeHoliday.employee.holidays track by $index">
+              <tbody md-body>
+                  <tr md-row
+                      md-select="holiday"
+                      md-auto-select
+                      ng-repeat="holiday in employeeHoliday.userHolidays track by $index  | limitTo: employeeHoliday.holidaysTable.limit">
 
-          <td md-cell>
+                      <td md-cell>
+                          #{{$index +1}}
+                      </td>
 
-            <p class="u-no-margin">
-              <strong>Signed:</strong>  {{holiday.signingDate | date: 'MMM d, y'}}
-            </p>
+                      <td md-cell>
+                          {{holiday.start_date}}
+                      </td>
 
-            <strong>({{holiday.days}}) Days</strong>
+                      <td md-cell>
+                          {{holiday.end_date}}
+                      </td>
 
-            <ul class="c-list">
-              <li ng-repeat = "item in holiday.intervals">
-                <strong>From:</strong> {{item.from | date: 'MMM d, y' }}
-                -
-                <strong>To:</strong> {{item.to | date: 'MMM d, y'}}
-                <hr ng-show="holiday.period.length > 1">
-              </li>
-            </ul>
+                      <td md-cell>
+                          {{holiday.days}}
+                      </td>
 
-          </td>
+                      <td md-cell>
+                          <md-button class="md-icon-button md-primary"
+                                     label="View Holiday"
+                                     aria-label="View Holiday"
+                                     ui-sref="holidayParent.details({id: holiday.holiday_id})">
+                              <md-icon class="material-icons">visibility</md-icon>
+                              <md-tooltip md-autohide="true">
+                                  View Holiday
+                              </md-tooltip>
+                          </md-button>
 
-          <td md-cell>
-            <ul class="c-list">
-              <li ng-repeat="item in holiday.replacementProjects track by $index">
+                      </td>
 
-                <p class="u-no-margin u-uppercase">
-                  <strong>{{ item.name }}</strong>
-                </p>
+                  </tr>
+              </tbody>
 
-                <p class="u-no-margin">
-                  {{item.employee.firstName + " " + item.employee.lastName}}
-                </p>
+          </table>
 
-              </li>
-            </ul>
-          </td>
+      </md-table-container>
+      <md-table-pagination md-limit="employeeHoliday.holidaysTable.limit"
+                           md-page="employeeHoliday.holidaysTable.page"
+                           md-total="{{employeeHoliday.userHolidays.length}}"
+                           md-page-select>
 
-          <td md-cell>
-            <ul class="c-list">
-              <li ng-repeat="item in holiday.replacementEmployees track by $index">
-                <p class="u-no-margin">
-                  {{ item.firstName + " " + item.lastName }}
-                </p>
-              </li>
-            </ul>
-          </td>
-
-          <td md-cell>
-
-            <md-button
-              class="md-icon-button md-primary"
-              label="View holiday details"
-              aria-label="View holiday details"
-              ui-sref="employeesParent.holiday({id: employeeHoliday.employee.id, holidayIndex:holiday.id})">
-              <md-icon class="material-icons">visibility</md-icon>
-              <md-tooltip md-autohide="true">
-                View holiday details
-              </md-tooltip>
-            </md-button>
-
-            <md-button
-              class="md-icon-button md-primary"
-              label="Edit holiday details"
-              aria-label="Edit holiday details"
-              ng-click="employeeHoliday.editHoliday(holiday)">
-              <md-icon class="material-icons">edit</md-icon>
-              <md-tooltip md-autohide="true">
-                Edit holiday details
-              </md-tooltip>
-            </md-button>
-
-            <md-button
-              class="md-icon-button md-warn"
-              label="Delete holiday"
-              aria-label="Delete holiday"
-              ng-click="employeeHoliday.removeHoliday(holiday)">
-              <md-icon class="material-icons">delete</md-icon>
-              <md-tooltip md-autohide="true">
-                Delete holiday
-              </md-tooltip>
-            </md-button>
-
-          </td>
-
-        </tr>
-      </tbody>
-
-    </table>
-
+      </md-table-pagination>
   </md-content><!-- /PREVIEW HOLIDAY -->
 
 
@@ -156,7 +91,7 @@
 
 
   <!-- FORM HOLIDAY -->
-  <md-content ng-show="employeeHoliday.showForm" class="md-padding">
+  <md-content ng-show="employeeHoliday.displayOrHide" class="md-padding">
     <section layout='column'>
 
 
@@ -164,22 +99,21 @@
       <section
               class="u-mb-20 u-mt-20"
               layout="row"
-              layout-align="start center"
-              ng-repeat="interval in employeeHoliday.currentHoliday.intervals track by $index">
+              layout-align="start center">
 
-        <md-datepicker ng-model="employeeHoliday.currentHoliday.signingDate"
+        <md-datepicker ng-model="employeeHoliday.signingDate"
                        md-placeholder="Signing date"
                        md-open-on-focus
                        required>
         </md-datepicker>
 
-        <md-datepicker ng-model="interval.from"
+        <md-datepicker ng-model="employeeHoliday.from"
                        md-placeholder="Start date"
                        md-open-on-focus
                        required>
         </md-datepicker>
 
-        <md-datepicker ng-model="interval.to"
+        <md-datepicker ng-model="employeeHoliday.to"
                        md-placeholder="End date"
                        md-open-on-focus
                        required>
@@ -193,9 +127,6 @@
       </section><!-- /SELECT PERIOD -->
 
 
-
-
-
       <!-- SELECT PROJECT AND REPLACEMENT -->
       <section layout-gt-xs="row">
 
@@ -204,22 +135,22 @@
 
             <!-- SELECT REPLACEMENT PROJECT -->
             <div class="md-block u-mb-20"
-              layout-fill
-              ng-repeat="replacement in employeeHoliday.currentHoliday.replacementProjects track by $index">
+              layout-fill>
               <form ng-submit="$event.preventDefault()">
-                <md-autocomplete
-                  md-no-cache="true"
-                  md-selected-item="replacement"
-                  md-search-text-change="employeeHoliday.searchTextChange(employeeHoliday.searchProjectHold[$index])"
-                  md-selected-item-change="employeeHoliday.addReplacementProject(item, $index)"
-                  md-items="item in employeeHoliday.querySearchProject(employeeHoliday.searchProjectHold[$index])"
-                  md-item-text="item.name"
-                  md-min-length="0"
-                  placeholder="Select an project">
+                <md-autocomplete ng-disabled="employeeHoliday.isDisabled"
+                                 ng-model="employeeHoliday.searchProj"
+                                 md-selected-item="employeeHoliday.selectedProj"
+                                 md-search-text-change="employeeHoliday.searchProjChange(employeeHoliday.searchProj)"
+                                 md-search-text="employeeHoliday.searchProj"
+                                 md-selected-item-change="employeeHoliday.selectedProjChange(item)"
+                                 md-items="project in employeeHoliday.queryProjectSearch(employeeHoliday.searchProj)"
+                                 md-item-text="project.name"
+                                 md-min-length="0"
+                                 placeholder="Select an project">
 
                   <md-item-template >
                     <span class="item-metadata">
-                      {{item.name}}
+                      {{project.name}}
                     </span>
                   </md-item-template>
 
@@ -234,23 +165,22 @@
           <div layout="column" layout-align="start start" layout-fill>
 
             <!-- SELECT REPLACEMENT EMPLOYEE -->
-            <div class="md-block u-mb-20"
-              layout-fill
-              ng-repeat="replacementEmployee in employeeHoliday.currentHoliday.replacementEmployees track by $index">
+            <div class="md-block u-mb-20" layout-fill>
               <form ng-submit="$event.preventDefault()">
-                <md-autocomplete
-                  md-no-cache="true"
-                  md-selected-item="replacementEmployee"
-                  md-search-text-change="employeeHoliday.searchTextChange(employeeHoliday.searchRepEmpHold[$index])"
-                  md-selected-item-change="employeeHoliday.addReplacementEmployee(item, $index)"
-                  md-items="item in employeeHoliday.querySearchEmployee(employeeHoliday.searchRepEmpHold[$index])"
-                  md-item-text="item.firstName + ' ' + item.lastName"
-                  md-min-length="0"
-                  placeholder="Select an employee">
+                <md-autocomplete ng-disabled="employeeHoliday.isDisabled"
+                                 ng-model="employeeHoliday.searchUser"
+                                 md-selected-item="employeeHoliday.selectedUser"
+                                 md-search-text-change="employeeHoliday.searchUserChange(employeeHoliday.searchUser)"
+                                 md-search-text="employeeHoliday.searchUser"
+                                 md-selected-item-change="employeeHoliday.selectedUserChange(item)"
+                                 md-items="user in employeeHoliday.queryUserSearch(employeeHoliday.searchUser)"
+                                 md-item-text="user.first_name +' '+ user.last_name"
+                                 md-min-length="0"
+                                 placeholder="Select an employee">
 
                   <md-item-template >
                     <span class="item-metadata">
-                      {{item.getFullName()}}
+                      {{user.first_name}} {{user.last_name}}
                     </span>
                   </md-item-template>
 
@@ -269,49 +199,38 @@
       </section><!-- SELECT PROJECT AND REPLACEMENT -->
 
 
-
     </section><!-- /HOLIDAYS ng-repeat -->
 
 
   </md-content><!-- /FORM HOLIDAY -->
 
 
-
-
-
   <!-- CARD ACTIONS -->
   <md-card-actions layout="column" layout-align="start">
-    <md-button
-      class="c-card-profile__btn no-margin"
-      ng-click="employeeHoliday.openForm(); employeeHoliday.toggleCard($event, 'open')"
-      ng-disabled="btnIsDisabled"
-      ng-show="!employeeHoliday.showForm">
+    <md-button class="c-card-profile__btn no-margin"
+               ng-click="employeeHoliday.displayForm()"
+               ng-disabled="btnIsDisabled"
+               ng-show="!employeeHoliday.displayOrHide">
       Add Holiday
     </md-button>
   </md-card-actions>
 
-  <md-card-actions
-    layout="row"
-    layout-align="center center"
-    ng-show="employeeHoliday.showForm"
-    class="additional">
+  <md-card-actions layout="row"
+                   layout-align="center center"
+                   ng-show="employeeHoliday.displayOrHide"
+                   class="additional">
 
-    <md-button
-      class="md-raised md-primary"
-      ng-click="employeeHoliday.saveHoliday(); employeeHoliday.toggleCard($event, 'close')">
+    <md-button class="md-raised md-primary"
+               ng-click="employeeHoliday.saveHoliday()">
       Save
     </md-button>
 
-    <md-button
-      class="md-raised"
-      ng-click="employeeHoliday.closeForm(); employeeHoliday.toggleCard($event, 'close')">
+    <md-button class="md-raised"
+               ng-click="employeeHoliday.displayForm()">
       Close
     </md-button>
 
   </md-card-actions><!-- /CARD ACTIONS -->
-
-
-
 
 
 </md-card><!-- CARD HOLIDAYS -->
