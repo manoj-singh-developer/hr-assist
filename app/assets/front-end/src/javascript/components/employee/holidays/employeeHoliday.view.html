@@ -21,10 +21,11 @@
     <p>
       <strong>NOTE: </strong> Complete here your vacation requests.
     </p>
+
+
+      <pre>{{employeeHoliday.userHolidays | json}}</pre>
+
   </md-content> <!-- CARD NOTES -->
-
-
-
 
 
   <!-- PREVIEW HOLIDAY -->
@@ -159,92 +160,35 @@
     <section layout='column'>
 
 
-
-
-
-      <!-- SELECT DAYS -->
-      <section layout="row">
-        <md-input-container md-no-float class="md-block"
-          flex-gt-xs="100">
-          <label>Days</label>
-          <input
-            type="number"
-            ng-model="employeeHoliday.currentHoliday.days"
-            name=days
-            required>
-        </md-input-container>
-      </section><!-- SELECT DAYS -->
-
-
-
-
-      <!-- TEAM LEADER -->
-      <section layout="row">
-        <md-input-container
-          flex-gt-xs="100"
-          md-no-float
-          class="input-autocomplete md-block">
-
-          <label>Team Leader*</label>
-
-          <form ng-submit="$event.preventDefault()">
-            <md-autocomplete
-              md-no-cache="true"
-              md-selected-item="employeeHoliday.currentHoliday.teamLeader"
-              md-selected-item-change="employeeHoliday.addTeamLeader(item)"
-              md-items="item in employeeHoliday.querySearchEmployee(employeeHoliday.searchLeaderHold[$index])"
-              md-item-text="item.getFullName()"
-              md-min-length="0">
-
-              <md-item-template >
-                <span class="item-metadata">
-                  {{item.getFullName()}}
-                </span>
-              </md-item-template>
-
-            </md-autocomplete>
-          </form>
-
-        </md-input-container>
-      </section><!-- /TEAM LEADER -->
-
-
-
-
-      <!-- SIGNING DATE -->
-      <section layout="row">
-        <md-datepicker
-          ng-model="employeeHoliday.currentHoliday.signingDate"
-          md-placeholder="Signing date"
-          md-open-on-focus
-          required>
-        </md-datepicker>
-      </section><!-- /SIGNING DATE -->
-
-
-
-
-
       <!-- SELECT PERIOD -->
       <section
-        class="u-mb-20 u-mt-20"
-        layout="row"
-        layout-align="start center"
-        ng-repeat="interval in employeeHoliday.currentHoliday.intervals track by $index">
+              class="u-mb-20 u-mt-20"
+              layout="row"
+              layout-align="start center"
+              ng-repeat="interval in employeeHoliday.currentHoliday.intervals track by $index">
 
-        <md-datepicker
-          ng-model="interval.from"
-          md-placeholder="From"
-          md-open-on-focus
-          required>
+        <md-datepicker ng-model="employeeHoliday.currentHoliday.signingDate"
+                       md-placeholder="Signing date"
+                       md-open-on-focus
+                       required>
         </md-datepicker>
 
-        <md-datepicker
-          required
-          ng-model="interval.to"
-          md-placeholder="To"
-          md-open-on-focus>
+        <md-datepicker ng-model="interval.from"
+                       md-placeholder="Start date"
+                       md-open-on-focus
+                       required>
         </md-datepicker>
+
+        <md-datepicker ng-model="interval.to"
+                       md-placeholder="End date"
+                       md-open-on-focus
+                       required>
+        </md-datepicker>
+
+        <md-button class="md-raised md-primary"
+                   ng-click="employeeHoliday.addEmptyInterval()">
+            Add Date
+        </md-button>
 
       </section><!-- /SELECT PERIOD -->
 
@@ -262,7 +206,6 @@
             <div class="md-block u-mb-20"
               layout-fill
               ng-repeat="replacement in employeeHoliday.currentHoliday.replacementProjects track by $index">
-              <label>Project*</label>
               <form ng-submit="$event.preventDefault()">
                 <md-autocomplete
                   md-no-cache="true"
@@ -271,11 +214,13 @@
                   md-selected-item-change="employeeHoliday.addReplacementProject(item, $index)"
                   md-items="item in employeeHoliday.querySearchProject(employeeHoliday.searchProjectHold[$index])"
                   md-item-text="item.name"
-                  md-min-length="0">
+                  md-min-length="0"
+                  placeholder="Select an project">
 
                   <md-item-template >
                     <span class="item-metadata">
                       {{item.name}}
+                    </span>
                   </md-item-template>
 
                 </md-autocomplete>
@@ -292,7 +237,6 @@
             <div class="md-block u-mb-20"
               layout-fill
               ng-repeat="replacementEmployee in employeeHoliday.currentHoliday.replacementEmployees track by $index">
-              <label>Replacement*</label>
               <form ng-submit="$event.preventDefault()">
                 <md-autocomplete
                   md-no-cache="true"
@@ -301,11 +245,13 @@
                   md-selected-item-change="employeeHoliday.addReplacementEmployee(item, $index)"
                   md-items="item in employeeHoliday.querySearchEmployee(employeeHoliday.searchRepEmpHold[$index])"
                   md-item-text="item.firstName + ' ' + item.lastName"
-                  md-min-length="0">
+                  md-min-length="0"
+                  placeholder="Select an employee">
 
                   <md-item-template >
                     <span class="item-metadata">
                       {{item.getFullName()}}
+                    </span>
                   </md-item-template>
 
                 </md-autocomplete>
@@ -315,31 +261,17 @@
           </div>
         </div>
 
+        <md-button class="md-button md-primary"
+                   ng-click="employeeHoliday.addEmptyReplacement()">
+            Add Project
+        </md-button>
+
       </section><!-- SELECT PROJECT AND REPLACEMENT -->
 
 
 
     </section><!-- /HOLIDAYS ng-repeat -->
 
-
-
-
-    <!-- ADD NEW DATE AND REPLACEMENT -->
-    <section layout="row" class="md-padding">
-
-      <md-button
-        class="md-button md-primary"
-        ng-click="employeeHoliday.addEmptyReplacement()">
-        Add new project
-      </md-button>
-
-      <md-button
-        class="md-button md-primary"
-        ng-click="employeeHoliday.addEmptyInterval()">
-        Add New Date
-      </md-button>
-
-    </section><!--/ ADD NEW DATE AND REPLACEMENT -->
 
   </md-content><!-- /FORM HOLIDAY -->
 

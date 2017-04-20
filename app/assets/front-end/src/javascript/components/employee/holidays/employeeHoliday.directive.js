@@ -16,7 +16,7 @@
       scope: {},
       controller: 'employeeHolidayController',
       controllerAs: 'employeeHoliday',
-      templateUrl: rootTemplatePath + '/employee/views/employeeHoliday.view.html'
+      templateUrl: rootTemplatePath + 'employee/holidays/employeeHoliday.view.html'
     };
   }
 

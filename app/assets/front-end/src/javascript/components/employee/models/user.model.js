@@ -7,9 +7,9 @@
     .factory('User', User);
 
   User
-    .$inject = ['$resource', 'apiUrl', 'alertService'];
+    .$inject = ['$resource', 'apiUrl', 'alertService', '$stateParams'];
 
-  function User($resource, apiUrl, alertService) {
+  function User($resource, apiUrl, alertService, $stateParams) {
 
     function User() {}
 
@@ -256,6 +256,15 @@
 
     User.getHolidays = () => {
 
+      let userId= $stateParams.id;
+      url = apiUrl + '/users/'+userId+'/holidays';
+      resource = $resource(url).query();
+
+      promise = resource.$promise
+        .then(data => data)
+        .catch(() => alertService.error(model, 'getUserHolidays'));
+
+      return promise;
     };
 
     User.updateHolidays = () => {
