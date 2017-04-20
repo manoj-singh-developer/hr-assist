@@ -83,8 +83,8 @@ module APIHelpers
   end
 
   def add_object_for_user(model, user_id, id)
-    object = model.find_by_id(id)
-    user = User.find_by_id(user_id)
+    object = model.find(id)
+    user = User.find(user_id)
     objects = model.to_s.downcase.pluralize
 
     return "Aready existing" if user.send(objects.to_sym).include?(object)
@@ -100,12 +100,31 @@ module APIHelpers
   end
 
   def project_with(objects, params)
-    project = Project.find_by_id(params[:project_id])
+    project = Project.find(params[:project_id])
     project.send(objects.to_sym)
   end
 
   def find_user(id)
-    user = User.find_by_id(id)
+    user = User.find(id)
+  end
+
+  def get_holiday(holiday)
+    response = {
+      holiday_id: holiday.id,
+      days: holiday.days,
+      start_date: holiday.start_date,
+      end_date: holiday.end_date,
+      signing_day: holiday.signing_day,
+      employee_replacements:
+        holiday.holiday_replacements.map do |holiday_replacement|
+          {
+            team_leader: holiday_replacement.project.team_leader.name,
+            replacer_id: holiday_replacement.replacer_id,
+            replacer_name: holiday_replacement.replacer.name,
+            project_name: holiday_replacement.project.name
+          }
+        end
+    }
   end
 
   def user_project_params
