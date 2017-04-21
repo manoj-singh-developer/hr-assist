@@ -20,7 +20,7 @@
   <md-content class="c-card-profile__notes">
     <p>
       <strong>NOTE: </strong>Complete here with the projects in which you were involved.
-    </p>b
+    </p>
     <p>
       Add the period in which you were involved in the project and the technologies that you used.
     </p>
@@ -53,7 +53,14 @@
             </p>
 
             <p>
-              <span ng-click="userProjects.deleteProject(project)">Edit</span>
+              <md-button
+                class="md-fab md-mini md-warn c-card-group__remove"
+                label="delete"
+                aria-label="delete"
+                ng-click="userProjects.deleteProject(project)">
+                  <md-icon class="material-icons">delete</md-icon>
+                  <md-tooltip>DELETE</md-tooltip>
+              </md-button>
             </p>
           </h3>
 
@@ -106,7 +113,7 @@
         label="Remove project"
         aria-label="Remove project"
         ng-disabled="userProjects.disabledProjects"
-        ng-click="userProjects.removeProject($index, project, userProjects.employee)">
+        ng-click="userProjects.deleteProject(project)">
           <md-icon class="material-icons">delete</md-icon>
           <md-tooltip>Remove job</md-tooltip>
       </md-button>

@@ -1,229 +1,240 @@
 (() => {
 
-    'use strict';
+  'use strict';
 
-    angular
-      .module('HRA')
-      .factory('User', User);
+  angular
+    .module('HRA')
+    .factory('User', User);
 
-    User
-      .$inject = ['$resource', 'apiUrl', 'alertService'];
+  User
+    .$inject = ['$resource', 'apiUrl', 'alertService'];
 
-    function User($resource, apiUrl, alertService) {
+  function User($resource, apiUrl, alertService) {
 
-      function User() {}
-
-
-      let url = '';
-      let promise = null;
-      let resource = null;
-      let model = 'User';
+    function User() {}
 
 
-      User.save = (data) => {
-        url = apiUrl + '/users/new';
-        resource = $resource(url, {}, {
-          'post': {
-            method: 'POST'
-          }
-        }).save(data);
-
-        promise = resource.$promise
-          .then((data) => {
-            alertService.success(model, 'save');
-            return data;
-          }).catch(() => alertService.error(model, 'save'));
-
-        return promise;
-      };
-
-      User.update = (data) => {
-        url = apiUrl + '/users/:id';
-        resource = $resource(url, {}, {
-          'update': { method: 'PUT' }
-        }).update({ id: data.id }, data);
-
-        promise = resource.$promise
-          .then((data) => {
-            alertService.success(model, 'update');
-            return data;
-          })
-          .catch(() => alertService.error(model, 'update'));
-
-        return promise;
-      };
-
-      User.getById = (id) => {
-        url = apiUrl + '/users/:id';
-        resource = $resource(url).get({ id: id });
-
-        promise = resource.$promise
-          .then(data => data)
-          .catch(() => alertService.error(model, 'getById'));
-        return promise;
-      };
-
-      User.getAll = () => {
-        url = apiUrl + '/users';
-        resource = $resource(url, {}, {
-          'get': {
-            method: 'GET',
-            isArray: false
-          }
-        }).get();
-
-        promise = resource.$promise
-          .then(data => data.items)
-          .catch(() => alertService.error(model, 'getAll'));
-
-        return promise;
-      };
-
-      User.remove = (id) => {
-        url = apiUrl + '/users/:id';
-        resource = $resource(url).delete({ id: id });
-
-        promise = resource.$promise
-          .then((data) => {
-            alertService.success(model, 'remove');
-            return data;
-          })
-          .catch(() => alertService.error(model, 'remove'));
-
-        return promise;
-      };
+    let url = '';
+    let promise = null;
+    let resource = null;
+    let model = 'User';
 
 
-      User.getSchedule = (user) => {
-        url = apiUrl + '/users/:id/schedule';
-        resource = $resource(url).get({ id: user.id });
+    User.save = (data) => {
+      url = apiUrl + '/users/new';
+      resource = $resource(url, {}, {
+        'post': {
+          method: 'POST'
+        }
+      }).save(data);
 
-        promise = resource.$promise
-          .then(data => data)
-          .catch(() => alertService.error(model, 'getSchedule'));
-        return promise;
-      };
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'save');
+          return data;
+        }).catch(() => alertService.error(model, 'save'));
 
-      User.updateSchedule = (id, schedule) => {
-        url = apiUrl + '/users/:id/schedule/:idSchedule';
-        resource = $resource(url, {}, {
-          'update': { method: 'PUT' }
-        }).update({ id: id, idSchedule: schedule.id }, schedule);
+      return promise;
+    };
 
-        promise = resource.$promise
-          .then((data) => {
-            alertService.success(model, 'update');
-            return data;
-          })
-          .catch(() => alertService.error(model, 'update'));
+    User.update = (data) => {
+      url = apiUrl + '/users/:id';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: data.id }, data);
 
-        return promise;
-      };
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'update');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'update'));
 
+      return promise;
+    };
 
-      User.getPosition = (user) => {
-        // TODO:  Something is wrong with this one in api
-        url = apiUrl + '/users/:id/position';
-        resource = $resource(url, {}, {
-          'get': {
-            method: 'GET',
-            isArray: false
-          }
-        }).get({ id: user.id });
+    User.getById = (id) => {
+      url = apiUrl + '/users/:id';
+      resource = $resource(url).get({ id: id });
 
-        promise = resource.$promise
-          .then(data => data)
-          .catch(() => alertService.error(model, 'getPosition'));
+      promise = resource.$promise
+        .then(data => data)
+        .catch(() => alertService.error(model, 'getById'));
+      return promise;
+    };
 
-        return promise;
-      };
+    User.getAll = () => {
+      url = apiUrl + '/users';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
 
-      User.updatePosition = (user, position) => {
-        url = apiUrl + '/users/:id/position';
-        resource = $resource(url, {}, {
-          'update': { method: 'PUT' }
-        }).update({ id: user.id }, { position_id: position.id });
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getAll'));
 
-        promise = resource.$promise
-          .then((data) => {
-            alertService.success(model, 'updatePosition');
-            return data;
-          })
-          .catch(() => alertService.error(model, 'updatePosition'));
+      return promise;
+    };
 
-        return promise;
-      };
+    User.remove = (id) => {
+      url = apiUrl + '/users/:id';
+      resource = $resource(url).delete({ id: id });
 
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'remove');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'remove'));
 
-      User.getDevices = () => {
-
-      };
-
-      User.updateDevices = () => {
-
-      };
-
-      User.removeDevices = () => {
-
-      };
-
-
-      User.getLanguages = () => {
-
-      };
-
-      User.updateLanguages = () => {
-
-      };
-
-      User.removeLanguages = () => {
-
-      };
+      return promise;
+    };
 
 
-      User.getEducations = () => {
+    User.getSchedule = (user) => {
+      url = apiUrl + '/users/:id/schedule';
+      resource = $resource(url).get({ id: user.id });
 
-      };
+      promise = resource.$promise
+        .then(data => data)
+        .catch(() => alertService.error(model, 'getSchedule'));
+      return promise;
+    };
 
-      User.updateEducations = () => {
+    User.updateSchedule = (id, schedule) => {
+      url = apiUrl + '/users/:id/schedule/:idSchedule';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: id, idSchedule: schedule.id }, schedule);
 
-      };
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'update');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'update'));
 
-      User.removeEducations = () => {
-
-      };
-
-
-      User.getProjects = (user) => {
-        url = apiUrl + '/users/:id/projects';
-        resource = $resource(url).get({ id: user.id });
-        promise = resource.$promise
-          .then(data => data.items)
-          .catch(() => alertService.error(model, 'getProjects'));
-
-        return promise;
-      };
-
-      User.updateProjects = (user, project) => {
-        url = apiUrl + '/users/:id/projects/:project_id';
-        let projectId = project.map(project => project.id);
-        resource = $resource(url, {}, {
-          'update': { method: 'PUT' }
-        }).update({ id: user.id, project_id: projectId  }, project);
-debugger
-        promise = resource.$promise
-          .then((data) => {
-            alertService.success(model, 'updateProjects');
-            // return data;
-          })
-          .catch(() => alertService.error(model, 'updateProjects'));
-
-        return promise;
-      };
+      return promise;
+    };
 
 
-    User.removeProjects = () => {
+    User.getPosition = (user) => {
+      // TODO:  Something is wrong with this one in api
+      url = apiUrl + '/users/:id/position';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get({ id: user.id });
 
+      promise = resource.$promise
+        .then(data => data)
+        .catch(() => alertService.error(model, 'getPosition'));
+
+      return promise;
+    };
+
+    User.updatePosition = (user, position) => {
+      url = apiUrl + '/users/:id/position';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: user.id }, { position_id: position.id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'updatePosition');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'updatePosition'));
+
+      return promise;
+    };
+
+
+    User.getDevices = () => {
+
+    };
+
+    User.updateDevices = () => {
+
+    };
+
+    User.removeDevices = () => {
+
+    };
+
+
+    User.getLanguages = () => {
+
+    };
+
+    User.updateLanguages = () => {
+
+    };
+
+    User.removeLanguages = () => {
+
+    };
+
+
+    User.getEducations = () => {
+
+    };
+
+    User.updateEducations = () => {
+
+    };
+
+    User.removeEducations = () => {
+
+    };
+
+
+    User.getProjects = (user) => {
+      url = apiUrl + '/users/:id/projects';
+      resource = $resource(url).get({ id: user.id });
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getProjects'));
+
+      return promise;
+    };
+
+    User.updateProjects = (user, project) => {
+      url = apiUrl + '/users/:id/projects/:project_id';
+      let projectId = project.map(project => project.id);
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: user.id, project_id: projectId }, project);
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'updateProjects');
+          // return data;
+        })
+        .catch(() => alertService.error(model, 'updateProjects'));
+
+      return promise;
+    };
+
+
+    User.removeProjects = (user, project) => {
+      let userId = user.id;
+      let prjId = project.id;
+      url = apiUrl + '/users/:id/projects/:project_id';
+      resource = $resource(url).delete({ id: userId, project_id: prjId });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'remove');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'remove'));
+
+      return promise;
     };
 
 

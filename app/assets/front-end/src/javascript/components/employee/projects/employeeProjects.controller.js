@@ -17,18 +17,19 @@
     vm.user = {};
     vm.projects = [];
     vm.userProjects = [];
+
     vm.addNewProject = addNewProject;
 
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.save = save;
-    vm.editProject = editProject;
 
+    vm.deleteProject = deleteProject;
     _getProjects();
-
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.user = data.user;
+      vm.userProjects = data.projects;
       _getUserProjects();
     });
 
@@ -57,9 +58,8 @@
     }
 
     function save() {
+
       if (projectsToAdd.length) {
-        console.log(vm.user);
-        console.log( projectsToAdd);
         User.updateProjects(vm.user, projectsToAdd)
           .then(() => {
             _getUserProjects();
@@ -76,14 +76,10 @@
       }
     }
 
-    function editProject(project) {
-
-      vm.searchText = project.name;
-      vm.toggleForm();
-      // vm.currentProject = project;
-      // vm.showForm = true;
-      // vm.isNewProject = false;
-
+    function deleteProject(project) {
+      User.removeProjects(vm.user, project).then(() => {
+        _getUserProjects();
+      });
     }
 
     function _getProjects() {
