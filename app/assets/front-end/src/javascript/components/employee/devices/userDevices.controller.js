@@ -46,6 +46,8 @@
         devicesToAdd.push(device);
         vm.userDevices.push(device);
         vm.searchText = "";
+
+        User.updateDevices(vm.user, devicesToAdd);
       }
     }
 
@@ -54,25 +56,13 @@
       vm.userDevices = _.without(vm.userDevices, toRemove);
       devicesToAdd = _.without(devicesToAdd, toRemove);
       devicesToRemove.push(device);
+
+      User.removeDevices(vm.user, devicesToRemove);
     }
 
     function saveDevices() {
-
-      if (devicesToAdd.length){
-        User.updateDevices(vm.user, devicesToAdd)
-          .then(() => {
-          _getUserDevices();
-          vm.showEditDevices = false;
-        })
-      }
-
-      if (devicesToRemove.length) {
-        User.removeDevices(vm.user, devicesToRemove)
-          .then(() => {
-          _getUserDevices();
-          vm.showEditDevices = false;
-        })
-      }
+      _getUserDevices();
+      vm.showEditDevices = false;
     }
 
     function _getDevices() {
@@ -95,6 +85,5 @@
     }
 
   }
-
-
+  
 })(_);
