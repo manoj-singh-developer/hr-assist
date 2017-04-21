@@ -24,18 +24,16 @@
 
     var vm = this;
     vm.serverErrors = false;
-    vm.disabledSchedule = true;
     vm.selectedSchedule = [];
     vm.scheduleArray = [];
     vm.numbersScheduleArray = [];
     vm.hours = 50;
-
+    vm.showEditSchedule = false;
 
 
 
     vm.save                 = save;
     vm.cancelAdd            = cancelAdd;
-    vm.generalInfoShowHide  = generalInfoShowHide;
 
 
     vm.numbersScheduleArray = Array(vm.hours).fill().map((e,i)=>i=i+1);
@@ -49,8 +47,6 @@
     $(".c-shedule--right").bind("mousedown", function(e) {
       e.metaKey = true;
     }).selectable();
-
-    disableHours();
 
     // ----------------------------------------------------------------------
     // PUBLIC METHODS DECLARATION
@@ -70,27 +66,17 @@
           vm.schedule = data;
         }
       });
-      vm.disabledSchedule = true;
-      disableHours();
 
-    }
-
-    function disableHours() {
-
-      $(".c-shedule--right").selectable({
-        disabled: true
-      });
     }
 
 
     function cancelAdd() {
-      
-      vm.disabledSchedule = true;
-      disableHours();
       initSchedule();
     }
 
-
+    $(".c-shedule--right").selectable({
+        disabled: true
+      });
 
     function initSchedule() {
       if (vm.schedule.timetable !== "" && 
@@ -109,16 +95,11 @@
 
     }
 
-    function generalInfoShowHide(data) {
-
-      if (data === 'schedule') {
-
-        vm.disabledSchedule = false;
-
-        $(".c-shedule--right").selectable({
-          disabled: false
-        });
-      }
+  vm.displayEditSchedule = () => {
+    vm.showEditSchedule = !vm.showEditSchedule;
+     $(".c-shedule--right").selectable({
+        disabled: !vm.showEditSchedule
+      });
   }
 
   }
