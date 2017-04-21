@@ -6,40 +6,48 @@
 </style>
 
 <section class="cerere">
-    <h1 style="text-align: center; font-size: 26px;">Cerere pentru concediu de odihna</h1>
+
+    <img ng-src="/assets/images/logo-assist.png" style="max-width: 15%;" />
+
+    <h1 style="text-align: center; font-size: 26px; text-decoration: underline">Cerere pentru concediu de odihnă</h1>
     <p>Stimate Domnule Director,</p>
     <p>
         Subsemnatul
         <strong>{{holidayPaper[0].firstName}} {{holidayPaper[0].lastName}}</strong>,
         angajat al firmei SC ASSIST Software SRL, vă rog să-mi aprobaţi
         <strong>{{holidayPaper[0].holidays}}</strong>
+
         <span ng-if="holidayPaper[0].holidays === 1">zi</span>
         <span ng-if="holidayPaper[0].holidays > 1">zile</span>
-        din concediul de odihna
-        <span ng-if="holidayPaper[0].holidays === 1">aferenta</span>
+        din concediul de odihnă
+
+        <span ng-if="holidayPaper[0].holidays === 1">aferentă</span>
         <span ng-if="holidayPaper[0].holidays > 1">aferente</span> anului
-        <span>{{holidayPaper[0].signing | date: 'yyyy'}}</span>
-        <span ng-if="holidayPaper[0].holidays > 1">in intervalul
+
+        <span ng-if="holidayPaper[0].signing">{{holidayPaper[0].signing | date: 'yyyy'}}</span>
+        <span ng-if="!holidayPaper[0].signing">{{today | date: 'yyyy'}}</span>
+
+        <span ng-if="holidayPaper[0].holidays > 1">în intervalul
             <span>
                 <strong>{{holidayPaper[0].startDate | date: 'dd.MM.yyyy'}} - {{holidayPaper[0].endDate | date: 'dd.MM.yyyy'}}</strong>
             </span>.
         </span>
-        <span ng-if="holidayPaper[0].holidays === 1">in data de <span>
+        <span ng-if="holidayPaper[0].holidays === 1">în data de <span>
             <strong>{{holidayPaper[0].startDate | date: 'dd.MM.yyyy'}}</strong>
         </span>.
         </span>
     </p>
     <br/>
-    <p style="text-align: left">Va multumesc.</p>
+    <p style="text-align: left">Vă mulțumesc.</p>
 
-    <table style="width: 100%; border: 1px solid #000;">
+    <table style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
         <tr>
-            <td style="border-right:1px solid #000;">
-                <p style="text-align: left">Cu consideratie,</p>
+            <td style="border-right:1px solid #000; padding-left:5px;">
+                <p style="text-align: left">Cu considerație,</p>
                 <p style="text-align: left">
                     <strong>{{holidayPaper[0].firstName}} {{holidayPaper[0].lastName}}</strong>
                 </p>
-                <p style="text-align: left">Semnatura, </p>
+                <p style="text-align: left">Semnătura, </p>
                 <p style="text-align: left">
                     Data:
                     <strong ng-if="holidayPaper[0].signing">
@@ -50,7 +58,7 @@
                     </strong>
                 </p>
             </td>
-            <td>
+            <td style="padding-left:5px;">
                 <p >
                     <strong>
                         APROBAT,
@@ -61,26 +69,26 @@
     </table>
 
     <br>
-    <h4><strong>Mentiuni</strong></h4>
+    <h4><strong>Mențiuni</strong></h4>
     <br>
     <p><strong>1.</strong> Task-urile din proiectele la care sunt implicat vor fi preluate de:</p>
-    <table style="border: 1px solid #000;">
-        <thead>
+    <table style="border: 1px solid #000; width:100%; border-collapse: collapse;">
+        <thead style="border:1px solid #000;">
             <tr style="border: 1px solid #000;">
-                <th>Proiect</th>
-                <th>Inlocuitor</th>
-                <th>Semnatura inlocuitorului</th>
+                <th style="border:1px solid #000;">Proiect</th>
+                <th style="border:1px solid #000;">Înlocuitor</th>
+                <th style="border:1px solid #000;">Semnătura înlocuitorului</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>
-
+        <tbody ng-repeat="replace in holidayRep">
+            <tr style="border:1px solid #000; text-align: center;">
+                <td style="border:1px solid #000;">
+                    {{replace.project_name}}
                 </td>
-                <td>
-
+                <td style="border:1px solid #000;">
+                    {{replace.replacer_name}}
                 </td>
-                <td>
+                <td style="border:1px solid #000;">
 
                 </td>
             </tr>
@@ -90,9 +98,15 @@
     <p>
         <strong>2.</strong> Am luat notă de cererea de concediu și confirm că avem la dispoziție toate elementele de acces, resursele și informațiile necesare derulării corespunzătoare a proiectelor în care colegul meu, solicitant al prezentei cereri, este implicat.
     </p>
-    <p>Team leader, <strong>{{se.viewObject[0].teamLeader[0].firstName}} {{se.viewObject[0].teamLeader[0].lastName}}</strong></p>
-    <br/>
-    <p>Semnatura:</p>
+    <p>
+        Team leader<span ng-if="holidayRep.length > 1">s</span>,
+        <br />
+        <strong ng-repeat="replace in holidayRep">
+            {{replace.team_leader}}
+        </strong>
+    </p>
+
+    <p>Semnătura:</p>
     <p>
         Data:
         <strong ng-if="holidayPaper[0].signing">

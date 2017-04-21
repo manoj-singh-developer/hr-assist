@@ -33,9 +33,9 @@
     .controller('holidayFormController', holidayFormController);
 
   holidayFormController
-    .$inject = ['$rootScope', '$scope', '$timeout', '$mdToast', '$mdDialog', 'Upload', 'autocompleteService', 'miscellaneousService', 'HolidayModel', 'Employee', 'ProjectModel', '$state'];
+    .$inject = ['$rootScope', '$scope', '$timeout', '$mdToast', '$mdDialog', 'Upload', 'autocompleteService', 'miscellaneousService', 'HolidayModel', 'User',  '$state', 'Project'];
 
-  function holidayFormController($rootScope, $scope, $timeout, $mdToast, $mdDialog, Upload, autocompleteService, miscellaneousService, HolidayModel, Employee, ProjectModel, $state) {
+  function holidayFormController($rootScope, $scope, $timeout, $mdToast, $mdDialog, Upload, autocompleteService, miscellaneousService, HolidayModel, User, $state, Project) {
 
 
     var vm = this;
@@ -67,8 +67,10 @@
     vm.searchProjectHold = [];
     vm.searchLeaderHold = [];
     vm.searchUser = [];
+    vm.searchEmp = [];
     vm.user = [];
     vm.leader = [];
+    vm.minDate = new Date();
 
     // Public methods
     // ------------------------------------------------------------------------
@@ -92,7 +94,6 @@
     vm.addRepEmployee = addRepEmployee;
     vm.print = print;
     vm.addUser = addUser;
-
 
 
 
@@ -140,7 +141,16 @@
 
     function saveHoliday(holiday) {
 
-      saveHolidayToArr(holiday);
+      var replacerArr = [];
+      var repProjArr = [];
+
+      for(var i = 0; i < vm.tba.length; i ++) {
+          replacerArr.push(vm.tba[i].id);
+      }
+
+      for(var j = 0; j < vm.holidayRepProject.length; j ++){
+          repProjArr.push(vm.holidayRepProject[j].id);
+      }
 
       var user_id = vm.user[0].id;
       var day = datesCalculator();
@@ -148,42 +158,48 @@
       var end_date = vm.dateList[0].to;
       var signing_day = new Date();
 
+
       holiday = {
-        user_id: user_id,
-        days: day,
-        start_date: start_date,
-        end_date: end_date,
-        signing_day: signing_day
+          user_id: user_id,
+          days: day,
+          start_date: start_date,
+          end_date: end_date,
+          replacer_ids: replacerArr,
+          signing_day: signing_day,
+          project_ids: repProjArr
       };
+
+      saveHolidayToArr(holiday);
 
       var currentHoliday = angular.copy(holiday);
       vm.btnIsDisabled = true;
-      if (!currentHoliday.id) {
-        return HolidayModel.save(currentHoliday).then(
-          function(data) {
-            $rootScope.showToast('Holiday created successfuly!');
-            $state.reload();
-          },
-          function(error) {
-            $rootScope.showToast('Holiday creation failed!');
-            onSaveError(error);
-          });
-      } else {
-        return HolidayModel.update(currentHoliday).then(
-          function(data) {
-            $rootScope.showToast('Holiday updated successfuly!');
-            HolidayModel.getHolidayById(currentHoliday.id).then(function(data) {
-                onSaveSuccess('update', data);
-                $mdDialog.cancel();
-              },
-              function() {});
 
-          },
-          function(error) {
-            $rootScope.showToast('Holiday update failed!');
-            onSaveError();
-          });
-      }
+        if (!currentHoliday.id) {
+          return HolidayModel.save(currentHoliday).then(
+            function(data) {
+              $rootScope.showToast('Holiday created successfuly!');
+              $state.reload();
+            },
+            function(error) {
+              $rootScope.showToast('Holiday creation failed!');
+              onSaveError(error);
+            });
+        } else {
+          return HolidayModel.update(currentHoliday).then(
+            function(data) {
+              $rootScope.showToast('Holiday updated successfuly!');
+              HolidayModel.getHolidayById(currentHoliday.id).then(function(data) {
+                onSaveSuccess('update', data);
+                  $mdDialog.cancel();
+                },
+                function() {});
+
+            },
+            function(error) {
+              $rootScope.showToast('Holiday update failed!');
+              onSaveError();
+            });
+        }
     }
 
     function querySearch(query) {
@@ -201,7 +217,6 @@
         employeeIndex = miscellaneousService.getItemIndex(vm.empList, item.id);
         vm.empList.splice(employeeIndex, 1);
         vm.tba.push(item);
-        vm.holiday.replacement.employee = "";
       } else {
         return;
       }
@@ -227,7 +242,6 @@
 
     function addProject(item, holiday) {
       var projectIndex = '';
-
       if (item) {
         projectIndex = miscellaneousService.getItemIndex(vm.projList, item.id);
         vm.projList.splice(projectIndex, 1);
@@ -300,12 +314,12 @@
 
 
     function getEmployees() {
-      Employee.getAll().then(
+      User.getAll().then(
         function(data) {
           vm.empList = data;
           updateUser();
           updateTeamLeader();
-          return autocompleteService.buildList(vm.empList, ['firstName', 'lastName']);
+          return autocompleteService.buildList(vm.empList, ['first_name', 'last_name']);
         },
         function(data) {
           $rootScope.showToast('Holiday update failed!');
@@ -315,7 +329,7 @@
 
 
     function getProjects() {
-      ProjectModel.getAll().then(
+        Project.getAll().then(
         function(data) {
           vm.projList = data;
           for (var i = 0; i < vm.projList.length; i++) {
@@ -428,6 +442,7 @@
         vm.user = vm.holiday.employee;
         vm.holidayEmpIncrement = vm.user;
         vm.searchUser[0] = vm.user[0] ? (vm.user[0].firstName + " " + vm.user[0].lastName) : '';
+        vm.searchEmp = vm.user[0] ? (vm.user[0].id) : '';
       }
     }
 
@@ -442,7 +457,7 @@
       }
     }
 
-    //end remake
+      //end remake
 
 
     // IDEAS FOR FUTURE HERE:  :)
