@@ -267,8 +267,22 @@
       return promise;
     };
 
-    User.updateHolidays = () => {
+    User.addHolidays = (data) => {
+      let userId= $stateParams.id;
+      url = apiUrl + '/users/'+userId+'/holidays';
+      resource = $resource(url, {}, {
+        'post': {
+          method: 'POST'
+        }
+      }).save(data);
 
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'save');
+          return data;
+        }).catch(() => alertService.error(model, 'save'));
+
+      return promise;
     };
 
     User.removeHolidays = () => {

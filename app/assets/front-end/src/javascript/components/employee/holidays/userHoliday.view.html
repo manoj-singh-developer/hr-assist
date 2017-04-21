@@ -19,7 +19,7 @@
 
   <!-- PREVIEW HOLIDAY -->
   <md-content  class="md-padding"
-               ng-show="!employeeHoliday.displayOrHide">
+               ng-show="!userHoliday.displayOrHide">
       <md-table-container>
 
           <table class="c-table--actions"
@@ -29,10 +29,10 @@
               <thead md-head
                      md-order="query.order">
                   <tr md-row>
-                      <th md-column>No</th>
                       <th md-column>Start date</th>
                       <th md-column>End date</th>
                       <th md-column>Number of days</th>
+                      <th md-column>Project</th>
                       <th md-column>Action</th>
                   </tr>
               </thead>
@@ -41,11 +41,7 @@
                   <tr md-row
                       md-select="holiday"
                       md-auto-select
-                      ng-repeat="holiday in employeeHoliday.userHolidays track by $index  | limitTo: employeeHoliday.holidaysTable.limit">
-
-                      <td md-cell>
-                          #{{$index +1}}
-                      </td>
+                      ng-repeat="holiday in userHoliday.userHolidays | limitTo: userHoliday.table.query.limit : (userHoliday.table.query.page - 1) * userHoliday.table.query.limit">
 
                       <td md-cell>
                           {{holiday.start_date}}
@@ -57,6 +53,12 @@
 
                       <td md-cell>
                           {{holiday.days}}
+                      </td>
+
+                      <td md-cell>
+                          <div ng-repeat="project in holiday.employee_replacements">
+                              <span>{{project.project_name}}</span>
+                          </div>
                       </td>
 
                       <td md-cell>
@@ -78,57 +80,58 @@
           </table>
 
       </md-table-container>
-      <md-table-pagination md-limit="employeeHoliday.holidaysTable.limit"
-                           md-page="employeeHoliday.holidaysTable.page"
-                           md-total="{{employeeHoliday.userHolidays.length}}"
-                           md-page-select>
+      <md-table-pagination md-limit="userHoliday.table.query.limit"
+                           md-limit-options="userHoliday.table.limitOptions"
+                           md-page="userHoliday.table.query.page"
+                           md-total="{{userHoliday.userHolidays.length}}"
+                           md-page-select="userHoliday.table.options.pageSelect"
+                           md-boundary-links="userHoliday.table.options.boundaryLinks">
 
       </md-table-pagination>
   </md-content><!-- /PREVIEW HOLIDAY -->
 
 
-
-
-
   <!-- FORM HOLIDAY -->
-  <md-content ng-show="employeeHoliday.displayOrHide" class="md-padding">
+  <md-content ng-show="userHoliday.displayOrHide" class="md-padding">
     <section layout='column'>
 
 
       <!-- SELECT PERIOD -->
-      <section
-              class="u-mb-20 u-mt-20"
-              layout="row"
-              layout-align="start center">
+      <section class="u-mb-20 u-mt-20"
+               layout="row"
+               layout-align="center">
 
-        <md-datepicker ng-model="employeeHoliday.signingDate"
+        <md-datepicker ng-model="userHoliday.signingDate"
                        md-placeholder="Signing date"
                        md-open-on-focus
                        required>
         </md-datepicker>
 
-        <md-datepicker ng-model="employeeHoliday.from"
+        <md-datepicker ng-model="userHoliday.from"
                        md-placeholder="Start date"
                        md-open-on-focus
+                       md-min-date="userHoliday.minDate"
                        required>
         </md-datepicker>
 
-        <md-datepicker ng-model="employeeHoliday.to"
+        <md-datepicker ng-model="userHoliday.to"
                        md-placeholder="End date"
                        md-open-on-focus
+                       md-min-date="userHoliday.minDate"
                        required>
         </md-datepicker>
 
-        <md-button class="md-raised md-primary"
-                   ng-click="employeeHoliday.addEmptyInterval()">
-            Add Date
-        </md-button>
+        <!--<md-button class="md-raised md-primary"-->
+                   <!--ng-click="userHoliday.addEmptyInterval()">-->
+            <!--Add Date-->
+        <!--</md-button>-->
 
       </section><!-- /SELECT PERIOD -->
 
 
       <!-- SELECT PROJECT AND REPLACEMENT -->
-      <section layout-gt-xs="row">
+      <section layout-gt-xs="row"
+               ng-repeat="date in userHoliday.replaceInputs track by $index">
 
         <div flex="50" layout-fill class="md-padding">
           <div layout="column" layout-align="start start" layout-fill>
@@ -137,13 +140,13 @@
             <div class="md-block u-mb-20"
               layout-fill>
               <form ng-submit="$event.preventDefault()">
-                <md-autocomplete ng-disabled="employeeHoliday.isDisabled"
-                                 ng-model="employeeHoliday.searchProj"
-                                 md-selected-item="employeeHoliday.selectedProj"
-                                 md-search-text-change="employeeHoliday.searchProjChange(employeeHoliday.searchProj)"
-                                 md-search-text="employeeHoliday.searchProj"
-                                 md-selected-item-change="employeeHoliday.selectedProjChange(item)"
-                                 md-items="project in employeeHoliday.queryProjectSearch(employeeHoliday.searchProj)"
+                <md-autocomplete ng-disabled="userHoliday.isDisabled"
+                                 ng-model="userHoliday.searchProj[$index]"
+                                 md-selected-item="userHoliday.selectedProj[$index]"
+                                 md-search-text-change="userHoliday.searchProjChange(userHoliday.searchProj[$index])"
+                                 md-search-text="userHoliday.searchProj[$index]"
+                                 md-selected-item-change="userHoliday.selectedProjChange(item, $index)"
+                                 md-items="project in userHoliday.queryProjectSearch(userHoliday.searchProj[$index])"
                                  md-item-text="project.name"
                                  md-min-length="0"
                                  placeholder="Select an project">
@@ -167,13 +170,13 @@
             <!-- SELECT REPLACEMENT EMPLOYEE -->
             <div class="md-block u-mb-20" layout-fill>
               <form ng-submit="$event.preventDefault()">
-                <md-autocomplete ng-disabled="employeeHoliday.isDisabled"
-                                 ng-model="employeeHoliday.searchUser"
-                                 md-selected-item="employeeHoliday.selectedUser"
-                                 md-search-text-change="employeeHoliday.searchUserChange(employeeHoliday.searchUser)"
-                                 md-search-text="employeeHoliday.searchUser"
-                                 md-selected-item-change="employeeHoliday.selectedUserChange(item)"
-                                 md-items="user in employeeHoliday.queryUserSearch(employeeHoliday.searchUser)"
+                <md-autocomplete ng-disabled="userHoliday.isDisabled"
+                                 ng-model="userHoliday.searchUser[$index]"
+                                 md-selected-item="userHoliday.selectedUser[$index]"
+                                 md-search-text-change="userHoliday.searchUserChange(userHoliday.searchUser[$index])"
+                                 md-search-text="userHoliday.searchUser[$index]"
+                                 md-selected-item-change="userHoliday.selectedUserChange(item, $index)"
+                                 md-items="user in userHoliday.queryUserSearch(userHoliday.searchUser[$index])"
                                  md-item-text="user.first_name +' '+ user.last_name"
                                  md-min-length="0"
                                  placeholder="Select an employee">
@@ -191,10 +194,9 @@
           </div>
         </div>
 
-        <md-button class="md-button md-primary"
-                   ng-click="employeeHoliday.addEmptyReplacement()">
-            Add Project
-        </md-button>
+        <span ng-click="userHoliday.addEmptyReplacement()" class="add-holiday" title="Add project">
+            <i class="material-icons">add_circle_outline</i>
+        </span>
 
       </section><!-- SELECT PROJECT AND REPLACEMENT -->
 
@@ -208,25 +210,24 @@
   <!-- CARD ACTIONS -->
   <md-card-actions layout="column" layout-align="start">
     <md-button class="c-card-profile__btn no-margin"
-               ng-click="employeeHoliday.displayForm()"
-               ng-disabled="btnIsDisabled"
-               ng-show="!employeeHoliday.displayOrHide">
+               ng-click="userHoliday.displayForm()"
+               ng-show="!userHoliday.displayOrHide">
       Add Holiday
     </md-button>
   </md-card-actions>
 
   <md-card-actions layout="row"
                    layout-align="center center"
-                   ng-show="employeeHoliday.displayOrHide"
+                   ng-show="userHoliday.displayOrHide"
                    class="additional">
 
     <md-button class="md-raised md-primary"
-               ng-click="employeeHoliday.saveHoliday()">
+               ng-click="userHoliday.saveHoliday()">
       Save
     </md-button>
 
     <md-button class="md-raised"
-               ng-click="employeeHoliday.displayForm()">
+               ng-click="userHoliday.displayForm()">
       Close
     </md-button>
 

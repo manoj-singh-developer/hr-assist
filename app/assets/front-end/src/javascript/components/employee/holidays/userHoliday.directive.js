@@ -12,11 +12,12 @@
 
   function hraEmployeeHoliday() {
     return {
-      restrict: 'EA',
+      restrict: 'A',
       scope: {},
-      controller: 'employeeHolidayController',
-      controllerAs: 'employeeHoliday',
-      templateUrl: rootTemplatePath + 'employee/holidays/employeeHoliday.view.html'
+      require: 'hraCard',
+      controller: 'userHolidayCtrl',
+      controllerAs: 'userHoliday',
+      templateUrl: rootTemplatePath + 'employee/holidays/userHoliday.view.html'
     };
   }
 
