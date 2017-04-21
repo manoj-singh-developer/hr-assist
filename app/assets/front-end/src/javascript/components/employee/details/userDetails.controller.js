@@ -44,7 +44,7 @@
       promises.push(User.getLanguages());
       promises.push(User.getHolidays());
       promises.push(User.getSchedule($stateParams.id));
-
+      promises.push(User.getTechnologies($stateParams.id));
 
       $q.all(promises).then((data) => {
         vm.resources.user = data[0];
@@ -54,6 +54,7 @@
         vm.resources.languages = data[4];
         vm.resources.holidays = data[5];
         vm.resources.schedule = data[6];
+        vm.resources.technologies = data[7];
         $rootScope.$emit("event:userResourcesLoaded", vm.resources);
 
       });

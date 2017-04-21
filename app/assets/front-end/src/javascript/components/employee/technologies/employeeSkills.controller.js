@@ -11,13 +11,13 @@
     .controller('employeeSkillsController', employeeSkillsController);
 
   employeeSkillsController
-    .$inject = ['$rootScope', '$scope', '$stateParams', 'skillModel', 'Employee', 'autocompleteService', 'miscellaneousService'];
+    .$inject = ['$rootScope', '$scope', '$stateParams', 'autocompleteService', 'miscellaneousService', 'User'];
 
 
 
 
 
-  function employeeSkillsController($rootScope, $scope, $stateParams, skillModel, Employee, autocompleteService, miscellaneousService) {
+  function employeeSkillsController($rootScope, $scope, $stateParams, autocompleteService, miscellaneousService, User) {
 
 
     // ----------------------------------------------------------------------
@@ -78,12 +78,22 @@
     vm.toggleCard = toggleCard;
 
 
-
+_getUserTechnologies();
 
 
     // ----------------------------------------------------------------------
     // PUBLIC METHODS DECLARATION
     // ----------------------------------------------------------------------
+
+    function _getUserTechnologies(){
+        User.getTechnologies()
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    }
 
     function toggleCard(event, action) {
       // debugger;

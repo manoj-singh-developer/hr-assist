@@ -290,6 +290,27 @@
 
     };
 
+    User.getTechnologies = () => {
+
+      let userId= $stateParams.id;
+      url = apiUrl + '/users/'+userId+'/technologies';
+      resource = $resource(url).get();
+
+      promise = resource.$promise
+        .then(data => data)
+        .catch(() => alertService.error(model, 'getUserTechnologies'));
+
+      return promise;
+    };
+
+    User.updateTechnologies = () => {
+
+    };
+
+    User.deleteTechnologies = () => {
+
+    }
+
     return User;
 
   }
