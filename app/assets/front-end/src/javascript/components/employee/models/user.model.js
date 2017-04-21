@@ -7,9 +7,9 @@
     .factory('User', User);
 
   User
-    .$inject = ['$resource', 'apiUrl', 'alertService'];
+    .$inject = ['$resource', 'apiUrl', 'alertService', '$stateParams'];
 
-  function User($resource, apiUrl, alertService) {
+  function User($resource, apiUrl, alertService, $stateParams) {
 
     function User() {}
 
@@ -94,9 +94,10 @@
     };
 
 
-    User.getSchedule = (user) => {
-      url = apiUrl + '/users/:id/schedule';
-      resource = $resource(url).get({ id: user.id });
+    User.getSchedule = () => {
+      var userId = $stateParams.id;
+      url = apiUrl + '/users/'+userId+'/schedule';
+      resource = $resource(url).get();
 
       promise = resource.$promise
         .then(data => data)
