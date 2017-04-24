@@ -42,13 +42,15 @@
       promises.push(Technology.getAll());
       promises.push(Project.getAll());
       promises.push(User.getLanguages());
-
+      promises.push(User.getEducations($stateParams.id));
+      
       $q.all(promises).then((data) => {
         vm.resources.user = data[0];
         vm.resources.users = data[1];
         vm.resources.technologies = data[2];
         vm.resources.projects = data[3];
         vm.resources.languages = data[4];
+        vm.resources.educations = data[5];
         $rootScope.$emit("event:userResourcesLoaded", vm.resources);
 
       });
