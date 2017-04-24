@@ -127,6 +127,14 @@ User.populate 10 do |user|
     upr.technologies << technology
   end
 
+  UserTechnology.populate 1+Random.new.rand(2) do |ut|
+    technology = Technology.all[Random.new.rand(Technology.count)]
+    ut.user_id = user.id
+    ut.technology_id = technology.id
+    ut.level = Faker::Number.between(1,10)
+    ut.technology_type = Faker::Number.between(0,1)
+  end
+
   Upload.populate 1 do |upload|
     upload.file_name = Faker::Name.name
     upload.file_description = Faker::Lorem.sentence
@@ -170,9 +178,6 @@ end
 
 users = User.all
 users.each do |user|
-  technology = Technology.all[Random.new.rand(Technology.count)]
-  user.technologies << technology
-
   department = Department.all[Random.new.rand(Department.count)]
   user.departments << department
 
