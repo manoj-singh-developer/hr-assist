@@ -10,8 +10,14 @@
 
   function hraEmployeeSkills() {
     return {
-      restrict: 'EA',
+      restrict: 'A',
       scope: {},
+      require: 'hraCard',
+      bindToController: {
+        'toggleForm': '=',
+        'querySearch': '=',
+        'settings': '='
+      },
       controller: 'employeeSkillsController',
       controllerAs: 'employeeSkills',
       templateUrl: rootTemplatePath + 'employee/technologies/employeeSkills.view.html'

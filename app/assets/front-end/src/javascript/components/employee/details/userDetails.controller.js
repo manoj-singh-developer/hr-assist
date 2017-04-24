@@ -54,7 +54,7 @@
         vm.resources.languages = data[4];
         vm.resources.holidays = data[5];
         vm.resources.schedule = data[6];
-        vm.resources.technologies = data[7];
+        vm.resources.userTechnologies = data[7];
         $rootScope.$emit("event:userResourcesLoaded", vm.resources);
 
       });

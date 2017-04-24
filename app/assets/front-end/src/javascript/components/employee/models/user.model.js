@@ -303,8 +303,22 @@
       return promise;
     };
 
-    User.updateTechnologies = () => {
+    User.addUserTechnologies = (data) => {
+      
+      let userId = $stateParams.id;
+      url = apiUrl + '/users/'+userId+'/technologies';
+      resource = $resource(url, {}, {
+        'post': { method: 'POST' }
+      }).save(data);
 
+      promise = resource.$promise
+          .then((data) => {
+          alertService.success(model, 'addUserTechnologies');
+      return data;
+      })
+      .catch(() => alertService.error(model, 'addUserTechnologies'));
+
+      return promise;
     };
 
     User.deleteTechnologies = () => {
