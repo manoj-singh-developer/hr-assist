@@ -297,7 +297,7 @@
       resource = $resource(url).get();
 
       promise = resource.$promise
-        .then(data => data)
+        .then(data => data.items)
         .catch(() => alertService.error(model, 'getUserTechnologies'));
 
       return promise;
@@ -321,8 +321,23 @@
       return promise;
     };
 
-    User.deleteTechnologies = () => {
+    User.deleteUserTechnologies = (data) => {
 
+      let userId =$stateParams.id;
+      url = apiUrl+ '/users/'+userId+'/technologies';
+
+      resource = $resource(url, data).delete({ id: userId })
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'deleteUserTechnologies');
+          return data;
+        })
+        .catch(() => {
+          alertService.error(model, 'deleteUserTechnologies')
+        })
+        
+      return promise;
     }
 
     return User;
