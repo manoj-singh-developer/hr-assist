@@ -14,6 +14,7 @@
 
     let vm = this;
     let technologiesToAdd = [];
+    let technologiesToRemove = [];
     vm.user = {};
     vm.technologies = [];
     vm.userTechnologies = [];
@@ -28,19 +29,12 @@
     vm.getLvlTxt = getLvlTxt;
     vm.deleteTech = deleteTech;
 
+    _getUserTech();
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.user = data.user;
-      vm.userTechnologies = data.userTechnologies;
-      
-      for(var j = 0; j< vm.userTechnologies.length; j++){
-        vm.skillLvlTxt.push(getLvlTxt(vm.userTechnologies[j].level));
-
-        vm.userTechnologies[j].level = _.assign(vm.skillLvlTxt[j], vm.userTechnologies[j].level);
-      }
-
-
       vm.technologies = data.technologies;
+
       autocompleteService.buildList(vm.technologies, ['name']);
     });
 
@@ -95,19 +89,15 @@
         user_id: userID
       };
 
-
-      if(objToSave.names.length < 1){
-        vm.displayOrHide = false;
-      } else {
-         User.addUserTechnologies(objToSave)
+      User.addUserTechnologies(objToSave)
         .then((response) => {
           vm.displayOrHide = false;
+          vm.technologiesToAdd = [1];
           _getUserTech();
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-      }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
     }
 
     function deleteTech(technology) {
@@ -118,6 +108,12 @@
         technology_ids: technology.id,
         user_id: userId
       }
+
+      let toRemove = _.findWhere(vm.userTechnologies, { id: technology.id });
+      vm.userTechnologies = _.without(vm.userTechnologies, toRemove);
+      technologiesToAdd = _.without(technologiesToAdd, toRemove);
+      technologiesToRemove.push(technology);
+
 
       User.deleteUserTechnologies(delObj)
         .then((response) => {
@@ -132,6 +128,13 @@
       User.getTechnologies()
         .then((response) => {
           vm.userTechnologies = response;
+
+          for(var j = 0; j< vm.userTechnologies.length; j++){
+            vm.skillLvlTxt.push(getLvlTxt(vm.userTechnologies[j].level));
+
+            vm.userTechnologies[j].level = _.assign(vm.skillLvlTxt[j], vm.userTechnologies[j].level);
+          }
+
         })
         .catch((error) => {
           console.log(error);

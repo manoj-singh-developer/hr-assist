@@ -57,157 +57,158 @@
   </md-content>
 
   <!-- EDIT TECHNOLOGIES -->
-    <md-content class = "md-padding" ng-show="employeeSkills.displayOrHide">
+    <form ng-submit="$event.preventDefault()" name="addTechForm">
+      <md-content class = "md-padding" ng-show="employeeSkills.displayOrHide">
 
-      <md-list layout="row" layout-wrap>
+        <md-list layout="row" layout-wrap>
 
-        <md-list-item class="md-2-line c-filters__label">
-           <div class="md-list-item-text " layout="column">
-             <h4>Add/Remove technologies: </h4>
-           </div>
-         </md-list-item>
+          <md-list-item class="md-2-line c-filters__label">
+            <div class="md-list-item-text " layout="column">
+              <h4>Add/Remove technologies: </h4>
+            </div>
+          </md-list-item>
 
-         <md-list-item class="md-2-line"
-                       ng-repeat="technology in employeeSkills.userTechnologies track by $index">
-           <div class="md-list-item-text" layout="column">
-             <p class="c-filters__item"
-              ng-click="employeeSkills.deleteTech(technology)" >
-               {{$index + 1}} {{technology.name}}
-               <span class="material-icons c-filters__icon">close</span>
-             </p>
-           </div>
-         </md-list-item>
+          <md-list-item class="md-2-line"
+                        ng-repeat="technology in employeeSkills.userTechnologies track by $index">
+            <div class="md-list-item-text" layout="column">
+              <p class="c-filters__item"
+                ng-click="employeeSkills.deleteTech(technology)" >
+                {{$index + 1}} {{technology.name}}
+                <span class="material-icons c-filters__icon">close</span>
+              </p>
+            </div>
+          </md-list-item>
 
-      </md-list>
+        </md-list>
 
-    <!-- FILTER TECHNOLOGIES -->
-    <section layout-gt-xs="row"
-             layout-align="center center"
-             ng-repeat="technology in employeeSkills.technologiesToAdd track by $index" >
+      <!-- FILTER TECHNOLOGIES -->
+      <section layout-gt-xs="row"
+              layout-align="center center"
+              ng-repeat="technology in employeeSkills.technologiesToAdd track by $index" >
 
 
-        <!-- TECHNOLOGIES SELECT-->
-        <div class="md-padding" flex-gt-xs="35">
-        <md-content class="md-padding">
+          <!-- TECHNOLOGIES SELECT-->
+          <div class="md-padding" flex-gt-xs="35">
+          <md-content class="md-padding">
+              <md-autocomplete md-selected-item="employeeSkills.selectedItem[$index]"
+                              md-search-text-change="employeeSkills.searchTextChange(employeeSkills.searchText[$index])"
+                              ng-model="employeeSkills.searchText[$index]"
+                              md-search-text="employeeSkills.searchText[$index]"
+                              md-selected-item-change="employeeSkills.selectedTechnologyChange(item, $index)"
+                              md-items="item in employeeSkills.queryTechnologySearch(employeeSkills.searchText[$index])"
+                              md-item-text="item.name"
+                              md-min-length="0"
+                              placeholder="Select technology"
+                              required>
 
-          <form ng-submit="$event.preventDefault()">
+                <md-item-template>
+                  <span class="item-metadata"
+                        md-highlight-text="employeeSkills.searchText">
+                    {{item.name}}
+                  </span>
+                </md-item-template>
 
-            <md-autocomplete md-selected-item="employeeSkills.selectedItem[$index]"
-                             md-search-text-change="employeeSkills.searchTextChange(employeeSkills.searchText[$index])"
-                             ng-model="employeeSkills.searchText[$index]"
-                             md-search-text="employeeSkills.searchText[$index]"
-                             md-selected-item-change="employeeSkills.selectedTechnologyChange(item, $index)"
-                             md-items="item in employeeSkills.queryTechnologySearch(employeeSkills.searchText[$index])"
-                             md-item-text="item.name"
-                             md-min-length="0"
-                             placeholder="Select technology">
-
-              <md-item-template>
-                <span class="item-metadata"
-                      md-highlight-text="employeeSkills.searchText">
-                  {{item.name}}
-                </span>
-              </md-item-template>
-
-            </md-autocomplete>
-          </form>
-        </md-content>
-        <!-- /TECHNOLOGIES SELECT-->
-      </div>
-      
-      <!--TYPE SELECT-->
-      <div class="md-padding" flex-gt-xs="35">
-        <md-select class="u-no-margin"
-                   aria-label="skillType"
-                   ng-model="employeeSkills.selectedSkillTypes[$index]"
-                   placeholder="Skill type"
-                   md-selected-text="employeeSkills.selectedSkillType(employeeSkills.selectedSkillTypes[$index], employeeSkills.employee, $index)">
-          <md-optgroup label="Skill type">
-            <md-option value="0">
-              Main
-            </md-option>
-             <md-option value="1">
-              Secondary
-            </md-option>
-          </md-optgroup>
-        </md-select>
-      </div><!-- TYPE SELECT -->
-
-      <!--TECHNOLOGY LEVEL-->
-      <div class="md-padding" flex-gt-xs="100">
-        <div flex-gt-xs="100">
-          <div layout layout-align="center center">
-            <span class="u-font-small">
-              Skill level(1  Beginner, 10  Experienced)
-            </span>
-          </div>
-          <md-slider flex
-                     md-discrete
-                     ng-model="employeeSkills.selectedSkillLevel[$index]"
-                     class="md-primary"
-                     step="1"
-                     min="1"
-                     max="10"
-                     aria-label="Skill level">
-          </md-slider>
+              </md-autocomplete>
+          </md-content>
+          <!-- /TECHNOLOGIES SELECT-->
         </div>
-      </div><!--TECHNOLOGY LEVEL-->
+        
+        <!--TYPE SELECT-->
+        <div class="md-padding" flex-gt-xs="35">
+          <md-select class="u-no-margin"
+                    aria-label="skillType"
+                    ng-model="employeeSkills.selectedSkillTypes[$index]"
+                    placeholder="Skill type"
+                    md-selected-text="employeeSkills.selectedSkillType(employeeSkills.selectedSkillTypes[$index], employeeSkills.employee, $index)"
+                    required>
+            <md-optgroup label="Skill type">
+              <md-option value="0">
+                <span>Main</span>
+              </md-option>
+              <md-option value="1">
+                <span>Secondary</span>
+              </md-option>
+            </md-optgroup>
+          </md-select>
+        </div><!-- TYPE SELECT -->
 
-      <!-- REMOVE SKILL -->
-      <div class="md-padding" flex-gt-xs="10">
-        <md-button class="md-icon-button md-warn"
-                   label="Remove skill"
-                   aria-label="Remove skill"
-                   ng-click="employeeSkills.technologiesToAdd.splice($index, 1)">
-          <md-icon class="material-icons">delete</md-icon>
+        <!--TECHNOLOGY LEVEL-->
+        <div class="md-padding" flex-gt-xs="100">
+          <div flex-gt-xs="100">
+            <div layout layout-align="center center">
+              <span class="u-font-small">
+                Skill level(1  Beginner, 10  Experienced)
+              </span>
+            </div>
+            <md-slider flex
+                      md-discrete
+                      ng-model="employeeSkills.selectedSkillLevel[$index]"
+                      class="md-primary"
+                      step="1"
+                      min="1"
+                      max="10"
+                      aria-label="Skill level"
+                      required>
+            </md-slider>
+          </div>
+        </div><!--TECHNOLOGY LEVEL-->
+
+        <!-- REMOVE SKILL -->
+        <div class="md-padding" flex-gt-xs="10">
+          <md-button class="md-icon-button md-warn"
+                    label="Remove skill"
+                    aria-label="Remove skill"
+                    ng-click="employeeSkills.technologiesToAdd.splice($index, 1)">
+            <md-icon class="material-icons">delete</md-icon>
+          </md-button>
+        </div><!-- /REMOVE SKILL -->
+
+
+      </section>
+      <!-- /FILTER TECHNOLOGIES -->
+
+
+      <section class="md-padding"
+              ng-show="employeeSkills.displayOrHide">
+        <md-button md-no-ink
+                  class="md-primary small-text"
+                  ng-click="employeeSkills.addNewTechnologie()">
+          Add New Technologies
         </md-button>
-      </div><!-- /REMOVE SKILL -->
+      </section>
+
+      </md-content><!-- /EDIT TECHNOLOGIES-->
 
 
-    </section>
-    <!-- /FILTER TECHNOLOGIES -->
-
-
-    <section class="md-padding"
-             ng-show="employeeSkills.displayOrHide">
-      <md-button md-no-ink
-                 class="md-primary small-text"
-                 ng-click="employeeSkills.addNewTechnologie()">
-        Add New Technologies
+    <!-- CARD ACTIONS -->
+    <md-card-actions layout="column"
+                    layout-align="start"
+                    ng-show="!employeeSkills.displayOrHide">
+      <md-button class="c-card-profile__btn no-margin"
+                ng-click="employeeSkills.displayForm()">
+        Add/Edit Technologies
       </md-button>
-    </section>
+    </md-card-actions>
 
-    </md-content><!-- /EDIT TECHNOLOGIES-->
+    <md-card-actions layout="row"
+                    layout-align="center center"
+                    ng-show="employeeSkills.displayOrHide"
+                    class="additional">
 
+      <md-button class="md-raised md-primary"
+                ng-click="employeeSkills.saveTechnologies()"
+                ng-disabled="addTechForm.$invalid">
+        Save
+      </md-button>
 
-  <!-- CARD ACTIONS -->
-  <md-card-actions layout="column"
-                   layout-align="start"
-                   ng-show="!employeeSkills.displayOrHide">
-    <md-button class="c-card-profile__btn no-margin"
-               ng-click="employeeSkills.displayForm()">
-      Add/Edit Technologies
-    </md-button>
-  </md-card-actions>
+      <md-button class="md-raised"
+                ng-click=employeeSkills.cancelSave()>
+        Cancel
+      </md-button>
 
-  <md-card-actions layout="row"
-                   layout-align="center center"
-                   ng-show="employeeSkills.displayOrHide"
-                   class="additional">
-
-    <md-button class="md-raised md-primary"
-               ng-click="employeeSkills.saveTechnologies()">
-      Save
-    </md-button>
-
-    <md-button class="md-raised"
-               ng-click=employeeSkills.cancelSave()>
-      Cancel
-    </md-button>
-
-  </md-card-actions>
-  <!-- CARD ACTIONS -->
-
+    </md-card-actions>
+    <!-- CARD ACTIONS -->
+  </form>
 
 </md-card><!-- CARD SKILLS -->
 
