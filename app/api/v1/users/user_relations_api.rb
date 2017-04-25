@@ -189,18 +189,48 @@ module V1
 
         get ':user_id/technologies' do
           user = find_user(params[:user_id])
-          {items: user.technologies}
+          { items:
+          user.user_technologies.map do |user_technology|
+            {
+              id: user_technology.technology_id,
+              name: user_technology.technology.name,
+              level: user_technology.level,
+              technology_type: user_technology.technology_type
+            }
+          end
+          }
         end
 
-        put ':user_id/technologies' do
+        params do
+          requires :names, type: Array[String]
+          requires :types, type: Array[Integer]
+          requires :levels, type: Array[Integer]
+        end
+        post ':user_id/technologies' do
           user = User.find(params[:user_id])
-          technologies = Technology.where(id: params[:technology_ids]) - user.technologies
-          user.technologies << technologies if technologies.count > 0
-          {items: user.technologies}
+          response = []
+          params[:names].zip(params[:types], params[:levels]) do |name, type, level|
+            technology = Technology.find_or_create_by(name: name)
+            user_technology = UserTechnology.create(level: level, technology_type: type, technology_id: technology.id, user_id: user.id)
+            response << {
+              id: user_technology.technology_id,
+              name: user_technology.technology.name,
+              level: user_technology.level,
+              technology_type: user_technology.technology_type
+            }
+          end
+          return response
         end
 
+        params do
+          requires :technology_ids, type: Array[Integer]
+        end
         delete ':user_id/technologies' do
-          delete_object(User, Technology, params[:user_id], params[:technology_ids])
+          user = find_user(params[:user_id])
+          user_technologies = UserTechnology.where(technology_id: params[:technology_ids], user_id: params[:user_id])
+          user_technologies.each do |user_technology|
+            user_technology.delete
+          end
         end
 
         get ':user_id/holidays' do

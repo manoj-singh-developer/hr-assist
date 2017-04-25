@@ -2,22 +2,32 @@ require 'rails_helper'
 
 RSpec.describe V1::Users::UserAPI, type: :request do
 
-  ldap_config = YAML.load_file "spec/config/ldap.yml"
+  describe "Authentication" do
 
-  let(:user) { create(:user, :with_role) }
-  let(:ldap_config) {ldap_config}
+    ldap_config = YAML.load_file "spec/config/ldap.yml"
 
-  before do
+    let(:user) { create(:user, :with_role) }
+    let(:ldap_config) {ldap_config}
 
-    seed_data ldap_config
+    before do
 
-    create(:role, name: "employee", description: "Employee")
-  end
+      seed_data ldap_config
 
-  describe "Login" do
+      create(:role, name: "employee", description: "Employee")
+      
+    end
 
-    context 'Failed login' do
-      it 'login with wrong params' do
+    context 'Failed' do
+
+      it 'Authenticate without params' do
+        post "/api/v1/login"
+
+        expect(response).to have_http_status(400)
+        expect(json['error']).to eq('email is missing, password is missing')
+
+      end
+
+      it 'Authenticate with wrong params' do
 
         post "/api/v1/login", params: { email: "demo@email.com", password: "password" }
 
@@ -27,7 +37,11 @@ RSpec.describe V1::Users::UserAPI, type: :request do
 
       end
 
-      it 'successful login' do
+    end
+
+    context 'Success' do
+
+      it 'Authenticate with correct credentials' do
 
         post "/api/v1/login", params: { email: ldap_config["ldap_user"], password: ldap_config["ldap_password"] }
 
@@ -35,6 +49,8 @@ RSpec.describe V1::Users::UserAPI, type: :request do
         expect(json['status']).to eq('success')
 
       end
+
     end
+
   end
 end
