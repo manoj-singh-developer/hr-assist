@@ -93,10 +93,15 @@ module V1
           {items: user.educations}
         end
 
+        params do
+          requires :educations, type: Array[Hash]
+        end
         put ':user_id/educations' do
           user = User.find(params[:user_id])
-          educations = Education.where(id: params[:education_ids]) - user.educations
-          user.educations << educations if educations.count > 0
+          params[:educations].each do |education|
+            user_education = user.educations.find(education.id)
+            user_education.update(ActionController::Parameters.new(education).permit(:name, :degree, :description, :start_date, :end_date))
+          end
           {items: user.educations}
         end
 
