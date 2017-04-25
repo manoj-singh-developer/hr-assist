@@ -30,16 +30,16 @@
     .controller('holidayDetailsController', holidayDetailsController);
 
   holidayDetailsController
-    .$inject = ['$rootScope', '$scope', '$stateParams', 'HolidayModel', '$mdToast', 'Employee', '$timeout'];
+    .$inject = ['$rootScope', '$scope', '$stateParams', 'HolidayModel', '$mdToast', 'User', '$timeout'];
 
-  function holidayDetailsController($rootScope, $scope, $stateParams, HolidayModel, $mdToast, Employee, $timeout) {
+  function holidayDetailsController($rootScope, $scope, $stateParams, HolidayModel, $mdToast, User, $timeout) {
 
     var vm = this;
     vm.viewLists = null;
     vm.viewObject = null;
     var ids = $stateParams.id;
     var empArr = [];
-    var holidayId, days, signingDay, startDate, endDate;
+    var holidayId, days, signingDay, startDate, endDate, holidayReplace;
     $scope.today = new Date();
 
     // public methods
@@ -53,51 +53,58 @@
 
     function getUsers() {
         $scope.holidayPaper = [];
-        Employee.getAll()
-           .then(function(data) {
-               empArr = data;
-               $timeout(function () {
-                   empArr.forEach(function (employee, index) {
-                       if(employee.id === holidayId) {
+        $scope.holidayRep;
 
-                           var firstName = employee.first_name;
-                           var lastName = employee.last_name;
-                           var holidays = days;
-                           var signing = signingDay;
-                           var start = startDate;
-                           var end = endDate;
+      User.getAll()
+        .then(function(data) {
+          empArr = data;
+          $timeout(function () {
+            empArr.forEach(function (employee, index) {
+              if(employee.id === holidayId) {
 
-                           var employeeObj = {
-                               firstName: firstName,
-                               lastName: lastName,
-                               holidays: holidays,
-                               signing: signing,
-                               startDate: start,
-                               endDate: end
-                           };
+                var firstName = employee.first_name;
+                var lastName = employee.last_name;
+                var holidays = days;
+                var signing = signingDay;
+                var start = startDate;
+                var end = endDate;
 
-                           $scope.holidayPaper.push(employeeObj);
-                       }
-                   });
-               }, 1000);
-           })
-            .catch(function (error) {
-                console.log(error);
-            })
+                var employeeObj = {
+                  firstName: firstName,
+                  lastName: lastName,
+                  holidays: holidays,
+                  signing: signing,
+                  startDate: start,
+                  endDate: end
+                };
+
+                var replaceObj = holidayReplace;
+
+                $scope.holidayPaper.push(employeeObj);
+                $scope.holidayRep = replaceObj;
+              }
+            });
+          }, 1000);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
     }
 
     function getHolidays() {
       HolidayModel.getHolidayById(ids)
-          .then(function(response) {
-              startDate = response.start_date;
-              endDate = response.end_date;
-              days = response.days;
-              signingDay = response.signing_day;
-              holidayId = response.user_id;
-          })
-          .catch(function (error){
-              $rootScope.showToast('Error on loading data! Please refresh!');
-          })
+        .then(function(response) {
+
+          startDate = response.start_date;
+          endDate = response.end_date;
+          days = response.days;
+          signingDay = response.signing_day;
+          holidayId = response.user_id;
+          holidayReplace = response.employee_replacements;
+        })
+        .catch(function (error){
+          $rootScope.showToast('Error on loading data! Please refresh!');
+        })
     }
 
     vm.getUsers();
