@@ -17,10 +17,12 @@
     vm.user = {};
     vm.devices = [];
     vm.userDevices = [];
+    vm.copyUserDevices = [];
     vm.addNewDevice = addNewDevice;
 
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
+    vm.cancel = cancel;
     vm.saveDevices = saveDevices;
     vm.showEditDevices = false;
 
@@ -40,28 +42,48 @@
     }
 
     function addInQueue(device) {
+      
       if (device) {
-        let toRemove = _.findWhere(devicesToRemove, { id: device.id });
-        devicesToRemove = _.without(devicesToRemove, toRemove);
-        devicesToAdd.push(device);
-        vm.userDevices.push(device);
-        vm.searchText = "";
-
-        User.updateDevices(vm.user, devicesToAdd);
+        let notToAdd = _.findWhere(vm.copyUserDevices, { id: device.id });
+        if(notToAdd === undefined){
+          let toRemove = _.findWhere(devicesToRemove, { id: device.id });
+          devicesToRemove = _.without(devicesToRemove, toRemove);
+          devicesToAdd.push(device);
+          vm.copyUserDevices.push(device);
+        }
+      vm.searchText = "";  
       }
+      
     }
 
     function removeFromQueue(device) {
-      let toRemove = _.findWhere(vm.userDevices, { id: device.id });
-      vm.userDevices = _.without(vm.userDevices, toRemove);
+      let toRemove = _.findWhere(vm.copyUserDevices, { id: device.id });
+      vm.copyUserDevices = _.without(vm.copyUserDevices, toRemove);
       devicesToAdd = _.without(devicesToAdd, toRemove);
-      devicesToRemove.push(device);
+      devicesToRemove.push(device.id);
 
-      User.removeDevices(vm.user, devicesToRemove);
+      
+    }
+
+    function cancel(){
+      vm.copyUserDevices = [];
+      vm.copyUserDevices.push(...vm.userDevices);
     }
 
     function saveDevices() {
-      _getUserDevices();
+      
+      if(devicesToAdd.length > 0){
+        User.updateDevices(vm.user, devicesToAdd).then((data) => {
+          vm.userDevices = data;
+        });
+        devicesToAdd = [];
+      }
+       
+      if(devicesToRemove.length > 0){
+         User.removeDevices(vm.user, devicesToRemove);
+         devicesToRemove = [];
+      }
+      
       vm.showEditDevices = false;
     }
 
@@ -70,14 +92,15 @@
         .then((data) => {
           vm.devices = data;
           autocompleteService.buildList(vm.devices, ['name']);
-        })
+        });
     }
 
     function _getUserDevices() {
       User.getUserDevices($stateParams.id)
         .then((data) => {
           vm.userDevices = data;
-        })
+          vm.copyUserDevices.push(...vm.userDevices);
+        });
     }
 
     vm.displayEditDevices = () => {

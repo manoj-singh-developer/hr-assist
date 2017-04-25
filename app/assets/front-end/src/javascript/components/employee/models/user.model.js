@@ -185,7 +185,7 @@
 
     User.removeDevices = (user, devices) => {
       let data = {};
-      data.device_ids = devices.map(device => device.id);
+      data["device_ids[]"] = devices;
       url = apiUrl + '/users/:id/devices';
       resource = $resource(url, data).delete({ id: user.id });
 
