@@ -126,7 +126,16 @@ module V1
 
         get ':user_id/projects' do
           user = find_user(params[:user_id])
-          {items: user.projects}
+          {items:
+            user.user_projects.map do |user_project|
+              {
+                project: user_project.project,
+                user_project_start_date: user_project.start_date,
+                user_project_end_date: user_project.end_date,
+                technologies: user_project.technologies
+              }
+            end
+          }
         end
 
         get ':user_id/projects/:project_id/technologies' do
