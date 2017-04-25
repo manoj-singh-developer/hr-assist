@@ -80,16 +80,14 @@ module V1
         end
 
         params do
-          requires :name, type: String,  allow_blank: false
-          requires :degree, type: String, allow_blank: false
-          requires :description, type: String, allow_blank: false
-          requires :start_date, type: Date, allow_blank: false
-          requires :end_date, type: Date, allow_blank: false
+          requires :educations, type: Array[Hash]
         end
         post ':user_id/educations' do
-          education = Education.create(user_education_params)
           user = find_user(params[:user_id])
-          user.educations << education
+          params[:educations].each do |education|
+            user_education = Education.create(name: education.name, degree: education.degree, description: education.description, start_date: education.start_date, end_date: education.end_date)
+            user.educations << user_education
+          end
           {items: user.educations}
         end
 
@@ -233,7 +231,7 @@ module V1
               technology_type: user_technology.technology_type
             }
           end
-          return response
+          {items: response}
         end
 
         params do
