@@ -84,12 +84,13 @@
       <!-- FILTER TECHNOLOGIES -->
       <section layout-gt-xs="row"
               layout-align="center center"
-              ng-repeat="technology in employeeSkills.technologiesToAdd track by $index" >
-
+              ng-repeat="date in employeeSkills.replaceInputs track by $index" >
 
           <!-- TECHNOLOGIES SELECT-->
           <div class="md-padding" flex-gt-xs="35">
           <md-content class="md-padding">
+            <md-input-container>
+              <label>Select technology</label>
               <md-autocomplete md-selected-item="employeeSkills.selectedItem[$index]"
                               md-search-text-change="employeeSkills.searchTextChange(employeeSkills.searchText[$index])"
                               ng-model="employeeSkills.searchText[$index]"
@@ -109,27 +110,29 @@
                 </md-item-template>
 
               </md-autocomplete>
+            </md-input-container>
           </md-content>
           <!-- /TECHNOLOGIES SELECT-->
         </div>
         
         <!--TYPE SELECT-->
-        <div class="md-padding" flex-gt-xs="35">
-          <md-select class="u-no-margin"
-                    aria-label="skillType"
-                    ng-model="employeeSkills.selectedSkillTypes[$index]"
-                    placeholder="Skill type"
-                    md-selected-text="employeeSkills.selectedSkillType(employeeSkills.selectedSkillTypes[$index], employeeSkills.employee, $index)"
-                    required>
-            <md-optgroup label="Skill type">
-              <md-option value="0">
-                <span>Main</span>
-              </md-option>
-              <md-option value="1">
-                <span>Secondary</span>
-              </md-option>
-            </md-optgroup>
-          </md-select>
+        <div class="md-padding" flex-gt-xs="100">
+          <md-input-container>
+            <label>Skill type</label>
+            <md-select class="u-no-margin"
+                      aria-label="skillType"
+                      ng-model="employeeSkills.selectedSkillTypes[$index]"
+                      required>
+              <md-optgroup label="Skill type">
+                <md-option value="0">
+                  <span>Main</span>
+                </md-option>
+                <md-option value="1">
+                  <span>Secondary</span>
+                </md-option>
+              </md-optgroup>
+            </md-select>
+          </md-input-container>
         </div><!-- TYPE SELECT -->
 
         <!--TECHNOLOGY LEVEL-->
@@ -153,29 +156,31 @@
           </div>
         </div><!--TECHNOLOGY LEVEL-->
 
-        <!-- REMOVE SKILL -->
+        <!--TECHNOLOGY LEVEL-->
+        
+        <!--TECHNOLOGY LEVEL-->
+        <div class="md-padding" flex-gt-xs="10">
+          <md-button class="md-icon-button md-warn"
+                    label="Add skill"
+                    aria-label="add skill"
+                    ng-click="employeeSkills.addNewTechnologie()">
+            <md-icon class="material-icons">add</md-icon>
+          </md-button>
+        </div>
+        <!-- REMOVE  TECHNOLOGY-->
         <div class="md-padding" flex-gt-xs="10">
           <md-button class="md-icon-button md-warn"
                     label="Remove skill"
                     aria-label="Remove skill"
-                    ng-click="employeeSkills.technologiesToAdd.splice($index, 1)">
+                    ng-click="employeeSkills.replaceInputs.splice($index, 1)"
+                    ng-show="employeeSkills.replaceInputs[$index] !== 1">
             <md-icon class="material-icons">delete</md-icon>
           </md-button>
-        </div><!-- /REMOVE SKILL -->
+        </div><!-- /REMOVE TECHNOLOGY -->
 
 
       </section>
       <!-- /FILTER TECHNOLOGIES -->
-
-
-      <section class="md-padding"
-              ng-show="employeeSkills.displayOrHide">
-        <md-button md-no-ink
-                  class="md-primary small-text"
-                  ng-click="employeeSkills.addNewTechnologie()">
-          Add New Technologies
-        </md-button>
-      </section>
 
       </md-content><!-- /EDIT TECHNOLOGIES-->
 

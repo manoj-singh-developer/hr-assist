@@ -14,7 +14,7 @@
 
   <!-- PREVIEW  -->
   <md-content
-    ng-show="!userLanguages.settings.showForm"
+    ng-show="!userLanguages.showEditLanguages"
     class="c-card-profile__preview">
     <md-list layout="row" layout-wrap>
       <md-list-item
@@ -41,7 +41,7 @@
     <!-- EDIT -->
     <md-content
       class = "md-padding"
-      ng-show="userLanguages.settings.showForm">
+      ng-show="userLanguages.showEditLanguages">
 
       <md-list layout="row" layout-wrap>
 
@@ -154,18 +154,18 @@
   <md-card-actions
     layout="column"
     layout-align="start"
-    ng-show="!userLanguages.settings.showForm">
+    ng-show="!userLanguages.showEditLanguages">
     <md-button
       class="c-card-profile__btn no-margin"
-      ng-click="userLanguages.toggleForm()">
-      Add/Edit technologies
+      ng-click="userLanguages.displayEditLanguages()">
+      Add/Edit languages
     </md-button>
   </md-card-actions>
 
   <md-card-actions
     layout="row"
     layout-align="center center"
-    ng-show="userLanguages.settings.showForm"
+    ng-show="userLanguages.showEditLanguages"
     class="additional">
 
     <md-button
@@ -177,7 +177,7 @@
 
     <md-button
       class="md-raised"
-      ng-click="userLanguages.toggleForm()">
+      ng-click="userLanguages.displayEditLanguages()">
       Cancel
     </md-button>
 

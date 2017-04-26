@@ -20,7 +20,7 @@
     vm.userTechnologies = [];
     vm.displayOrHide = false;
     vm.skillLvlTxt = [];
-
+    vm.replaceInputs = [1];
 
     vm.queryTechnologySearch = queryTechnologySearch;
     vm.addNewTechnologie = addNewTechnologie;
@@ -41,11 +41,7 @@
 
 
     function addNewTechnologie() {
-      
-      if (!vm.technologiesToAdd) {
-        vm.technologiesToAdd = [];
-      }
-      vm.technologiesToAdd.push({});
+      vm.replaceInputs.push({});
     }
 
     function queryTechnologySearch(query){

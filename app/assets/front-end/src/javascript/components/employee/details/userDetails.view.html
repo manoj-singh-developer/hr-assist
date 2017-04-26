@@ -32,34 +32,36 @@
   <!-- EMPLOYEE CARDS -->
   <section>
 
-    <hra-card
-      hra-user-general
-      class="c-card-profile"
-      md-whiteframe='6'
-      toggle-form="card.toggleForm"
-      query-search="card.querySearch"
-      settings="card.settings">
+    <hra-card hra-user-general
+              class="c-card-profile"
+              md-whiteframe='6'
+              toggle-form="card.toggleForm"
+              query-search="card.querySearch"
+              settings="card.settings">
     </hra-card>
 
-    <hra-card
-      hra-user-languages
-      class="c-card-profile [ js-employee-card ]"
-      md-whiteframe='6'
-      toggle-form="card.toggleForm"
-      query-search="card.querySearch"
-      settings="card.settings">
+    <hra-card hra-user-languages
+              class="c-card-profile [ js-employee-card ]"
+              md-whiteframe='6'
+              toggle-form="card.toggleForm"
+              query-search="card.querySearch"
+              settings="card.settings">
     </hra-card>
+
+    <hra-card hra-user-devices
+              class="c-card-profile [ js-employee-card ]"
+              md-whiteframe='6'
+              class="c-card-profile [ js-employee-card ]"
+              toggle-form="card.toggleForm"
+              query-search="card.querySearch"
+              settings="card.settings">
+    </hra-card>
+
 
     <hra-card hra-employee-holiday
               class="c-card-profile [ js-employee-card ]"
               md-whiteframe='6'>
     </hra-card>
-
-
-    <!--<hra-employee-observations
-      class="c-card-profile [ js-employee-card ]"
-      md-whiteframe='6'>
-    </hra-employee-observations>-->
 
     <hra-card
       hra-user-schedule
@@ -75,6 +77,12 @@
               query-search="card.querySearch"
               md-whiteframe='6'>
     </hra-employee-skills>
+
+ <!--
+    <hra-employee-observations
+      class="c-card-profile [ js-employee-card ]"
+      md-whiteframe='6'>
+    </hra-employee-observations> -->
 
     <!--
     <hra-employee-project
@@ -109,16 +117,7 @@
       md-whiteframe='6'>
     </hra-employee-course>
 
-    <hra-employee-holiday
-      ng-hide="employeeDetails.candidate"
-      class="c-card-profile [ js-employee-card ]"
-      md-whiteframe='6'>
-    </hra-employee-holiday> -->
-
   </section><!-- EMPLOYEE CARDS -->
-
-
-
 
 
 </section>
