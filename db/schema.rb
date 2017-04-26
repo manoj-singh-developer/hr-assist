@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412101809) do
+ActiveRecord::Schema.define(version: 20170420144103) do
 
   create_table "active_admin_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "namespace"
@@ -278,13 +278,6 @@ ActiveRecord::Schema.define(version: 20170412101809) do
     t.index ["user_projects_id"], name: "index_technologies_user_projects_on_user_projects_id", using: :btree
   end
 
-  create_table "technologies_users", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "user_id"
-    t.integer "technology_id"
-    t.index ["technology_id"], name: "index_technologies_users_on_technology_id", using: :btree
-    t.index ["user_id"], name: "index_technologies_users_on_user_id", using: :btree
-  end
-
   create_table "trainings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "title"
     t.text     "description", limit: 65535
@@ -316,6 +309,17 @@ ActiveRecord::Schema.define(version: 20170412101809) do
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_user_projects_on_project_id", using: :btree
     t.index ["user_id"], name: "index_user_projects_on_user_id", using: :btree
+  end
+
+  create_table "user_technologies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "level"
+    t.integer  "technology_type"
+    t.integer  "user_id"
+    t.integer  "technology_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["technology_id"], name: "index_user_technologies_on_technology_id", using: :btree
+    t.index ["user_id"], name: "index_user_technologies_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -385,10 +389,10 @@ ActiveRecord::Schema.define(version: 20170412101809) do
   add_foreign_key "schedules", "users"
   add_foreign_key "technologies_user_projects", "technologies"
   add_foreign_key "technologies_user_projects", "user_projects", column: "user_projects_id"
-  add_foreign_key "technologies_users", "technologies"
-  add_foreign_key "technologies_users", "users"
   add_foreign_key "trainings", "users"
   add_foreign_key "uploads", "users"
   add_foreign_key "user_projects", "projects"
   add_foreign_key "user_projects", "users"
+  add_foreign_key "user_technologies", "technologies"
+  add_foreign_key "user_technologies", "users"
 end

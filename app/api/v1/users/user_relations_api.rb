@@ -80,23 +80,26 @@ module V1
         end
 
         params do
-          requires :name, type: String,  allow_blank: false
-          requires :degree, type: String, allow_blank: false
-          requires :description, type: String, allow_blank: false
-          requires :start_date, type: Date, allow_blank: false
-          requires :end_date, type: Date, allow_blank: false
+          requires :educations, type: Array[Hash]
         end
         post ':user_id/educations' do
-          education = Education.create(user_education_params)
           user = find_user(params[:user_id])
-          user.educations << education
+          params[:educations].each do |education|
+            user_education = Education.create(name: education.name, degree: education.degree, description: education.description, start_date: education.start_date, end_date: education.end_date)
+            user.educations << user_education
+          end
           {items: user.educations}
         end
 
+        params do
+          requires :educations, type: Array[Hash]
+        end
         put ':user_id/educations' do
           user = User.find(params[:user_id])
-          educations = Education.where(id: params[:education_ids]) - user.educations
-          user.educations << educations if educations.count > 0
+          params[:educations].each do |education|
+            user_education = user.educations.find(education.id)
+            user_education.update(ActionController::Parameters.new(education).permit(:name, :degree, :description, :start_date, :end_date))
+          end
           {items: user.educations}
         end
 
@@ -126,7 +129,16 @@ module V1
 
         get ':user_id/projects' do
           user = find_user(params[:user_id])
-          {items: user.projects}
+          {items:
+            user.user_projects.map do |user_project|
+              {
+                project: user_project.project,
+                user_project_start_date: user_project.start_date,
+                user_project_end_date: user_project.end_date,
+                technologies: user_project.technologies
+              }
+            end
+          }
         end
 
         get ':user_id/projects/:project_id/technologies' do
@@ -189,18 +201,48 @@ module V1
 
         get ':user_id/technologies' do
           user = find_user(params[:user_id])
-          {items: user.technologies}
+          { items:
+          user.user_technologies.map do |user_technology|
+            {
+              id: user_technology.technology_id,
+              name: user_technology.technology.name,
+              level: user_technology.level,
+              technology_type: user_technology.technology_type
+            }
+          end
+          }
         end
 
-        put ':user_id/technologies' do
+        params do
+          requires :names, type: Array[String]
+          requires :types, type: Array[Integer]
+          requires :levels, type: Array[Integer]
+        end
+        post ':user_id/technologies' do
           user = User.find(params[:user_id])
-          technologies = Technology.where(id: params[:technology_ids]) - user.technologies
-          user.technologies << technologies if technologies.count > 0
-          {items: user.technologies}
+          response = []
+          params[:names].zip(params[:types], params[:levels]) do |name, type, level|
+            technology = Technology.find_or_create_by(name: name)
+            user_technology = UserTechnology.create(level: level, technology_type: type, technology_id: technology.id, user_id: user.id)
+            response << {
+              id: user_technology.technology_id,
+              name: user_technology.technology.name,
+              level: user_technology.level,
+              technology_type: user_technology.technology_type
+            }
+          end
+          {items: response}
         end
 
+        params do
+          requires :technology_ids, type: Array[Integer]
+        end
         delete ':user_id/technologies' do
-          delete_object(User, Technology, params[:user_id], params[:technology_ids])
+          user = find_user(params[:user_id])
+          user_technologies = UserTechnology.where(technology_id: params[:technology_ids], user_id: params[:user_id])
+          user_technologies.each do |user_technology|
+            user_technology.delete
+          end
         end
 
         get ':user_id/holidays' do
