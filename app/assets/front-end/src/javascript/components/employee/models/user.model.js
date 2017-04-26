@@ -155,16 +155,48 @@
       return promise;
     };
 
-    User.getDevices = () => {
+    User.getUserDevices = (userId) => {
+      var userID = userId;
+      url = apiUrl + '/users/'+userID+'/devices';
+      resource = $resource(url).get();
 
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getUserDevices'));
+      return promise;
     };
 
-    User.updateDevices = () => {
+    User.updateDevices = (user, devices) => {
+      let deviceIds = devices.map(device => device.id);
+      url = apiUrl + '/users/:id/devices';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: user.id }, { device_ids: deviceIds });
 
+      promise = resource.$promise
+          .then((data) => {
+          alertService.success(model, 'updateDevices');
+      return data;
+      })
+      .catch(() => alertService.error(model, 'updateDevices'));
+
+      return promise;
     };
 
-    User.removeDevices = () => {
+    User.removeDevices = (user, devices) => {
+      let data = {};
+      data["device_ids[]"] = devices;
+      url = apiUrl + '/users/:id/devices';
+      resource = $resource(url, data).delete({ id: user.id });
 
+      promise = resource.$promise
+          .then((data) => {
+          alertService.success(model, 'removeDevices');
+      return data;
+      })
+      .catch(() => alertService.error(model, 'removeDevices'));
+
+      return promise;
     };
 
     /*TODO: To create a component Language and to add this to the language model*/

@@ -29,7 +29,7 @@
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.save = save;
-
+    vm.showEditLanguages = false;
 
     _getLanguages();
 
@@ -69,7 +69,7 @@
         User.updateLanguages(vm.user, languagesToAdd)
           .then(() => {
             _getUserLanguages();
-            vm.toggleForm();
+            vm.showEditLanguages = false;
           });
       }
 
@@ -77,7 +77,7 @@
         User.removeLanguages(vm.user, languagesToRemove)
           .then(() => {
             _getUserLanguages();
-            vm.toggleForm();
+            vm.showEditLanguages = false;
           });
       }
     }
@@ -94,6 +94,10 @@
       User.getUserLanguages(vm.user).then((data) => {
         vm.userLanguages = data;
       });
+    }
+
+    vm.displayEditLanguages = () => {
+      vm.showEditLanguages = !vm.showEditLanguages;
     }
 
   }
