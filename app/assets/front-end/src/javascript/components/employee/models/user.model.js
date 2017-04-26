@@ -239,8 +239,32 @@
       return promise;
     };
 
-    User.updateEducations = () => {
+    User.saveEducations = (id, educations) => {
+      url = apiUrl + '/users/:id/educations';
+      resource = $resource(url, {}, {
+        'post': {
+          method: 'POST'
+        }
+      }).save({ id: id }, educations);
 
+      promise = resource.$promise
+        .then(data =>data.items)
+        .catch(() => alertService.error(model, 'saveEducations'));
+
+      return promise;
+    };
+
+    User.updateEducations = (id, educations) => {
+      url = apiUrl + '/users/:id/educations';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: id }, educations);
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'updateEducations'));
+
+      return promise;
     };
 
     User.removeEducations = (id,education) => {

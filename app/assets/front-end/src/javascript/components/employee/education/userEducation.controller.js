@@ -30,7 +30,6 @@
 
 
 
-
     // ----------------------------------------------------------------------
     // INVOKING PRIVATE METHODS
     // ----------------------------------------------------------------------
@@ -85,33 +84,37 @@
 
     function save() {
 
-      var saveEducations = [];
-      var updateEducations = [];
+      var saveEducationsObj = {};
+      var updateEducationsObj = {};
+      saveEducationsObj["educations"] = [];
+      updateEducationsObj["educations"] = [];
+      
       vm.userEducationList.forEach(function(value,index){
         if(index < vm.userEducations.length){
           if(JSON.stringify(vm.userEducations[index]) !== JSON.stringify(value))
-            updateEducations.push(value);
+            updateEducationsObj["educations"].push(value);
         }
         else
-          saveEducations.push(value);
+          saveEducationsObj["educations"].push(value);
       });
 
-      if(updateEducations.length !== 0)
-        User.updateEducations(vm.user.id, updateEducations).then((data) => {
+      if(updateEducationsObj["educations"].length !== 0)
+        User.updateEducations(vm.user.id, updateEducationsObj).then((data) => {
           vm.userEducations = data;
+          initEducations();
         });
 
-      if(saveEducations.length !== 0)
-        User.saveEducations(vm.user.id, saveEducations).then((data) => {
+      if(saveEducationsObj["educations"].length !== 0)
+        User.saveEducations(vm.user.id, saveEducationsObj).then((data) => {
           vm.userEducations = data;
+          initEducations();
         });
 
-      initEducations();
     }
 
     function cancelAdd() {
       vm.userEducationList = [];
-      vm.userEducationList.push(...vm.userEducations);
+      vm.userEducationList = _.map(vm.userEducations, _.clone);
     }
 
 
@@ -122,7 +125,7 @@
     // Private methods declaration
     // ----------------------------------------------------------------------
     function initEducations(){
-      vm.userEducationList.push(...vm.userEducations);
+      vm.userEducationList = _.map(vm.userEducations, _.clone);
     }
   }
 
