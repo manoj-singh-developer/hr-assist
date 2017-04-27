@@ -261,16 +261,56 @@
 
 
 
-    User.getEducations = () => {
+    User.getEducations = (id) => {
+      url = apiUrl + '/users/:id/educations';
+      resource = $resource(url).get({ id: id });
 
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getEducations'));
+      return promise;
     };
 
-    User.updateEducations = () => {
+    User.saveEducations = (id, educations) => {
+      url = apiUrl + '/users/:id/educations';
+      resource = $resource(url, {}, {
+        'post': {
+          method: 'POST'
+        }
+      }).save({ id: id }, educations);
 
+      promise = resource.$promise
+        .then(data =>data.items)
+        .catch(() => alertService.error(model, 'saveEducations'));
+
+      return promise;
     };
 
-    User.removeEducations = () => {
+    User.updateEducations = (id, educations) => {
+      url = apiUrl + '/users/:id/educations';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: id }, educations);
 
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'updateEducations'));
+
+      return promise;
+    };
+
+    User.removeEducations = (id,education) => {
+      url = apiUrl + '/users/:id/educations';
+      resource = $resource(url, education).delete({ id: id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'remove');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'remove'));
+
+      return promise;
     };
 
 
