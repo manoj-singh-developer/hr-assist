@@ -53,10 +53,10 @@
         vm.resources.technologies = data[2];
         vm.resources.projects = data[3];
         vm.resources.languages = data[4];
-        vm.resources.holidays = data[5];
-        vm.resources.schedule = data[6];
-        vm.resources.educations = data[7];
-        vm.resources.devices = data[8];
+        vm.resources.devices = data[5];
+        vm.resources.holidays = data[6];
+        vm.resources.schedule = data[7];
+        vm.resources.educations = data[8];
 
         $rootScope.$emit("event:userResourcesLoaded", vm.resources);
 
