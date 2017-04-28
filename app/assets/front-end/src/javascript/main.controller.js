@@ -5,7 +5,7 @@
   // main controller
   // ------------------------------------------------------------------------
 
-  function mainController($rootScope, $mdToast, $scope, $state, $timeout) {
+  function mainController($rootScope, $mdToast, $scope, $state, $timeout, $location, tokenService) {
 
     var self = this;
     $scope.nav = false;
@@ -17,6 +17,14 @@
         .hideDelay(1200)
       );
     };
+
+    if(localStorage.getItem('auth_token')){
+      var tokenToDecode = localStorage.getItem('user_token');
+      var decodeToken = tokenService.decodeToken(tokenToDecode);
+      var userId  = decodeToken.user_id;
+      
+      $location.path("employees/" + userId);
+    }
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams){
 
@@ -45,7 +53,7 @@
   }
 
     mainController
-        .$inject = ['$rootScope', '$mdToast', '$scope', '$state', '$timeout'];
+        .$inject = ['$rootScope', '$mdToast', '$scope', '$state', '$timeout', '$location', 'tokenService'];
 
     angular
         .module('HRA')
