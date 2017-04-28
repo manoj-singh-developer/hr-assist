@@ -206,14 +206,15 @@
 
     User.updateProjects = (user, project) => {
       url = apiUrl + '/users/:id/projects/:project_id';
-      let projectId = project.map(project => project.id);
+      let projectId = project.project_id;
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
-      }).update({ id: user.id, project_id: projectId }, project);
+      }).update({ id: user.id, 
+                  project_id: projectId}, project);
       promise = resource.$promise
         .then((data) => {
           alertService.success(model, 'updateProjects');
-          // return data;
+           return data;
         })
         .catch(() => alertService.error(model, 'updateProjects'));
 
@@ -223,20 +224,39 @@
 
     User.removeProjects = (user, project) => {
       let userId = user.id;
-      let prjId = project.id;
+      let prjId = project.project.id;
       url = apiUrl + '/users/:id/projects/:project_id';
       resource = $resource(url).delete({ id: userId, project_id: prjId });
 
       promise = resource.$promise
         .then((data) => {
           alertService.success(model, 'remove');
-          return data;
+          // return data;
         })
         .catch(() => alertService.error(model, 'remove'));
 
       return promise;
     };
 
+    User.removeProjectTechnologies = (project, technologies) => {
+      let userId = project.user_id;
+      let projId = project.project_id;
+      let techId = technologies.map(technologies => technologies.id);
+      url = apiUrl + '/users/:user_id/projects/:project_id/technologies';
+      resource = $resource(url)
+      .delete({ user_id: userId,
+               project_id: projId,
+               technology_ids: techId });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'removeProjectTechnologies');
+          // return data;
+        })
+        .catch(() => alertService.error(model, 'removeProjectTechnologies'));
+
+      return promise;
+    };
 
     User.getHolidays = () => {
 
