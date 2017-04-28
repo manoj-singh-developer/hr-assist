@@ -59,6 +59,10 @@
             Holidays
           </md-nav-item>
 
+          <md-nav-item md-nav-sref="landing-page" name="logout" ng-click="mainCtrl.logOut()">
+            <span>Logout</span>
+          </md-nav-item>
+
        
 
           <md-nav-item class="coconut" md-nav-sref="deviceParent.list" name="devices" ng-click="secNavBar()">
@@ -79,10 +83,6 @@
 
           <md-nav-item md-nav-sref="appTypeParent.list" name="appTypes" ng-click="secNavBar()">
             App types
-          </md-nav-item>
-
-          <md-nav-item md-nav-sref="landing-page" name="logout" ng-click="mainCtrl.logOut()">
-            <span>Logout</span>
           </md-nav-item>
 
         </md-nav-bar>
