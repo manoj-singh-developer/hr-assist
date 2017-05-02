@@ -245,7 +245,7 @@
 
     User.removeLanguages = (user, languages) => {
       let data = {};
-      data.language_ids = languages.map(language => language.id);
+      data["language_ids[]"] = languages.map(language => language.id);
       url = apiUrl + '/users/:id/languages';
       resource = $resource(url, data).delete({ id: user.id });
       
@@ -362,8 +362,7 @@
       let data = {};
       let userId = project.user_id;
       let projId = project.project_id;
-      let techId = technologies.map(technologies => technologies.id);
-      data["technology_ids[]"] = techId;
+      data["technology_ids[]"] = technologies.map(technologies => technologies.id);
       url = apiUrl + '/users/:user_id/projects/:project_id/technologies';
       resource = $resource(url, data).delete({ user_id: userId,
                project_id: projId });
