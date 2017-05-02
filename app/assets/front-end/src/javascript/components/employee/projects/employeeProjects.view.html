@@ -230,10 +230,10 @@
           <div class="md-block" flex-gt-xs="100">
             <form ng-submit="$event.preventDefault()">
               <md-autocomplete
-                md-search-text-change="userProjects.searchTextChange(userProjects.technology[$index])"
+                md-search-text-change="userProjects.searchTextChange(userProjects.searchTechnology)"
                 md-selected-item-change="userProjects.addInQueue(item)"
-                md-search-text="userProjects.technology[$index]"
-                md-items="item in userProjects.querySearch(userProjects.technology[$index], userProjects.technologies)"
+                md-search-text="userProjects.searchTechnology"
+                md-items="item in userProjects.querySearch(userProjects.searchTechnology, userProjects.technologies)"
                 md-item-text="item.name"
                 md-min-length="0"
                 placeholder="Search Technologies">
@@ -241,7 +241,7 @@
               <md-item-template>
                   <span
                   class="item-metadata"
-                  md-highlight-text="userProjects.projects.technology">
+                  md-highlight-text="userProjects.projects.searchTechnology">
                     {{item.name}}
                   </span>
                 </md-item-template>

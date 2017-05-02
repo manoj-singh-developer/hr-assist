@@ -13,15 +13,12 @@
 
     let vm = this;
     let projectsToAdd = [];
-
     let technologiesToRemove = [];
     let technologiesToAdd = [];
-
     vm.user = {};
     vm.projects = [];
     vm.userProjects = [];
     vm.technologies = [];
-    vm.currentProjectTechnologies = [];
     vm.disableProjectName = false;
     vm.userTechnologies = [];
 
@@ -32,20 +29,19 @@
     vm.removeFromQueue = removeFromQueue;
     vm.clearInputs = clearInputs;
     vm.deleteProject = deleteProject;
-    _getProjects();
-
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.user = data.user;
       vm.technologies = data.technologies;
+      vm.projects = data.projects;
+
       autocompleteService.buildList(vm.technologies, ['name']);
+      autocompleteService.buildList(vm.projects, ['name']);
       _getUserProjects();
     });
 
     function editProject(project) {
-      let tech = project.technologies;
       vm.searchText = project.project.name;
-      vm.technology = tech.map(tech => tech.name);
 
       vm.start_date = new Date(project.user_project_start_date);
       vm.end_date = new Date(project.user_project_end_date);
@@ -77,7 +73,7 @@
         technologiesToRemove = _.without(technologiesToRemove, toRemove);
         technologiesToAdd.push(technology.id);
         vm.userTechnologies.push(technology);
-        vm.technology = "";
+        vm.searchTechnology = "";
       }
     }
 
@@ -86,7 +82,6 @@
       vm.userTechnologies = _.without(vm.userTechnologies, toRemove);
       technologiesToAdd = _.without(technologiesToAdd, toRemove);
       technologiesToRemove.push(technology);
-
     }
 
     function deleteProject(project) {
@@ -146,13 +141,6 @@
       vm.disableProjectName = false;
       vm.start_date,
         vm.end_date = new Date();
-    }
-
-    function _getProjects() {
-      Project.getAll().then((data) => {
-        vm.projects = data;
-        autocompleteService.buildList(vm.projects, ['name']);
-      });
     }
 
     function _getUserProjects() {
