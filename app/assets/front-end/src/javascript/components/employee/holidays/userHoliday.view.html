@@ -1,0 +1,237 @@
+<!-- CARD HOLIDAYS -->
+<md-card>
+
+  <!-- CARD TITLE -->
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">Holidays</span>
+    </md-card-title-text>
+  </md-card-title><!-- /CARD TITLE -->
+
+
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong> Complete here your vacation requests.
+    </p>
+  </md-content> <!-- CARD NOTES -->
+
+
+  <!-- PREVIEW HOLIDAY -->
+  <md-content  class="md-padding"
+               ng-show="!userHoliday.displayOrHide">
+      <md-table-container>
+
+          <table class="c-table--actions"
+                 md-table
+                 md-progress="promise">
+
+              <thead md-head
+                     md-order="query.order">
+                  <tr md-row>
+                      <th md-column>Start date</th>
+                      <th md-column>End date</th>
+                      <th md-column>Number of days</th>
+                      <th md-column>Project</th>
+                      <th md-column>Action</th>
+                  </tr>
+              </thead>
+
+              <tbody md-body>
+                  <tr md-row
+                      md-select="holiday"
+                      md-auto-select
+                      ng-repeat="holiday in userHoliday.userHolidays | limitTo: userHoliday.table.query.limit : (userHoliday.table.query.page - 1) * userHoliday.table.query.limit">
+
+                      <td md-cell>
+                          {{holiday.start_date}}
+                      </td>
+
+                      <td md-cell>
+                          {{holiday.end_date}}
+                      </td>
+
+                      <td md-cell>
+                          {{holiday.days}}
+                      </td>
+
+                      <td md-cell>
+                          <div ng-repeat="project in holiday.employee_replacements">
+                              <span>{{project.project_name}}</span>
+                          </div>
+                      </td>
+
+                      <td md-cell>
+                          <md-button class="md-icon-button md-primary"
+                                     label="View Holiday"
+                                     aria-label="View Holiday"
+                                     ui-sref="holidayParent.details({id: holiday.holiday_id})">
+                              <md-icon class="material-icons">visibility</md-icon>
+                              <md-tooltip md-autohide="true">
+                                  View Holiday
+                              </md-tooltip>
+                          </md-button>
+
+                      </td>
+
+                  </tr>
+              </tbody>
+
+          </table>
+
+      </md-table-container>
+      <md-table-pagination md-limit="userHoliday.table.query.limit"
+                           md-limit-options="userHoliday.table.limitOptions"
+                           md-page="userHoliday.table.query.page"
+                           md-total="{{userHoliday.userHolidays.length}}"
+                           md-page-select="userHoliday.table.options.pageSelect"
+                           md-boundary-links="userHoliday.table.options.boundaryLinks">
+
+      </md-table-pagination>
+  </md-content><!-- /PREVIEW HOLIDAY -->
+
+
+  <!-- FORM HOLIDAY -->
+  <md-content ng-show="userHoliday.displayOrHide" class="md-padding">
+    <section layout='column'>
+
+
+      <!-- SELECT PERIOD -->
+      <section class="u-mb-20 u-mt-20"
+               layout="row"
+               layout-align="center">
+
+        <md-datepicker ng-model="userHoliday.signingDate"
+                       md-placeholder="Signing date"
+                       md-open-on-focus
+                       required>
+        </md-datepicker>
+
+        <md-datepicker ng-model="userHoliday.from"
+                       md-placeholder="Start date"
+                       md-open-on-focus
+                       md-min-date="userHoliday.minDate"
+                       required>
+        </md-datepicker>
+
+        <md-datepicker ng-model="userHoliday.to"
+                       md-placeholder="End date"
+                       md-open-on-focus
+                       md-min-date="userHoliday.minDate"
+                       required>
+        </md-datepicker>
+
+        <!--<md-button class="md-raised md-primary"-->
+                   <!--ng-click="userHoliday.addEmptyInterval()">-->
+            <!--Add Date-->
+        <!--</md-button>-->
+
+      </section><!-- /SELECT PERIOD -->
+
+
+      <!-- SELECT PROJECT AND REPLACEMENT -->
+      <section layout-gt-xs="row"
+               ng-repeat="date in userHoliday.replaceInputs track by $index">
+
+        <div flex="50" layout-fill class="md-padding">
+          <div layout="column" layout-align="start start" layout-fill>
+
+            <!-- SELECT REPLACEMENT PROJECT -->
+            <div class="md-block u-mb-20"
+              layout-fill>
+              <form ng-submit="$event.preventDefault()">
+                <md-autocomplete ng-disabled="userHoliday.isDisabled"
+                                 ng-model="userHoliday.searchProj[$index]"
+                                 md-selected-item="userHoliday.selectedProj[$index]"
+                                 md-search-text-change="userHoliday.searchProjChange(userHoliday.searchProj[$index])"
+                                 md-search-text="userHoliday.searchProj[$index]"
+                                 md-selected-item-change="userHoliday.selectedProjChange(item, $index)"
+                                 md-items="project in userHoliday.queryProjectSearch(userHoliday.searchProj[$index])"
+                                 md-item-text="project.name"
+                                 md-min-length="0"
+                                 placeholder="Select an project">
+
+                  <md-item-template >
+                    <span class="item-metadata">
+                      {{project.name}}
+                    </span>
+                  </md-item-template>
+
+                </md-autocomplete>
+              </form>
+            </div><!-- /SELECT REPLACEMENT PROJECT -->
+
+          </div>
+        </div>
+
+        <div flex="50" layout-fill class="md-padding">
+          <div layout="column" layout-align="start start" layout-fill>
+
+            <!-- SELECT REPLACEMENT EMPLOYEE -->
+            <div class="md-block u-mb-20" layout-fill>
+              <form ng-submit="$event.preventDefault()">
+                <md-autocomplete ng-disabled="userHoliday.isDisabled"
+                                 ng-model="userHoliday.searchUser[$index]"
+                                 md-selected-item="userHoliday.selectedUser[$index]"
+                                 md-search-text-change="userHoliday.searchUserChange(userHoliday.searchUser[$index])"
+                                 md-search-text="userHoliday.searchUser[$index]"
+                                 md-selected-item-change="userHoliday.selectedUserChange(item, $index)"
+                                 md-items="user in userHoliday.queryUserSearch(userHoliday.searchUser[$index])"
+                                 md-item-text="user.first_name +' '+ user.last_name"
+                                 md-min-length="0"
+                                 placeholder="Select an employee">
+
+                  <md-item-template >
+                    <span class="item-metadata">
+                      {{user.first_name}} {{user.last_name}}
+                    </span>
+                  </md-item-template>
+
+                </md-autocomplete>
+              </form>
+            </div><!-- /SELECT REPLACEMENT EMPLOYEE -->
+
+          </div>
+        </div>
+
+        <span ng-click="userHoliday.addEmptyReplacement()" class="add-holiday" title="Add project">
+            <i class="material-icons">add_circle_outline</i>
+        </span>
+
+      </section><!-- SELECT PROJECT AND REPLACEMENT -->
+
+
+    </section><!-- /HOLIDAYS ng-repeat -->
+
+
+  </md-content><!-- /FORM HOLIDAY -->
+
+
+  <!-- CARD ACTIONS -->
+  <md-card-actions layout="column" layout-align="start">
+    <md-button class="c-card-profile__btn no-margin"
+               ng-click="userHoliday.displayForm()"
+               ng-show="!userHoliday.displayOrHide">
+      Add Holiday
+    </md-button>
+  </md-card-actions>
+
+  <md-card-actions layout="row"
+                   layout-align="center center"
+                   ng-show="userHoliday.displayOrHide"
+                   class="additional">
+
+    <md-button class="md-raised md-primary"
+               ng-click="userHoliday.saveHoliday()">
+      Save
+    </md-button>
+
+    <md-button class="md-raised"
+               ng-click="userHoliday.displayForm()">
+      Close
+    </md-button>
+
+  </md-card-actions><!-- /CARD ACTIONS -->
+
+
+</md-card><!-- CARD HOLIDAYS -->

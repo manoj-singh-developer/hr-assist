@@ -19,15 +19,15 @@
             <div ng-repeat = "holidaysRow in holidayForm.holidayEmpIncrement track by $index">
               <div class="md-block md-padding">
                 <form ng-submit="$event.preventDefault()">
-                  <md-autocomplete
-                md-no-cache="true"
-              md-search-text="holidayForm.searchUser[$index]"
-              md-search-text-change="holidayForm.searchTextChange(holidayForm.searchUser[$index])"
-              md-selected-item-change="holidayForm.addUser(item, holidayForm.holiday, $index)"
-              md-items="item in holidayForm.querySearch(holidayForm.searchUser[$index])"
-              md-item-text="item.first_name +' '+ item.last_name"
-              md-min-length="0"
-              placeholder="Select User">
+                  <md-autocomplete md-no-cache="true"
+                                   md-search-text="holidayForm.searchUser[$index]"
+                                   md-search-text-change="holidayForm.searchTextChange(holidayForm.searchUser[$index])"
+                                   md-selected-item-change="holidayForm.addUser(item, holidayForm.holiday, $index)"
+                                   md-items="item in holidayForm.querySearch(holidayForm.searchUser[$index])"
+                                   ng-model="holidayForm.user"
+                                   md-item-text="item.first_name +' '+ item.last_name"
+                                   md-min-length="0"
+                                   placeholder="Select User">
                     <md-item-template >
                       <span class="item-metadata">
                         {{item.first_name}}
@@ -39,24 +39,25 @@
             </div><!--Employee end-->
 
              <!--Team Leader start-->
-              <div class="md-block md-padding">
-            <form ng-submit="$event.preventDefault()">
-              <md-autocomplete
-                      md-no-cache="true"
-                      md-search-text="holidayForm.searchLeaderHold[$index]"
-                      md-search-text-change="holidayForm.searchTextChange(holidayForm.searchLeaderHold[$index])"
-                      md-selected-item-change="holidayForm.addTeamLeader(item, holidayForm.employee, $index)"
-                      md-items="item in holidayForm.querySearch(holidayForm.searchLeaderHold[$index])"
-                      md-item-text="item.getFullName()"
-                      md-min-length="0"
-                      placeholder="Select a team leader">
-                    <md-item-template >
-                      <span class="item-metadata">
-                        {{item | json}}
-                    </md-item-template>
-                  </md-autocomplete>
-            </form>
-          </div><!--Team Leader end-->
+            <!--<div class="md-block md-padding">-->
+            <!--<form ng-submit="$event.preventDefault()">-->
+              <!--<md-autocomplete-->
+                      <!--md-no-cache="true"-->
+                      <!--md-search-text="holidayForm.searchLeaderHold[$index]"-->
+                      <!--md-search-text-change="holidayForm.searchTextChange(holidayForm.searchLeaderHold[$index])"-->
+                      <!--md-selected-item-change="holidayForm.addTeamLeader(item, holidayForm.employee, $index)"-->
+                      <!--md-items="item in holidayForm.querySearch(holidayForm.searchLeaderHold[$index])"-->
+                      <!--md-item-text="item.getFullName()"-->
+                      <!--md-min-length="0"-->
+                      <!--placeholder="Select a team leader">-->
+                    <!--<md-item-template >-->
+                      <!--<span class="item-metadata">-->
+                        <!--{{item | json}}-->
+                      <!--</span>-->
+                    <!--</md-item-template>-->
+                  <!--</md-autocomplete>-->
+            <!--</form>-->
+          <!--</div>&lt;!&ndash;Team Leader end&ndash;&gt;-->
         </div>
 
              <div layout-gt-xs="row" ng-repeat = "holidayRow in holidayForm.holidayReplaceIncrement track by $index">
@@ -77,6 +78,7 @@
                     <md-item-template >
                       <span class="item-metadata">
                         {{item.name}}
+                      </span>
                     </md-item-template>
                   </md-autocomplete>
             </form>
@@ -87,14 +89,15 @@
               flex-gt-xs="40">
             <form ng-submit="$event.preventDefault()">
               <md-autocomplete
-                md-no-cache="true"
-                md-search-text="holidayForm.searchRepEmpHold[$index]"
-                md-search-text-change="holidayForm.searchTextChange(holidayForm.searchRepEmpHold[$index])"
-                md-selected-item-change="holidayForm.addRepEmployee(item, holidayForm.employee, $index)"
-                md-items="item in holidayForm.querySearch(holidayForm.searchUser[$index])"
-                md-item-text="item.first_name +' '+ item.last_name"
-                md-min-length="0"
-                placeholder="Select an employee">
+                      md-no-cache="true"
+                      md-search-text="holidayForm.searchEmp[$index]"
+                      md-search-text-change="holidayForm.searchTextChange(holidayForm.searchEmp[$index])"
+                      md-selected-item-change="holidayForm.addEmployee(item, holidayForm.holiday, $index)"
+                      md-items="item in holidayForm.querySearch(holidayForm.searchEmp[$index])"
+                      md-item-text="item.first_name +' '+ item.last_name"
+                      ng-model="holidayForm.employee"
+                      md-min-length="0"
+                      placeholder="Select an employee">
               <md-item-template >
                 <span class="item-metadata">
                         {{item.first_name}}
@@ -117,12 +120,14 @@
             <section layout-gt-xs="row" ng-repeat="holidayDate in holidayForm.holidayDateIncrement track by $index">
             <!--Period start-->
               <md-datepicker required
-                ng-model="holidayForm.dateList[$index].from"
-                md-placeholder="Start date"></md-datepicker>
+                             md-min-date="holidayForm.minDate"
+                             ng-model="holidayForm.dateList[$index].from"
+                             md-placeholder="Start date"></md-datepicker>
 
               <md-datepicker required
-                ng-model="holidayForm.dateList[$index].to"
-                md-placeholder="End date"></md-datepicker>
+                             md-min-date="holidayForm.minDate"
+                             ng-model="holidayForm.dateList[$index].to"
+                             md-placeholder="End date"></md-datepicker>
 
               <md-input-container md-no-float>
                 <md-button
@@ -141,28 +146,45 @@
         <!-- Preview request-->
          <md-tab label="Preview">
           <md-content class="md-padding">
-            <div class="holiday__container" id="printable" pdf-save-content="generatepdf">
+            <div class="holiday__container" id="printable" pdf-save-content="generatepdf" >
               <img src="../assets/images/assist.png" class="holiday__logo">
               <h1 class="holiday__title text--center"><u>Cerere pentru concediu de odihnă </u></h1>
               <p class="holiday__text text--ident">Stimate Domnule Director,</p>
+
               <p class="holiday__text text--ident">
-                Subsemnatul {{holidayForm.user[0].firstName}} {{holidayForm.user[0].lastName}}, angajat al firmei SC ASSIST Software SRL,
-                vă rog să-mi aprobaţi {{ (holidayForm.dateList[0].to - holidayForm.dateList[0].from - 86400000) + (holidayForm.dateList[1].to - holidayForm.dateList[1].from) | date: 'dd'}} zile
-                de concediu din 2016 pentru odihna conform contractului de muncă in perioada
-                {{holidayForm.dateList[0].from | date: 'dd-MMM-yyyy'}} - {{holidayForm.dateList[0].to | date: 'dd-MMM-yyyy'}}
+                  Subsemnatul
+                  <strong>{{holidayForm.user[0].first_name}} {{holidayForm.user[0].last_name}}</strong>,
+                  angajat al firmei SC ASSIST Software SRL, vă rog să-mi aprobaţi
+                  <strong>
+                      {{ (holidayForm.dateList[0].to - holidayForm.dateList[0].from - 86400000) + (holidayForm.dateList[1].to - holidayForm.dateList[1].from) | date: 'd'}}
+                  </strong>
+                  <span ng-if="(holidayForm.dateList[0].to - holidayForm.dateList[0].from - 86400000) + (holidayForm.dateList[1].to - holidayForm.dateList[1].from) > 1">zile</span>
+                  <span ng-if="(holidayForm.dateList[0].to - holidayForm.dateList[0].from - 86400000) + (holidayForm.dateList[1].to - holidayForm.dateList[1].from) < 1">zi</span>
+                  din concediul de odihnă
+
+                  <span ng-if="(holidayForm.dateList[0].to - holidayForm.dateList[0].from - 86400000) + (holidayForm.dateList[1].to - holidayForm.dateList[1].from) < 1">aferentă</span>
+                  <span ng-if="(holidayForm.dateList[0].to - holidayForm.dateList[0].from - 86400000) + (holidayForm.dateList[1].to - holidayForm.dateList[1].from) > 1">aferente</span> anului
+
+                  <strong>{{ holidayForm.dateList[0].to | date: 'yyyy' }}</strong>
+                  <span>în intervalul</span>
+                  <strong>{{holidayForm.dateList[0].from | date: 'dd.MM.yyyy'}} - {{holidayForm.dateList[0].to | date: 'dd.MM.yyyy'}}</strong>
                 <span ng-if = "holidayForm.dateList[1]"> si </span>
-                <span>{{holidayForm.dateList[1].from | date: 'dd-MMM-yyyy'}}
-                <span ng-if = "holidayForm.dateList[1]"> - </span> {{holidayForm.dateList[1].to | date: 'dd-MMM-yyyy'}}</span>
+                <span>
+                    {{holidayForm.dateList[1].from | date: 'dd.MM.yyyy'}}
+                    <span ng-if = "holidayForm.dateList[1]"> - </span>
+                    {{holidayForm.dateList[1].to | date: 'dd.MM.yyyy'}}
+                </span>.
               </p>
+
               <p class="holiday__text text--ident">Vă mulţumesc.</p>
               <div class="holiday__inner clearfix">
                 <p class="holiday__text text--left">Cu considerație,</p>
                 <p class="holiday__text text--right"><strong>APROBAT,</strong></p>
               </div>
-              <p class="holiday__text text--lite">ANGAJAT</p>
+              <p class="holiday__text text--lite"><strong>{{holidayForm.user[0].first_name}} {{holidayForm.user[0].last_name}}</strong></p>
               <p class="holiday__text text--lite2">Semnătura,</p>
               <p class="holiday__text text--lite">
-                Data: <strong><i ng-model = "holidayForm.today">{{holidayForm.today | date: 'dd-MMM-yyyy'}}</i></strong>
+                Data: <strong><i ng-model = "holidayForm.today">{{holidayForm.today | date: 'dd.MM.yyyy'}}</i></strong>
               </p>
               <h4>Mențiuni</h4>
               <p class="holiday__text text--ident">
@@ -176,13 +198,14 @@
                     <td><strong>Semnătura înlocuitor</strong></td>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr ng-repeat = "item in holidayForm.searchProjectHold track by $index">
-                    <td>
+
+                <tbody ng-repeat= "item in holidayForm.searchProjectHold track by $index">
+                  <tr>
+                    <td >
                       <span ng-model = "item.name">{{item}}</span>
                     </td>
                     <td>
-                          <span>{{holidayForm.searchRepEmpHold[$index]}}</span>
+                        <span>{{holidayForm.searchEmp[$index]}}</span>
                     </td>
                     <td><!-- Empty field for signature --></td>
                   </tr>
@@ -196,10 +219,9 @@
               <div class="holiday__inner clearfix">
                 <p class="holiday__text text--left">Team leader,</p>
                 <p class="holiday__text text--right">
-                  Data: <strong><i ng-model = "holidayForm.today">{{holidayForm.today | date: 'dd-MMM-yyyy'}}</i></strong>
+                  Data: <strong><i ng-model = "holidayForm.today">{{holidayForm.today | date: 'dd.MM.yyyy'}}</i></strong>
                 </p>
               </div>
-              <p class="holiday__text text--lite" ng-repeat = "item in holidayForm.holiday.teamLeader track by $index" ng-model = "holidayForm.holiday.teamLeader">{{item.firstName}} {{item.lastName}}</p>
 
             </div>
             <md-button class="md-primary md-raised generatepdf" ng-click="holidayForm.createPDF()">Generate PDF</md-button>

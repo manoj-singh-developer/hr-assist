@@ -7,9 +7,9 @@
     .factory('User', User);
 
   User
-    .$inject = ['$resource', 'apiUrl', 'alertService'];
+    .$inject = ['$resource', 'apiUrl', 'alertService', '$stateParams'];
 
-  function User($resource, apiUrl, alertService) {
+  function User($resource, apiUrl, alertService, $stateParams) {
 
     function User() {}
 
@@ -94,9 +94,10 @@
     };
 
 
-    User.getSchedule = (user) => {
-      url = apiUrl + '/users/:id/schedule';
-      resource = $resource(url).get({ id: user.id });
+    User.getSchedule = () => {
+      var userId = $stateParams.id;
+      url = apiUrl + '/users/'+userId+'/schedule';
+      resource = $resource(url).get();
 
       promise = resource.$promise
         .then(data => data)
@@ -154,43 +155,162 @@
       return promise;
     };
 
+    User.getUserDevices = (userId) => {
+      var userID = userId;
+      url = apiUrl + '/users/'+userID+'/devices';
+      resource = $resource(url).get();
 
-    User.getDevices = () => {
-
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getUserDevices'));
+      return promise;
     };
 
-    User.updateDevices = () => {
+    User.updateDevices = (user, devices) => {
+      let deviceIds = devices.map(device => device.id);
+      url = apiUrl + '/users/:id/devices';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: user.id }, { device_ids: deviceIds });
 
+      promise = resource.$promise
+          .then((data) => {
+          alertService.success(model, 'updateDevices');
+      return data;
+      })
+      .catch(() => alertService.error(model, 'updateDevices'));
+
+      return promise;
     };
 
-    User.removeDevices = () => {
+    User.removeDevices = (user, devices) => {
+      let data = {};
+      data["device_ids[]"] = devices;
+      url = apiUrl + '/users/:id/devices';
+      resource = $resource(url, data).delete({ id: user.id });
 
+      promise = resource.$promise
+          .then((data) => {
+          alertService.success(model, 'removeDevices');
+      return data;
+      })
+      .catch(() => alertService.error(model, 'removeDevices'));
+
+      return promise;
     };
 
-
+    /*TODO: To create a component Language and to add this to the language model*/
     User.getLanguages = () => {
+      url = apiUrl + '/languages';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
 
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getLanguages'));
+
+      return promise;
     };
 
-    User.updateLanguages = () => {
+    User.getUserLanguages = (user) => {
+      url = apiUrl + '/users/:id/languages';
+      resource = $resource(url).get({ id: user.id });
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getUserLanguages'));
 
+      return promise;
     };
 
-    User.removeLanguages = () => {
+    User.updateLanguages = (user, languages) => {
+      let languageIds = languages.map(language => language.id);
+      url = apiUrl + '/users/:id/languages';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: user.id }, { language_ids: languageIds });
 
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'updateLanguages');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'updateLanguages'));
+
+      return promise;
+    };
+
+    User.removeLanguages = (user, languages) => {
+      let data = {};
+      data.language_ids = languages.map(language => language.id);
+      url = apiUrl + '/users/:id/languages';
+      resource = $resource(url, data).delete({ id: user.id });
+      
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'removeLanguages');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'removeLanguages'));
+
+      return promise;
     };
 
 
-    User.getEducations = () => {
 
+    User.getEducations = (id) => {
+      url = apiUrl + '/users/:id/educations';
+      resource = $resource(url).get({ id: id });
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getEducations'));
+      return promise;
     };
 
-    User.updateEducations = () => {
+    User.saveEducations = (id, educations) => {
+      url = apiUrl + '/users/:id/educations';
+      resource = $resource(url, {}, {
+        'post': {
+          method: 'POST'
+        }
+      }).save({ id: id }, educations);
 
+      promise = resource.$promise
+        .then(data =>data.items)
+        .catch(() => alertService.error(model, 'saveEducations'));
+
+      return promise;
     };
 
-    User.removeEducations = () => {
+    User.updateEducations = (id, educations) => {
+      url = apiUrl + '/users/:id/educations';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: id }, educations);
 
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'updateEducations'));
+
+      return promise;
+    };
+
+    User.removeEducations = (id,education) => {
+      url = apiUrl + '/users/:id/educations';
+      resource = $resource(url, education).delete({ id: id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'remove');
+          return data;
+        })
+        .catch(() => alertService.error(model, 'remove'));
+
+      return promise;
     };
 
 
@@ -239,14 +359,14 @@
     };
 
     User.removeProjectTechnologies = (project, technologies) => {
+      let data = {};
       let userId = project.user_id;
       let projId = project.project_id;
       let techId = technologies.map(technologies => technologies.id);
+      data["technology_ids[]"] = techId;
       url = apiUrl + '/users/:user_id/projects/:project_id/technologies';
-      resource = $resource(url)
-      .delete({ user_id: userId,
-               project_id: projId,
-               technology_ids: techId });
+      resource = $resource(url, data).delete({ user_id: userId,
+               project_id: projId });
 
       promise = resource.$promise
         .then((data) => {
@@ -260,10 +380,33 @@
 
     User.getHolidays = () => {
 
+      let userId= $stateParams.id;
+      url = apiUrl + '/users/'+userId+'/holidays';
+      resource = $resource(url).query();
+
+      promise = resource.$promise
+        .then(data => data)
+        .catch(() => alertService.error(model, 'getUserHolidays'));
+
+      return promise;
     };
 
-    User.updateHolidays = () => {
+    User.addHolidays = (data) => {
+      let userId= $stateParams.id;
+      url = apiUrl + '/users/'+userId+'/holidays';
+      resource = $resource(url, {}, {
+        'post': {
+          method: 'POST'
+        }
+      }).save(data);
 
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'save');
+          return data;
+        }).catch(() => alertService.error(model, 'save'));
+
+      return promise;
     };
 
     User.removeHolidays = () => {

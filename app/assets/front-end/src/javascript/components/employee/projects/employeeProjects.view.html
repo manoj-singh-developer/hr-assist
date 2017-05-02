@@ -49,7 +49,17 @@
           <h3 class="u-mb-10">
             <strong>{{ project.project.name }}</strong>
             <p>
-              <span ng-click="userProjects.editProject(project)">Edit</span>
+              <!-- <span ng-click="userProjects.editProject(project)">Edit</span> -->
+              <md-button
+                class="md-icon-button md-primary"
+                label="View project details"
+                aria-label="View project details"
+                ng-click="userProjects.editProject(project)">
+                <md-icon class="material-icons">visibility</md-icon>
+                <md-tooltip md-autohide="true">
+                  View project details
+                </md-tooltip>
+              </md-button>
             </p>
 
             <p>
@@ -200,17 +210,28 @@
       </p>
       <!-- TECHNOLOGIES -->
       <md-list layout="row" layout-wrap layout-align="left center">
+          <md-list-item
+            class="md-2-line"
+            ng-repeat="tech in userProjects.userTechnologies track by $index">
+            <div class="md-list-item-text" layout="column">
+              <p class="c-filters__item"
+                ng-click="userProjects.removeFromQueue(tech)" >
+                {{$index + 1}} {{tech.name}}
+                <span class="material-icons c-filters__icon">close</span>
+              </p>
+            </div>
+        </md-list-item>
         <md-list-item
-          flex="50"
-          class="md-2-line"
-          ng-repeat="tech in userProjects.currentProjectTechnologies track by $index">
+          flex="100"
+          layout="row"
+          ng-show="showTechnologies">
 
           <!-- TECHNOLOGIES AUTOCOMPLETE -->
-          <div class="md-block" flex-gt-xs="80">
+          <div class="md-block" flex-gt-xs="100">
             <form ng-submit="$event.preventDefault()">
               <md-autocomplete
                 md-search-text-change="userProjects.searchTextChange(userProjects.technology[$index])"
-                md-selected-item-change="userProjects.addInQueueTechnology(item)"
+                md-selected-item-change="userProjects.addInQueue(item)"
                 md-search-text="userProjects.technology[$index]"
                 md-items="item in userProjects.querySearch(userProjects.technology[$index], userProjects.technologies)"
                 md-item-text="item.name"
@@ -232,7 +253,7 @@
             class="md-icon-button md-warn"
             label="Remove project"
             aria-label="Remove project"
-            ng-click="userProjects.removeFromQueueTechnology(tech, [$index])">
+            ng-click="userProjects.removeFromQueue(tech)">
             <md-icon class="material-icons">delete</md-icon>
           </md-button>
 
@@ -240,14 +261,14 @@
       </md-list><!-- /TECHNOLOGIES -->
 
 
-
-      <md-button
-        md-no-ink
-        class="md-primary small-text"
-        ng-click="userProjects.AddNewTechnology(newTechnology)">
-        Add New Technology
-      </md-button>
-
+      <section  ng-show="!showTechnologies">
+        <md-button
+          md-no-ink
+          class="md-primary small-text"
+          ng-click="userProjects.AddTechnology(); showTechnologies = ! showTechnologies">
+          Add New Technology
+        </md-button>
+      </section>
     </section><!-- /CARD GROUP ng-repeat -->
 
   </md-content><!-- /FORM PROJECTS -->
@@ -263,7 +284,7 @@
     ng-show="!userProjects.settings.showForm">
     <md-button
       class="c-card-profile__btn no-margin"
-      ng-click="userProjects.addEmptyProject(); userProjects.toggleCard($event, 'open'); userProjects.toggleForm()"
+      ng-click="userProjects.AddTechnology(); userProjects.toggleCard($event, 'open'); userProjects.toggleForm()"
       ng-disabled="btnIsDisabled">
       Add Project
     </md-button>

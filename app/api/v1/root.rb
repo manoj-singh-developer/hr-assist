@@ -21,7 +21,8 @@ module V1
         mount V1::TechnologyAPI
         mount V1::TrainingAPI
         mount V1::UploadAPI
-        mount V1::UserAPI
+        mount V1::Users::UserAPI
+        mount V1::Users::UserRelationsAPI
 
         add_swagger_documentation(
             api_version: "v1",
