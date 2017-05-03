@@ -18,7 +18,7 @@
       );
     };
 
-    if(localStorage.getItem('auth_token')){
+    if(localStorage.auth_token && window.location.href === 'http://localhost:8000/#/' || window.location.href === 'https://hr.assist.ro/#/'){
       var tokenToDecode = localStorage.getItem('user_token');
       var decodeToken = tokenService.decodeToken(tokenToDecode);
       var userId  = decodeToken.user_id;
