@@ -110,7 +110,8 @@
 
 
       <!-- REMOVE PROJECT -->
-<!--       <md-button
+      <!-- I DON'T FIND ANY MEANING OF THIS REMOVE BUTTON -->
+    <!-- <md-button
         class="md-fab md-mini md-warn c-card-group__remove"
         label="Remove project"
         aria-label="Remove project"
@@ -156,11 +157,12 @@
 
 
       <!-- SELECT START/END DATE -->
-      <section layout-gt-xs="row" layout-align="start center">
+      <!-- TODO SELECT DATE GET UNDEFINED DATA -->
+      <!-- <section layout-gt-xs="row" layout-align="start center"> 
 
         <div flex-gt-xs="50">
           <label class="u-ml-5">From</label>
-        <!--<hra-date-select
+          <hra-date-select
             class="vertical hide-days"
             flex-gt-xs="50"
             ng-model="userProjects.start_date">
@@ -174,30 +176,33 @@
             flex-gt-xs="50"
             ng-model="userProjects.end_date">
           </hra-date-select>
-        </div> -->
+        </div> 
+      </section> --> <!-- /SELECT START/END DATE-->
 
-        <!-- SELECT PERIOD -->
-        <section class="u-mb-20 u-mt-20"
-         layout="row"
-         layout-align="center">
-
-          <md-datepicker 
-            ng-model="userProjects.start_date"
-            md-placeholder="Start date"
-            md-open-on-focus
-            required>
-          </md-datepicker>
-
-          <md-datepicker 
-            ng-model="userProjects.end_date"
-            md-placeholder="End date"
-            md-open-on-focus
-            required>
-          </md-datepicker>
-
-        </section><!-- /SELECT PERIOD -->
-
-      </section><!-- /SELECT START/END DATE -->
+        <!-- SELECT START/END DATE -->
+        <section layout-gt-xs="row" layout-align="start center">
+          <div flex-gt-xs="50">
+            <label class="u-ml-5">From</label>
+            <md-datepicker 
+              ng-model="userProjects.start_date"
+              md-placeholder="Start date"
+              md-open-on-focus
+              required>
+            </md-datepicker>
+          </div>
+          
+          <div flex-gt-xs="50">
+            <label class="u-ml-5">To</label>
+            <md-datepicker 
+              ng-model="userProjects.end_date"
+              md-placeholder="End date"
+              md-open-on-focus
+              md-min-date="userProjects.minDate"
+              required>
+            </md-datepicker>
+          <div>
+        </section>
+        <!-- /SELECT START/END DATE -->
 
       <md-divider
         class="md-padding divider-bold u-no-padding u-mt-20 u-mb-20">

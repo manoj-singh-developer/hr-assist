@@ -21,6 +21,7 @@
     vm.technologies = [];
     vm.disableProjectName = false;
     vm.userTechnologies = [];
+    vm.minDate = new Date();
 
     vm.addProject = addProject;
     vm.addInQueue = addInQueue;
@@ -95,7 +96,7 @@
       let projectId = [];
       let startDate = _formatDate(vm.start_date);
       let endDate = _formatDate(vm.end_date);
-
+      
       for (let y = 0; y < projectsToAdd.length; y++) {
         projectId = projectsToAdd[y].id;
       }
@@ -139,7 +140,7 @@
       technologiesToAdd = [];
       vm.searchText = '';
       vm.disableProjectName = false;
-      vm.start_date,
+      vm.start_date = new Date();
         vm.end_date = new Date();
     }
 
