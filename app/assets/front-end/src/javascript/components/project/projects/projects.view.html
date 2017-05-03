@@ -387,7 +387,6 @@
           <th md-column>Actions</th>
         </tr>
       </thead>
-
       <tbody md-body>
         <tr
           class="project__row"
@@ -406,10 +405,10 @@
             </strong>
           </td>
 
-          <td md-cell>{{project.startDate | date: 'dd-MM-yyyy'}}</td>
+          <td md-cell>{{project.start_date | date: 'dd-MM-yyyy'}}</td>
 
           <td md-cell>
-            <p class="u-no-margin">{{project.deadline | date: 'dd-MM-yyyy'}}</p>
+            <p class="u-no-margin">{{project.end_date | date: 'dd-MM-yyyy'}}</p>
             <span ng-show="project.daysLeft > 0 ">
               <strong>
               ({{project.daysLeft}}

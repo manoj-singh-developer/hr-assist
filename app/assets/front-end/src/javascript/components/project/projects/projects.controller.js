@@ -38,7 +38,7 @@
 
     function showForm(device) {
       $mdDialog.show({
-        templateUrl: rootTemplatePath + '/device/views/deviceForm.view.html',
+        templateUrl: rootTemplatePath + '/project/form/projectForm.view.html',
         controller: 'deviceFormCtrl',
         controllerAs: 'deviceForm',
         clickOutsideToClose: true,
