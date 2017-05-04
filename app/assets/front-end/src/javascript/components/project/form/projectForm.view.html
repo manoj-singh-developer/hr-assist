@@ -1,13 +1,18 @@
 <section nlayout="column" ng-cloak="" class="md-inline-form">
 
   <md-toolbar class="md-table-toolbar">
-    <div class="md-toolbar-tools ">
-      {{projectForm.formTitle}}
+    <div class="md-toolbar-tools">
+      Add Project
     </div>
   </md-toolbar>
 
   <section class="md-padding">
-    <form name="projectform" class="form form-add-user">
+    <form 
+      class="form form-add-project"
+      ng-submit="projectForm.add()"
+      novalidate
+      name="projectFormular"
+      >
 
       <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
         <!-- GENERAL TAB -->
@@ -17,8 +22,8 @@
               <md-input-container md-no-float class="md-block" flex-gt-xs="">
 
                 <label>Name</label>
-                <input ng-model="projectForm.project.name" name=name required>
-
+                <input ng-model="projectForm.project.name" name="name" required>
+                  
                 <div ng-messages="projectform.name.$error">
                   <div ng-message="required">This field is required</div>
                 </div>
@@ -30,8 +35,8 @@
               <md-input-container md-no-float class="md-block" flex-gt-xs="">
 
                 <label>Description</label>
-                <textarea
-                  ng-model="projectForm.project.description"
+                <textarea 
+                  ng-model="projectForm.project.description" 
                   name="description"
                   required>
                 </textarea>
@@ -43,246 +48,47 @@
               </md-input-container>
             </div>
 
-            <md-content class = "md-padding">
-              <md-list flex>
-                <md-subheader class="md-no-sticky">Add/Remove Technologies</md-subheader>
-                <md-list-item ng-repeat="item in projectForm.project.technologies track by $index">
-                  <div ng-click="projectForm.removeTechnology(item, projectForm.project, $index)">
-                    <h3>Technology: <i>{{item}}</i></h3>
-                  </div>
-                </md-list-item>
-              </md-list>
-
-
-              <form ng-submit="$event.preventDefault()">
-                <md-autocomplete
-                  ng-model="projectForm.searchTech"
-                  md-no-cache="true"
-                  md-selected-item="projectForm.selectTech"
-                  md-search-text-change="projectForm.searchTextChange(projectForm.searchTech)"
-                  md-search-text="projectForm.searchTech"
-                  md-selected-item-change="projectForm.addTechnology(item, projectForm.project)"
-                  md-items="item in projectForm.technologySearch(projectForm.searchTech)"
-                  md-item-text="item.label"
-                  md-min-length="0"
-                  placeholder="Search for a technology">
-                <md-item-template >
-                  <span class="item-metadata">
-                    {{item.label}}
-                  </span>
-                </md-item-template>
-                </md-autocomplete>
-              </form>
-            </md-content>
-
-            <!-- Add - Remove Application Type -->
-
-            <md-content class="md-padding">
-              <md-list flex>
-                <md-subheader class="md-no-sticky">Add/Remove Application Type</md-subheader>
-                <md-list-item ng-repeat="item in projectForm.project.applicationTypes">
-                  <div ng-click="projectForm.removeApp($index, item, projectForm.project)">
-                    <h3>Application: <i>{{item.name}}</i></h3>
-                  </div>
-                </md-list-item>
-              </md-list>
-
-              <form ng-submit="$event.preventDefault()">
-                <md-autocomplete
-                  ng-model="projectForm.searchApp"
-                  md-no-cache="true"
-                  md-selected-item="projectForm.selectedApp"
-                  md-search-text-change="projectForm.searchTextChange(projectForm.searchApp)"
-                  md-search-text="projectForm.searchApp"
-                  md-selected-item-change="projectForm.addApp(item, projectForm.project)"
-                  md-items="item in projectForm.appSearch(projectForm.searchApp)"
-                  md-item-text="item.name"
-                  md-min-length="0"
-                  placeholder="Search for an application">
-                <md-item-template >
-                  <span class="item-metadata">
-                    {{item.name}}
-                  </span>
-                </md-item-template>
-                </md-autocomplete>
-              </form>
-            </md-content><!-- /Add - Remove Application Type -->
-
-            <!-- Add - Remove Industry -->
-
-            <md-content class="md-padding">
-              <md-list flex>
-                <md-subheader class="md-no-sticky">Add/Remove Industry</md-subheader>
-                <md-list-item ng-repeat="item in projectForm.project.industries track by $index">
-                  <div ng-click="projectForm.removeIndustry(item, projectForm.project, $index)">
-                    <h3>Industry: <i>{{item.name}}</i></h3>
-                  </div>
-                </md-list-item>
-              </md-list>
-
-              <form ng-submit="$event.preventDefault()">
-                <md-autocomplete
-                  md-no-cache="true"
-                  md-selected-item="projectForm.selectedIndustry"
-                  md-search-text-change="projectForm.searchTextChange(projectForm.searchIndustry)"
-                  md-search-text="projectForm.searchIndustry"
-                  md-selected-item-change="projectForm.addIndustry($index, item, projectForm.project)"
-                  md-items="item in projectForm.industrySearch(projectForm.searchIndustry)"
-                  md-item-text="item.name"
-                  md-min-length="0"
-                  placeholder="Search for an industry">
-                <md-item-template >
-                  <span class="item-metadata">
-                    {{item.name}}
-                  </span>
-                </md-item-template>
-                </md-autocomplete>
-              </form>
-            </md-content> <!-- /Add - Remove Industry -->
-
-            <!-- Add - Remove Customer -->
-
-            <md-content class="md-padding">
-              <md-list flex>
-                <md-subheader class="md-no-sticky">Add/Remove Customer</md-subheader>
-                <md-list-item ng-repeat="item in projectForm.project.customers track by $index">
-                  <div ng-click="projectForm.removeCustomer(item, projectForm.project, index)">
-                    <h3>Customer: <i>{{item.name}}</i></h3>
-                  </div>
-                </md-list-item>
-              </md-list>
-
-              <form ng-submit="$event.preventDefault()">
-                <md-autocomplete
-                  md-no-cache="true"
-                  md-selected-item="projectForm.selectedCustomer"
-                  md-search-text-change="projectForm.searchTextChange(projectForm.searchCustomer)"
-                  md-search-text="projectForm.searchCustomer"
-                  md-selected-item-change="projectForm.addCustomer(item, projectForm.project)"
-                  md-items="item in projectForm.customerSearch(projectForm.searchCustomer)"
-                  md-item-text="item.name"
-                  md-min-length="0"
-                  placeholder="Search for a customer">
-                <md-item-template >
-                  <span class="item-metadata">
-                    {{item.name}}
-                  </span>
-                </md-item-template>
-                </md-autocomplete>
-              </form>
-            </md-content> <!-- /Add - Remove Customer -->
 
             <div layout-gt-xs="row">
 
-                <label>Start date</label>
-                <md-datepicker
-                  ng-model="projectForm.project.startDate"
-                  md-placeholder="Enter date">
-                </md-datepicker>
+              <label>Start date</label>
+              <md-datepicker 
+                ng-model="projectForm.project.start_date" 
+                md-placeholder="Enter date"
+                required>
+              </md-datepicker>
 
 
 
-                <label>Deadline</label>
-                <md-datepicker
-                  ng-model="projectForm.project.deadline"
-                  md-min-date = "projectForm.project.startDate"
-                  md-placeholder="Enter date">
-                </md-datepicker>
+              <label>End date</label>
+              <md-datepicker 
+                ng-model="projectForm.project.end_date"
+                md-min-date="projectForm.today"
+                md-placeholder="Enter date"
+                required>
+              </md-datepicker>
 
             </div>
           </md-content>
+        </md-tab>
 
-          <div layout-gt-xs="row" class="md-padding">
-            <md-input-container md-no-float class="md-block" flex-gt-xs="">
-              <label>Project Url</label>
-              <input ng-model="projectForm.project.projectUrl">
-            </md-input-container>
-          </div>
-        </md-tab><!-- /GENERAL TAB -->
-
-        <!-- EMPLOYEES TAB -->
-
-        <md-tab label="Employees">
-
-          <!-- Add - Remove Project Manager -->
-
-          <md-content class="md-padding">
-            <md-input-container md-no-float class="md-block">
-             <form ng-submit="$event.preventDefault()">
-                <md-autocomplete
-                  ng-model="projectForm.project.manager"
-                  md-no-cache="true"
-                  md-selected-item="projectForm.selected"
-                  md-search-text-change="projectForm.searchTextChange(projectForm.project.manager)"
-                  md-search-text="projectForm.project.manager"
-                  md-items="item in projectForm.querySearch(projectForm.project.manager)"
-                  md-item-text="item.firstName + ' ' + item.lastName"
-                  md-min-length="0"
-                  placeholder="Project Manager">
-                <md-item-template>
-                  <span class="item-metadata">
-                    {{item.firstName}} {{item.lastName}}
-                  </span>
-                </md-item-template>
-                </md-autocomplete>
-              </form>
-            </md-input-container>
-          </md-content><!-- /Add - Remove Project Manager -->
-
-          <!-- Add - Remove Employees -->
-
-          <md-content class="md-padding">
-            <md-list flex>
-              <md-subheader class="md-no-sticky">Add/Remove Employees</md-subheader>
-              <md-list-item ng-repeat="item in projectForm.project.employees ">
-                <div ng-click="projectForm.removeEmployee(item, projectForm.project)">
-                  <h3>Employee: <i>{{item.firstName}} {{item.lastName}}</i></h3>
-                </div>
-              </md-list-item>
-            </md-list>
-
-            <form ng-submit="$event.preventDefault()">
-              <md-autocomplete
-                ng-model="projectForm.searchText"
-                md-no-cache="true"
-                md-selected-item="projectForm.selectedItem"
-                md-search-text-change="projectForm.searchTextChange(projectForm.searchText)"
-                md-search-text="projectForm.searchText"
-                md-selected-item-change="projectForm.addEmployee(item, projectForm.project)"
-                md-items="item in projectForm.querySearch(projectForm.searchText)"
-                md-item-text="item.firstName"
-                md-min-length="0"
-                placeholder="Search for an employee">
-              <md-item-template >
-                <span class="item-metadata">
-                  {{item.firstName}} {{item.lastName}}
-                </span>
-              </md-item-template>
-              </md-autocomplete>
-            </form>
-          </md-content><!-- /Add - Remove Employees -->
-
-        </md-tab><!-- /EMPLOYEES TAB -->
       </md-tabs>
 
       <div layout="row" layout-align="center center">
 
-        <md-button
-          class="md-raised md-primary"
-          ng-click="projectForm.saveProject(projectForm.project)"
-          ng-disabled="btnIsDisabled">
+        <md-button class="md-raised md-primary" 
+          ng-click="projectForm.add()"
+          ng-disabled="projectFormular.$invalid">
           Save
         </md-button>
 
-        <md-button
-          class="md-raised md-primary"
-          ng-click="projectForm.clearFields()">
+        <md-button class="md-raised md-primary" 
+          ng-click="projectForm.clearButton()">
           Clear
         </md-button>
 
-        <md-button
-          class="md-raised"
-          ng-click="projectForm.closeDialog()">
+        <md-button class="md-raised" 
+          ng-click="projectForm.closeButton()">
           Close
         </md-button>
 

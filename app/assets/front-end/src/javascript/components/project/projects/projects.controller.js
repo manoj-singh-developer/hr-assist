@@ -7,15 +7,14 @@
     .controller('projectsCtrl', projectsCtrl);
 
   projectsCtrl
-    .$inject = ['$scope', '$rootScope', '$mdDialog', 'tableSettings', 'autocompleteService', 'Project'];
+    .$inject = ['$scope', '$rootScope', '$mdDialog', 'autocompleteService', 'Project'];
 
-  function projectsCtrl($scope, $rootScope, $mdDialog, tableSettings, autocompleteService, Project) {
+  function projectsCtrl($scope, $rootScope, $mdDialog, autocompleteService, Project) {
 
     var vm = this;
     vm.ids = [];
     vm.selected = [];
-    vm.tableSettings = tableSettings;
-
+    vm.showFilters = false
 
     _getProjects();
 
@@ -24,41 +23,41 @@
     vm.remove = remove;
     vm.multipleRemove = multipleRemove;
     vm.querySearch = querySearch;
+    vm.toggleFilters = toggleFilters;
 
-
-    $rootScope.$on('event:deviceUpdate', () => {
+    $rootScope.$on('event:projectUpdate', () => {
       // TODO: need a beeter approach here,
       // there is no need for an extra request on update
       _getProjects();
     });
 
-    $rootScope.$on('event:deviceAdd', (event, data) => {
+    $rootScope.$on('event:projectAdd', (event, data) => {
       vm.projects = vm.projects.concat(data);
     });
 
-    function showForm(device) {
+    function showForm(project) {
       $mdDialog.show({
         templateUrl: rootTemplatePath + '/project/form/projectForm.view.html',
-        controller: 'deviceFormCtrl',
-        controllerAs: 'deviceForm',
+        controller: 'projectFormCtrl',
+        controllerAs: 'projectForm',
         clickOutsideToClose: true,
         data: {
-          device: angular.copy(device),
+          project: angular.copy(project),
         }
       });
     }
 
-    function remove(device, event) {
+    function remove(project, event) {
       var confirm = $mdDialog.confirm()
-        .title('Would you like to delete ' + device.name + ' equipment?')
+        .title('Would you like to delete ' + project.name + ' project?')
         .targetEvent(event)
         .ok('Yes')
         .cancel('No');
 
       $mdDialog.show(confirm).then(() => {
-        Project.remove(device.id).then((data) => {
+        Project.remove(project.id).then((data) => {
           if (data) {
-            let toRemove = _.findWhere(vm.projects, { id: device.id });
+            let toRemove = _.findWhere(vm.projects, { id: project.id });
             vm.projects = _.without(vm.projects, toRemove);
           }
         });
@@ -71,6 +70,10 @@
       return autocompleteService.querySearch(query, vm.projects);
     }
 
+
+    function toggleFilters() {
+      vm.showFilters = !vm.showFilters;
+    }
 
     function _getProjects() {
       Project.getAll().then((data) => {
