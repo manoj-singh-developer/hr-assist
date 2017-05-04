@@ -17,7 +17,9 @@
     vm.user = {};
     vm.languages = [];
     vm.userLanguages = [];
+    vm.copyUserLanguages = [];
     vm.addNewLanguage = addNewLanguage;
+
     vm.levels = [
       "Elementary proficiency",
       "Limited working proficiency",
@@ -29,6 +31,7 @@
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.save = save;
+    vm.cancel = cancel;
     vm.showEditLanguages = false;
 
     _getLanguages();
@@ -48,51 +51,67 @@
     }
 
     function addInQueue(language) {
+
       if (language) {
-        let toRemove = _.findWhere(languagesToRemove, { id: language.id });
-        languagesToRemove = _.without(languagesToRemove, toRemove);
-        languagesToAdd.push(language);
-        vm.userLanguages.push(language);
-        vm.searchText = "";
+        let notToAdd = _.findWhere(vm.copyUserLanguages, { id: language.id });
+        if(notToAdd === undefined){
+          let toRemove = _.findWhere(languagesToRemove, { id: language.id });
+          languagesToRemove = _.without(languagesToRemove, toRemove);
+          languagesToAdd.push(language);
+          vm.copyUserLanguages.push(language);
+        }
+      vm.searchText = "";  
       }
     }
 
     function removeFromQueue(language) {
-      let toRemove = _.findWhere(vm.userLanguages, { id: language.id });
-      vm.userLanguages = _.without(vm.userLanguages, toRemove);
+      let toRemove = _.findWhere(vm.copyUserLanguages, { id: language.id });
+      vm.copyUserLanguages = _.without(vm.copyUserLanguages, toRemove);
       languagesToAdd = _.without(languagesToAdd, toRemove);
-      languagesToRemove.push(language);
+      languagesToRemove.push(language.id);
+    }
+
+    function cancel(){
+      vm.copyUserLanguages = [];
+      User.getUserLanguages(vm.user)
+      .then((data) => {
+        vm.userLanguages = data;
+        vm.copyUserLanguages.push(...vm.userLanguages);
+      });
     }
 
     function save() {
-      if (languagesToAdd.length) {
+
+      if (languagesToAdd.length > 0) {
         User.updateLanguages(vm.user, languagesToAdd)
-          .then(() => {
-            _getUserLanguages();
-            vm.showEditLanguages = false;
+          .then((data) => {
+            vm.userLanguages = data;
           });
+          languagesToAdd = [];
       }
 
-      if (languagesToRemove.length) {
-        User.removeLanguages(vm.user, languagesToRemove)
-          .then(() => {
-            _getUserLanguages();
-            vm.showEditLanguages = false;
-          });
+      if (languagesToRemove.length > 0) {
+        User.removeLanguages(vm.user, languagesToRemove);
+        languagesToRemove = [];
       }
+
+      vm.showEditLanguages = false;
     }
 
 
     function _getLanguages() {
-      User.getLanguages().then((data) => {
-        vm.languages = data;
-        autocompleteService.buildList(vm.languages, ['long_name']);
+      User.getLanguages()
+        .then((data) => {
+          vm.languages = data;
+          autocompleteService.buildList(vm.languages, ['long_name']);
       });
     }
 
     function _getUserLanguages() {
-      User.getUserLanguages(vm.user).then((data) => {
+      User.getUserLanguages(vm.user)
+      .then((data) => {
         vm.userLanguages = data;
+        vm.copyUserLanguages.push(...vm.userLanguages);
       });
     }
 

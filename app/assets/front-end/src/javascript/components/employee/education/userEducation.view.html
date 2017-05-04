@@ -54,6 +54,7 @@
 
 
   <!-- FORM EDUCATION -->
+  <form ng-submit="$event.preventDefault()" name="addEduForm">
   <md-content
     ng-show="userEducation.showEditEducation"
     class="md-padding">
@@ -87,7 +88,8 @@
           <label>School</label>
           <input
             ng-model="userEducation.userEducationList[$index].name"
-            ng-disabled ="userEducation.disabledEducations">
+            ng-disabled ="userEducation.disabledEducations"
+            required>
         </md-input-container>
       </section><!-- /SCHOOL -->
 
@@ -103,7 +105,8 @@
           <input
             name="userEducation.userEducationList[$index].description"
             ng-model="userEducation.userEducationList[$index].description"
-            ng-disabled ="userEducation.disabledEducations">
+            ng-disabled ="userEducation.disabledEducations"
+            required>
         </md-input-container>
       </section><!-- /FIELD OF STUDY -->
 
@@ -117,7 +120,8 @@
           <label>Diploma</label>
           <input
             ng-model="userEducation.userEducationList[$index].degree"
-            ng-disabled ="userEducation.disabledEducations">
+            ng-disabled ="userEducation.disabledEducations"
+            required>
         </md-input-container>
       </section><!-- DIPLOMA -->
 
@@ -134,7 +138,8 @@
             show-months="true"
             orientation="vertical"
             initial-date="userEducation.userEducationList[$index].start_date"
-            ng-model="userEducation.userEducationList[$index].start_date">
+            ng-model="userEducation.userEducationList[$index].start_date"
+            required>
           </hra-date-select>
         </div>
 
@@ -145,7 +150,8 @@
             show-months="true"
             orientation="vertical"
             initial-date="userEducation.userEducationList[$index].end_date"
-            ng-model="userEducation.userEducationList[$index].end_date">
+            ng-model="userEducation.userEducationList[$index].end_date"
+            required>
           </hra-date-select>
         </div>
 
@@ -192,7 +198,8 @@
 
     <md-button
       class="md-raised md-primary"
-      ng-click="userEducation.save(); userEducation.displayEditEducation()">
+      ng-click="userEducation.save(); userEducation.displayEditEducation()"
+      ng-disabled="addEduForm.$invalid">
       Save
     </md-button>
 
@@ -204,6 +211,7 @@
 
   </md-card-actions>
   <!-- /CARD ACTIONS -->
+  </form>
 
 
 
