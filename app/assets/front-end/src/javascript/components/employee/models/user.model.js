@@ -245,7 +245,7 @@
 
     User.removeLanguages = (user, languages) => {
       let data = {};
-      data.language_ids = languages.map(language => language.id);
+      data["language_ids[]"] = languages.map(language => language.id);
       url = apiUrl + '/users/:id/languages';
       resource = $resource(url, data).delete({ id: user.id });
       
@@ -314,18 +314,68 @@
     };
 
 
-    User.getProjects = () => {
+    User.getProjects = (user) => {
+      url = apiUrl + '/users/:id/projects';
+      resource = $resource(url).get({ id: user.id });
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getProjects'));
 
+      return promise;
     };
 
-    User.updateProjects = () => {
+    User.updateProjects = (user, project) => {
+      url = apiUrl + '/users/:id/projects/:project_id';
+      let projectId = project.project_id;
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: user.id, 
+                  project_id: projectId}, project);
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'updateProjects');
+           return data;
+        })
+        .catch(() => alertService.error(model, 'updateProjects'));
 
+      return promise;
     };
 
-    User.removeProjects = () => {
 
+    User.removeProjects = (user, project) => {
+      let userId = user.id;
+      let prjId = project.project.id;
+      url = apiUrl + '/users/:id/projects/:project_id';
+      resource = $resource(url).delete({ id: userId, project_id: prjId });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'remove');
+          // return data;
+        })
+        .catch(() => alertService.error(model, 'remove'));
+
+      return promise;
     };
 
+    User.removeProjectTechnologies = (project, technologies) => {
+      let data = {};
+      let userId = project.user_id;
+      let projId = project.project_id;
+      data["technology_ids[]"] = technologies.map(technologies => technologies.id);
+      url = apiUrl + '/users/:user_id/projects/:project_id/technologies';
+      resource = $resource(url, data).delete({ user_id: userId,
+               project_id: projId });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'removeProjectTechnologies');
+          // return data;
+        })
+        .catch(() => alertService.error(model, 'removeProjectTechnologies'));
+
+      return promise;
+    };
 
     User.getHolidays = () => {
 
