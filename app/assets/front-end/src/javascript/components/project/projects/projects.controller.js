@@ -7,23 +7,49 @@
     .controller('projectsCtrl', projectsCtrl);
 
   projectsCtrl
-    .$inject = ['$scope', '$rootScope', '$mdDialog', 'autocompleteService', 'Project'];
+    .$inject = ['$scope', '$stateParams', '$q', '$rootScope', '$mdDialog', 'autocompleteService', 'Project', 'Technology', 'Customer', 'Industry', 'AppType'];
 
-  function projectsCtrl($scope, $rootScope, $mdDialog, autocompleteService, Project) {
+  function projectsCtrl($scope, $stateParams, $q, $rootScope, $mdDialog, autocompleteService, Project, Technology, Customer, Industry, AppType) {
 
     var vm = this;
-    vm.ids = [];
-    vm.selected = [];
     vm.showFilters = false
+    vm.resources = {};
 
-    _getProjects();
 
+    _getResources();
+
+
+    vm.table = {
+      options: {
+        rowSelection: true,
+        multiSelect: true,
+        autoSelect: true,
+        decapitate: false,
+        largeEditDialog: false,
+        boundaryLinks: true,
+        limitSelect: true,
+        pageSelect: true
+      },
+      query: {
+        order: 'name',
+        filter: '',
+        limit: 10,
+        page: 1
+      },
+      "limitOptions": [10, 15, 20],
+      selected: []
+    }
 
     vm.showForm = showForm;
     vm.remove = remove;
     vm.multipleRemove = multipleRemove;
     vm.querySearch = querySearch;
     vm.toggleFilters = toggleFilters;
+
+    $rootScope.$on("event:projectResourcesLoaded", (event, data) => {
+      vm.projects = data.projects;
+      autocompleteService.buildList(vm.projects, ['name']);
+    });
 
     $rootScope.$on('event:projectUpdate', () => {
       // TODO: need a beeter approach here,
@@ -70,15 +96,27 @@
       return autocompleteService.querySearch(query, vm.projects);
     }
 
-
     function toggleFilters() {
       vm.showFilters = !vm.showFilters;
     }
 
-    function _getProjects() {
-      Project.getAll().then((data) => {
-        vm.projects = data;
-        return autocompleteService.buildList(vm.projects, ['name']);
+    function _getResources() {
+      let promises = [];
+      promises.push(Project.getAll());
+      promises.push(Technology.getAll());
+      promises.push(Customer.getAll());
+      promises.push(Industry.getAll());
+      promises.push(AppType.getAll());
+
+      $q.all(promises).then((data) => {
+        vm.resources.projects = data[0];
+        vm.resources.technologies = data[1];
+        vm.resources.customers = data[2];
+        vm.resources.industries = data[3];
+        vm.resources.appTypes = data[4];
+
+        $rootScope.$emit("event:projectResourcesLoaded", vm.resources);
+
       });
     }
 
