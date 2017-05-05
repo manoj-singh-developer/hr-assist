@@ -33,6 +33,7 @@
         Device.save(vm.device).then((data) => {
           $rootScope.$emit('event:deviceAdd', data);
           vm.device = {};
+          $mdDialog.cancel();
         });
       }
     }
