@@ -54,7 +54,7 @@
     };
 
     Project.getAll = () => {
-      url = apiUrl + '/projects';
+      url = apiUrl + '/projects?with[]=application_types&with[]=activities&with[]=industries&with[]=technologies&with[]=customers&with[]=users';
       resource = $resource(url, {}, {
         'get': {
           method: 'GET',
