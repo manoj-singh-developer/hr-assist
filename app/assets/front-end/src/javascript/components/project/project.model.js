@@ -207,18 +207,89 @@
       let id = project.id;
       let data = {};
 
-      data.technology_ids = technologies.map(technology => technology.id);
+      data["technology_ids[]"]= technologies.map(technology => technology.id);
       url = apiUrl + '/projects/:id/technologies';
       resource = $resource(url, data).delete({ id: id });
 
       promise = resource.$promise
         .then((data) => {
-          alertService.success(model, 'updateTechnologies');
+          alertService.success(model, 'remove technology');
           return data.technologies;
-        }).catch(() => alertService.error(model, 'updateTechnologies'));
+        }).catch(() => alertService.error(model, 'remove technology'));
 
       return promise;
     };
+
+    Project.removeIndustries = (project, industries) => {
+      let id = project.id;
+      let data = {};
+
+      data["industry_ids[]"]= industries.map(industry => industry.id);
+      url = apiUrl + '/projects/:id/industries';
+      resource = $resource(url, data).delete({ id: id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'remove industry');
+          return data.technologies;
+        }).catch(() => alertService.error(model, 'remove industry'));
+
+      return promise;
+    }
+
+    Project.getCustomers = (project) => {
+      let id = project.id;
+      url = apiUrl + '/projects/:id/customers';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get({ id: id });
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'get customers'));
+
+      return promise;
+    }
+
+    Project.saveCustomers = (project, customers) => {
+      let id = project.id;
+      let data = {};
+
+      data.customer_ids = customers.map(customer => customer.id);
+      url = apiUrl + '/projects/:id/customers';
+
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: id }, data);
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'update customers');
+          return data.customers;
+        }).catch(() => alertService.error(model, 'update customers'));
+
+      return promise;
+    }
+
+    Project.removeCustomers = (project, customers) => {
+      let id = project.id;
+      let data = {};
+
+      data["customer_ids[]"]= customers.map(customer => customer.id);
+      url = apiUrl + '/projects/:id/customers';
+      resource = $resource(url, data).delete({ id: id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'remove customer');
+          return data.customers;
+        }).catch(() => alertService.error(model, 'remove customer'));
+
+      return promise;
+    }
 
     return Project;
 
