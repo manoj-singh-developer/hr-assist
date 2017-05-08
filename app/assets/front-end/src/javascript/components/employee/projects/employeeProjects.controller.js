@@ -22,6 +22,7 @@
     vm.disableProjectName = false;
     vm.userTechnologies = [];
     vm.minDate = new Date();
+    vm.validateDate = false;
 
     vm.addProject = addProject;
     vm.addInQueue = addInQueue;
@@ -30,6 +31,7 @@
     vm.removeFromQueue = removeFromQueue;
     vm.clearInputs = clearInputs;
     vm.deleteProject = deleteProject;
+    vm.checkDates = checkDates;
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.user = data.user;
@@ -91,12 +93,20 @@
       });
     }
 
-    function save() {
+    function checkDates() {
+      if (vm.start_date != undefined && vm.end_date != undefined && vm.start_date > vm.end_date) {
+        vm.validateDate = true;
+      } else {
+        vm.validateDate = false;
+      }
+      console.log(vm.validateDate);
+    }
 
+    function save() {
       let projectId = [];
       let startDate = _formatDate(vm.start_date);
       let endDate = _formatDate(vm.end_date);
-      
+
       for (let y = 0; y < projectsToAdd.length; y++) {
         projectId = projectsToAdd[y].id;
       }
@@ -141,7 +151,7 @@
       vm.searchText = '';
       vm.disableProjectName = false;
       vm.start_date = new Date();
-        vm.end_date = new Date();
+      vm.end_date = new Date();
     }
 
     function _getUserProjects() {

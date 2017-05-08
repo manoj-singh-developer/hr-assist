@@ -98,7 +98,9 @@
 
 
 
-
+<form ng-submit="$event.preventDefault()"
+  name="prjForm"
+  novalidate>
   <!-- FORM PROJECTS -->
   <md-content ng-show="userProjects.settings.showForm" class="md-padding">
 
@@ -138,7 +140,8 @@
             md-item-text="item.name"
             md-min-length="0"
             placeholder="Search"
-            ng-disabled="userProjects.disableProjectName">
+            ng-disabled="userProjects.disableProjectName"
+            required>
 
             <md-item-template>
               <span
@@ -163,18 +166,20 @@
         <div flex-gt-xs="50">
           <label class="u-ml-5">From</label>
           <hra-date-select
-            class="vertical hide-days"
+            class="orizontal"
             flex-gt-xs="50"
-            ng-model="userProjects.start_date">
+            ng-model="userProjects.start_date"
+            required>
           </hra-date-select>
         </div>
 
         <div flex-gt-xs="50">
           <label class="u-ml-5">To</label>
           <hra-date-select
-            class="vertical hide-days"
+            class="orizontal"
             flex-gt-xs="50"
-            ng-model="userProjects.end_date">
+            ng-model="userProjects.end_date"
+            required>
           </hra-date-select>
         </div> 
       </section> --> <!-- /SELECT START/END DATE-->
@@ -187,6 +192,8 @@
               ng-model="userProjects.start_date"
               md-placeholder="Start date"
               md-open-on-focus
+              md-current-view="year"
+              ng-change="userProjects.checkDates()"
               required>
             </md-datepicker>
           </div>
@@ -197,10 +204,17 @@
               ng-model="userProjects.end_date"
               md-placeholder="End date"
               md-open-on-focus
-              md-min-date="userProjects.minDate"
+              md-current-view="year"
+              md-min-date="userProjects.start_date"
+              ng-change="userProjects.checkDates()"
               required>
             </md-datepicker>
           <div>
+        </section>
+        <section layout-gt-xs="row" layout-align="start center">
+          <p ng-show="userProjects.validateDate" class="alert">
+            "From" date must be greater than "To" date
+          </p>
         </section>
         <!-- /SELECT START/END DATE -->
 
@@ -303,7 +317,9 @@
 
     <md-button
       class="md-raised md-primary"
-      ng-click="userProjects.save(); userProjects.clearInputs(); userProjects.toggleCard($event, 'close')">
+      ng-click="userProjects.save(); userProjects.clearInputs(); userProjects.toggleCard($event, 'close')"
+      type="submit"
+      ng-disabled="prjForm.$invalid || userProjects.validateDate">
       Save
     </md-button>
 
@@ -315,7 +331,7 @@
 
   </md-card-actions>
   <!-- /CARD ACTIONS -->
-
+</form>
 
 
 
