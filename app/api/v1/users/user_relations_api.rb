@@ -235,6 +235,29 @@ module V1
         end
 
         params do
+          requires :technologies, type: Array[Hash]
+        end
+        put ':user_id/technologies' do
+          user = User.find(params[:user_id])
+          params[:technologies].each do |technology|
+            u_technology = user.technologies.find(technology.id)
+            u_technology.update(ActionController::Parameters.new(technology).permit(:name, :label))
+            user_technology = UserTechnology.find_by_technology_id_and_user_id(technology.id, user.id)
+            user_technology.update(ActionController::Parameters.new(technology).permit(:level, :technology_type))
+          end
+          { items:
+          user.user_technologies.map do |user_technology|
+            {
+              id: user_technology.technology_id,
+              name: user_technology.technology.name,
+              level: user_technology.level,
+              technology_type: user_technology.technology_type
+            }
+          end
+          }
+        end
+
+        params do
           requires :technology_ids, type: Array[Integer]
         end
         delete ':user_id/technologies' do
