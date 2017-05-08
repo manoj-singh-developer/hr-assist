@@ -40,7 +40,10 @@
       saveCopy();
 
       _getUserPosition();
-      _getUserSchedule();
+    });
+
+    $rootScope.$on('loadUserSchedule', (event, data) => {
+      vm.schedule = data;
     });
 
     $rootScope.$on('notifyScheduleUpdate', (event, data) => {
