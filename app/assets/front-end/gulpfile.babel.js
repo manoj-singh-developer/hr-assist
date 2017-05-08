@@ -14,6 +14,7 @@ import plugins          from 'gulp-load-plugins';
 import rimraf           from 'rimraf';
 import yaml             from 'js-yaml';
 import yargs            from 'yargs';
+import ngAnnotate       from 'gulp-ng-annotate';
 /* beautify preserve:end */
 
 
@@ -152,6 +153,7 @@ function javascriptCustom() {
   return gulp.src(PATHS.javascriptCustom)
     .pipe($.sourcemaps.init())
     .pipe($.babel())
+    .pipe(ngAnnotate())
     .pipe($.concat('app.js'))
     .pipe($.if(PRODUCTION, $.uglify()
       .on('error', e => {
