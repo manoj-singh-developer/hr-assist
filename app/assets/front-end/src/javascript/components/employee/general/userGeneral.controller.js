@@ -43,6 +43,9 @@
       _getUserSchedule();
     });
 
+    $rootScope.$on('notifyScheduleUpdate', (event, data) => {
+      _getUserSchedule();
+    })
 
     function save() {
       User.update(vm.user).then((data) => {
