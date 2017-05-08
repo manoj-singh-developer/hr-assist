@@ -61,13 +61,15 @@
       vm.copyUserDevices = _.without(vm.copyUserDevices, toRemove);
       devicesToAdd = _.without(devicesToAdd, toRemove);
       devicesToRemove.push(device.id);
-
-      
     }
 
     function cancel(){
       vm.copyUserDevices = [];
-      vm.copyUserDevices.push(...vm.userDevices);
+      User.getUserDevices($stateParams.id)
+        .then((data) => {
+          vm.userDevices = data;
+          vm.copyUserDevices.push(...vm.userDevices);
+        });
     }
 
     function saveDevices() {
