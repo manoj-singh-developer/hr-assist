@@ -32,7 +32,7 @@
 
   <!-- PREVIEW PROJECTS -->
   <md-content
-    ng-show="!userProjects.settings.showForm"
+    ng-show="!userProjects.displayOrHide"
     class="c-card-profile__preview">
     <!--
       @!TODO: Angajatul are adaugat un proiect.
@@ -102,7 +102,7 @@
   name="prjForm"
   novalidate>
   <!-- FORM PROJECTS -->
-  <md-content ng-show="userProjects.settings.showForm" class="md-padding">
+  <md-content ng-show="userProjects.displayOrHide" class="md-padding">
 
     <!-- CARD GROUP  -->
     <section
@@ -300,10 +300,10 @@
   <md-card-actions
     layout="column"
     layout-align="start"
-    ng-show="!userProjects.settings.showForm">
+    ng-show="!userProjects.displayOrHide">
     <md-button
       class="c-card-profile__btn no-margin"
-      ng-click="userProjects.AddTechnology(); userProjects.toggleCard($event, 'open'); userProjects.toggleForm()"
+      ng-click="userProjects.displayForm(); userProjects.clearInputs()"
       ng-disabled="btnIsDisabled">
       Add Project
     </md-button>
@@ -312,12 +312,12 @@
   <md-card-actions
     layout="row"
     layout-align="center center"
-    ng-show="userProjects.settings.showForm"
+    ng-show="userProjects.displayOrHide"
     class="additional">
 
     <md-button
       class="md-raised md-primary"
-      ng-click="userProjects.save(); userProjects.clearInputs(); userProjects.toggleCard($event, 'close')"
+      ng-click="userProjects.save(); userProjects.clearInputs();"
       type="submit"
       ng-disabled="prjForm.$invalid || userProjects.validateDate">
       Save
@@ -325,7 +325,7 @@
 
     <md-button
       class="md-raised"
-      ng-click="userProjects.clearInputs(); userProjects.toggleCard($event, 'close'); userProjects.toggleForm()">
+      ng-click="userProjects.displayForm()">
       Cancel
     </md-button>
 

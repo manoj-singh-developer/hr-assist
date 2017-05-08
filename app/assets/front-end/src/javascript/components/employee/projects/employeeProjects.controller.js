@@ -23,6 +23,7 @@
     vm.userTechnologies = [];
     vm.minDate = new Date();
     vm.validateDate = false;
+    vm.displayOrHide = false;
 
     vm.addProject = addProject;
     vm.addInQueue = addInQueue;
@@ -53,8 +54,7 @@
       vm.technologiesToAdd = project.technologies;
       vm.disableProjectName = true;
       vm.userTechnologies = project.technologies;
-
-      vm.toggleForm();
+      vm.displayOrHide = true;
     }
 
     function addProject(project) {
@@ -139,7 +139,7 @@
         if (day.length < 2) day = '0' + day;
         return [year, month, day].join('-');
       }
-      vm.toggleForm();
+      vm.displayOrHide = false;
       clearInputs();
     }
 
@@ -158,6 +158,10 @@
       User.getProjects(vm.user).then((data) => {
         vm.userProjects = data;
       });
+    }
+
+    vm.displayForm = () => {
+      vm.displayOrHide = !vm.displayOrHide;
     }
 
   }
