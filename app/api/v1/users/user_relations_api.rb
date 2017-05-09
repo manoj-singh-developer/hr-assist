@@ -301,7 +301,7 @@ module V1
           requires :end_date, allow_blank: :false, type: Date
           requires :signing_day, allow_blank: :false, type: Date
           requires :project_ids, allow_blank: false, type: Array[Integer]
-          requires :replacer_ids, allow_blank: false, type: Array[Integer]
+          requires :replacer_ids, allow_blank: true, type: Array[Integer]
         end
         post ':user_id/holidays' do
           user = find_user(params[:user_id])
