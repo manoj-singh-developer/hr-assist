@@ -48,8 +48,7 @@
 
           <h3 class="u-mb-10">
             <strong>{{ project.project.name }}</strong>
-            <p>
-              <!-- <span ng-click="userProjects.editProject(project)">Edit</span> -->
+            <span>
               <md-button
                 class="md-icon-button md-primary"
                 label="View project details"
@@ -60,9 +59,9 @@
                   View project details
                 </md-tooltip>
               </md-button>
-            </p>
+            </span>
 
-            <p>
+            <span>
               <md-button
                 class="md-fab md-mini md-warn c-card-group__remove"
                 label="delete"
@@ -71,7 +70,7 @@
                   <md-icon class="material-icons">delete</md-icon>
                   <md-tooltip>DELETE</md-tooltip>
               </md-button>
-            </p>
+            </span>
           </h3>
 
           <p>
@@ -109,23 +108,6 @@
       class="md-padding c-card-group"
       layout-align="center center">
 
-
-
-      <!-- REMOVE PROJECT -->
-      <!-- I DON'T FIND ANY MEANING OF THIS REMOVE BUTTON -->
-    <!-- <md-button
-        class="md-fab md-mini md-warn c-card-group__remove"
-        label="Remove project"
-        aria-label="Remove project"
-        ng-disabled="userProjects.disabledProjects"
-        ng-click="userProjects.deleteProject(project)">
-          <md-icon class="material-icons">delete</md-icon>
-          <md-tooltip>Remove job</md-tooltip>
-      </md-button> -->
-      <!-- /REMOVE PROJECT -->
-
-
-
       <!-- SELECT PROJECT -->
       <section layout="row" layout-align="start center">
         <div class="u-mr-5 u-ml-5 u-mb-20" flex-gt-xs="100">
@@ -156,33 +138,6 @@
 
         </div>
       </section><!-- SELECT PROJECT -->
-
-
-
-      <!-- SELECT START/END DATE -->
-      <!-- TODO SELECT DATE GET UNDEFINED DATA -->
-      <!-- <section layout-gt-xs="row" layout-align="start center"> 
-
-        <div flex-gt-xs="50">
-          <label class="u-ml-5">From</label>
-          <hra-date-select
-            class="orizontal"
-            flex-gt-xs="50"
-            ng-model="userProjects.start_date"
-            required>
-          </hra-date-select>
-        </div>
-
-        <div flex-gt-xs="50">
-          <label class="u-ml-5">To</label>
-          <hra-date-select
-            class="orizontal"
-            flex-gt-xs="50"
-            ng-model="userProjects.end_date"
-            required>
-          </hra-date-select>
-        </div> 
-      </section> --> <!-- /SELECT START/END DATE-->
 
         <!-- SELECT START/END DATE -->
         <section layout-gt-xs="row" layout-align="start center">
