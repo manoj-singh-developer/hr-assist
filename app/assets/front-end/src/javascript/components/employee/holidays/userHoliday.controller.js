@@ -72,7 +72,28 @@
     }
 
     function queryUserSearch(query){
-      return autocompleteService.querySearch(query, vm.users);
+      let empArr = autocompleteService.querySearch(query, vm.users);
+      let empIdArr = [];
+      let userID = parseInt($stateParams.id);
+      let currentUser;
+
+      for (let i = 0; i < empArr.length; i++){
+    
+        empIdArr.push(empArr[i].id);
+
+        currentUser = _.find(empIdArr, function(id) {
+          if (id === userID) {
+            return id;
+          }
+        });
+
+        if(empArr[i].id === currentUser){
+          empArr.splice(i, 1);
+        }
+
+      }
+
+      return empArr;
     }
 
     function saveHoliday () {

@@ -14,7 +14,7 @@
 
   <!-- PREVIEW  -->
   <md-content
-    ng-show="!prjTechnologies.settings.showForm"
+    ng-show="!prjTechnologies.displayOrHide"
     class="c-card-profile__preview">
     <md-list layout="row" layout-wrap>
       <md-list-item
@@ -24,10 +24,6 @@
 
         <div class="md-list-item-text" layout="column">
           <h4>{{technology.name}}</h4>
-        </div>
-
-        <div class="md-list-item-text" layout="column">
-          <span>{{technology.label}}</span>
         </div>
 
       </md-list-item>
@@ -40,7 +36,7 @@
     <!-- EDIT -->
     <md-content
       class = "md-padding"
-      ng-show="prjTechnologies.settings.showForm">
+      ng-show="prjTechnologies.displayOrHide">
 
       <md-list layout="row" layout-wrap>
 
@@ -96,10 +92,10 @@
   <md-card-actions
     layout="column"
     layout-align="start"
-    ng-show="!prjTechnologies.settings.showForm">
+    ng-show="!prjTechnologies.displayOrHide">
     <md-button
       class="c-card-profile__btn no-margin"
-      ng-click="prjTechnologies.toggleForm()">
+      ng-click="prjTechnologies.displayForm()">
       Add/Edit technologies
     </md-button>
   </md-card-actions>
@@ -107,7 +103,7 @@
   <md-card-actions
     layout="row"
     layout-align="center center"
-    ng-show="prjTechnologies.settings.showForm"
+    ng-show="prjTechnologies.displayOrHide"
     class="additional">
 
     <md-button
@@ -119,7 +115,7 @@
 
     <md-button
       class="md-raised"
-      ng-click="prjTechnologies.toggleForm()">
+      ng-click="prjTechnologies.displayForm(); prjTechnologies.cancel()">
       Cancel
     </md-button>
 

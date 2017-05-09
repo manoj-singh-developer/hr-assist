@@ -62,6 +62,7 @@ class AccessPolicy
 
     role :employee do
       can :read, User
+      can :update, User
     end
   end
 end
