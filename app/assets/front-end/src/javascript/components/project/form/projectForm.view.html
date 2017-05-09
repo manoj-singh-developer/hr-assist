@@ -55,7 +55,8 @@
               <md-datepicker 
                 ng-model="projectForm.project.start_date" 
                 md-placeholder="Enter date"
-                required>
+                required
+                ng-change="projectForm.checkDates()">
               </md-datepicker>
 
 
@@ -63,9 +64,10 @@
               <label>End date</label>
               <md-datepicker 
                 ng-model="projectForm.project.end_date"
-                md-min-date="projectForm.today"
+                md-min-date="projectForm.project.start_date"
                 md-placeholder="Enter date"
-                required>
+                required
+                ng-change="projectForm.checkDates()">
               </md-datepicker>
 
             </div>
@@ -78,7 +80,7 @@
 
         <md-button class="md-raised md-primary" 
           ng-click="projectForm.add()"
-          ng-disabled="projectFormular.$invalid">
+          ng-disabled="projectFormular.$invalid || projectForm.validateDate">
           Save
         </md-button>
 
