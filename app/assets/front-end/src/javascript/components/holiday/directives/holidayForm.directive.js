@@ -71,6 +71,7 @@
     vm.user = [];
     vm.leader = [];
     vm.minDate = new Date();
+    vm.validateDate = false;
 
     // Public methods
     // ------------------------------------------------------------------------
@@ -94,11 +95,18 @@
     vm.addRepEmployee = addRepEmployee;
     vm.print = print;
     vm.addUser = addUser;
-
+    vm.checkDates = checkDates;
 
 
     // Public methods declaration
     // ------------------------------------------------------------------------
+   function checkDates(index) {
+     if (vm.dateList[index].from != undefined && vm.dateList[index].to != undefined && vm.dateList[index].from > vm.dateList[index].to) {
+       vm.validateDate = true;
+     } else {
+       vm.validateDate = false;
+     }
+   }
 
     function print() {
       var printContents = document.getElementById('printable').innerHTML;

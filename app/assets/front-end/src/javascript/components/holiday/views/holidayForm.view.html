@@ -27,7 +27,8 @@
                                    ng-model="holidayForm.user"
                                    md-item-text="item.first_name +' '+ item.last_name"
                                    md-min-length="0"
-                                   placeholder="Select User">
+                                   placeholder="Select User"
+                                   required>
                     <md-item-template >
                       <span class="item-metadata">
                         {{item.first_name}}
@@ -74,7 +75,8 @@
                       md-items="item in holidayForm.querySearchProj(holidayForm.searchProjectHold[$index])"
                       md-item-text="item.name"
                       md-min-length="0"
-                      placeholder="Select a project">
+                      placeholder="Select a project"
+                      required>
                     <md-item-template >
                       <span class="item-metadata">
                         {{item.name}}
@@ -120,24 +122,38 @@
             <section layout-gt-xs="row" ng-repeat="holidayDate in holidayForm.holidayDateIncrement track by $index">
             <!--Period start-->
               <md-datepicker required
-                             md-min-date="holidayForm.minDate"
-                             ng-model="holidayForm.dateList[$index].from"
-                             md-placeholder="Start date"></md-datepicker>
+                md-min-date="holidayForm.minDate"
+                ng-model="holidayForm.dateList[$index].from"
+                md-placeholder="Start date"
+                ng-change="holidayForm.checkDates($index)">
+                          
+              </md-datepicker>
 
               <md-datepicker required
-                             md-min-date="holidayForm.minDate"
-                             ng-model="holidayForm.dateList[$index].to"
-                             md-placeholder="End date"></md-datepicker>
+                md-min-date="holidayForm.minDate"
+                ng-model="holidayForm.dateList[$index].to"
+                md-placeholder="End date"
+                ng-change="holidayForm.checkDates($index)">
+                          
+              </md-datepicker>
 
               <md-input-container md-no-float>
                 <md-button
                   class="md-raised md-primary"
-                  ng-click="holidayForm.addNewDateHoliday()"
+                  ng-click="holidayForm.addNewDateHoliday($index)"
                   ng-show="!isDate">
                   New Date
                 </md-button><!--Period end-->
               </md-input-container>
 
+            </section>
+
+            <section ng-show="holidayForm.validateDate" layout-gt-xs="row" 
+              layout-align="center center">
+              <span class="alert-error fade"
+              role="alert">
+                End date must be greater than Start date!
+              </span>
             </section>
 
           </md-content>
@@ -237,16 +253,14 @@
         <md-button
           class="md-raised md-primary"
           ng-click="holidayForm.saveHoliday(holidayForm.holiday)"
-          ng-disabled="btnIsDisabled">
+          ng-disabled="holidayform.$invalid || holidayForm.validateDate">
           Save
         </md-button>
-
         <md-button
           class="md-raised md-primary"
           ng-click="holidayForm.clearFields()">
           Clear
         </md-button>
-
         <md-button
           class="md-raised"
           ng-click="holidayForm.closeDialog()">
