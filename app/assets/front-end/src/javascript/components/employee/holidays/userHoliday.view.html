@@ -90,122 +90,127 @@
       </md-table-pagination>
   </md-content><!-- /PREVIEW HOLIDAY -->
 
-
-  <!-- FORM HOLIDAY -->
-  <md-content ng-show="userHoliday.displayOrHide" class="md-padding">
-    <section layout='column'>
-
-
-      <!-- SELECT PERIOD -->
-      <section class="u-mb-20 u-mt-20"
-               layout="row"
-               layout-align="center">
-
-        <md-datepicker ng-model="userHoliday.signingDate"
-                       md-placeholder="Signing date"
-                       md-open-on-focus
-                       required>
-        </md-datepicker>
-
-        <md-datepicker ng-model="userHoliday.from"
-                       md-placeholder="Start date"
-                       md-open-on-focus
-                       md-min-date="userHoliday.minDate"
-                       required>
-        </md-datepicker>
-
-        <md-datepicker ng-model="userHoliday.to"
-                       md-placeholder="End date"
-                       md-open-on-focus
-                       md-min-date="userHoliday.minDate"
-                       required>
-        </md-datepicker>
-
-        <!--<md-button class="md-raised md-primary"-->
-                   <!--ng-click="userHoliday.addEmptyInterval()">-->
-            <!--Add Date-->
-        <!--</md-button>-->
-
-      </section><!-- /SELECT PERIOD -->
+  <form novalidate
+    name="holidaysForm">
+    <!-- FORM HOLIDAY -->
+    <md-content ng-show="userHoliday.displayOrHide" class="md-padding">
+      <section layout='column'>
 
 
-      <!-- SELECT PROJECT AND REPLACEMENT -->
-      <section layout-gt-xs="row"
-               ng-repeat="date in userHoliday.replaceInputs track by $index">
+        <!-- SELECT PERIOD -->
+        <section class="u-mb-20 u-mt-20"
+                 layout="row"
+                 layout-align="center">
 
-        <div flex="50" layout-fill class="md-padding">
-          <div layout="column" layout-align="start start" layout-fill>
+          <md-datepicker ng-model="userHoliday.signingDate"
+                         md-placeholder="Signing date"
+                         md-open-on-focus
+                         required
+                         ng-change="userHoliday.checkDates()">
+          </md-datepicker>
 
-            <!-- SELECT REPLACEMENT PROJECT -->
-            <div class="md-block u-mb-20"
-              layout-fill>
-              <form ng-submit="$event.preventDefault()">
-                <md-autocomplete ng-disabled="userHoliday.isDisabled"
-                                 ng-model="userHoliday.searchProj[$index]"
-                                 md-selected-item="userHoliday.selectedProj[$index]"
-                                 md-search-text-change="userHoliday.searchProjChange(userHoliday.searchProj[$index])"
-                                 md-search-text="userHoliday.searchProj[$index]"
-                                 md-selected-item-change="userHoliday.selectedProjChange(item, $index)"
-                                 md-items="project in userHoliday.queryProjectSearch(userHoliday.searchProj[$index])"
-                                 md-item-text="project.name"
-                                 md-min-length="0"
-                                 placeholder="Select an project">
+          <md-datepicker ng-model="userHoliday.from"
+                         md-placeholder="Start date"
+                         md-open-on-focus
+                         required
+                         ng-change="userHoliday.checkDates()">
+          </md-datepicker>
 
-                  <md-item-template >
-                    <span class="item-metadata">
-                      {{project.name}}
-                    </span>
-                  </md-item-template>
+          <md-datepicker ng-model="userHoliday.to"
+                         md-placeholder="End date"
+                         md-open-on-focus
+                         md-min-date="userHoliday.from"
+                         required
+                         ng-change="userHoliday.checkDates()">
+          </md-datepicker>
 
-                </md-autocomplete>
-              </form>
-            </div><!-- /SELECT REPLACEMENT PROJECT -->
+          <!--<md-button class="md-raised md-primary"-->
+                     <!--ng-click="userHoliday.addEmptyInterval()">-->
+              <!--Add Date-->
+          <!--</md-button>-->
 
+        </section><!-- /SELECT PERIOD -->
+
+
+        <!-- SELECT PROJECT AND REPLACEMENT -->
+        <section layout-gt-xs="row"
+                 ng-repeat="date in userHoliday.replaceInputs track by $index">
+
+          <div flex="50" layout-fill class="md-padding">
+            <div layout="column" layout-align="start start" layout-fill>
+
+              <!-- SELECT REPLACEMENT PROJECT -->
+              <div class="md-block u-mb-20"
+                layout-fill>
+                <form ng-submit="$event.preventDefault()">
+                  <md-autocomplete ng-disabled="userHoliday.isDisabled"
+                                   ng-model="userHoliday.searchProj[$index]"
+                                   md-selected-item="userHoliday.selectedProj[$index]"
+                                   md-search-text-change="userHoliday.searchProjChange(userHoliday.searchProj[$index])"
+                                   md-search-text="userHoliday.searchProj[$index]"
+                                   md-selected-item-change="userHoliday.selectedProjChange(item, $index)"
+                                   md-items="project in userHoliday.queryProjectSearch(userHoliday.searchProj[$index])"
+                                   md-item-text="project.name"
+                                   md-min-length="0"
+                                   placeholder="Select an project"
+                                   required>
+
+                    <md-item-template >
+                      <span class="item-metadata">
+                        {{project.name}}
+                      </span>
+                    </md-item-template>
+
+                  </md-autocomplete>
+                </form>
+              </div><!-- /SELECT REPLACEMENT PROJECT -->
+
+            </div>
           </div>
-        </div>
 
-        <div flex="50" layout-fill class="md-padding">
-          <div layout="column" layout-align="start start" layout-fill>
+          <div flex="50" layout-fill class="md-padding">
+            <div layout="column" layout-align="start start" layout-fill>
 
-            <!-- SELECT REPLACEMENT EMPLOYEE -->
-            <div class="md-block u-mb-20" layout-fill>
-              <form ng-submit="$event.preventDefault()">
-                <md-autocomplete ng-disabled="userHoliday.isDisabled"
-                                 ng-model="userHoliday.searchUser[$index]"
-                                 md-selected-item="userHoliday.selectedUser[$index]"
-                                 md-search-text-change="userHoliday.searchUserChange(userHoliday.searchUser[$index])"
-                                 md-search-text="userHoliday.searchUser[$index]"
-                                 md-selected-item-change="userHoliday.selectedUserChange(item, $index)"
-                                 md-items="user in userHoliday.queryUserSearch(userHoliday.searchUser[$index])"
-                                 md-item-text="user.first_name +' '+ user.last_name"
-                                 md-min-length="0"
-                                 placeholder="Select an employee">
+              <!-- SELECT REPLACEMENT EMPLOYEE -->
+              <div class="md-block u-mb-20" layout-fill>
+                <form ng-submit="$event.preventDefault()">
+                  <md-autocomplete ng-disabled="userHoliday.isDisabled"
+                                   ng-model="userHoliday.searchUser[$index]"
+                                   md-selected-item="userHoliday.selectedUser[$index]"
+                                   md-search-text-change="userHoliday.searchUserChange(userHoliday.searchUser[$index])"
+                                   md-search-text="userHoliday.searchUser[$index]"
+                                   md-selected-item-change="userHoliday.selectedUserChange(item, $index)"
+                                   md-items="user in userHoliday.queryUserSearch(userHoliday.searchUser[$index])"
+                                   md-item-text="user.first_name +' '+ user.last_name"
+                                   md-min-length="0"
+                                   placeholder="Select an employee"
+                                   required>
 
-                  <md-item-template >
-                    <span class="item-metadata" md-highlight-text="userHoliday.searchUser[$index]">
-                      {{user.first_name}} {{user.last_name}}
-                    </span>
-                  </md-item-template>
+                    <md-item-template >
+                      <span class="item-metadata" md-highlight-text="userHoliday.searchUser[$index]">
+                        {{user.first_name}} {{user.last_name}}
+                      </span>
+                    </md-item-template>
 
-                </md-autocomplete>
-              </form>
-            </div><!-- /SELECT REPLACEMENT EMPLOYEE -->
+                  </md-autocomplete>
+                </form>
+              </div><!-- /SELECT REPLACEMENT EMPLOYEE -->
 
+            </div>
           </div>
-        </div>
 
-        <span ng-click="userHoliday.addEmptyReplacement()" class="add-holiday" title="Add project">
-            <i class="material-icons">add_circle_outline</i>
-        </span>
+          <span ng-click="userHoliday.addEmptyReplacement()" class="add-holiday" title="Add project">
+              <i class="material-icons">add_circle_outline</i>
+          </span>
 
-      </section><!-- SELECT PROJECT AND REPLACEMENT -->
-
-
-    </section><!-- /HOLIDAYS ng-repeat -->
+        </section><!-- SELECT PROJECT AND REPLACEMENT -->
 
 
-  </md-content><!-- /FORM HOLIDAY -->
+      </section><!-- /HOLIDAYS ng-repeat -->
 
+
+    </md-content><!-- /FORM HOLIDAY -->
+  </form>
 
   <!-- CARD ACTIONS -->
   <md-card-actions layout="column" layout-align="start">
@@ -222,10 +227,10 @@
                    class="additional">
 
     <md-button class="md-raised md-primary"
-               ng-click="userHoliday.saveHoliday()">
+               ng-click="userHoliday.saveHoliday()"
+               ng-disabled="holidaysForm.$invalid || userHoliday.validateDate">
       Save
     </md-button>
-
     <md-button class="md-raised"
                ng-click="userHoliday.displayForm()">
       Close
