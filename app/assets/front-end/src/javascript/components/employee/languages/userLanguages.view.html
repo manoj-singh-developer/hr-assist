@@ -20,7 +20,7 @@
       <md-list-item
         flex="25"
         class="md-2-line"
-        ng-repeat="language in userLanguages.userLanguages track by $index">
+        ng-repeat="language in userLanguages.copyUserLanguages track by $index">
 
         <div class="md-list-item-text" layout="column">
           <h4>{{language.long_name}}</h4>
@@ -53,7 +53,7 @@
 
          <md-list-item
            class="md-2-line"
-           ng-repeat="language in userLanguages.userLanguages track by $index">
+           ng-repeat="language in userLanguages.copyUserLanguages track by $index">
            <div class="md-list-item-text" layout="column">
              <p class="c-filters__item"
               ng-click="userLanguages.removeFromQueue(language)" >
@@ -177,7 +177,7 @@
 
     <md-button
       class="md-raised"
-      ng-click="userLanguages.displayEditLanguages()">
+      ng-click="userLanguages.displayEditLanguages(); userLanguages.cancel()">
       Cancel
     </md-button>
 

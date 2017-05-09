@@ -236,7 +236,7 @@
       promise = resource.$promise
         .then((data) => {
           alertService.success(model, 'updateLanguages');
-          return data;
+          return data.items;
         })
         .catch(() => alertService.error(model, 'updateLanguages'));
 
@@ -245,20 +245,20 @@
 
     User.removeLanguages = (user, languages) => {
       let data = {};
-      data["language_ids[]"] = languages.map(language => language.id);
+      data["language_ids[]"] = languages;
       url = apiUrl + '/users/:id/languages';
       resource = $resource(url, data).delete({ id: user.id });
-      
+
       promise = resource.$promise
-        .then((data) => {
+          .then((data) => {
           alertService.success(model, 'removeLanguages');
-          return data;
-        })
-        .catch(() => alertService.error(model, 'removeLanguages'));
+      return data;
+      })
+      .catch(() => alertService.error(model, 'removeLanguages'));
 
       return promise;
     };
-
+    
 
 
     User.getEducations = (id) => {
