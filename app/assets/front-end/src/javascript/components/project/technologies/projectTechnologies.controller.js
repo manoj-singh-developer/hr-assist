@@ -17,11 +17,11 @@
     vm.technologies = [];
     vm.prjTechnologies = [];
 
-
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.save = save;
-
+    vm.cancel = cancel;
+    vm.displayOrHide = false;
 
     _getTechnologies();
 
@@ -51,11 +51,11 @@
     }
 
     function save() {
+
       if (technologiesToAdd.length) {
         Project.saveTechnologies(vm.project, technologiesToAdd)
           .then(() => {
             _getProjectTechnologies();
-            vm.toggleForm();
           });
       }
 
@@ -63,9 +63,17 @@
         Project.removeTechnologies(vm.project, technologiesToRemove)
           .then(() => {
             _getProjectTechnologies();
-            vm.toggleForm();
           });
       }
+
+      vm.displayOrHide = false;
+    }
+
+    function cancel() {
+      vm.prjTechnologies = [];
+      Project.getTechnologies(vm.project).then((data) => {
+        vm.prjTechnologies = data;
+      });
     }
 
 
@@ -80,6 +88,10 @@
       Project.getTechnologies(vm.project).then((data) => {
         vm.prjTechnologies = data;
       });
+    }
+
+    vm.displayForm = () => {
+      vm.displayOrHide = !vm.displayOrHide;
     }
 
   }
