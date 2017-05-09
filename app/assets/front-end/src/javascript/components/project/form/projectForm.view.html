@@ -71,6 +71,12 @@
               </md-datepicker>
 
             </div>
+            <div ng-show="projectForm.validateDate" layout-gt-xs="row" layout-align="center center">
+              <span class="alert-error fade"
+              role="alert">
+                End date must be greater than Start date!
+              </span>
+            </div>
           </md-content>
         </md-tab>
 
