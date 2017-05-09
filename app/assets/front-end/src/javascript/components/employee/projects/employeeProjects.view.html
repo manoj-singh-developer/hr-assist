@@ -192,7 +192,6 @@
               ng-model="userProjects.start_date"
               md-placeholder="Start date"
               md-open-on-focus
-              md-current-view="year"
               ng-change="userProjects.checkDates()"
               required>
             </md-datepicker>
@@ -204,17 +203,17 @@
               ng-model="userProjects.end_date"
               md-placeholder="End date"
               md-open-on-focus
-              md-current-view="year"
               md-min-date="userProjects.start_date"
               ng-change="userProjects.checkDates()"
               required>
             </md-datepicker>
           <div>
         </section>
-        <section layout-gt-xs="row" layout-align="start center">
-          <p ng-show="userProjects.validateDate" class="alert">
-            "From" date must be greater than "To" date
-          </p>
+        <section  ng-show="userProjects.validateDate" layout-gt-xs="row" layout-align="center center">
+          <span class="alert-error fade"
+            role="alert">
+              "To" date must be greater than "From" date!
+          </span>
         </section>
         <!-- /SELECT START/END DATE -->
 

@@ -99,7 +99,6 @@
       } else {
         vm.validateDate = false;
       }
-      console.log(vm.validateDate);
     }
 
     function save() {
