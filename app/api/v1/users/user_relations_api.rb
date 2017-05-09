@@ -120,6 +120,7 @@ module V1
         post ':user_id/schedule' do
           user = find_user(params[:user_id])
           schedule = Schedule.create(name: params[:name], timetable: params[:timetable])
+          user.schedule.destroy if user.schedule
           user.schedule = schedule
           user.schedule
         end
@@ -131,8 +132,12 @@ module V1
         put ':user_id/schedule/:schedule_id' do
           user = find_user(params[:user_id])
           schedule = Schedule.find(params[:schedule_id])
-          schedule.update(user_schedule_params)
-          user.schedule
+          if user.schedule == schedule
+            schedule.update(user_schedule_params)
+            user.schedule
+          else
+            error(message: "Invalid schedule_id")
+          end
         end
 
         get ':user_id/projects' do
