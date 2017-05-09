@@ -113,18 +113,31 @@ module V1
         end
 
         params do
+          requires :name, type: String, allow_blank: false
+          requires :timetable, type: String, allow_blank: false
+        end
+
+        post ':user_id/schedule' do
+          user = find_user(params[:user_id])
+          schedule = Schedule.create(name: params[:name], timetable: params[:timetable])
+          user.schedule.destroy if user.schedule
+          user.schedule = schedule
+          user.schedule
+        end
+
+        params do
           optional :name, type: String
           optional :timetable, type: String
         end
         put ':user_id/schedule/:schedule_id' do
-          schedule = Schedule.find_or_create_by(id: params[:schedule_id]) do |schedule|
-            schedule.name = params[:name]
-            schedule.timetable = params[:timetable]
-          end
-          schedule.update(user_schedule_params)
           user = find_user(params[:user_id])
-          user.schedule = schedule
-          user.schedule
+          schedule = Schedule.find(params[:schedule_id])
+          if user.schedule == schedule
+            schedule.update(user_schedule_params)
+            user.schedule
+          else
+            error(message: "Invalid schedule_id")
+          end
         end
 
         get ':user_id/projects' do
