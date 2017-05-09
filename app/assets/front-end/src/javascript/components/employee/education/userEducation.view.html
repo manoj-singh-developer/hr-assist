@@ -72,8 +72,7 @@
       <!-- REMOVE EDUCATION -->
       <md-button
         class="md-fab md-mini md-warn c-card-group__remove"
-        ng-click="userEducation.removeEducation($index)"
-        ng-disabled = "userEducation.disabledEducations">
+        ng-click="userEducation.removeEducation($index)">
         <md-icon class="material-icons">delete</md-icon>
         <md-tooltip>Remove education</md-tooltip>
       </md-button><!-- /REMOVE EDUCATION -->
@@ -88,7 +87,6 @@
           <label>School</label>
           <input
             ng-model="userEducation.userEducationList[$index].name"
-            ng-disabled ="userEducation.disabledEducations"
             required>
         </md-input-container>
       </section><!-- /SCHOOL -->
@@ -105,7 +103,6 @@
           <input
             name="userEducation.userEducationList[$index].description"
             ng-model="userEducation.userEducationList[$index].description"
-            ng-disabled ="userEducation.disabledEducations"
             required>
         </md-input-container>
       </section><!-- /FIELD OF STUDY -->
@@ -120,7 +117,6 @@
           <label>Diploma</label>
           <input
             ng-model="userEducation.userEducationList[$index].degree"
-            ng-disabled ="userEducation.disabledEducations"
             required>
         </md-input-container>
       </section><!-- DIPLOMA -->
@@ -139,6 +135,7 @@
             orientation="vertical"
             initial-date="userEducation.userEducationList[$index].start_date"
             ng-model="userEducation.userEducationList[$index].start_date"
+            ng-change="userEducation.checkDates($index)"
             required>
           </hra-date-select>
         </div>
@@ -151,11 +148,18 @@
             orientation="vertical"
             initial-date="userEducation.userEducationList[$index].end_date"
             ng-model="userEducation.userEducationList[$index].end_date"
+            ng-change="userEducation.checkDates($index)"
             required>
           </hra-date-select>
         </div>
 
       </section><!-- /PERIOD -->
+      <section ng-show="userEducation.validateDate" layout-gt-xs="row" layout-align="center center">
+        <span class="alert-error fade"
+        role="alert">
+          "To" date must be greater than "From" date!
+        </span>
+      </section>
 
 
 
@@ -199,7 +203,7 @@
     <md-button
       class="md-raised md-primary"
       ng-click="userEducation.save(); userEducation.displayEditEducation()"
-      ng-disabled="addEduForm.$invalid">
+      ng-disabled="addEduForm.$invalid || userEducation.validateDate">
       Save
     </md-button>
 
