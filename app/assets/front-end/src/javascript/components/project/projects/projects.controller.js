@@ -35,18 +35,10 @@
 
 
     _getResources();
-
-
-    $rootScope.$on("event:projectResourcesLoaded", (event, data) => {
-      vm.projects = data.projects;
-      vm.projectsCopy = angular.copy(vm.projects); //will use this for filters
-      tableSettings.total = vm.projects.length;
-      _buildAutocompleteLists();
-    });
-
     $rootScope.$on('event:projectAdd', (event, data) => {
       vm.projects = vm.projects.concat(data);
     });
+
 
     function showForm(project) {
       $mdDialog.show({
@@ -96,7 +88,6 @@
       filterProjects();
     }
 
-
     function querySearch(query, list) {
       return autocompleteService.querySearch(query, list);
     }
@@ -118,7 +109,12 @@
         vm.resources.industries = data[3];
         vm.resources.appTypes = data[4];
 
-        $rootScope.$emit("event:projectResourcesLoaded", vm.resources);
+        //will use this for filters
+        vm.projects = vm.resources.projects;
+        vm.projectsCopy = angular.copy(vm.projects); //[1]
+        tableSettings.total = vm.projects.length;
+
+        _buildAutocompleteLists();
       });
     }
 
