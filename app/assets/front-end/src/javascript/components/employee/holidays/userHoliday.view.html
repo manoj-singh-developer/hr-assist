@@ -131,6 +131,12 @@
 
         </section><!-- /SELECT PERIOD -->
 
+        <section ng-show="userHoliday.validateDate" layout-gt-xs="row" layout-align="center center">
+          <span class="alert-error fade"
+          role="alert">
+            End date must be greater than Start date and Signing date lesser than Start date !
+          </span>
+        </section>
 
         <!-- SELECT PROJECT AND REPLACEMENT -->
         <section layout-gt-xs="row"
