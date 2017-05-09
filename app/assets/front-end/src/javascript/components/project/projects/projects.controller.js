@@ -6,60 +6,39 @@
     .module('HRA')
     .controller('projectsCtrl', projectsCtrl);
 
-  projectsCtrl
-    .$inject = ['$scope', '$stateParams', '$q', '$rootScope', '$mdDialog', 'autocompleteService', 'Project', 'Technology', 'Customer', 'Industry', 'AppType'];
-
-  function projectsCtrl($scope, $stateParams, $q, $rootScope, $mdDialog, autocompleteService, Project, Technology, Customer, Industry, AppType) {
+  function projectsCtrl($scope, $stateParams, $q, $rootScope, $mdDialog, $filter, tableSettings, autocompleteService, filterService, Project, Technology, Customer, Industry, AppType) {
 
     var vm = this;
-    vm.showFilters = false
+    vm.showFilters = false;
+    vm.tableSettings = tableSettings;
     vm.resources = {};
+    vm.filterType = filterService.getTypes();
+    vm.filters = {
+      technologies: [],
+      industries: [],
+      customers: []
+    };
+    vm.search = {
+      technologies: '',
+      industries: '',
+      customers: ''
+    };
 
-
-    _getResources();
-
-
-    vm.table = {
-      options: {
-        rowSelection: true,
-        multiSelect: true,
-        autoSelect: true,
-        decapitate: false,
-        largeEditDialog: false,
-        boundaryLinks: true,
-        limitSelect: true,
-        pageSelect: true
-      },
-      query: {
-        order: 'name',
-        filter: '',
-        limit: 10,
-        page: 1
-      },
-      "limitOptions": [10, 15, 20],
-      selected: []
-    }
 
     vm.showForm = showForm;
     vm.remove = remove;
     vm.multipleRemove = multipleRemove;
     vm.querySearch = querySearch;
     vm.toggleFilters = toggleFilters;
+    vm.filterProjects = filterProjects;
+    vm.resetFilters = resetFilters;
 
-    $rootScope.$on("event:projectResourcesLoaded", (event, data) => {
-      vm.projects = data.projects;
-      autocompleteService.buildList(vm.projects, ['name']);
-    });
 
-    $rootScope.$on('event:projectUpdate', () => {
-      // TODO: need a beeter approach here,
-      // there is no need for an extra request on update
-      _getProjects();
-    });
-
+    _getResources();
     $rootScope.$on('event:projectAdd', (event, data) => {
       vm.projects = vm.projects.concat(data);
     });
+
 
     function showForm(project) {
       $mdDialog.show({
@@ -92,16 +71,31 @@
 
     function multipleRemove() {}
 
-    function querySearch(query) {
-      return autocompleteService.querySearch(query, vm.projects);
-    }
-
     function toggleFilters() {
       vm.showFilters = !vm.showFilters;
     }
 
+    function filterProjects(filteringType) {
+      vm.projects = filterService.filter(
+        vm.projects,
+        vm.projectsCopy,
+        vm.filters,
+        filteringType);
+    }
+
+    function resetFilters() {
+      angular.forEach(vm.filters, (item, key) => { vm.filters[key] = []; });
+      filterProjects();
+    }
+
+    function querySearch(query, list) {
+      return autocompleteService.querySearch(query, list);
+    }
+
+
     function _getResources() {
       let promises = [];
+
       promises.push(Project.getAll());
       promises.push(Technology.getAll());
       promises.push(Customer.getAll());
@@ -115,9 +109,20 @@
         vm.resources.industries = data[3];
         vm.resources.appTypes = data[4];
 
-        $rootScope.$emit("event:projectResourcesLoaded", vm.resources);
+        //will use this for filters
+        vm.projects = vm.resources.projects;
+        vm.projectsCopy = angular.copy(vm.projects); //[1]
+        tableSettings.total = vm.projects.length;
 
+        _buildAutocompleteLists();
       });
+    }
+
+    function _buildAutocompleteLists() {
+      autocompleteService.buildList(vm.projects, ['name']);
+      autocompleteService.buildList(vm.resources.technologies, ['name']);
+      autocompleteService.buildList(vm.resources.industries, ['name']);
+      autocompleteService.buildList(vm.resources.customers, ['name']);
     }
 
   }
