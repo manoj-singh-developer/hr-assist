@@ -7,12 +7,11 @@
     .factory('User', User);
 
   User
-    .$inject = ['$resource', 'apiUrl', 'alertService', '$stateParams'];
+    .$inject = ['$resource', 'apiUrl', 'alertService', '$stateParams', 'errorService'];
 
-  function User($resource, apiUrl, alertService, $stateParams) {
+  function User($resource, apiUrl, alertService, $stateParams, errorService) {
 
     function User() {}
-
 
     let url = '';
     let promise = null;
@@ -59,7 +58,11 @@
 
       promise = resource.$promise
         .then(data => data)
-        .catch(() => alertService.error(model, 'getById'));
+        .catch((error) => {
+          alertService.error(model, 'getById'); 
+          errorService.forceLogout(error);
+          errorService.notUserFound(error);
+        });
       return promise;
     };
 
@@ -74,7 +77,11 @@
 
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'getAll'));
+        .catch((error) => {
+          alertService.error(model, 'getAll')
+          errorService.forceLogout(error);
+          errorService.notUserFound(error);
+      });
 
       return promise;
     };
@@ -101,15 +108,19 @@
 
       promise = resource.$promise
         .then(data => data)
-        .catch(() => alertService.error(model, 'getSchedule'));
+        .catch((error) => {
+          alertService.error(model, 'getSchedule');
+          errorService.forceLogout(error);
+          errorService.notUserFound(error);
+        });
       return promise;
     };
 
     User.updateSchedule = (id, schedule) => {
-      url = apiUrl + '/users/:id/schedule/:idSchedule';
+      url = apiUrl + '/users/:id/schedule/';
       resource = $resource(url, {}, {
-        'update': { method: 'PUT' }
-      }).update({ id: id, idSchedule: schedule.id }, schedule);
+        'post': { method: 'POST' }
+      }).save({ id: id }, schedule);
 
       promise = resource.$promise
         .then((data) => {
@@ -134,7 +145,11 @@
 
       promise = resource.$promise
         .then(data => data)
-        .catch(() => alertService.error(model, 'getPosition'));
+        .catch((error) => {
+          alertService.error(model, 'getPosition');
+          errorService.forceLogout(error);
+          errorService.notUserFound(error);
+        });
 
       return promise;
     };
@@ -162,7 +177,11 @@
 
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'getUserDevices'));
+        .catch((error) => {
+          alertService.error(model, 'getUserDevices');
+          errorService.forceLogout(error);
+          errorService.notUserFound(error);
+        });
       return promise;
     };
 
@@ -211,7 +230,11 @@
 
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'getLanguages'));
+        .catch((error) => {
+          alertService.error(model, 'getLanguages');
+          errorService.forceLogout(error);
+          errorService.notUserFound(error);
+        });
 
       return promise;
     };
@@ -221,7 +244,11 @@
       resource = $resource(url).get({ id: user.id });
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'getUserLanguages'));
+        .catch((error) => {
+          alertService.error(model, 'getUserLanguages');
+          errorService.forceLogout(error);
+          errorService.notUserFound(error);
+        });
 
       return promise;
     };
@@ -267,7 +294,11 @@
 
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'getEducations'));
+        .catch((error) => {
+          alertService.error(model, 'getEducations');
+          errorService.forceLogout(error);
+          errorService.notUserFound(error);
+        });
       return promise;
     };
 
@@ -319,7 +350,11 @@
       resource = $resource(url).get({ id: user.id });
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'getProjects'));
+        .catch((error) => {
+          alertService.error(model, 'getProjects');
+          errorService.forceLogout(error);
+          errorService.notUserFound(error);
+        });
 
       return promise;
     };
@@ -385,7 +420,11 @@
 
       promise = resource.$promise
         .then(data => data)
-        .catch(() => alertService.error(model, 'getUserHolidays'));
+        .catch((error) => { 
+          alertService.error(model, 'getUserHolidays');
+          errorService.forceLogout(error);
+          errorService.notUserFound(error);
+        });
 
       return promise;
     };

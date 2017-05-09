@@ -15,6 +15,13 @@
       <span class="c-profile-progress__bar" style="width: {{userGeneral.progress}}%"></span>
     </div> -->
 
+    <span 
+      class="userLogout" 
+      ng-click="userGeneral.userLogOut()" 
+      ng-show="userGeneral.isAdmin">
+      Logout
+    </span>
+
     <md-card-title-text>
       <span class="md-headline">General informations</span>
       <p class="u-font-small u-no-margin">
