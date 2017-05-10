@@ -40,25 +40,26 @@
             </div><!--Employee end-->
 
              <!--Team Leader start-->
-            <!--<div class="md-block md-padding">-->
-            <!--<form ng-submit="$event.preventDefault()">-->
-              <!--<md-autocomplete-->
-                      <!--md-no-cache="true"-->
-                      <!--md-search-text="holidayForm.searchLeaderHold[$index]"-->
-                      <!--md-search-text-change="holidayForm.searchTextChange(holidayForm.searchLeaderHold[$index])"-->
-                      <!--md-selected-item-change="holidayForm.addTeamLeader(item, holidayForm.employee, $index)"-->
-                      <!--md-items="item in holidayForm.querySearch(holidayForm.searchLeaderHold[$index])"-->
-                      <!--md-item-text="item.getFullName()"-->
-                      <!--md-min-length="0"-->
-                      <!--placeholder="Select a team leader">-->
-                    <!--<md-item-template >-->
-                      <!--<span class="item-metadata">-->
-                        <!--{{item | json}}-->
-                      <!--</span>-->
-                    <!--</md-item-template>-->
-                  <!--</md-autocomplete>-->
-            <!--</form>-->
-          <!--</div>&lt;!&ndash;Team Leader end&ndash;&gt;-->
+            <div class="md-block md-padding">
+            <form ng-submit="$event.preventDefault()">
+              <md-autocomplete
+                      md-no-cache="true"
+                      md-search-text="holidayForm.searchLeaderHold[$index]"
+                      md-search-text-change="holidayForm.searchTextChange(holidayForm.searchLeaderHold[$index])"
+                      md-selected-item-change="holidayForm.addTeamLeader(item, holidayForm.employee, $index)"
+                      md-items="item in holidayForm.querySearch(holidayForm.searchLeaderHold[$index])"
+                      md-item-text="item.first_name +' '+ item.last_name"
+                      md-min-length="0"
+                      placeholder="Select a team leader">
+                    <md-item-template >
+                      <span class="item-metadata">
+                        {{item.first_name}}
+                        {{item.last_name}}
+                      </span>
+                    </md-item-template>
+                  </md-autocomplete>
+            </form>
+          </div><!-- Team Leader end -->
         </div>
 
              <div layout-gt-xs="row" ng-repeat = "holidayRow in holidayForm.holidayReplaceIncrement track by $index">

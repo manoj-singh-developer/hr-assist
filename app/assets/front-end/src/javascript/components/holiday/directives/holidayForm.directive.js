@@ -89,7 +89,6 @@
     vm.addNewHoliday = addNewHoliday;
     vm.addNewDateHoliday = addNewDateHoliday;
     vm.addNewReplaceHoliday = addNewReplaceHoliday;
-    vm.saveHoliday = saveHoliday;
     vm.addTeamLeader = addTeamLeader;
     vm.addRepProject = addRepProject;
     vm.addRepEmployee = addRepEmployee;
@@ -148,7 +147,7 @@
     }
 
     function saveHoliday(holiday) {
-
+debugger
       var replacerArr = [];
       var repProjArr = [];
 
