@@ -50,6 +50,7 @@
     vm.queryUserSearch = queryUserSearch;
     vm.saveHoliday = saveHoliday;
     vm.addEmptyReplacement = addEmptyReplacement;
+    vm.selectDate = selectDate;
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.projects = data.projects;
@@ -199,13 +200,22 @@
     }
 
     function checkDates() {
-
       if (vm.from != undefined && vm.signingDate != undefined && vm.to != undefined && vm.signingDate > vm.from || vm.from > vm.to) {
         vm.validateDate = true;
       } else {
         vm.validateDate = false;
       }
     }
+
+    // Hack for date picker
+    function selectDate() {
+      $(".md-virtual-repeat-scroller").scrollTop(0);
+    }
+    $(".md-datepicker-triangle-button").on('click', function () {
+      setTimeout(function () {
+		    $(".md-virtual-repeat-scroller").scrollTop(0);
+	    }, 100);
+    })
 
     function addEmptyReplacement() {
       vm.replaceInputs.push({});

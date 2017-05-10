@@ -105,14 +105,18 @@
           <md-datepicker ng-model="userHoliday.signingDate"
                          md-placeholder="Signing date"
                          md-open-on-focus
+                         md-min-date="userHoliday.minDate"
                          required
+                         ng-click = "userHoliday.selectDate()"
                          ng-change="userHoliday.checkDates()">
           </md-datepicker>
 
           <md-datepicker ng-model="userHoliday.from"
                          md-placeholder="Start date"
                          md-open-on-focus
+                         md-min-date="userHoliday.minDate"
                          required
+                         ng-click = "userHoliday.selectDate()"
                          ng-change="userHoliday.checkDates()">
           </md-datepicker>
 
@@ -121,6 +125,7 @@
                          md-open-on-focus
                          md-min-date="userHoliday.from"
                          required
+                         ng-click = "userHoliday.selectDate()"
                          ng-change="userHoliday.checkDates()">
           </md-datepicker>
 
