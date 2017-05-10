@@ -19,9 +19,11 @@ module V1
       def employee_replacements(holiday_replacements)
         holiday_replacements.map do |holiday_replacement|
           partial_response = {
-            team_leader: holiday_replacement.project.team_leader.name,
             project_name: holiday_replacement.project.name
           }
+          partial_response.merge!({
+            team_leader: holiday_replacement.project.team_leader.name
+          }) if holiday_replacement.project.team_leader
 
           partial_response.merge!({
             replacer_id: holiday_replacement.replacer_id,
