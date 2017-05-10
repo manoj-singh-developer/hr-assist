@@ -33,6 +33,22 @@ const rootTemplatePath = './views/components/';
         name: 'landing',
         data: {
           cssClassNames: 'view-landing'
+        },
+        resolve: {
+          controller: function ($location, tokenService) {
+            if(localStorage.auth_token && 
+              window.location.href === 'http://localhost:8000/#/' || 
+              window.location.href === 'http://localhost:8000' || 
+              window.location.href === 'https://hr.assist.ro/' ||
+              window.location.href === 'https://hr.assist.ro/#/') {
+
+              var tokenToDecode = localStorage.getItem('user_token');
+              var decodeToken = tokenService.decodeToken(tokenToDecode);
+              var userId  = decodeToken.user_id;
+              
+              $location.path("employees/" + userId);
+            }
+          }
         }
       })
       // @DASHBOARD

@@ -16,6 +16,24 @@ module V1
           .permit(:user_id, :days, :start_date, :end_date, :signing_day)
       end
 
+      def employee_replacements(holiday_replacements)
+        holiday_replacements.map do |holiday_replacement|
+          partial_response = {
+            project_name: holiday_replacement.project.name
+          }
+          partial_response.merge!({
+            team_leader: holiday_replacement.project.team_leader.name
+          }) if holiday_replacement.project.team_leader
+
+          partial_response.merge!({
+            replacer_id: holiday_replacement.replacer_id,
+            replacer_name: holiday_replacement.replacer.name
+          }) if holiday_replacement.replacer
+
+          partial_response
+        end
+      end
+
       params :pagination do
         optional :page, type: Integer
         optional :per_page, type: Integer
@@ -46,15 +64,7 @@ module V1
           start_date: holiday.start_date,
           end_date: holiday.end_date,
           signing_day: holiday.signing_day,
-          employee_replacements:
-            holiday_replacements.map do |holiday_replacement|
-              {
-                team_leader: holiday_replacement.project.team_leader.name,
-                replacer_id: holiday_replacement.replacer_id,
-                replacer_name: holiday_replacement.replacer.name,
-                project_name: holiday_replacement.project.name
-              }
-            end
+          employee_replacements: employee_replacements(holiday_replacements)
         }
         end
         return response
@@ -76,15 +86,7 @@ module V1
           start_date: holiday.start_date,
           end_date: holiday.end_date,
           signing_day: holiday.signing_day,
-          employee_replacements:
-            holiday_replacements.map do |holiday_replacement|
-              {
-                team_leader: holiday_replacement.project.team_leader.name,
-                replacer_id: holiday_replacement.replacer_id,
-                replacer_name: holiday_replacement.replacer.name,
-                project_name: holiday_replacement.project.name
-              }
-            end
+          employee_replacements: employee_replacements(holiday_replacements)
         }
         return response
       end
@@ -97,7 +99,7 @@ module V1
         optional :signing_day, type: Date
         optional :days, type: Integer
         requires :project_ids, allow_blank: false, type: Array[Integer], desc: "Test using postman [Swagger UI issue]"
-        requires :replacer_ids, allow_blank: false, type: Array[Integer], desc: "Test using postman [Swagger UI issue]"
+        requires :replacer_ids, allow_blank: true, type: Array[Integer], desc: "Test using postman [Swagger UI issue]"
       end
       post 'new' do
         User.find(params[:user_id], params[:replacer_id])
@@ -117,15 +119,7 @@ module V1
           start_date: holiday.start_date,
           end_date: holiday.end_date,
           signing_day: holiday.signing_day,
-          employee_replacements:
-            holiday_replacements.map do |holiday_replacement|
-              {
-                team_leader: holiday_replacement.project.team_leader.name,
-                replacer_id: holiday_replacement.replacer_id,
-                replacer_name: holiday_replacement.replacer.name,
-                project_name: holiday_replacement.project.name
-              }
-            end
+          employee_replacements: employee_replacements(holiday_replacements)
         }
       end
 
