@@ -52,8 +52,7 @@
     vm.dateList = [];
     vm.projManager = [];
     vm.managerList = [];
-    var today = new Date();
-    vm.today = today;
+    vm.today = new Date();
     vm.holidayIncrement = [{}];
     vm.holidaySend = []; //{teamLeader: "", replacement:{project: "", employee:""}}
     vm.holidayDateIncrement = [{}];
@@ -70,7 +69,6 @@
     vm.searchEmp = [];
     vm.user = [];
     vm.leader = [];
-    vm.minDate = new Date();
     vm.validateDate = false;
 
     // Public methods
@@ -147,7 +145,7 @@
     }
 
     function saveHoliday(holiday) {
-debugger
+
       var replacerArr = [];
       var repProjArr = [];
 
@@ -267,6 +265,18 @@ debugger
 
     function clearFields() {
       vm.holiday = {};
+      vm.user=[];
+      vm.dateList=[];
+      vm.holidayDateIncrement = [{}];
+      vm.holidayReplaceIncrement = [{}];
+      vm.holidayEmpIncrement = [{}];
+      vm.holidayRepProject = [];
+      vm.holidayRepEmployee = [];
+      vm.holidayDates = [];
+      vm.searchProjectHold = [];
+      vm.searchLeaderHold = [];
+      vm.searchUser = [];
+      vm.searchEmp = [];
     }
 
     function closeDialog() {
