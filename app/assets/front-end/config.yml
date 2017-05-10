@@ -45,6 +45,7 @@ PATHS:
     - "src/javascript/main.routes.js"
     - "src/javascript/main.module.js"
     - "src/javascript/**/*.value.js"
+    - "src/javascript/**/*.filter.js"
     - "src/javascript/**/*.service.js"
     - "src/javascript/**/*.model.js"
     - "src/javascript/**/*.directive.js"
