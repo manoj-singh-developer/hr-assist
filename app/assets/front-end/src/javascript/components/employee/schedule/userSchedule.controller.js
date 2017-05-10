@@ -20,7 +20,7 @@
     vm.selectedSchedule = [];
     vm.scheduleArray = [];
     vm.numbersScheduleArray = [];
-    vm.hours = 84;
+    vm.hours = 91;
     vm.showEditSchedule = false;
     let str;
     let arrayHr = [];

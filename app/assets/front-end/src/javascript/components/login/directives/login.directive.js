@@ -27,35 +27,43 @@
     .module('HRA')
     .controller('loginController', loginController);
 
-  loginController.$inject = ['UserFactory', '$state', '$scope', '$window', 'tokenService', '$rootScope'];
 
-  function loginController(UserFactory, $state, $scope, $window, tokenService, $rootScope) {
+  function loginController(UserFactory, $state, $scope, $window, tokenService, $rootScope, $timeout) {
     var vm = this;
     vm.login = login;
+    vm.loginError = false;
 
     function login(username, password) {
       //var user = false;
-      UserFactory.login(username, password).then(function(data) {
+      UserFactory.login(username, password)
+        .then(function(data) {
+          
+          vm.error = data.message;
+          if(data.status === 'error') {
+            vm.loginError = true;
+          }
 
-        if (data.status === "error") return;
-        vm.user = data.user;
+          $timeout(() => {
+            vm.loginError = false;
+          }, 3000);
 
-        // Set two tokens
-        var userInfoToken = data.custom_token;
-        var authToken = data.user.auth_token;
+          if (data.status === "error") return;
+          vm.user = data.user;
 
-        // IMPORTANT
-        // userInfoToken goes first
-        //authToken is second
-        tokenService.setTokens([userInfoToken, authToken]);
+          // Set two tokens
+          var userInfoToken = data.custom_token;
+          var authToken = data.user.auth_token;
 
-        $state.go('employeesParent.details', {
-          id: vm.user.id
+          // IMPORTANT
+          // userInfoToken goes first
+          //authToken is second
+          tokenService.setTokens([userInfoToken, authToken]);
+
+          $state.go('employeesParent.details', {
+            id: vm.user.id
+          });
+
         });
-
-      }, function(data) {
-        console.log('Wrong credentials!');
-      });
     }
 
   }
