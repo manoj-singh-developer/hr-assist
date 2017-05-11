@@ -62,7 +62,9 @@
           <span class="item-metadata">
             <span>{{item.first_name}} {{item.last_name}}</span>
         </md-item-template>
-
+        <md-not-found>
+          No employee matching <strong>{{holidays.searchText}}</strong> were found.
+        </md-not-found>
       </md-autocomplete>
     </form>
   </md-content><!-- /AUTOCOMPLETE SEARCH -->
