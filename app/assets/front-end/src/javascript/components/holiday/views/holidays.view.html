@@ -109,18 +109,21 @@
       <md-datepicker
         required
         ng-model="holidays.dateList.from"
-        md-placeholder="Start date">
+        md-placeholder="Start date"
+        ng-disabled="holidays.disabledPeriod">
       </md-datepicker>
 
       <md-datepicker
         required
         ng-model="holidays.dateList.to"
-        md-placeholder="End date">
+        md-placeholder="End date"
+        ng-disabled="holidays.disabledPeriod">
       </md-datepicker>
 
       <md-button
         class="md-primary"
-        ng-click="holidays.searchPeriodFilter($index)">
+        ng-click="holidays.searchPeriodFilter()"
+        ng-disabled="holidays.disabledPeriod">
         Search Period
       </md-button>
 
@@ -137,7 +140,9 @@
           aria-label="month"
           ng-model="holidays.selectedMonth"
           placeholder="Pick a Month"
-          md-selected-text="holidays.selectedMonthDate(holidays.selectedMonth, $index)">
+          md-selected-text="holidays.selectedMonthDate(holidays.selectedMonth)"
+          ng-disabled="holidays.disabledMonth">
+
           <md-optgroup label="Months">
             <md-option
               value="{{month}}"
@@ -150,7 +155,8 @@
 
       <md-button
         class="md-primary"
-        ng-click="holidays.searchFilter($index)">
+        ng-click="holidays.searchFilter()"
+        ng-disabled="holidays.disabledMonth">
         Search by Month
       </md-button>
 
@@ -181,11 +187,12 @@
         md-head
         md-order="holidays.query.order">
         <tr md-row>
+        <th md-column></th>
           <th md-column>Employee</th>
           <th md-column>Start Date</th>
           <th md-column>End Date</th>
           <th md-column>No. of days</th>
-          <!--<th md-column>Signing Date</th>-->
+          <th md-column>Signing Date</th>
           <!--<th md-column>Nr. of days</th>-->
           <th md-column>Actions</th>
         </tr>
@@ -197,8 +204,10 @@
           md-select="holiday"
           md-on-select="logItem"
           md-auto-select="holidays.options.autoSelect"
-          ng-repeat="holiday in holidays.holidays | filter:holidays.searchText | orderBy: holidays.table.query.order | limitTo: holidays.table.query.limit : (holidays.table.query.page - 1) * holidays.table.query.limit">
-
+          ng-repeat="holiday in holidays.holidays | filter:holidays.searchText | orderBy: holidays.table.query.order | limitTo: holidays.table.query.limit : (holidays.table.query.page - 1) * holidays.table.query.limit track by $index">
+          <td md-cell>
+            {{$index + 1}}
+          </td>
           <td md-cell>
             {{holiday.employee}}
           </td>
@@ -215,7 +224,7 @@
             {{holiday.days}}
           </td>
 
-          <!--<td md-cell>{{holiday.signingDate | date: 'MMM d, y'}}</td>-->
+          <td md-cell>{{holiday.signing_day | date: 'd MMM, y'}}</td>
 
           <!--<td md-cell>{{ holiday.days }}</td>-->
 
