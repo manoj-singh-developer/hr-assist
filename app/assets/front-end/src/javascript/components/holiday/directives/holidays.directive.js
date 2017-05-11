@@ -27,7 +27,7 @@
   HolidaysController
     .$inject = ['$rootScope', '$scope', '$mdDialog', 'autocompleteService', 'miscellaneousService', 'HolidayModel', 'User', '$timeout'];
 
-  function HolidaysController($rootScope, $scope, $mdDialog, autocompleteService, miscellaneousService, HolidayModel, User, $timeout) {
+  function HolidaysController($rootScope, $scope, $mdDialog, autocompleteService, miscellaneousService, HolidayModel, User, $timeout ) {
 
 
     var vm = this;
@@ -56,7 +56,7 @@
         pageSelect: true
       },
       query: {
-        order: 'firstName',
+        order: 'employee',
         filter: '',
         limit: 10,
         page: 1
@@ -64,6 +64,7 @@
       "limitOptions": [10, 15, 20],
       selected: []
     };
+
     var empArray;
 
     getHoliday();
@@ -80,6 +81,7 @@
     vm.searchFilter = searchFilter;
     vm.resetFilters = resetFilters;
     vm.searchPeriodFilter = searchPeriodFilter;
+    vm.checkDates = checkDates;
 
     // Public methods declaration
     // ------------------------------------------------------------------------
@@ -183,6 +185,7 @@
       vm.searchText = "";
       vm.disabledMonth = false;
       vm.disabledPeriod = false;
+      vm.validateDate = false;
     }
 
     function searchPeriodFilter() {
@@ -198,7 +201,13 @@
       vm.holidays = filtru;
     }
 
-
+    function checkDates() {
+      if (vm.dateList.from != undefined && vm.dateList.to != undefined && vm.dateList.from >= vm.dateList.to) {
+        vm.validateDate = true;
+      } else {
+        vm.validateDate = false;
+      }
+    }
     // Private methods declaration
     // ------------------------------------------------------------------------
 

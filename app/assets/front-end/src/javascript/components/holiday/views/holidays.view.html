@@ -104,64 +104,80 @@
 
 
     <!-- FILTER BY PERIOD -->
-    <section layout="row" layout-align="left center">
+    <form ng-submit="$event.preventDefault()"
+      novalidate name="searchPeriod">
+      <section layout="row" layout-align="left center">
 
-      <md-datepicker
-        required
-        ng-model="holidays.dateList.from"
-        md-placeholder="Start date"
-        ng-disabled="holidays.disabledPeriod">
-      </md-datepicker>
+        <md-datepicker
+          required
+          ng-model="holidays.dateList.from"
+          md-placeholder="Start date"
+          ng-disabled="holidays.disabledPeriod"
+          ng-change="holidays.checkDates()"
+          md-open-on-focus>
+        </md-datepicker>
 
-      <md-datepicker
-        required
-        ng-model="holidays.dateList.to"
-        md-placeholder="End date"
-        ng-disabled="holidays.disabledPeriod">
-      </md-datepicker>
+        <md-datepicker
+          required
+          ng-model="holidays.dateList.to"
+          md-placeholder="End date"
+          ng-disabled="holidays.disabledPeriod"
+          ng-change="holidays.checkDates()"
+          md-open-on-focus>
+        </md-datepicker>
 
-      <md-button
-        class="md-primary"
-        ng-click="holidays.searchPeriodFilter()"
-        ng-disabled="holidays.disabledPeriod">
-        Search Period
-      </md-button>
+        <md-button
+          class="md-primary"
+          ng-click="holidays.searchPeriodFilter()"
+          ng-disabled="searchPeriod.$invalid || holidays.validateDate || holidays.disabledPeriod">
+          Search Period
+        </md-button>
 
-    </section><!-- /FILTER BY PERIOD -->
+      </section><!-- /FILTER BY PERIOD -->
 
-
+      <section ng-show="holidays.validateDate" layout-gt-xs="row" 
+        layout-align="left center"  flex-gt-xs="50">
+        <span class="alert-error fade"
+        role="alert">
+          End date must be greater than Start date!
+        </span>
+      </section>
+    </form>
 
 
     <!-- FILTER BY MONTH -->
-    <section layout="row" layout-align="left center" class="md-padding">
+    <form ng-submit="$event.preventDefault()"
+      novalidate name="searchFilter">
+      <section layout="row" layout-align="left center" class="md-padding">
 
-      <md-input-container md-no-float>
-        <md-select
-          aria-label="month"
-          ng-model="holidays.selectedMonth"
-          placeholder="Pick a Month"
-          md-selected-text="holidays.selectedMonthDate(holidays.selectedMonth)"
-          ng-disabled="holidays.disabledMonth">
+        <md-input-container md-no-float>
+          <md-select
+            aria-label="month"
+            ng-model="holidays.selectedMonth"
+            placeholder="Pick a Month"
+            md-selected-text="holidays.selectedMonthDate(holidays.selectedMonth)"
+            ng-disabled="holidays.disabledMonth"
+            required>
 
-          <md-optgroup label="Months">
-            <md-option
-              value="{{month}}"
-              ng-repeat="month in holidays.monthsList track by $index">
-              {{month}}
-            </md-option>
-          </md-optgroup>
-        </md-select>
-      </md-input-container>
+            <md-optgroup label="Months">
+              <md-option
+                value="{{month}}"
+                ng-repeat="month in holidays.monthsList track by $index">
+                {{month}}
+              </md-option>
+            </md-optgroup>
+          </md-select>
+        </md-input-container>
 
-      <md-button
-        class="md-primary"
-        ng-click="holidays.searchFilter()"
-        ng-disabled="holidays.disabledMonth">
-        Search by Month
-      </md-button>
+        <md-button
+          class="md-primary"
+          ng-click="holidays.searchFilter()"
+          ng-disabled="searchFilter.$invalid || holidays.disabledMonth">
+          Search by Month
+        </md-button>
 
-    </section><!-- FILTER BY MONTH -->
-
+      </section><!-- FILTER BY MONTH -->
+    </form>
 
 
 
@@ -185,14 +201,14 @@
       <thead
         ng-if="!holidays.table.options.decapitate"
         md-head
-        md-order="holidays.query.order">
+        md-order="holidays.table.query.order">
         <tr md-row>
-        <th md-column></th>
-          <th md-column>Employee</th>
-          <th md-column>Start Date</th>
-          <th md-column>End Date</th>
-          <th md-column>No. of days</th>
-          <th md-column>Signing Date</th>
+        <th md-column ></th>
+          <th md-column md-order-by="employee">Employee</th>
+          <th md-column md-order-by="startDate">Start Date</th>
+          <th md-column md-order-by="endDate">End Date</th>
+          <th md-column md-order-by="days">No. of days</th>
+          <th md-column md-order-by="signing_day">Signing Date</th>
           <!--<th md-column>Nr. of days</th>-->
           <th md-column>Actions</th>
         </tr>
