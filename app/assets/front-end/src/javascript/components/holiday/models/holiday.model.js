@@ -24,7 +24,7 @@
     // ------------------------------------------------------------------------
     angular.extend(Holiday.prototype, {
       getFullName: function() {
-        return this.firstName + ' ' + this.lastName;
+        return this.first_name + ' ' + this.last_name;
       }
     });
 

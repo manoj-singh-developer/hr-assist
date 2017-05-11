@@ -53,20 +53,19 @@
         md-search-text-change="holidays.searchTextChange(holidays.searchText)"
         md-search-text="holidays.searchText"
         md-selected-item-change="holidays.selectedItemChange(item)"
-        md-items="item in holidays"
-        md-item-text="item"
+        md-items="item in holidays.querySearch(holidays.searchText)"
+        md-item-text="item.first_name+' '+item.last_name"
         md-min-length="0"
         placeholder="Search for an employee">
 
         <md-item-template>
           <span class="item-metadata">
-            {{ item.getFullName()}}
+            <span>{{item.first_name}} {{item.last_name}}</span>
         </md-item-template>
 
       </md-autocomplete>
     </form>
   </md-content><!-- /AUTOCOMPLETE SEARCH -->
-
 
 
    <!-- SELECTED ROWS -->
