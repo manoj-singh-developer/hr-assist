@@ -21,9 +21,10 @@
     vm.technologies = [];
     vm.disableProjectName = false;
     vm.userTechnologies = [];
-    vm.minDate = new Date();
     vm.validateDate = false;
     vm.displayOrHide = false;
+    vm.start_date = new Date();
+    vm.end_date = new Date();
 
     vm.addProject = addProject;
     vm.addInQueue = addInQueue;
@@ -103,8 +104,8 @@
 
     function save() {
       let projectId = [];
-      let startDate = _formatDate(vm.start_date);
-      let endDate = _formatDate(vm.end_date);
+      let startDate = vm.start_date;
+      let endDate = vm.end_date;
 
       for (let y = 0; y < projectsToAdd.length; y++) {
         projectId = projectsToAdd[y].id;
@@ -129,17 +130,8 @@
         technologiesToRemove = [];
       }
 
-      function _formatDate(date) {
-        let d = new Date(date),
-          month = '' + (d.getMonth() + 1),
-          day = '' + d.getDate(),
-          year = d.getFullYear();
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-        return [year, month, day].join('-');
-      }
-      vm.displayOrHide = false;
       clearInputs();
+      vm.displayOrHide = false;
     }
 
     function clearInputs() {
