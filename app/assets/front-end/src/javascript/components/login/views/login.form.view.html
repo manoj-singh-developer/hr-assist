@@ -44,6 +44,10 @@
   	</div> <!-- /Actions button -->
   </form>
 
+	<p class="login-footer-note login-error" ng-show="loginCtrl.loginError">
+    <strong>{{loginCtrl.error}}</strong>
+  </p>
+
   <p class="login-footer-note">
     <strong>Important: </strong>Use your <strong>ASSIST</strong> email credentials
   </p>

@@ -7,14 +7,15 @@
     .controller('userGeneralCtrl', userGeneralCtrl);
 
   userGeneralCtrl
-    .$inject = ['$rootScope', '$scope', '$stateParams', 'autocompleteService', 'Upload', 'User', 'Position'];
+    .$inject = ['$rootScope', '$scope', '$stateParams', 'autocompleteService', 'Upload', 'User', 'Position', '$state'];
 
-  function userGeneralCtrl($rootScope, $scope, $stateParams, autocompleteService, Upload, User, Position) {
+  function userGeneralCtrl($rootScope, $scope, $stateParams, autocompleteService, Upload, User, Position, $state) {
 
     var vm = this;
     let userCopy = {};
     let positionCopy = {};
     let scheduleCopy = {};
+    vm.isAdmin = false;
     vm.user = {};
     vm.position = {};
     vm.schedule = {};
@@ -30,10 +31,16 @@
     vm.saveSchedule = saveSchedule;
     vm.saveCopy = saveCopy; // [1]
     vm.cancel = cancel; // [2]
+    vm.userLogOut = userLogOut;
 
 
     _getPositions();
-
+    
+    if($rootScope.isAdmin === true){
+      vm.isAdmin = false;
+    } else {
+      vm.isAdmin = true;
+    }
 
     $rootScope.$on('event:userResourcesLoaded', function(event, resources) {
       vm.user = resources.user;
@@ -105,6 +112,13 @@
         vm.schedule = data;
         saveCopy();
       });
+    }
+
+    function userLogOut() {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_token');
+
+      $state.reload();
     }
 
   }

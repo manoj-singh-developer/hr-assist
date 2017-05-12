@@ -116,13 +116,20 @@ module APIHelpers
       end_date: holiday.end_date,
       signing_day: holiday.signing_day,
       employee_replacements:
-        holiday.holiday_replacements.map do |holiday_replacement|
-          {
-            team_leader: holiday_replacement.project.team_leader.name,
-            replacer_id: holiday_replacement.replacer_id,
-            replacer_name: holiday_replacement.replacer.name,
+       holiday.holiday_replacements.map do |holiday_replacement|
+          partial_response = {
             project_name: holiday_replacement.project.name
           }
+          partial_response.merge!({
+            team_leader: holiday_replacement.project.team_leader.name
+          }) if holiday_replacement.project.team_leader
+
+          partial_response.merge!({
+            replacer_id: holiday_replacement.replacer_id,
+            replacer_name: holiday_replacement.replacer.name
+          }) if holiday_replacement.replacer
+
+          partial_response
         end
     }
   end

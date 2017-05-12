@@ -21,7 +21,8 @@
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.save = save;
-
+    vm.cancel = cancel;
+    vm.displayOrHide = false;
 
     _getIndustries();
 
@@ -51,23 +52,31 @@
     }
 
     function save() {
+
       if (industrieToAdd.length) {
-        Project.saveTechnologies(vm.project, industrieToAdd)
+        Project.saveIndustries(vm.project, industrieToAdd)
           .then(() => {
             _getProjectIndustries();
-            vm.toggleForm();
+  
           });
       }
 
       if (industrieToRemove.length) {
-        Project.removeTechnologies(vm.project, industrieToRemove)
+        Project.removeIndustries(vm.project, industrieToRemove)
           .then(() => {
             _getProjectIndustries();
-            vm.toggleForm();
           });
       }
+
+      vm.displayOrHide = false;
     }
 
+    function cancel() {
+      vm.prjIndustries = [];
+       Project.getIndustries(vm.project).then((data) => {
+        vm.prjIndustries = data;
+      });
+    }
 
     function _getIndustries() {
       Industry.getAll().then((data) => {
@@ -80,6 +89,10 @@
       Project.getIndustries(vm.project).then((data) => {
         vm.prjIndustries = data;
       });
+    }
+
+    vm.showForm = () => {
+      vm.displayOrHide = !vm.displayOrHide;
     }
 
   }
