@@ -19,13 +19,13 @@
             <div ng-repeat = "holidaysRow in holidayForm.holidayEmpIncrement track by $index">
               <div class="md-block md-padding">
                   <md-autocomplete md-no-cache="true"
-                    md-search-text="holidayForm.searchUser[$index]"
-                    md-search-text-change="holidayForm.searchTextChange(holidayForm.searchUser[$index])"
+                    md-search-text="holidayForm.searchUser"
+                    md-search-text-change="holidayForm.searchTextChange(holidayForm.searchUser)"
                     md-selected-item-change="holidayForm.addUser(item, holidayForm.holiday, $index)"
-                    md-items="item in holidayForm.querySearch(holidayForm.searchUser[$index])"
+                    md-items="item in holidayForm.querySearch(holidayForm.searchUser)"
                     ng-model="holidayForm.user"
                     md-item-text="item.first_name +' '+ item.last_name"
-                    md-min-length="0"
+                    md-min-length="1"
                     placeholder="Select User"
                     md-input-name="autocompleteUser"
                     md-require-match
@@ -36,6 +36,9 @@
                         {{item.last_name}}
                       </span>
                     </md-item-template>
+                    <md-not-found>
+                      No employee matching <strong>{{holidayForm.searchUser}}</strong> were found.
+                    </md-not-found>
                   </md-autocomplete>
 
                   <div ng-messages="holidayform.autocompleteUser.$error"
@@ -52,12 +55,12 @@
               <div class="md-block md-padding">
                   <md-autocomplete
                     md-no-cache="true"
-                    md-search-text="holidayForm.searchLeaderHold[$index]"
-                    md-search-text-change="holidayForm.searchTextChange(holidayForm.searchLeaderHold[$index])"
+                    md-search-text="holidayForm.searchLeaderHold"
+                    md-search-text-change="holidayForm.searchTextChange(holidayForm.searchLeaderHold)"
                     md-selected-item-change="holidayForm.addTeamLeader(item, holidayForm.employee, $index)"
-                    md-items="item in holidayForm.querySearch(holidayForm.searchLeaderHold[$index])"
+                    md-items="item in holidayForm.querySearch(holidayForm.searchLeaderHold)"
                     md-item-text="item.first_name +' '+ item.last_name"
-                    md-min-length="0"
+                    md-min-length="1"
                     ng-model="holidayForm.holidayLeader"
                     placeholder="Select a team leader"
                     md-input-name="autocompleteLeader"
@@ -69,6 +72,9 @@
                         {{item.last_name}}
                       </span>
                     </md-item-template>
+                    <md-not-found>
+                      No employee matching <strong>{{holidayForm.searchLeaderHold}}</strong> were found.
+                    </md-not-found>
                   </md-autocomplete>
 
                   <div ng-messages="holidayform.autocompleteLeader.$error"
@@ -93,7 +99,7 @@
                     md-selected-item-change="holidayForm.addRepProject(item, holidayForm.employee, $index)"
                     md-items="item in holidayForm.querySearchProj(holidayForm.searchProjectHold[$index])"
                     md-item-text="item.name"
-                    md-min-length="0"
+                    md-min-length="1"
                     placeholder="Select a project"
                     md-input-name="autocompleteProject"
                     md-require-match
@@ -103,6 +109,9 @@
                         {{item.name}}
                       </span>
                     </md-item-template>
+                    <md-not-found>
+                      No project matching <strong>{{hholidayForm.searchProjectHold[$index]}}</strong> were found.
+                    </md-not-found>
                   </md-autocomplete>
 
                   <div ng-messages="holidayform.autocompleteProject.$error"
@@ -124,7 +133,7 @@
                     md-selected-item-change="holidayForm.addEmployee(item, holidayForm.holiday, $index)"
                     md-items="item in holidayForm.querySearch(holidayForm.searchEmp[$index])"
                     md-item-text="item.first_name +' '+ item.last_name"
-                    md-min-length="0"
+                    md-min-length="1"
                     placeholder="Select an employee"
                     md-input-name="autocompleteReplace"
                     md-require-match
@@ -135,6 +144,9 @@
                         {{item.last_name}}
                       </span>
                     </md-item-template>
+                    <md-not-found>
+                      No employee matching <strong>{{holidayForm.searchEmp[$index]}}</strong> were found.
+                    </md-not-found>
                   </md-autocomplete>
                  
                   <div ng-messages="holidayform.autocompleteReplace.$error"
