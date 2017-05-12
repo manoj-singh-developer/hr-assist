@@ -87,7 +87,14 @@
           <label>School</label>
           <input
             ng-model="userEducation.userEducationList[$index].name"
+            name="name_{{$index}}"
             required>
+          
+          <div ng-messages="addEduForm['name_'+$index].$error">
+            <div ng-message="required">This field is required</div>
+          </div>
+
+          {{addEduForm.name}}
         </md-input-container>
       </section><!-- /SCHOOL -->
 
@@ -101,9 +108,13 @@
         <md-input-container md-no-float class="md-block" flex-gt-xs="">
           <label>Field of Study</label>
           <input
-            name="userEducation.userEducationList[$index].description"
             ng-model="userEducation.userEducationList[$index].description"
+            name="description_{{$index}}"
             required>
+
+           <div ng-messages="addEduForm['description_'+$index].$error">
+            <div ng-message="required">This field is required</div>
+          </div>
         </md-input-container>
       </section><!-- /FIELD OF STUDY -->
 
@@ -117,7 +128,11 @@
           <label>Diploma</label>
           <input
             ng-model="userEducation.userEducationList[$index].degree"
+            name="degree_{{$index}}"
             required>
+            <div ng-messages="addEduForm['degree_'+$index].$error">
+            <div ng-message="required">This field is required</div>
+          </div>
         </md-input-container>
       </section><!-- DIPLOMA -->
 
