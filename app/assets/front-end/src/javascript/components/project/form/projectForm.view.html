@@ -24,13 +24,12 @@
                 <label>Name</label>
                 <input ng-model="projectForm.project.name" name="name" required>
                   
-                <div ng-messages="projectform.name.$error">
+                <div ng-messages="projectFormular.name.$error">
                   <div ng-message="required">This field is required</div>
                 </div>
 
               </md-input-container>
             </div>
-
             <div layout-gt-xs="row">
               <md-input-container md-no-float class="md-block" flex-gt-xs="">
 
@@ -41,7 +40,7 @@
                   required>
                 </textarea>
 
-                <div ng-messages="projectform.description.$error">
+                <div ng-messages="projectFormular.description.$error">
                   <div ng-message="required">This field is required</div>
                 </div>
 
@@ -55,19 +54,20 @@
               <md-datepicker 
                 ng-model="projectForm.project.start_date" 
                 md-placeholder="Enter date"
-                required
-                ng-change="projectForm.checkDates()">
+                ng-change="projectForm.checkDates()"
+                md-open-on-focus
+                required>
               </md-datepicker>
 
 
 
               <label>End date</label>
               <md-datepicker 
-                ng-model="projectForm.project.end_date"
-                md-min-date="projectForm.project.start_date"
+                ng-model="projectForm.project.end_date"  
                 md-placeholder="Enter date"
-                required
-                ng-change="projectForm.checkDates()">
+                ng-change="projectForm.checkDates()"
+                md-open-on-focus
+                required>
               </md-datepicker>
 
             </div>
