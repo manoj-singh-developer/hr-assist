@@ -87,7 +87,6 @@
     vm.addNewHoliday = addNewHoliday;
     vm.addNewDateHoliday = addNewDateHoliday;
     vm.addNewReplaceHoliday = addNewReplaceHoliday;
-    vm.addTeamLeader = addTeamLeader;
     vm.addRepProject = addRepProject;
     vm.addRepEmployee = addRepEmployee;
     vm.print = print;
@@ -391,15 +390,6 @@
 
     function addNewHoliday() {
       vm.holidayIncrement.push({});
-    }
-
-
-    function addTeamLeader(item, employee, index) {
-      if (vm.holidayLeader) {
-        vm.holidayLeader.splice(0, 1);
-        vm.holidayLeader.push(item);
-      } else
-        vm.holidayLeader.push(item);
     }
 
     function addRepProject(item, employee, index) {

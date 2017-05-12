@@ -50,42 +50,6 @@
                   </div>
 
               </div><!--Employee end-->
-
-               <!--Team Leader start-->
-              <div class="md-block md-padding">
-                  <md-autocomplete
-                    md-no-cache="true"
-                    md-search-text="holidayForm.searchLeaderHold"
-                    md-search-text-change="holidayForm.searchTextChange(holidayForm.searchLeaderHold)"
-                    md-selected-item-change="holidayForm.addTeamLeader(item, holidayForm.employee, $index)"
-                    md-items="item in holidayForm.querySearch(holidayForm.searchLeaderHold)"
-                    md-item-text="item.first_name +' '+ item.last_name"
-                    md-min-length="1"
-                    ng-model="holidayForm.holidayLeader"
-                    placeholder="Select a team leader"
-                    md-input-name="autocompleteLeader"
-                    md-require-match
-                    required>
-                    <md-item-template>
-                      <span class="item-metadata">
-                        {{item.first_name}}
-                        {{item.last_name}}
-                      </span>
-                    </md-item-template>
-                    <md-not-found>
-                      No employee matching <strong>{{holidayForm.searchLeaderHold}}</strong> were found.
-                    </md-not-found>
-                  </md-autocomplete>
-
-                  <div ng-messages="holidayform.autocompleteLeader.$error"
-                    layout-gt-xs="row" layout-align="center center"
-                    ng-if="holidayform.autocompleteLeader.$touched">
-                    <span ng-message="md-require-match" class="alert-error fade" role="alert">
-                      You must select an option!
-                    </span>
-                  </div>
-
-              </div><!-- Team Leader end -->
             </div>
 
             <div layout-gt-xs="row" ng-repeat = "holidayRow in holidayForm.holidayReplaceIncrement track by $index">
@@ -110,7 +74,7 @@
                       </span>
                     </md-item-template>
                     <md-not-found>
-                      No project matching <strong>{{hholidayForm.searchProjectHold[$index]}}</strong> were found.
+                      No project matching were found.
                     </md-not-found>
                   </md-autocomplete>
 
@@ -145,7 +109,7 @@
                       </span>
                     </md-item-template>
                     <md-not-found>
-                      No employee matching <strong>{{holidayForm.searchEmp[$index]}}</strong> were found.
+                      No employee matching were found.
                     </md-not-found>
                   </md-autocomplete>
                  
