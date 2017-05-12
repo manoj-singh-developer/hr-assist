@@ -167,19 +167,28 @@
                 </md-button>
               </div>
             </div>
-
-            <section layout-gt-xs="row" ng-repeat="holidayDate in holidayForm.holidayDateIncrement track by $index">
             <!--Period start-->
+          <section ng-repeat="holidayDate in holidayForm.holidayDateIncrement track by $index">
+            <div layout-gt-xs="row">
+              <md-datepicker 
+                ng-model="holidayForm.dateList[$index].signing_day"
+                md-placeholder="Signing date"
+                ng-change="holidayForm.checkDates($index)"
+                md-open-on-focus
+                required>
+              </md-datepicker>
+            </div>
+
+            <div layout-gt-xs="row">
               <md-datepicker required
-                md-open-on-focus=""
+                md-open-on-focus
                 ng-model="holidayForm.dateList[$index].from"
                 md-placeholder="Start date"
-                ng-change="holidayForm.checkDates($index)">
-                          
+                ng-change="holidayForm.checkDates($index)"> 
               </md-datepicker>
 
               <md-datepicker required
-                md-open-on-focus=""
+                md-open-on-focus
                 ng-model="holidayForm.dateList[$index].to"
                 md-placeholder="End date"
                 ng-change="holidayForm.checkDates($index)">
@@ -192,18 +201,19 @@
                   ng-show="!isDate">
                   New Date
                 </md-button> --><!--Period end-->
-
-            </section>
+            </div>            
+          </section>
 
             <section ng-show="holidayForm.validateDate" layout-gt-xs="row" 
               layout-align="center center">
               <span class="alert-error fade"
               role="alert">
-                End date must be greater than Start date!
+                End date must be greater than Start date and Signing date lesser than Start date !
               </span>
             </section>
 
           </md-content>
+          
         </md-tab><!-- /Request -->
 
         <!-- Preview request-->

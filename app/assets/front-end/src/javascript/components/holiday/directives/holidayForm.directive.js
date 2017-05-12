@@ -96,7 +96,7 @@
 
 
    function checkDates(index) {
-     if (vm.dateList[index].from != undefined && vm.dateList[index].to != undefined && vm.dateList[index].from >= vm.dateList[index].to) {
+     if (vm.dateList[index].signing_day != undefined && vm.dateList[index].from != undefined && vm.dateList[index].to != undefined && vm.dateList[index].signing_day >vm.dateList[index].from || vm.dateList[index].from >= vm.dateList[index].to) {
        vm.validateDate = true;
      } else {
        vm.validateDate = false;
@@ -159,7 +159,7 @@
       var day = datesCalculator();
       var start_date = vm.dateList[0].from;
       var end_date = vm.dateList[0].to;
-      var signing_day = new Date();
+      var signing_day = vm.dateList[0].signing_day;
 
 
       holiday = {
