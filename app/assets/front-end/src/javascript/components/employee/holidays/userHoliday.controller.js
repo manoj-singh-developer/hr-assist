@@ -41,8 +41,13 @@
     vm.displayOrHide = false;
     vm.replaceInputs = [1];
     vm.dateList = [];
-    vm.minDate= new Date();
+    vm.validateDate = false;
+    vm.from = new Date();
+    vm.to = new Date();
+    vm.signingDate = new Date();
 
+    vm.clearFields = clearFields;
+    vm.checkDates = checkDates;
     vm.queryProjectSearch = queryProjectSearch;
     vm.queryUserSearch = queryUserSearch;
     vm.saveHoliday = saveHoliday;
@@ -57,7 +62,7 @@
       autocompleteService.buildList(vm.users, ['first_name', 'last_name']);
     });
 
-    function _getUserHolidays(){
+    function _getUserHolidays() {
       User.getHolidays($stateParams.id)
         .then((data) => {
           vm.userHolidays = data;
@@ -71,14 +76,14 @@
       return autocompleteService.querySearch(query, vm.projects);
     }
 
-    function queryUserSearch(query){
+    function queryUserSearch(query) {
       let empArr = autocompleteService.querySearch(query, vm.users);
       let empIdArr = [];
       let userID = parseInt($stateParams.id);
       let currentUser;
 
-      for (let i = 0; i < empArr.length; i++){
-    
+      for (let i = 0; i < empArr.length; i++) {
+
         empIdArr.push(empArr[i].id);
 
         currentUser = _.find(empIdArr, function(id) {
@@ -87,7 +92,7 @@
           }
         });
 
-        if(empArr[i].id === currentUser){
+        if (empArr[i].id === currentUser) {
           empArr.splice(i, 1);
         }
 
@@ -96,7 +101,7 @@
       return empArr;
     }
 
-    function saveHoliday () {
+    function saveHoliday() {
 
       calculateHolidays(vm.from, vm.to);
 
@@ -119,25 +124,25 @@
         return [value];
       });
 
-      for(var x = 0; x < usersArr.length; x++){
+      for (var x = 0; x < usersArr.length; x++) {
         let userName = usersArr[x];
 
-        for(let i = 0; i < vm.users.length; i++){
+        for (let i = 0; i < vm.users.length; i++) {
           let usersName = vm.users[i].first_name + ' ' + vm.users[i].last_name;
 
-          if(userName === usersName){
+          if (userName === usersName) {
             replacerId.push(vm.users[i].id);
           }
         }
       }
 
-      for(var y = 0; y < projArr.length; y++){
+      for (var y = 0; y < projArr.length; y++) {
         let projName = projArr[y];
 
-        for(let j = 0; j < vm.projects.length; j++){
+        for (let j = 0; j < vm.projects.length; j++) {
           let projectsName = vm.projects[j].name;
 
-          if(projName === projectsName){
+          if (projName === projectsName) {
             projectId.push(vm.projects[j].id);
           }
         }
@@ -195,7 +200,23 @@
 
     }
 
-    function addEmptyReplacement(){
+    function checkDates() {
+      if (vm.from != undefined && vm.signingDate != undefined && vm.to != undefined && vm.signingDate > vm.from || vm.from > vm.to) {
+        vm.validateDate = true;
+      } else {
+        vm.validateDate = false;
+      }
+    }
+
+    function clearFields() {
+      vm.searchUser = '';
+      vm.searchProj = '';
+      vm.from = undefined;
+      vm.to = undefined;
+      vm.signingDate = undefined;
+    }
+
+    function addEmptyReplacement() {
       vm.replaceInputs.push({});
     }
 
