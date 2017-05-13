@@ -52,8 +52,7 @@
     vm.dateList = [];
     vm.projManager = [];
     vm.managerList = [];
-    var today = new Date();
-    vm.today = today;
+    vm.today = new Date();
     vm.holidayIncrement = [{}];
     vm.holidaySend = []; //{teamLeader: "", replacement:{project: "", employee:""}}
     vm.holidayDateIncrement = [{}];
@@ -70,7 +69,7 @@
     vm.searchEmp = [];
     vm.user = [];
     vm.leader = [];
-    vm.minDate = new Date();
+    vm.validateDate = false;
 
     // Public methods
     // ------------------------------------------------------------------------
@@ -88,17 +87,20 @@
     vm.addNewHoliday = addNewHoliday;
     vm.addNewDateHoliday = addNewDateHoliday;
     vm.addNewReplaceHoliday = addNewReplaceHoliday;
-    vm.saveHoliday = saveHoliday;
-    vm.addTeamLeader = addTeamLeader;
     vm.addRepProject = addRepProject;
     vm.addRepEmployee = addRepEmployee;
     vm.print = print;
     vm.addUser = addUser;
+    vm.checkDates = checkDates;
 
 
-
-    // Public methods declaration
-    // ------------------------------------------------------------------------
+   function checkDates(index) {
+     if (vm.dateList[index].signing_day != undefined && vm.dateList[index].from != undefined && vm.dateList[index].to != undefined && vm.dateList[index].signing_day >vm.dateList[index].from || vm.dateList[index].from >= vm.dateList[index].to) {
+       vm.validateDate = true;
+     } else {
+       vm.validateDate = false;
+     }
+   }
 
     function print() {
       var printContents = document.getElementById('printable').innerHTML;
@@ -156,7 +158,7 @@
       var day = datesCalculator();
       var start_date = vm.dateList[0].from;
       var end_date = vm.dateList[0].to;
-      var signing_day = new Date();
+      var signing_day = vm.dateList[0].signing_day;
 
 
       holiday = {
@@ -260,6 +262,18 @@
 
     function clearFields() {
       vm.holiday = {};
+      vm.user=[];
+      vm.dateList=[];
+      vm.holidayDateIncrement = [{}];
+      vm.holidayReplaceIncrement = [{}];
+      vm.holidayEmpIncrement = [{}];
+      vm.holidayRepProject = [];
+      vm.holidayRepEmployee = [];
+      vm.holidayDates = [];
+      vm.searchProjectHold = [];
+      vm.searchLeaderHold = [];
+      vm.searchUser = [];
+      vm.searchEmp = [];
     }
 
     function closeDialog() {
@@ -376,15 +390,6 @@
 
     function addNewHoliday() {
       vm.holidayIncrement.push({});
-    }
-
-
-    function addTeamLeader(item, employee, index) {
-      if (vm.holidayLeader) {
-        vm.holidayLeader.splice(0, 1);
-        vm.holidayLeader.push(item);
-      } else
-        vm.holidayLeader.push(item);
     }
 
     function addRepProject(item, employee, index) {
