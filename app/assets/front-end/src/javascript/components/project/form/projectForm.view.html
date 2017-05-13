@@ -24,13 +24,12 @@
                 <label>Name</label>
                 <input ng-model="projectForm.project.name" name="name" required>
                   
-                <div ng-messages="projectform.name.$error">
+                <div ng-messages="projectFormular.name.$error">
                   <div ng-message="required">This field is required</div>
                 </div>
 
               </md-input-container>
             </div>
-
             <div layout-gt-xs="row">
               <md-input-container md-no-float class="md-block" flex-gt-xs="">
 
@@ -41,7 +40,7 @@
                   required>
                 </textarea>
 
-                <div ng-messages="projectform.description.$error">
+                <div ng-messages="projectFormular.description.$error">
                   <div ng-message="required">This field is required</div>
                 </div>
 
@@ -55,6 +54,8 @@
               <md-datepicker 
                 ng-model="projectForm.project.start_date" 
                 md-placeholder="Enter date"
+                ng-change="projectForm.checkDates()"
+                md-open-on-focus
                 required>
               </md-datepicker>
 
@@ -62,12 +63,19 @@
 
               <label>End date</label>
               <md-datepicker 
-                ng-model="projectForm.project.end_date"
-                md-min-date="projectForm.today"
+                ng-model="projectForm.project.end_date"  
                 md-placeholder="Enter date"
+                ng-change="projectForm.checkDates()"
+                md-open-on-focus
                 required>
               </md-datepicker>
 
+            </div>
+            <div ng-show="projectForm.validateDate" layout-gt-xs="row" layout-align="center center">
+              <span class="alert-error fade"
+              role="alert">
+                End date must be greater than Start date!
+              </span>
             </div>
           </md-content>
         </md-tab>
@@ -78,7 +86,7 @@
 
         <md-button class="md-raised md-primary" 
           ng-click="projectForm.add()"
-          ng-disabled="projectFormular.$invalid">
+          ng-disabled="projectFormular.$invalid || projectForm.validateDate">
           Save
         </md-button>
 

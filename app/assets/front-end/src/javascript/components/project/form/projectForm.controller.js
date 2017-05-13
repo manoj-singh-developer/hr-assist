@@ -11,12 +11,12 @@
   function projectFormCtrl($scope, Project, $mdToast, $mdDialog, $rootScope, project) {
     let vm = this;
     vm.project = project || {};
-    vm.today = new Date();
+    vm.validateDate = false;
 
     vm.add = add;
     vm.closeButton = closeButton;
     vm.clearButton = clearButton;
-
+    vm.checkDates = checkDates;
 
     function add() {
       if (vm.project.id) {
@@ -39,6 +39,16 @@
     function clearButton() {
       vm.project = {};
     }
+
+    function checkDates() {
+
+      if (vm.project.start_date != undefined && vm.project.end_date != undefined && vm.project.start_date > vm.project.end_date) {
+        vm.validateDate = true;
+      } else {
+        vm.validateDate = false;
+      }
+    }
+
   }
 
 })();
