@@ -65,7 +65,7 @@
         .cancel('No')
         .ok('Yes');
       $mdDialog.show(confirm).then(() => {
-        tableSettings.selected.splice(-1)
+        tableSettings.selected = [];
         Technology.remove(technology.id).then((data) => {
           if (data) {
             let toRemove = _.findWhere(vm.technologies, { id: technology.id });
