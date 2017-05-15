@@ -59,7 +59,6 @@
         vm.resources.schedule = data[7];
         vm.resources.userTechnologies = data[8];
         vm.resources.educations = data[9];
-
         $rootScope.$emit("event:userResourcesLoaded", vm.resources);
 
       });
