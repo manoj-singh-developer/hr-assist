@@ -13,15 +13,18 @@
     vm.tableSettings = tableSettings;
     vm.resources = {};
     vm.filterType = filterService.getTypes();
+
     vm.filters = {
       technologies: [],
       industries: [],
-      customers: []
+      customers: [],
+      application_types: []
     };
     vm.search = {
       technologies: '',
       industries: '',
-      customers: ''
+      customers: '',
+      application_types: ''
     };
 
 
@@ -107,7 +110,7 @@
         vm.resources.technologies = data[1];
         vm.resources.customers = data[2];
         vm.resources.industries = data[3];
-        vm.resources.appTypes = data[4];
+        vm.resources.application_types = data[4];
 
         //will use this for filters
         vm.projects = vm.resources.projects;
@@ -123,6 +126,7 @@
       autocompleteService.buildList(vm.resources.technologies, ['name']);
       autocompleteService.buildList(vm.resources.industries, ['name']);
       autocompleteService.buildList(vm.resources.customers, ['name']);
+      autocompleteService.buildList(vm.resources.application_types, ['name']);
     }
 
   }
