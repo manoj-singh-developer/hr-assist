@@ -2,8 +2,6 @@
 
 
 
-
-  <!-- TITLE -->
   <md-toolbar
     class="md-table-toolbar md-default"
     layout="row"
@@ -29,333 +27,63 @@
       <div layout="row" layout-align="right">
 
         <md-button md-no-ink class="md-primary" ng-click="projects.showForm()">
-          Add
+          Add Project
         </md-button>
 
         <md-button md-no-ink class="md-primary" ng-csv="projects.getArray()" csv-header="projects.getHeader()" filename="RaportProjects.csv">
           Export
         </md-button>
 
-        <!-- <md-button ng-if= "projects.projects.length < 50" md-no-ink class="md-primary" ng-click="projects.addFromApi()">
-          !!Add from ASSIST API (use this once)
-        </md-button> -->
-        <!--<md-button md-no-ink class="md-primary" ng-click="projects.removeMultipleProjects()">
-          Multiple Delete
-        </md-button>-->
       </div>
 
     </div>
-  </md-toolbar><!-- /TITLE -->
-
+  </md-toolbar>
 
 
 
   <md-divider class="divider-bold u-no-padding"></md-divider>
 
-  <!-- AUTOCOMPLETE SEARCH -->
+
+
   <md-content class="md-padding">
     <form ng-submit="$event.preventDefault()">
       <md-autocomplete
         ng-disabled="projects.isDisabled"
-        ng-model="projects.searchText"
+        ng-model="projects.searchProject"
         md-selected-item="projects.selectedItem"
-        md-search-text-change="projects.searchTextChange(projects.searchText)"
-        md-search-text="projects.searchText"
+        md-search-text-change="projects.searchTextChange(projects.searchProject)"
+        md-search-text="projects.searchProject"
         md-selected-item-change="projects.selectedItemChange(item)"
-        md-items="item in projects.querySearch(projects.searchText)"
+        md-items="item in projects.querySearch(projects.searchProject)"
         md-item-text="item.name" md-min-length="0" placeholder="Search">
-
         <md-item-template>
           <span class="item-metadata">
           {{item.name}}
         </md-item-template>
-
       </md-autocomplete>
     </form>
-  </md-content><!-- /AUTOCOMPLETE SEARCH -->
+  </md-content>
 
 
 
-
-  <!-- SELECTED ROWS -->
+  <!-- To add in table component -->
   <md-toolbar
     class="md-table-toolbar alternate"
-    ng-show="projects.table.options.rowSelection && projects.table.selected.length">
+    ng-show="projects.tableSettings.options.rowSelection && projects.tableSettings.selected.length">
     <div class="md-toolbar-tools">
       <span>
-      {{projects.table.selected.length}} {{projects.table.selected.length > 1 ? 'projects' : 'project'}} selected
+      {{projects.tableSettings.selected.length}} {{projects.tableSettings.selected.length > 1 ? 'projects' : 'project'}} selected
     </span>
     </div>
-  </md-toolbar><!-- /SELECTED ROWS -->
+  </md-toolbar>
 
 
 
+  <hra-projects-filters></hra-projects-filters>
 
-  <!-- ALL FILTERS -->
-  <md-content
-    class="c-filters c-filters--employee md-padding"
-    ng-show="projects.showFilters">
 
-
-
-
-    <md-button
-      class="md-warn"
-      label="Reset all filters"
-      aria-label="Reset all filters"
-      ng-click="projects.resetFilters()">
-      <md-icon class="material-icons">autorenew</md-icon>
-      Reset filters
-      <md-tooltip md-autohide="true">
-        Reset all filters
-      </md-tooltip>
-    </md-button>
-
-
-
-
-    <!-- FILTER BY TECHNOLOGIES -->
-    <section layout="row" layout-align="center center">
-
-
-
-
-      <!-- SEARCH INPUT -->
-      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
-        <md-content class="md-padding">
-          <form ng-submit="$event.preventDefault()">
-
-            <md-autocomplete
-              md-selected-item="projects.selectedTechonology"
-              md-search-text-change="projects.searchTechonologyChange(projects.searchTechonology)"
-              md-search-text="projects.searchTechonology" md-selected-item-change="projects.selectedTechonologyChange(itemTech.label, projects.projects)"
-              md-items="itemTech in projects.querySearchTechonology(projects.searchTechonology)"
-              md-item-text="itemTech.label"
-              md-min-length="0"
-              placeholder="Filter by Techonologies">
-
-              <md-item-template>
-                <span class="item-metadata">
-                {{itemTech.label}}
-              </md-item-template>
-
-            </md-autocomplete>
-          </form>
-        </md-content>
-      </div><!-- /SEARCH INPUT -->
-
-
-
-
-      <!-- SEARCH OUPUT -->
-      <div flex="50" flex-gt-sm="65" flex-gt-md="75" layout-align="left center">
-        <md-list layout="row" layout-wrap>
-
-          <md-list-item
-            class="md-2-line c-filters__label">
-            <div class="md-list-item-text " layout="column">
-              <h4>Has the following technologies: </h4>
-            </div>
-          </md-list-item>
-
-          <md-list-item
-            class="md-2-line"
-            ng-repeat="technology in projects.arrayTechnology track by $index">
-            <div class="md-list-item-text" layout="column">
-              <p ng-click="projects.removeSearchTechnology($index)">
-                {{$index + 1}}. {{technology}}
-                <span class="material-icons c-filters__icon">close</span>
-              </p>
-            </div>
-          </md-list-item>
-
-        </md-list>
-      </div><!-- /SEARCH OUPUT -->
-
-
-    </section><!-- /FILTER BY TECHNOLOGIES -->
-
-
-
-
-    <!-- FILTER BY CUSTOMERS -->
-    <section layout="row" layout-align="center center">
-
-      <!-- SEARCH INPUT -->
-      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
-        <md-content class="md-padding">
-          <form ng-submit="$event.preventDefault()">
-            <md-autocomplete md-selected-item="projects.selectedCustomers" md-search-text-change="projects.searchCustomersChange(projects.searchCustomers)"
-              md-search-text="projects.searchCustomers" md-selected-item-change="projects.selectedCustomersChange(itemCust.name, projects.projects)"
-              md-items="itemCust in projects.querySearchCustomers(projects.searchCustomers)" md-item-text="itemCust.name" md-min-length="0"
-              placeholder="Filter by Customers">
-
-              <md-item-template>
-                <span class="item-metadata">
-                <span class="flag" ng-class="'flag-'+itemCust.name"></span>
-                {{itemCust.name}}
-              </md-item-template>
-
-            </md-autocomplete>
-          </form>
-        </md-content>
-      </div><!-- /SEARCH INPUT -->
-
-      <!-- SEARCH OUPUT -->
-      <div flex="50" flex-gt-sm="65" flex-gt-md="75" layout-align="left center">
-        <md-list layout="row" layout-wrap>
-
-          <md-list-item
-            class="md-2-line c-filters__label">
-            <div class="md-list-item-text " layout="column">
-              <h4>Has the following customers: </h4>
-            </div>
-          </md-list-item>
-
-          <md-list-item
-            class="md-2-line"
-            ng-repeat="customer in projects.arrayCustomers track by $index">
-            <div class="md-list-item-text" layout="column">
-              <p ng-click="projects.removeSearchCustomers($index)">
-                {{$index + 1}}. <span class="flag" ng-class="'flag-'+customer"></span> {{customer}}
-                <span class="material-icons c-filters__icon">close</span>
-              </p>
-            </div>
-          </md-list-item>
-
-        </md-list>
-      </div><!-- /SEARCH OUPUT -->
-
-    </section><!-- FILTER BY CUSTOMERS -->
-
-
-
-
-    <!-- FILTER BY INDUSTRY -->
-    <section layout="row" layout-align="center center">
-
-      <!-- SEARCH INPUT -->
-      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
-        <md-content class="md-padding">
-          <form ng-submit="$event.preventDefault()">
-            <md-autocomplete md-selected-item="projects.selectedIndustry" md-search-text-change="projects.searchIndustryChange(projects.searchIndustry)"
-              md-search-text="projects.searchIndustry" md-selected-item-change="projects.selectedIndustryChange(itemIndust.name, projects.projects)"
-              md-items="itemIndust in projects.querySearchIndustry(projects.searchIndustry)" md-item-text="itemIndust.name"
-              md-min-length="0" placeholder="Filter by Industry">
-
-              <md-item-template>
-                <span class="item-metadata">
-                {{itemIndust.name}}
-              </md-item-template>
-
-            </md-autocomplete>
-          </form>
-        </md-content>
-      </div><!-- /SEARCH INPUT -->
-
-      <!-- SEARCH OUPUT -->
-      <div flex="50" flex-gt-sm="65" flex-gt-md="75" layout-align="left center">
-        <md-list layout="row" layout-wrap>
-
-          <md-list-item
-            class="md-2-line c-filters__label">
-            <div class="md-list-item-text " layout="column">
-              <h4>Has the following industries: </h4>
-            </div>
-          </md-list-item>
-
-          <md-list-item
-            class="md-2-line"
-            ng-repeat="industry in projects.arrayIndustries track by $index">
-            <div class="md-list-item-text" layout="column">
-              <p ng-click="projects.removeSearchIndustry($index)">
-                {{$index + 1}}. {{industry}}
-                <span class="material-icons c-filters__icon">close</span>
-              </p>
-            </div>
-          </md-list-item>
-
-        </md-list>
-      </div><!-- /SEARCH OUPUT -->
-
-    </section><!-- /FILTER BY INDUSTRY -->
-
-
-
-
-    <!-- FILTER BY APP TYPE -->
-    <section layout="row" layout-align="center center">
-
-      <!-- SEARCH INPUT -->
-      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
-        <md-content class="md-padding">
-          <form ng-submit="$event.preventDefault()">
-            <md-autocomplete
-              md-selected-item="projects.selectedAppType"
-              md-search-text-change="projects.searchAppTypeChange
-              (projects.searchAppType)"
-              md-search-text="projects.searchAppType"
-              md-selected-item-change="projects.selectedAppTypeChange(itemApp.name, projects.projects)"
-              md-items="itemApp in projects.querySearchAppType(projects.searchIndustry)"
-              md-item-text="itemApp.name"
-              md-min-length="0"
-              placeholder="Filter by Application Type">
-
-              <md-item-template>
-                <span class="item-metadata">
-                {{itemApp.name}}
-              </md-item-template>
-
-            </md-autocomplete>
-          </form>
-        </md-content>
-      </div><!-- /SEARCH INPUT -->
-
-      <!-- SEARCH OUPUT -->
-      <div flex="50" flex-gt-sm="65" flex-gt-md="75" layout-align="left center">
-        <md-list layout="row" layout-wrap>
-
-          <md-list-item
-            class="md-2-line c-filters__label">
-            <div class="md-list-item-text " layout="column">
-              <h4>Has the following Application Types: </h4>
-            </div>
-          </md-list-item>
-
-          <md-list-item
-            class="md-2-line"
-            ng-repeat="app in projects.arrayAppType track by $index">
-            <div class="md-list-item-text" layout="column">
-              <p ng-click="projects.removeSearchAppType($index)">
-                  {{$index + 1}}. {{app}}
-                <span class="material-icons c-filters__icon">close</span>
-              </p>
-            </div>
-          </md-list-item>
-
-        </md-list>
-      </div><!-- /SEARCH OUPUT -->
-
-    </section><!-- /FILTER BY APP TYPE -->
-
-
-
-
-    <!-- FILTER BY DATE -->
-    <div flex="60" flex-gt-sm="40" flex-gt-md="30">
-      <!--<md-content class="md-padding">
-        <md-datepicker ng-model="projects.filteredDate.startDate" md-placeholder="Project Start Date" ng-change="projects.startDatefilter($index)">
-        </md-datepicker>
-      </md-content>-->
-    </div><!-- FILTER BY DATE -->
-
-
-
-
-  </md-content> <!-- /ALL FILTERS -->
 
   <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
-
 
 
 
@@ -364,9 +92,9 @@
     <table
       class="c-table--actions c-table--big table-projects"
       md-table
-      md-row-select="projects.table.options.rowSelection"
-      multiple="{{projects.table.options.multiSelect}}"
-      ng-model="projects.table.selected"
+      md-row-select="projects.tableSettings.options.rowSelection"
+      multiple="{{projects.tableSettings.options.multiSelect}}"
+      ng-model="projects.tableSettings.selected"
       md-progress="promise">
 
       <thead
@@ -377,8 +105,8 @@
         <tr md-row>
           <th md-column md-order-by="name"></th>
           <th md-column md-order-by="name">Name</th>
-          <th md-column md-order-by="startDate">Start</th>
-          <th md-column md-order-by="deadline">End</th>
+          <th md-column md-order-by="start_date">Start</th>
+          <th md-column md-order-by="end_date">End</th>
           <th md-column>Customer</th>
           <th md-column>Type</th>
           <th md-column>Industry</th>
@@ -395,7 +123,10 @@
           md-select="project"
           md-on-select="logItem"
           md-auto-select="projects.options.autoSelect"
-          ng-repeat="project in projects.projects | orderBy: projects.query.order | filter: projects.searchText  | filter: projects.years | filter: projects.customer | filter: projects.app | filter: projects.technology | filter: projects.industry| limitTo: projects.table.query.limit : (projects.table.query.page - 1) * projects.table.query.limit">
+          ng-repeat="project in projects.projects
+            | filter: projects.searchProject
+            | orderBy: projects.query.order
+            | limitTo: projects.tableSettings.query.limit : (projects.tableSettings.query.page - 1) * projects.tableSettings.query.limit track by $index">
 
           <td md-cell> {{$index + 1}}</td>
 
@@ -406,10 +137,10 @@
             </strong>
           </td>
 
-          <td md-cell>{{project.startDate | date: 'dd-MM-yyyy'}}</td>
+          <td md-cell>{{project.start_date | date: 'dd-MM-yyyy'}}</td>
 
           <td md-cell>
-            <p class="u-no-margin">{{project.deadline | date: 'dd-MM-yyyy'}}</p>
+            <p class="u-no-margin">{{project.end_date | date: 'dd-MM-yyyy'}}</p>
             <span ng-show="project.daysLeft > 0 ">
               <strong>
               ({{project.daysLeft}}
@@ -435,7 +166,7 @@
 
           <td md-cell>
             <ul class="c-list">
-              <li ng-repeat="app in project.applicationTypes track by $index">
+              <li ng-repeat="app in project.application_types track by $index">
               {{$index +1}}. {{app.name}}
               </li>
             </ul>
@@ -451,8 +182,8 @@
 
           <td md-cell>
             <ul class="c-list">
-              <li ng-repeat="employee in project.employees track by $index">
-                {{$index +1}}. {{ employee.firstName }} {{ employee.lastName }}
+              <li ng-repeat="employee in project.users track by $index">
+                {{$index +1}}. {{ employee.first_name }} {{ employee.last_name }}
               </li>
             </ul>
           </td>
@@ -460,7 +191,7 @@
           <td md-cell>
             <ul class="c-list">
               <li ng-repeat="technology in project.technologies track by $index">
-                {{$index +1}}. {{technology.label}}
+                {{$index +1}}. {{technology.name}}
               </li>
             </ul>
           </td>
@@ -482,7 +213,7 @@
               class="md-icon-button md-warn"
               label="Remove project"
               aria-label="Remove project"
-              ng-click="projects.deleteConfirm($event, project, $index)">
+              ng-click="projects.remove(project, $event)">
               <md-icon class="material-icons">delete</md-icon>
               <md-tooltip md-autohide="true">
                 Remove project
@@ -499,15 +230,8 @@
 
 
 
-
-  <!-- TABLE PAGINATION -->
-  <md-table-pagination
-    md-limit="projects.table.query.limit"
-    md-limit-options="projects.table.limitOptions"
-    md-page="projects.table.query.page"
-    md-total="{{projects.projects.length}}" md-page-select="projects.table.options.pageSelect" md-boundary-links="projects.table.options.boundaryLinks">
-  </md-table-pagination><!-- /TABLE PAGINATION -->
-
+  <hra-table-pagination settings="projects.tableSettings">
+  <hra-table-pagination>
 
 
 

@@ -6,59 +6,63 @@
     .module('HRA')
     .controller('projectsCtrl', projectsCtrl);
 
-  projectsCtrl
-    .$inject = ['$scope', '$rootScope', '$mdDialog', 'tableSettings', 'autocompleteService', 'Project'];
-
-  function projectsCtrl($scope, $rootScope, $mdDialog, tableSettings, autocompleteService, Project) {
+  function projectsCtrl($scope, $stateParams, $q, $rootScope, $mdDialog, $filter, tableSettings, autocompleteService, filterService, Project, Technology, Customer, Industry, AppType) {
 
     var vm = this;
-    vm.ids = [];
-    vm.selected = [];
+    vm.showFilters = false;
     vm.tableSettings = tableSettings;
-
-
-    _getProjects();
+    vm.resources = {};
+    vm.filterType = filterService.getTypes();
+    vm.filters = {
+      technologies: [],
+      industries: [],
+      customers: []
+    };
+    vm.search = {
+      technologies: '',
+      industries: '',
+      customers: ''
+    };
 
 
     vm.showForm = showForm;
     vm.remove = remove;
     vm.multipleRemove = multipleRemove;
     vm.querySearch = querySearch;
+    vm.toggleFilters = toggleFilters;
+    vm.filterProjects = filterProjects;
+    vm.resetFilters = resetFilters;
 
 
-    $rootScope.$on('event:deviceUpdate', () => {
-      // TODO: need a beeter approach here,
-      // there is no need for an extra request on update
-      _getProjects();
-    });
-
-    $rootScope.$on('event:deviceAdd', (event, data) => {
+    _getResources();
+    $rootScope.$on('event:projectAdd', (event, data) => {
       vm.projects = vm.projects.concat(data);
     });
 
-    function showForm(device) {
+
+    function showForm(project) {
       $mdDialog.show({
-        templateUrl: rootTemplatePath + '/device/views/deviceForm.view.html',
-        controller: 'deviceFormCtrl',
-        controllerAs: 'deviceForm',
+        templateUrl: rootTemplatePath + '/project/form/projectForm.view.html',
+        controller: 'projectFormCtrl',
+        controllerAs: 'projectForm',
         clickOutsideToClose: true,
         data: {
-          device: angular.copy(device),
+          project: angular.copy(project),
         }
       });
     }
 
-    function remove(device, event) {
+    function remove(project, event) {
       var confirm = $mdDialog.confirm()
-        .title('Would you like to delete ' + device.name + ' equipment?')
+        .title('Would you like to delete ' + project.name + ' project?')
         .targetEvent(event)
         .ok('Yes')
         .cancel('No');
 
       $mdDialog.show(confirm).then(() => {
-        Project.remove(device.id).then((data) => {
+        Project.remove(project.id).then((data) => {
           if (data) {
-            let toRemove = _.findWhere(vm.projects, { id: device.id });
+            let toRemove = _.findWhere(vm.projects, { id: project.id });
             vm.projects = _.without(vm.projects, toRemove);
           }
         });
@@ -67,16 +71,58 @@
 
     function multipleRemove() {}
 
-    function querySearch(query) {
-      return autocompleteService.querySearch(query, vm.projects);
+    function toggleFilters() {
+      vm.showFilters = !vm.showFilters;
+    }
+
+    function filterProjects(filteringType) {
+      vm.projects = filterService.filter(
+        vm.projects,
+        vm.projectsCopy,
+        vm.filters,
+        filteringType);
+    }
+
+    function resetFilters() {
+      angular.forEach(vm.filters, (item, key) => { vm.filters[key] = []; });
+      filterProjects();
+    }
+
+    function querySearch(query, list) {
+      return autocompleteService.querySearch(query, list);
     }
 
 
-    function _getProjects() {
-      Project.getAll().then((data) => {
-        vm.projects = data;
-        return autocompleteService.buildList(vm.projects, ['name']);
+    function _getResources() {
+      let promises = [];
+
+      promises.push(Project.getAll());
+      promises.push(Technology.getAll());
+      promises.push(Customer.getAll());
+      promises.push(Industry.getAll());
+      promises.push(AppType.getAll());
+
+      $q.all(promises).then((data) => {
+        vm.resources.projects = data[0];
+        vm.resources.technologies = data[1];
+        vm.resources.customers = data[2];
+        vm.resources.industries = data[3];
+        vm.resources.appTypes = data[4];
+
+        //will use this for filters
+        vm.projects = vm.resources.projects;
+        vm.projectsCopy = angular.copy(vm.projects); //[1]
+        tableSettings.total = vm.projects.length;
+
+        _buildAutocompleteLists();
       });
+    }
+
+    function _buildAutocompleteLists() {
+      autocompleteService.buildList(vm.projects, ['name']);
+      autocompleteService.buildList(vm.resources.technologies, ['name']);
+      autocompleteService.buildList(vm.resources.industries, ['name']);
+      autocompleteService.buildList(vm.resources.customers, ['name']);
     }
 
   }

@@ -113,18 +113,31 @@ module V1
         end
 
         params do
+          requires :name, type: String, allow_blank: false
+          requires :timetable, type: String, allow_blank: false
+        end
+
+        post ':user_id/schedule' do
+          user = find_user(params[:user_id])
+          schedule = Schedule.create(name: params[:name], timetable: params[:timetable])
+          user.schedule.destroy if user.schedule
+          user.schedule = schedule
+          user.schedule
+        end
+
+        params do
           optional :name, type: String
           optional :timetable, type: String
         end
         put ':user_id/schedule/:schedule_id' do
-          schedule = Schedule.find_or_create_by(id: params[:schedule_id]) do |schedule|
-            schedule.name = params[:name]
-            schedule.timetable = params[:timetable]
-          end
-          schedule.update(user_schedule_params)
           user = find_user(params[:user_id])
-          user.schedule = schedule
-          user.schedule
+          schedule = Schedule.find(params[:schedule_id])
+          if user.schedule == schedule
+            schedule.update(user_schedule_params)
+            user.schedule
+          else
+            error(message: "Invalid schedule_id")
+          end
         end
 
         get ':user_id/projects' do
@@ -235,6 +248,29 @@ module V1
         end
 
         params do
+          requires :technologies, type: Array[Hash]
+        end
+        put ':user_id/technologies' do
+          user = User.find(params[:user_id])
+          params[:technologies].each do |technology|
+            u_technology = user.technologies.find(technology.id)
+            u_technology.update(ActionController::Parameters.new(technology).permit(:name, :label))
+            user_technology = UserTechnology.find_by_technology_id_and_user_id(technology.id, user.id)
+            user_technology.update(ActionController::Parameters.new(technology).permit(:level, :technology_type))
+          end
+          { items:
+          user.user_technologies.map do |user_technology|
+            {
+              id: user_technology.technology_id,
+              name: user_technology.technology.name,
+              level: user_technology.level,
+              technology_type: user_technology.technology_type
+            }
+          end
+          }
+        end
+
+        params do
           requires :technology_ids, type: Array[Integer]
         end
         delete ':user_id/technologies' do
@@ -265,7 +301,7 @@ module V1
           requires :end_date, allow_blank: :false, type: Date
           requires :signing_day, allow_blank: :false, type: Date
           requires :project_ids, allow_blank: false, type: Array[Integer]
-          requires :replacer_ids, allow_blank: false, type: Array[Integer]
+          requires :replacer_ids, allow_blank: true, type: Array[Integer]
         end
         post ':user_id/holidays' do
           user = find_user(params[:user_id])

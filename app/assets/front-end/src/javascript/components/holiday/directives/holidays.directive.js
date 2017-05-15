@@ -18,7 +18,6 @@
   }
 
 
-
   // employeesList controller
   // ------------------------------------------------------------------------
   angular
@@ -28,7 +27,7 @@
   HolidaysController
     .$inject = ['$rootScope', '$scope', '$mdDialog', 'autocompleteService', 'miscellaneousService', 'HolidayModel', 'User', '$timeout'];
 
-  function HolidaysController($rootScope, $scope, $mdDialog, autocompleteService, miscellaneousService, HolidayModel, User, $timeout) {
+  function HolidaysController($rootScope, $scope, $mdDialog, autocompleteService, miscellaneousService, HolidayModel, User, $timeout ) {
 
 
     var vm = this;
@@ -43,7 +42,7 @@
     var final = [];
     vm.dateList = [];
     vm.monthsList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    vm.selectedMonth = [];
+    vm.selectedMonth = undefined;
     var holCopy = [];
     vm.table = {
       options: {
@@ -57,7 +56,7 @@
         pageSelect: true
       },
       query: {
-        order: 'firstName',
+        order: 'employee',
         filter: '',
         limit: 10,
         page: 1
@@ -65,6 +64,7 @@
       "limitOptions": [10, 15, 20],
       selected: []
     };
+
     var empArray;
 
     getHoliday();
@@ -81,6 +81,7 @@
     vm.searchFilter = searchFilter;
     vm.resetFilters = resetFilters;
     vm.searchPeriodFilter = searchPeriodFilter;
+    vm.checkDates = checkDates;
 
     // Public methods declaration
     // ------------------------------------------------------------------------
@@ -141,9 +142,10 @@
       vm.table.selected = [];
     }
 
-    function selectedMonthDate(data, index) {
+    function selectedMonthDate(data) {
+      vm.indexMonth = vm.monthsList.indexOf(data);
       if (data !== undefined) {
-        vm.monthSelection[index] = data;
+        vm.monthSelection[vm.indexMonth] = data;
         return vm.selectedMonth;
       } else {
         return "Pick a month";
@@ -161,15 +163,16 @@
         });
     }
 
-    function searchFilter(index) {
+    function searchFilter() {
+      filtru = [];
+      vm.disabledMonth = true;
       final = vm.holidays.map(function(holiday) {
-        return holiday.period.map(function(per) {
-          dateFrom = new Date(per.from);
-          dateTo = new Date(per.to);
-          if (vm.monthSelection[index] === vm.monthsList[dateFrom.getMonth()] || vm.monthSelection[index] === vm.monthsList[dateTo.getMonth()])
-            filtru.push(holiday);
-          return filtru;
-        });
+        dateFrom = new Date(holiday.startDate);
+        dateTo = new Date(holiday.endDate);
+        // debugger
+        if (vm.monthSelection[vm.indexMonth] === vm.monthsList[dateFrom.getMonth()] || vm.monthSelection[vm.indexMonth] === vm.monthsList[dateTo.getMonth()])
+          filtru.push(holiday);
+        return filtru;
       });
       vm.holidays = filtru;
     }
@@ -179,23 +182,32 @@
       filtru = [];
       vm.dateList = [];
       vm.selectedMonth = undefined;
+      vm.searchText = "";
+      vm.disabledMonth = false;
+      vm.disabledPeriod = false;
+      vm.validateDate = false;
     }
 
-    function searchPeriodFilter(index) {
+    function searchPeriodFilter() {
+      filtru = [];
+      vm.disabledPeriod = true;
       final = vm.holidays.map(function(holiday) {
-        return holiday.period.map(function(per) {
-          dateFrom = new Date(per.from);
-          dateTo = new Date(per.to);
-          if ((dateFrom.getTime() >= vm.dateList.from.getTime() && dateTo.getTime() <= vm.dateList.to.getTime()))
-            filtru.push(holiday);
-          return filtru;
-        });
+        dateFrom = new Date(holiday.startDate);
+        dateTo = new Date(holiday.endDate);
+        if ((dateFrom.getTime() >= vm.dateList.from.getTime() && dateTo.getTime() <= vm.dateList.to.getTime()))
+          filtru.push(holiday);
+        return filtru;
       });
       vm.holidays = filtru;
     }
 
-
-
+    function checkDates() {
+      if (vm.dateList.from != undefined && vm.dateList.to != undefined && vm.dateList.from >= vm.dateList.to) {
+        vm.validateDate = true;
+      } else {
+        vm.validateDate = false;
+      }
+    }
     // Private methods declaration
     // ------------------------------------------------------------------------
 
@@ -204,27 +216,29 @@
 
       HolidayModel.getAll().then(
         function(data) {
-            $scope.holidaysTable = [];
-            var holidaysArr = data;
-            empArray;
+          $scope.holidaysTable = [];
+          var holidaysArr = data;
+          empArray;
 
-          holidaysArr.forEach(function (h, index) {
-            $timeout(function () {
-              empArray.forEach(function (u, index) {
+          holidaysArr.forEach(function(h, index) {
+            $timeout(function() {
+              empArray.forEach(function(u, index) {
 
-                if(u.id === h.user_id){
-                  var employee =  u.first_name + ' ' + u.last_name;
+                if (u.id === h.user_id) {
+                  var employee = u.first_name + ' ' + u.last_name;
                   var startDate = h.start_date;
                   var endDate = h.end_date;
                   var days = h.days;
-                  var holidayId= h.holiday_id;
+                  var holidayId = h.holiday_id;
+                  var signing_day = h.signing_day;
 
-                  var holidayObj = {
+                  let holidayObj = {
                     employee: employee,
                     startDate: startDate,
                     endDate: endDate,
                     days: days,
-                    holidayId: holidayId
+                    holidayId: holidayId,
+                    signing_day: signing_day
                   };
 
                   $scope.holidaysTable.push(holidayObj);
@@ -233,9 +247,8 @@
             }, 100)
           });
 
-          vm.holidays =  $scope.holidaysTable;
-
-          // holCopy = angular.copy(vm.holidays);
+          vm.holidays = $scope.holidaysTable;
+          holCopy = $scope.holidaysTable;
           //return autocompleteService.buildList(vm.holidays, ['employee']);
         },
         function(data) {});

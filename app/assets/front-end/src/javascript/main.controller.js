@@ -5,7 +5,7 @@
   // main controller
   // ------------------------------------------------------------------------
 
-  function mainController($rootScope, $mdToast, $scope, $state, $timeout) {
+  function mainController($rootScope, $mdToast, $scope) {
 
     var self = this;
     $scope.nav = false;
@@ -43,9 +43,6 @@
     return $scope.mainCtrl = self;
 
   }
-
-    mainController
-        .$inject = ['$rootScope', '$mdToast', '$scope', '$state', '$timeout'];
 
     angular
         .module('HRA')

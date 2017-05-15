@@ -14,7 +14,7 @@
 
   <!-- PREVIEW  -->
   <md-content
-    ng-show="!prjIndustries.settings.showForm"
+    ng-show="!prjIndustries.displayOrHide"
     class="c-card-profile__preview">
     <md-list layout="row" layout-wrap>
       <md-list-item
@@ -26,9 +26,9 @@
           <h4>{{technology.name}}</h4>
         </div>
 
-        <div class="md-list-item-text" layout="column">
+        <!--<div class="md-list-item-text" layout="column">
           <span>{{technology.label}}</span>
-        </div>
+        </div>-->
 
       </md-list-item>
     </md-list>
@@ -40,13 +40,13 @@
     <!-- EDIT -->
     <md-content
       class = "md-padding"
-      ng-show="prjIndustries.settings.showForm">
+      ng-show="prjIndustries.displayOrHide">
 
       <md-list layout="row" layout-wrap>
 
         <md-list-item class="md-2-line c-filters__label">
            <div class="md-list-item-text " layout="column">
-             <h4>Add/Remove Technology: </h4>
+             <h4>Add/Remove Industry: </h4>
            </div>
          </md-list-item>
 
@@ -71,7 +71,7 @@
             md-search-text-change="prjIndustries.searchTextChange(prjIndustries.searchText)"
             md-search-text="prjIndustries.searchText"
             md-selected-item-change="prjIndustries.addInQueue(item)"
-            md-items="item in prjIndustries.querySearch(prjIndustries.searchText, prjIndustries.technologies)"
+            md-items="item in prjIndustries.querySearch(prjIndustries.searchText, prjIndustries.industries)"
             md-item-text="item.name"
             md-min-length="0"
             placeholder="Search">
@@ -96,18 +96,18 @@
   <md-card-actions
     layout="column"
     layout-align="start"
-    ng-show="!prjIndustries.settings.showForm">
+    ng-show="!prjIndustries.displayOrHide">
     <md-button
       class="c-card-profile__btn no-margin"
-      ng-click="prjIndustries.toggleForm()">
-      Add/Edit technologies
+      ng-click="prjIndustries.showForm()">
+      Add/Edit industries
     </md-button>
   </md-card-actions>
 
   <md-card-actions
     layout="row"
     layout-align="center center"
-    ng-show="prjIndustries.settings.showForm"
+    ng-show="prjIndustries.displayOrHide"
     class="additional">
 
     <md-button
@@ -119,7 +119,7 @@
 
     <md-button
       class="md-raised"
-      ng-click="prjIndustries.toggleForm()">
+      ng-click="prjIndustries.showForm(); prjIndustries.cancel()">
       Cancel
     </md-button>
 

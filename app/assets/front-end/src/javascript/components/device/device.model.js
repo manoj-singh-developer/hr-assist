@@ -101,15 +101,10 @@
 
     Device.getEmployees = (id) => {
       url = apiUrl + '/devices/:id/users';
-      resource = $resource(url, {}, {
-        'get': {
-          method: 'GET',
-          isArray: true
-        }
-      }).get({ id: id });
+      resource = $resource(url).get({ id: id });
 
       promise = resource.$promise
-        .then(data => data)
+        .then(data => data.items)
         .catch(() => alertService.error(model, 'getEmployees'));
 
       return promise;

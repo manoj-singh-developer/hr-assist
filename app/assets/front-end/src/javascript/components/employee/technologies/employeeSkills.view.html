@@ -72,7 +72,7 @@
                         ng-repeat="technology in employeeSkills.userTechnologies track by $index">
             <div class="md-list-item-text" layout="column">
               <p class="c-filters__item"
-                ng-click="employeeSkills.deleteTech(technology)" >
+                ng-click="employeeSkills.deleteTechQuery(technology)" >
                 {{$index + 1}} {{technology.name}}
                 <span class="material-icons c-filters__icon">close</span>
               </p>
@@ -92,15 +92,16 @@
             <md-input-container>
               <label>Select technology</label>
               <md-autocomplete md-selected-item="employeeSkills.selectedItem[$index]"
-                              md-search-text-change="employeeSkills.searchTextChange(employeeSkills.searchText[$index])"
-                              ng-model="employeeSkills.searchText[$index]"
-                              md-search-text="employeeSkills.searchText[$index]"
-                              md-selected-item-change="employeeSkills.selectedTechnologyChange(item, $index)"
-                              md-items="item in employeeSkills.queryTechnologySearch(employeeSkills.searchText[$index])"
-                              md-item-text="item.name"
-                              md-min-length="0"
-                              placeholder="Select technology"
-                              required>
+                               md-search-text-change="employeeSkills.searchTextChange(employeeSkills.searchText[$index])"
+                               ng-model="employeeSkills.searchText[$index]"
+                               md-search-text="employeeSkills.searchText[$index]"
+                               md-selected-item-change="employeeSkills.selectedTechnologyChange(item, $index)"
+                               md-items="item in employeeSkills.queryTechnologySearch(employeeSkills.searchText[$index])"
+                               md-item-text="item.name"
+                               md-min-length="0"
+                               placeholder="Select technology"
+                               class="select-tech"
+                               required>
 
                 <md-item-template>
                   <span class="item-metadata"
@@ -114,7 +115,7 @@
           </md-content>
           <!-- /TECHNOLOGIES SELECT-->
         </div>
-        
+
         <!--TYPE SELECT-->
         <div class="md-padding" flex-gt-xs="100">
           <md-input-container>
@@ -157,7 +158,7 @@
         </div><!--TECHNOLOGY LEVEL-->
 
         <!--TECHNOLOGY LEVEL-->
-        
+
         <!--TECHNOLOGY LEVEL-->
         <div class="md-padding" flex-gt-xs="10">
           <md-button class="md-icon-button md-warn"
@@ -202,7 +203,13 @@
 
       <md-button class="md-raised md-primary"
                 ng-click="employeeSkills.saveTechnologies()"
-                ng-disabled="addTechForm.$invalid">
+                ng-disabled="addTechForm.$invalid"
+                ng-show="!employeeSkills.showDelete">
+        Save
+      </md-button>
+      <md-button class="md-raised md-primary"
+                 ng-click="employeeSkills.deleteTechnologies()"
+                 ng-show="employeeSkills.showDelete">
         Save
       </md-button>
 

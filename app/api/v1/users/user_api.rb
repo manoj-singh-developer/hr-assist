@@ -51,7 +51,12 @@ module V1
           requires :id, type: Integer , desc: "User id"
         end
         get ':id' do
-          authorize! :read, User.find(params[:id])
+          authorize! :read, User
+          user = find_user(params[:id])
+          if(current_user.is_employee && current_user.id != user.id )
+            return error({message: "Cannot access another user"})
+          end
+          user
         end
 
         desc "Update user by id"

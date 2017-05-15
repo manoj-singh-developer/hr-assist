@@ -22,7 +22,7 @@
         <div class="md-list-item-text">
           Name: {{ technologyDetails.technology.name }}
         </div>
-        <div class="md-list-item-text">
+        <div class="md-list-item-text" ng-if="technologyDetails.technology.label">
           Description: {{ technologyDetails.technology.label }}
         </div>
 
@@ -51,8 +51,8 @@
         class="md-padding section-group">
 
         <div class="md-list-item-text"
-        ng-repeat="employee in technologyDetails.employees">
-         {{$index+1}}. {{employee.firstName}} {{employee.lastName}}
+             ng-repeat="employee in technologyDetails.usersTech track by $index">
+         {{$index+1}}. {{employee.first_name}} {{employee.last_name}}
         </div>
 
       </section>
@@ -63,32 +63,32 @@
 
 
 
-  <md-card> <!-- Candidate list -->
+  <!--<md-card> &lt;!&ndash; Candidate list &ndash;&gt;-->
 
-    <md-card-title>
-      <md-card-title-text>
-        <span class="md-headline">Candidates with this skill</span>
-      </md-card-title-text>
-    </md-card-title>
+    <!--<md-card-title>-->
+      <!--<md-card-title-text>-->
+        <!--<span class="md-headline">Candidates with this skill</span>-->
+      <!--</md-card-title-text>-->
+    <!--</md-card-title>-->
 
-    <md-content
-      class="md-padding">
+    <!--<md-content-->
+      <!--class="md-padding">-->
 
-      <section
-        layout-gt-xs="column"
-        layout-align="start left"
-        class="md-padding section-group">
+      <!--<section-->
+        <!--layout-gt-xs="column"-->
+        <!--layout-align="start left"-->
+        <!--class="md-padding section-group">-->
 
-        <div class="md-list-item-text"
-        ng-repeat="candidate in technologyDetails.candidates">
-         {{$index+1}}. {{candidate.firstName}} {{candidate.lastName}}
-        </div>
+        <!--<div class="md-list-item-text"-->
+        <!--ng-repeat="candidate in technologyDetails.candidates">-->
+         <!--{{$index+1}}. {{candidate.firstName}} {{candidate.lastName}}-->
+        <!--</div>-->
 
-      </section>
+      <!--</section>-->
 
-    </md-content>
+    <!--</md-content>-->
 
-  </md-card><!-- /Candidate list -->
+  <!--</md-card>&lt;!&ndash; /Candidate list &ndash;&gt;-->
 
 
 
@@ -109,8 +109,8 @@
         class="md-padding section-group">
 
         <div class="md-list-item-text"
-        ng-repeat="project in technologyDetails.projects track by $index">
-         {{$index+1}}. {{project}}
+        ng-repeat="project in technologyDetails.projectsTech track by $index">
+         {{$index+1}}. {{project.name}}
         </div>
 
       </section>

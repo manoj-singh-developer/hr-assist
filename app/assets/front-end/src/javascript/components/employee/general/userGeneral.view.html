@@ -15,6 +15,13 @@
       <span class="c-profile-progress__bar" style="width: {{userGeneral.progress}}%"></span>
     </div> -->
 
+    <span 
+      class="userLogout" 
+      ng-click="userGeneral.userLogOut()" 
+      ng-show="userGeneral.isAdmin">
+      Logout
+    </span>
+
     <md-card-title-text>
       <span class="md-headline">General informations</span>
       <p class="u-font-small u-no-margin">
@@ -163,7 +170,7 @@
         ng-hide="userGeneral.candidate">
         <strong>Contract type: </strong>
         <span class="u-float-right">
-          {{ userGeneral.userSchedule.name }}
+          {{ userGeneral.schedule.name }}
         </span>
        </p>
 
@@ -463,7 +470,7 @@
     <div layout-gt-xs="row">
       <md-input-container md-no-float class="md-block" flex-gt-xs="">
 
-        <label>ASSIT email</label>
+        <label>ASSIST Email</label>
 
         <input
           ng-value="userGeneral.user.email"
@@ -495,17 +502,13 @@
           ng-model="userGeneral.user.office_nr">
       </md-input-container>
 
-      <md-input-container md-no-float flex-gt-xs="50">
-        <md-select
-          aria-label="contract type"
-          ng-model="userGeneral.copyUserSchedule.name"
-          md-selected-text="userGeneral.getSelectedText(userGeneral.copyUserSchedule.name, contract=0)">
-          <md-option
-            ng-value="type"
-            ng-repeat="type in userGeneral.contractType">
-              {{type}}
-          </md-option>
-        </md-select>
+      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+        <label>Schedule type</label>
+        <input 
+          type="text" 
+          name="schedule" 
+          ng-model="userGeneral.schedule.name" 
+          readonly/>
       </md-input-container>
 
     </div><!-- /OFFICE AND CONTRACT -->

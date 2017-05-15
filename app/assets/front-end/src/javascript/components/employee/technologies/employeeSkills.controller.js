@@ -6,11 +6,7 @@
     .module('HRA')
     .controller('employeeSkillsController', employeeSkillsController);
 
-  employeeSkillsController
-    .$inject = ['$rootScope', 'autocompleteService', 'User', '$stateParams'];
-
-
-  function employeeSkillsController($rootScope, autocompleteService, User, $stateParams) {
+  function employeeSkillsController($rootScope, autocompleteService, User, $stateParams, $scope) {
 
     let vm = this;
     let technologiesToAdd = [];
@@ -21,13 +17,15 @@
     vm.displayOrHide = false;
     vm.skillLvlTxt = [];
     vm.replaceInputs = [1];
+    vm.showDelete = false;
 
     vm.queryTechnologySearch = queryTechnologySearch;
     vm.addNewTechnologie = addNewTechnologie;
     vm.saveTechnologies = saveTechnologies;
     vm._getUserTech = _getUserTech;
     vm.getLvlTxt = getLvlTxt;
-    vm.deleteTech = deleteTech;
+    vm.deleteTechQuery = deleteTechQuery;
+    vm.deleteTechnologies = deleteTechnologies;
 
     _getUserTech();
 
@@ -37,7 +35,6 @@
 
       autocompleteService.buildList(vm.technologies, ['name']);
     });
-
 
 
     function addNewTechnologie() {
@@ -64,7 +61,7 @@
 
       let techLvlArr = $.map(vm.selectedSkillLevel, (value, index) => {
         return [value];
-      }) 
+      })
 
       for(var i = 0; i < techNameArr.length; i++) {
         techName.push(techNameArr[i]);
@@ -85,35 +82,48 @@
         user_id: userID
       };
 
+
+
       User.addUserTechnologies(objToSave)
         .then((response) => {
           vm.displayOrHide = false;
           vm.technologiesToAdd = [1];
           _getUserTech();
+
+          vm.searchText = '';
+          vm.selectedSkillTypes = '';
+          vm.selectedSkillLevel = '';
       })
       .catch((error) => {
         console.log(error);
       })
     }
 
-    function deleteTech(technology) {
+    function deleteTechQuery(technology) {
+
       let techId = technology.id;
       let userId = $stateParams.id;
 
       let delObj = {
         technology_ids: technology.id,
         user_id: userId
-      }
+      };
 
       let toRemove = _.findWhere(vm.userTechnologies, { id: technology.id });
       vm.userTechnologies = _.without(vm.userTechnologies, toRemove);
       technologiesToAdd = _.without(technologiesToAdd, toRemove);
       technologiesToRemove.push(technology);
 
+      if(technologiesToRemove.length > 0) {
+        vm.showDelete = true;
+      }
+    }
 
-      User.deleteUserTechnologies(delObj)
+    function deleteTechnologies() {
+      User.deleteUserTechnologies(technologiesToRemove)
         .then((response) => {
-         
+          vm.showDelete = false;
+          vm.displayOrHide = false;
         })
         .catch((error) => {
           console.log(error);
@@ -139,11 +149,15 @@
 
     vm.displayForm = () => {
       vm.displayOrHide = !vm.displayOrHide;
-    }
+    };
 
     vm.cancelSave = () => {
       vm.displayOrHide = false;
-    }
+      vm.showDelete = false;
+      technologiesToRemove = [];
+      vm.userTechnologies = [];
+      _getUserTech();
+    };
 
     function getLvlTxt(data) {
       switch (data) {
