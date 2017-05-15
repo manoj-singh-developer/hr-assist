@@ -54,12 +54,15 @@
         md-search-text-change="projects.searchTextChange(projects.searchProject)"
         md-search-text="projects.searchProject"
         md-selected-item-change="projects.selectedItemChange(item)"
-        md-items="item in projects.querySearch(projects.searchProject)"
-        md-item-text="item.name" md-min-length="0" placeholder="Search">
+        md-items="item in projects.querySearch(projects.searchProject, projects.resources.projects)"
+        md-item-text="item.name" md-min-length="1" placeholder="Search">
         <md-item-template>
           <span class="item-metadata">
           {{item.name}}
         </md-item-template>
+        <md-not-found>
+         No project matching <strong>{{projects.searchProject}}</strong> were found.
+        </md-not-found>
       </md-autocomplete>
     </form>
   </md-content>
