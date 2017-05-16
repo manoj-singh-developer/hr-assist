@@ -63,7 +63,7 @@
         ng-disabled="users.isDisabled"
         ng-model="users.searchText"
         md-selected-item="users.selectedItem"
-        md-search-text-change="users.searchTextChange(users.searchText)"
+        md-search-text-change="users.querySearch(users.searchText, users.users)"
         md-search-text="users.searchText"
         md-selected-item-change="users.selectedItemChange(item)"
         md-items="item in users.querySearch(users.searchText, users.users)"
@@ -125,7 +125,7 @@
         md-head
         md-order="users.table.query.order">
         <tr md-row>
-        <th md-column></th>
+        <th md-column>Nr.</th>
           <th md-column md-order-by="first_name">First Name</th>
           <th md-column md-order-by="last_name">Last Name</th>
           <th md-column>Email/Phone</th>
@@ -142,7 +142,6 @@
           md-row
           md-select="employee"
           md-on-select="logItem"
-          md-auto-select="users.options.autoSelect"
           ng-repeat="employee in users.users 
           | filter: users.searchText 
           | orderBy: users.table.query.order 
@@ -258,8 +257,7 @@
     md-limit-options="users.table.limitOptions"
     md-page="users.table.query.page"
     md-total="{{users.table.total}}"
-    md-page-select="users.table.options.pageSelect"
-    md-boundary-links="users.table.options.boundaryLinks">
+    md-page-select="users.table.options.pageSelect">
   </md-table-pagination><!-- /TABLE PAGINATION -->
 
 

@@ -17,13 +17,6 @@
 
     vm.table = {
       options: {
-        rowSelection: true,
-        multiSelect: true,
-        autoSelect: false,
-        decapitate: false,
-        largeEditDialog: false,
-        boundaryLinks: true,
-        limitSelect: true,
         pageSelect: true
       },
       query: {
@@ -86,7 +79,7 @@
 
     function remove(employee, event) {
       var confirm = $mdDialog.confirm()
-        .title('Would you like to delete ' + employee.first_name+" "+employee.last_name + ' employee?')
+        .title('Would you like to delete ' + employee.first_name + " " + employee.last_name + ' employee?')
         .targetEvent(event)
         .ok('Yes')
         .cancel('No');
@@ -114,6 +107,7 @@
         vm.usersCopy,
         vm.filters,
         filteringType);
+      vm.table.total = vm.users.length;
     }
 
     function resetFilters() {
@@ -122,6 +116,11 @@
     }
 
     function querySearch(query, list) {
+      if (query != "" && query != " ") {
+        vm.table.total = autocompleteService.querySearch(query, list).length;
+      } else {
+        vm.table.total = list.length;
+      }
       return autocompleteService.querySearch(query, list);
     }
 
