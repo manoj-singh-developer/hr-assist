@@ -34,15 +34,25 @@
           // Example project.industries
           nameList = convertToNames(filteringListItem[filterField]);
 
+          // TODO filterObject.label : we need to use label to make more generic 
+          // on languages for example there is not name, just long_name
           // filterObject.name : I suppose that we are filtering
           // using the filter name
           // I we need to use label in some cases we need to make this generic
-          return checkIfIncludes(filterObject.name, nameList);
+          if (filterObject.long_name == undefined) {
+
+            return checkIfIncludes(filterObject.name, nameList);
+          }
+          return checkIfIncludes(filterObject.long_name, nameList);
         });
       }
 
       // Again I suppose that we are using only the name property
       function convertToNames(list) {
+
+        if (list[0] != undefined && list[0].long_name != undefined) {
+          return list.map(item => item.long_name);
+        }
         return list.map(item => item.name);
       }
 
