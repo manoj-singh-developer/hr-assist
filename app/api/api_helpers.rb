@@ -37,7 +37,7 @@ module APIHelpers
                             :password => decrypt(get_option("ldap_password"))
                               })
     ldap.bind_as(
-      :base => "dc=test,dc=com",
+      :base => get_option("ldap_basedn"),
       :filter => "(mail=#{email})",
       :password => password
     )
