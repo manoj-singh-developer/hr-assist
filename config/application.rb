@@ -19,7 +19,7 @@ module HR
     
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'hr.assist.ro'
+        origins APP_CONFIG[:CORS_DOMAINS]
         resource '*',
           headers: :any,
           methods: %i(get post put patch delete options head)
