@@ -71,3 +71,4 @@ gem 'grape-swagger'
 gem 'activeadmin', github: 'activeadmin'
 
 gem 'jwt', '>= 1.5.6'
+gem 'rack-cors', :require => 'rack/cors'
