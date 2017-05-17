@@ -12,6 +12,19 @@
 
 
 
+
+
+ <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here with the languages that you know.
+    </p>
+  </md-content> <!-- CARD NOTES -->
+
+
+
+
+
   <!-- PREVIEW  -->
   <md-content
     ng-show="!userLanguages.showEditLanguages"
@@ -86,7 +99,7 @@
                 md-selected-item-change="userLanguages.addInQueue(item)"
                 md-items="item in userLanguages.querySearch(userLanguages.searchText, userLanguages.languages)"
                 md-item-text="item.long_name"
-                md-min-length="1"
+                md-min-length="0"
                 placeholder="Search"
                 md-input-name="autocompleteLanguage"
                 md-require-match
@@ -99,9 +112,9 @@
                     {{item.long_name}}
                   </span>
                 </md-item-template>
-                <md-not-found>
+                <!-- <md-not-found>
                   No language matching <strong>{{userLanguages.searchText}}</strong> were found.
-                </md-not-found>
+                </md-not-found> -->
               </md-autocomplete>
 
               <div ng-messages="languageForm.autocompleteLanguage.$error"
@@ -183,10 +196,9 @@
       <md-button
         class="md-raised md-primary"
         ng-click="userLanguages.save()"
-        ng-disabled="languageForm.$invalid">
+        ng-disabled="userLanguages.disableSave">
         Save
       </md-button>
-
       <md-button
         class="md-raised"
         ng-click="userLanguages.displayEditLanguages(); userLanguages.cancel()">

@@ -19,6 +19,7 @@
     vm.userLanguages = [];
     vm.copyUserLanguages = [];
     vm.addNewLanguage = addNewLanguage;
+    vm.disableSave = true;
 
     vm.levels = [
       "Elementary proficiency",
@@ -51,17 +52,17 @@
     }
 
     function addInQueue(language) {
-
       if (language) {
         let notToAdd = _.findWhere(vm.copyUserLanguages, { id: language.id });
-        if(notToAdd === undefined){
+        if (notToAdd === undefined) {
           let toRemove = _.findWhere(languagesToRemove, { id: language.id });
           languagesToRemove = _.without(languagesToRemove, toRemove);
           languagesToAdd.push(language);
           vm.copyUserLanguages.push(language);
         }
-      vm.searchText = "";  
+        vm.searchText = "";
       }
+      vm.disableSave = false;
     }
 
     function removeFromQueue(language) {
@@ -69,16 +70,18 @@
       vm.copyUserLanguages = _.without(vm.copyUserLanguages, toRemove);
       languagesToAdd = _.without(languagesToAdd, toRemove);
       languagesToRemove.push(language.id);
+      vm.disableSave = false;
     }
 
-    function cancel(){
+    function cancel() {
       vm.searchText = "";
       vm.copyUserLanguages = [];
       User.getUserLanguages(vm.user)
-      .then((data) => {
-        vm.userLanguages = data;
-        vm.copyUserLanguages.push(...vm.userLanguages);
-      });
+        .then((data) => {
+          vm.userLanguages = data;
+          vm.copyUserLanguages.push(...vm.userLanguages);
+        });
+      vm.disableSave = true;
     }
 
     function save() {
@@ -88,7 +91,7 @@
           .then((data) => {
             vm.userLanguages = data;
           });
-          languagesToAdd = [];
+        languagesToAdd = [];
       }
 
       if (languagesToRemove.length > 0) {
@@ -97,6 +100,7 @@
       }
 
       vm.showEditLanguages = false;
+      vm.disableSave = true;
     }
 
 
@@ -105,15 +109,15 @@
         .then((data) => {
           vm.languages = data;
           autocompleteService.buildList(vm.languages, ['long_name']);
-      });
+        });
     }
 
     function _getUserLanguages() {
       User.getUserLanguages(vm.user)
-      .then((data) => {
-        vm.userLanguages = data;
-        vm.copyUserLanguages.push(...vm.userLanguages);
-      });
+        .then((data) => {
+          vm.userLanguages = data;
+          vm.copyUserLanguages.push(...vm.userLanguages);
+        });
     }
 
     vm.displayEditLanguages = () => {
