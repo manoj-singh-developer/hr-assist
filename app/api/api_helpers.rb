@@ -2,9 +2,9 @@ module APIHelpers
   #Finds or create user by email
   def create_user(ldap_info)
     user = User.find_or_create_by(email: ldap_info.mail.first) do |user|
-      user.first_name = ldap_info.givenName.first
-      user.last_name  = ldap_info.sn.first
-      user.uid        = ldap_info.uidNumber.first  if ldap_info.respond_to? :uidNumber
+      user.first_name = ldap_info.givenName.first if ldap_info.respond_to? :givenName
+      user.last_name  = ldap_info.sn.first if ldap_info.respond_to? :sn
+      user.uid        = ldap_info.uidNumber.first if ldap_info.respond_to? :uidNumber
       user.skip_password_validation = true
     end
 
