@@ -88,10 +88,10 @@
   <!-- SELECTED ROWS -->
   <md-toolbar
     class="md-table-toolbar alternate"
-    ng-show="users.table.options.rowSelection && users.table.selected.length">
+    ng-show="users.tableSettings.options.rowSelection && users.tableSettings.selected.length">
     <div class="md-toolbar-tools">
       <span>
-        {{users.table.selected.length}} {{users.table.selected.length > 1 ? 'employees' : 'employee'}} selected
+        {{users.tableSettings.selected.length}} {{users.tableSettings.selected.length > 1 ? 'employees' : 'employee'}} selected
       </span>
     </div>
   </md-toolbar><!-- /SELECTED ROWS -->
@@ -115,15 +115,15 @@
     <table
       class="c-table--actions c-table--big table-employees"
       md-table
-      md-row-select="users.table.options.rowSelection"
-      multiple="{{users.table.options.multiSelect}}"
-      ng-model="users.table.selected"
+      md-row-select="users.tableSettings.options.rowSelection"
+      multiple="{{users.tableSettings.options.multiSelect}}"
+      ng-model="users.tableSettings.selected"
       md-progress="promise">
 
       <thead
-        ng-if="!users.table.options.decapitate"
+        ng-if="!users.tableSettings.options.decapitate"
         md-head
-        md-order="users.table.query.order">
+        md-order="users.tableSettings.query.order">
         <tr md-row>
         <th md-column>Nr.</th>
           <th md-column md-order-by="first_name">First Name</th>
@@ -144,8 +144,8 @@
           md-on-select="logItem"
           ng-repeat="employee in users.users 
           | filter: users.searchText 
-          | orderBy: users.table.query.order 
-          | limitTo: users.table.query.limit : (users.table.query.page - 1) * users.table.query.limit track by $index">
+          | orderBy: users.tableSettings.query.order 
+          | limitTo: users.tableSettings.query.limit : (users.tableSettings.query.page - 1) * users.tableSettings.query.limit track by $index">
           <td md-cell>
             {{$index + 1}}
           </td>
@@ -251,14 +251,11 @@
 
 
 
-  <!-- TABLE PAGINATION -->
-  <md-table-pagination
-    md-limit="users.table.query.limit"
-    md-limit-options="users.table.limitOptions"
-    md-page="users.table.query.page"
-    md-total="{{users.table.total}}"
-    md-page-select="users.table.options.pageSelect">
-  </md-table-pagination><!-- /TABLE PAGINATION -->
+
+   <!-- TABLE PAGINATION -->
+  <hra-table-pagination settings="users.tableSettings">
+  <hra-table-pagination>
+  <!-- /TABLE PAGINATION -->
 
 
 
