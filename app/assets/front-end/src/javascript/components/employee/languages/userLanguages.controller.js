@@ -19,7 +19,7 @@
     vm.userLanguages = [];
     vm.copyUserLanguages = [];
     vm.addNewLanguage = addNewLanguage;
-    vm.disableSave = true;
+    vm.disableSaveBtn = true;
 
     vm.levels = [
       "Elementary proficiency",
@@ -62,7 +62,7 @@
         }
         vm.searchText = "";
       }
-      vm.disableSave = false;
+      vm.disableSaveBtn = false;
     }
 
     function removeFromQueue(language) {
@@ -70,7 +70,7 @@
       vm.copyUserLanguages = _.without(vm.copyUserLanguages, toRemove);
       languagesToAdd = _.without(languagesToAdd, toRemove);
       languagesToRemove.push(language.id);
-      vm.disableSave = false;
+      vm.disableSaveBtn = false;
     }
 
     function cancel() {
@@ -81,7 +81,7 @@
           vm.userLanguages = data;
           vm.copyUserLanguages.push(...vm.userLanguages);
         });
-      vm.disableSave = true;
+      vm.disableSaveBtn = true;
     }
 
     function save() {
@@ -100,7 +100,7 @@
       }
 
       vm.showEditLanguages = false;
-      vm.disableSave = true;
+      vm.disableSaveBtn = true;
     }
 
 

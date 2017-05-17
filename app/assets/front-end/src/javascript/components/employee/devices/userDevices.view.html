@@ -12,6 +12,19 @@
 
 
 
+
+
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here with the devices that you are using.
+    </p>
+  </md-content> <!-- CARD NOTES -->
+
+
+
+
+
     <!-- PREVIEW  -->
     <md-content
             ng-show="!userDevices.showEditDevices"
@@ -35,6 +48,7 @@
 
 
     <!-- EDIT -->
+    <form ng-submit="$event.preventDefault()"  name="deviceForm">
     <md-content
             class = "md-padding"
             ng-show="userDevices.showEditDevices">
@@ -67,33 +81,43 @@
                 layout-align="center center"
                 ng-repeat="device in userDevices.devicesToAdd track by $index" >
 
-
-
             <!-- DEVICE INPUT-->
             <div flex="100" >
                 <!-- DEVICE SELECT-->
                 <md-content class="md-padding">
-                    <form ng-submit="$event.preventDefault()">
+                  
+                    <md-autocomplete
+                            md-selected-item="userDevices.selectedItem"
+                            md-search-text-change="userDevices.searchTextChange(userDevices.searchText)"
+                            md-search-text="userDevices.searchText"
+                            md-selected-item-change="userDevices.addInQueue(item)"
+                            md-items="item in userDevices.querySearch(userDevices.searchText, userDevices.devices)"
+                            md-item-text="item.name"
+                            md-min-length="1"
+                            placeholder="Search"
+                            md-input-name="autocompleteDevice"
+                            md-require-match
+                            required>
 
-                        <md-autocomplete
-                                md-selected-item="userDevices.selectedItem"
-                                md-search-text-change="userDevices.searchTextChange(userDevices.searchText)"
-                                md-search-text="userDevices.searchText"
-                                md-selected-item-change="userDevices.addInQueue(item)"
-                                md-items="item in userDevices.querySearch(userDevices.searchText, userDevices.devices)"
-                                md-item-text="item.name"
-                                md-min-length="0"
-                                placeholder="Search">
+                        <md-item-template>
+                            <span class="item-metadata"
+                                  md-highlight-text="userDevices.searchText">
+                              {{item.name}}
+                            </span>
+                        </md-item-template>
+                        <md-not-found>
+                          No device matching <strong>{{userDevices.searchText}}</strong> were found.
+                        </md-not-found>
+                    </md-autocomplete>
 
-                            <md-item-template>
-                                <span class="item-metadata"
-                                      md-highlight-text="userDevices.searchText">
-                                  {{item.name}}
-                                </span>
-                            </md-item-template>
-
-                        </md-autocomplete>
-                    </form>
+                    <div ng-messages="
+                      deviceForm.autocompleteDevice.$error"
+                      layout-gt-xs="row" layout-align="center center"
+                      ng-if="deviceForm.autocompleteDevice.$touched">
+                      <span ng-message="md-require-match" class="alert-error fade" role="alert">
+                        You must select an option from the list!
+                      </span>
+                    </div>
                 </md-content>
                 <!-- /DEVICE SELECT-->
 
@@ -143,7 +167,7 @@
         <md-button 
                    class="md-raised md-primary"
                    ng-click="userDevices.saveDevices()"
-                   ng-disabled="btnIsDisabled">
+                   ng-disabled="userDevices.disableSaveBtn">
             Save
         </md-button>
 
@@ -155,7 +179,7 @@
 
     </md-card-actions>
     <!-- /CARD ACTIONS-->
-
+  </form>
 
 
 </md-card>

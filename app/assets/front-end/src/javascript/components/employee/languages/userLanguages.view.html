@@ -99,7 +99,7 @@
                 md-selected-item-change="userLanguages.addInQueue(item)"
                 md-items="item in userLanguages.querySearch(userLanguages.searchText, userLanguages.languages)"
                 md-item-text="item.long_name"
-                md-min-length="0"
+                md-min-length="1"
                 placeholder="Search"
                 md-input-name="autocompleteLanguage"
                 md-require-match
@@ -112,9 +112,9 @@
                     {{item.long_name}}
                   </span>
                 </md-item-template>
-                <!-- <md-not-found>
+                <md-not-found>
                   No language matching <strong>{{userLanguages.searchText}}</strong> were found.
-                </md-not-found> -->
+                </md-not-found>
               </md-autocomplete>
 
               <div ng-messages="languageForm.autocompleteLanguage.$error"
@@ -196,7 +196,7 @@
       <md-button
         class="md-raised md-primary"
         ng-click="userLanguages.save()"
-        ng-disabled="userLanguages.disableSave">
+        ng-disabled="userLanguages.disableSaveBtn">
         Save
       </md-button>
       <md-button
