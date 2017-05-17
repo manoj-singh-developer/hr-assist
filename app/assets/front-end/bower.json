@@ -24,7 +24,9 @@
     "ngSelectable": "1.0.5",
     "angular-datepicker": "2.0.3",
     "angular-loading-bar": "^0.9.0",
-    "angular-permission": "^5.2.1"
+    "angular-permission": "^5.2.1",
+    "angular-gravatar": "^0.4.2",
+    "jQuery.print": "^1.5.1"
   },
   "license": "",
   "homepage": "",

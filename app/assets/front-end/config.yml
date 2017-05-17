@@ -75,3 +75,5 @@ PATHS:
     - "bower_components/ng-csv/build/ng-csv.js"
     - "bower_components/angular-datepicker/dist/angular-datepicker.min.js"
     - "bower_components/angular-loading-bar/build/loading-bar.min.js"
+    - "bower_components/angular-gravatar/build/angular-gravatar.js"
+    - "bower_components/jQuery.print/jQuery.print.js"
