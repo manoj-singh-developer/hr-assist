@@ -4,7 +4,7 @@ module APIHelpers
     user = User.find_or_create_by(email: ldap_info.mail.first) do |user|
       user.first_name = ldap_info.givenName.first
       user.last_name  = ldap_info.sn.first
-      #user.uid        = ldap_info.uidNumber.first
+      user.uid        = ldap_info.uidNumber.first  if ldap_info.respond_to? :uidNumber
       user.skip_password_validation = true
     end
 
