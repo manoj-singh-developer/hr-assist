@@ -72,6 +72,7 @@
     }
 
     function cancel(){
+      vm.searchText = "";
       vm.copyUserLanguages = [];
       User.getUserLanguages(vm.user)
       .then((data) => {
