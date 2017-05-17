@@ -49,6 +49,7 @@
         vm.userEducationList.splice(index, 1);
       } else
         vm.userEducationList.splice(index, 1);
+      vm.validateDate = false;
     }
 
     function save() {
@@ -83,6 +84,7 @@
     function cancelAdd() {
       vm.userEducationList = [];
       vm.userEducationList = _.map(vm.userEducations, _.clone);
+      vm.validateDate = false;
     }
 
     function initEducations() {
@@ -90,7 +92,9 @@
     }
 
     function checkDates(index) {
-      if (vm.userEducationList[index].start_date != undefined && vm.userEducationList[index].end_date != undefined && vm.userEducationList[index].start_date > vm.userEducationList[index].end_date) {
+      let startDate = new Date(vm.userEducationList[index].start_date);
+      let endDate = new Date(vm.userEducationList[index].end_date);
+      if (startDate != undefined && endDate != undefined && startDate > endDate) {
         vm.validateDate = true;
       } else {
         vm.validateDate = false;

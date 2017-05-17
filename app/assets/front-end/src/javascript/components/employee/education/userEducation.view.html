@@ -141,7 +141,7 @@
 
 
       <!-- PERIOD -->
-      <section layout-gt-xs="row" layout-align="center center" class="u-mb-20">
+      <!-- <section layout-gt-xs="row" layout-align="center center" class="u-mb-20">
 
         <div flex-gt-xs="50">
           <label class="u-ml-5">From*</label>
@@ -168,15 +168,39 @@
           </hra-date-select>
         </div>
 
-      </section><!-- /PERIOD -->
-      <section ng-show="userEducation.validateDate" layout-gt-xs="row" layout-align="center center">
-        <span class="alert-error fade"
-        role="alert">
-          "To" date must be greater than "From" date!
-        </span>
-      </section>
+      </section> --><!-- /PERIOD -->
 
+        <!-- SELECT START/END DATE -->
+        <section layout-gt-xs="row" layout-align="start center">
+          <div flex-gt-xs="50">
+            <label class="u-ml-5">From*</label>
+            <md-datepicker
+              ng-model="userEducation.userEducationList[$index].start_date"
+              md-placeholder="Start date"
+              md-open-on-focus
+              ng-change="userEducation.checkDates($index)"
+              required>
+            </md-datepicker>
+          </div>
 
+          <div flex-gt-xs="50">
+            <label class="u-ml-5">To*</label>
+            <md-datepicker
+              ng-model="userEducation.userEducationList[$index].end_date"
+              md-placeholder="End date"
+              md-open-on-focus
+              ng-change="userEducation.checkDates($index)"
+              required>
+            </md-datepicker>
+          <div>
+        </section>
+        <section ng-show="userEducation.validateDate" layout-gt-xs="row" layout-align="center center">
+          <span class="alert-error fade"
+            role="alert">
+              "To" date must be greater than "From" date!
+          </span>
+        </section>
+        <!-- /SELECT START/END DATE -->
 
 
 
