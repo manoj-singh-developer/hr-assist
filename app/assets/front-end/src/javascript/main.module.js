@@ -14,7 +14,8 @@
     'ngCsv',
     'datePicker',
     'angular-loading-bar',
-    'routes'
+    'routes',
+    'ui.gravatar'
   ]);
 
   angular

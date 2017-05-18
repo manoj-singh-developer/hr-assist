@@ -153,7 +153,7 @@
         <section layout-gt-xs="row" layout-align="start center">
           <div flex-gt-xs="50">
             <label class="u-ml-5">From</label>
-            <md-datepicker 
+            <md-datepicker
               ng-model="userProjects.start_date"
               md-placeholder="Start date"
               md-open-on-focus
@@ -161,10 +161,10 @@
               required>
             </md-datepicker>
           </div>
-          
+
           <div flex-gt-xs="50">
             <label class="u-ml-5">To</label>
-            <md-datepicker 
+            <md-datepicker
               ng-model="userProjects.end_date"
               md-placeholder="End date"
               md-open-on-focus
@@ -220,7 +220,7 @@
                 placeholder="Search Technologies"
                 md-input-name="autocompleteTechnology"
                 md-require-match>
-              
+
               <md-item-template>
                   <span
                   class="item-metadata"
@@ -269,7 +269,7 @@
     layout-align="start"
     ng-show="!userProjects.displayOrHide">
     <md-button
-      class="c-card-profile__btn no-margin"
+      class="c-card-profile__btn no-margin noPrint"
       ng-click="userProjects.displayForm()"
       ng-disabled="btnIsDisabled">
       Add Project
