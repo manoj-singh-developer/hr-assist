@@ -42,7 +42,18 @@
     }
 
     function queryTechnologySearch(query){
-      return autocompleteService.querySearch(query, vm.technologies);
+      let techArr = autocompleteService.querySearch(query, vm.technologies);
+      let userTechArr = vm.userTechnologies;
+
+      for (let i = 0; i < techArr.length; i++) {
+        for (let j = 0; j < userTechArr.length; j++) {
+          if(techArr[i].id === userTechArr[j].id) {
+            techArr.splice(i, 1);
+          }
+        }
+      }
+
+       return techArr;
     }
 
     function saveTechnologies() {
