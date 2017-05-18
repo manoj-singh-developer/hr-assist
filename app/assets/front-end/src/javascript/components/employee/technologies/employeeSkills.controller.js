@@ -6,7 +6,7 @@
     .module('HRA')
     .controller('employeeSkillsController', employeeSkillsController);
 
-  function employeeSkillsController($rootScope, autocompleteService, User, $stateParams, $scope) {
+  function employeeSkillsController($rootScope, autocompleteService, User, $stateParams, $timeout) {
 
     let vm = this;
     let technologiesToAdd = [];
@@ -49,6 +49,7 @@
         for (let j = 0; j < userTechArr.length; j++) {
           if(techArr[i].id === userTechArr[j].id) {
             techArr.splice(i, 1);
+            break;
           }
         }
       }
@@ -99,11 +100,14 @@
         .then((response) => {
           vm.displayOrHide = false;
           vm.technologiesToAdd = [1];
-          _getUserTech();
 
           vm.searchText = '';
           vm.selectedSkillTypes = '';
           vm.selectedSkillLevel = '';
+
+          $timeout(() => {
+            _getUserTech();
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -144,14 +148,25 @@
     function _getUserTech(){
       User.getTechnologies()
         .then((response) => {
-          vm.userTechnologies = response;
+          let userTechnologies = response;
 
-          for(var j = 0; j< vm.userTechnologies.length; j++){
-            vm.skillLvlTxt.push(getLvlTxt(vm.userTechnologies[j].level));
+          for(var j = 0; j< userTechnologies.length; j++){
 
-            vm.userTechnologies[j].level = _.assign(vm.skillLvlTxt[j], vm.userTechnologies[j].level);
+            let promise = new Promise((resolve) => {
+              resolve (getLvlTxt(userTechnologies[j].level));
+            });
+
+            vm.skillLvlTxt = [];
+            promise
+              .then((response) => {
+                vm.skillLvlTxt.push(response);
+                for(var i = 0; i < userTechnologies.length; i++) {
+                  userTechnologies[i].level = _.assign(vm.skillLvlTxt[i], userTechnologies[i].level);
+                }
+
+                vm.userTechnologies = userTechnologies;
+              });
           }
-
         })
         .catch((error) => {
           console.log(error);
@@ -167,7 +182,9 @@
       vm.showDelete = false;
       technologiesToRemove = [];
       vm.userTechnologies = [];
-      _getUserTech();
+      $timeout(() => {
+        _getUserTech();
+      });
     };
 
     function getLvlTxt(data) {

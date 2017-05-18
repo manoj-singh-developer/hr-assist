@@ -16,10 +16,10 @@
       <strong>NOTE: </strong>Complete here with the technologies that you know.
     </p>
     <p>
-      <strong>Main skills </strong>are the technologies that you are using more frequently in company projects.
+      <strong>Main technologies </strong>are the technologies that you are using more frequently in company projects.
     </p>
     <p>
-      <strong>Secondary skills </strong>are the technologies that you are familiar or perhaps even worked with but you didn't have the opportunity to use them in a specific company project.
+      <strong>Secondary technologies </strong>are the technologies that you are familiar or perhaps even worked with but you didn't have the opportunity to use them in a specific company project.
     </p>
   </md-content> <!-- CARD NOTES -->
 
@@ -27,7 +27,7 @@
   <!-- PREVIEW TECHNOLOGIES -->
   <md-content ng-show="!employeeSkills.displayOrHide" class="c-card-profile__preview">
 
-    <md-subheader class="md-no-sticky">Main skills</md-subheader>
+    <md-subheader class="md-no-sticky">Main technologies</md-subheader>
 
     <md-list layout="row" layout-wrap>
       <md-list-item flex="25"
@@ -41,7 +41,7 @@
       </md-list-item>
     </md-list>
 
-    <md-subheader class="md-no-sticky">Secondary skills</md-subheader>
+    <md-subheader class="md-no-sticky">Secondary technologies</md-subheader>
     <md-list layout="row" layout-wrap>
 
       <md-list-item flex="25"
@@ -152,7 +152,8 @@
                       min="1"
                       max="10"
                       aria-label="Skill level"
-                      required>
+                      required
+                      ng-disabled="!employeeSkills.selectedSkillTypes[$index]">
             </md-slider>
           </div>
         </div><!--TECHNOLOGY LEVEL-->
@@ -162,8 +163,8 @@
         <!--TECHNOLOGY LEVEL-->
         <div class="md-padding" flex-gt-xs="10">
           <md-button class="md-icon-button md-warn"
-                    label="Add skill"
-                    aria-label="add skill"
+                    label="Add technology"
+                    aria-label="add technology"
                     ng-click="employeeSkills.addNewTechnologie()">
             <md-icon class="material-icons">add</md-icon>
           </md-button>
@@ -171,8 +172,8 @@
         <!-- REMOVE  TECHNOLOGY-->
         <div class="md-padding" flex-gt-xs="10">
           <md-button class="md-icon-button md-warn"
-                    label="Remove skill"
-                    aria-label="Remove skill"
+                    label="Remove technology"
+                    aria-label="Remove technology"
                     ng-click="employeeSkills.replaceInputs.splice($index, 1)"
                     ng-show="employeeSkills.replaceInputs[$index] !== 1">
             <md-icon class="material-icons">delete</md-icon>
