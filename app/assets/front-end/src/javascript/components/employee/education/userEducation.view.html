@@ -140,36 +140,6 @@
 
 
 
-      <!-- PERIOD -->
-      <!-- <section layout-gt-xs="row" layout-align="center center" class="u-mb-20">
-
-        <div flex-gt-xs="50">
-          <label class="u-ml-5">From*</label>
-          <hra-date-select
-            show-months="true"
-            orientation="vertical"
-            initial-date="userEducation.userEducationList[$index].start_date"
-            ng-model="userEducation.userEducationList[$index].start_date"
-            ng-change="userEducation.checkDates($index)"
-            required>
-          </hra-date-select>
-        </div>
-
-        <div flex-gt-xs="50">
-          <label class="u-ml-5">To*</label>
-          <hra-date-select
-            flex-gt-xs="50"
-            show-months="true"
-            orientation="vertical"
-            initial-date="userEducation.userEducationList[$index].end_date"
-            ng-model="userEducation.userEducationList[$index].end_date"
-            ng-change="userEducation.checkDates($index)"
-            required>
-          </hra-date-select>
-        </div>
-
-      </section> --><!-- /PERIOD -->
-
         <!-- SELECT START/END DATE -->
         <section layout-gt-xs="row" layout-align="start center">
           <div flex-gt-xs="50">
@@ -194,7 +164,7 @@
             </md-datepicker>
           <div>
         </section>
-        <section ng-show="userEducation.validateDate" layout-gt-xs="row" layout-align="center center">
+        <section ng-show="userEducation.validateDate[$index]" layout-gt-xs="row" layout-align="center center">
           <span class="alert-error fade"
             role="alert">
               "To" date must be greater than "From" date!
@@ -242,7 +212,7 @@
     <md-button
       class="md-raised md-primary"
       ng-click="userEducation.save(); userEducation.displayEditEducation()"
-      ng-disabled="addEduForm.$invalid || userEducation.validateDate">
+      ng-disabled="addEduForm.$invalid || userEducation.validateDates">
       Save
     </md-button>
 
