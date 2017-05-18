@@ -54,13 +54,13 @@
 
       if (language) {
         let notToAdd = _.findWhere(vm.copyUserLanguages, { id: language.id });
-        if(notToAdd === undefined){
+        if(!notToAdd){
           let toRemove = _.findWhere(languagesToRemove, { id: language.id });
           languagesToRemove = _.without(languagesToRemove, toRemove);
           languagesToAdd.push(language);
           vm.copyUserLanguages.push(language);
         }
-      vm.searchText = "";  
+      vm.searchText = ' ';  
       }
     }
 
