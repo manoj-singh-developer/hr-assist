@@ -42,19 +42,7 @@
     }
 
     function queryTechnologySearch(query){
-      let techArr = autocompleteService.querySearch(query, vm.technologies);
-      let userTechArr = vm.userTechnologies;
-
-      for (let i = 0; i < techArr.length; i++) {
-        for (let j = 0; j < userTechArr.length; j++) {
-          if(techArr[i].id === userTechArr[j].id) {
-            techArr.splice(i, 1);
-            break;
-          }
-        }
-      }
-
-       return techArr;
+       return autocompleteService.querySearch(query, vm.technologies);
     }
 
     function saveTechnologies() {
@@ -62,6 +50,7 @@
       let techTypes = [];
       let techLvl = [];
       let userID = $stateParams.id;
+      let userTechArr = vm.userTechnologies;
 
       let techNameArr = $.map(vm.searchText, (value, index) => {
         return [value];
@@ -94,7 +83,11 @@
         user_id: userID
       };
 
-
+      for (let i = 0; i < userTechArr.length; i++) {
+        if(userTechArr[i].name === objToSave.names[0]){
+          User.deleteUserTechnologies([userTechArr[i]]);
+        }
+      }
 
       User.addUserTechnologies(objToSave)
         .then((response) => {
@@ -135,6 +128,7 @@
     }
 
     function deleteTechnologies() {
+      console.log(technologiesToRemove);
       User.deleteUserTechnologies(technologiesToRemove)
         .then((response) => {
           vm.showDelete = false;
