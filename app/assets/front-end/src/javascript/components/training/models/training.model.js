@@ -1,4 +1,4 @@
-(function() {
+(() => {
 
   'use strict';
 
@@ -110,4 +110,4 @@
     return Extra;
 
   }
-}());
+})();

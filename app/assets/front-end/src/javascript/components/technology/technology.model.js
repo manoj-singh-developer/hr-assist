@@ -7,9 +7,9 @@
     .factory('Technology', Technology);
 
   Technology
-    .$inject = ['$resource', 'apiUrl', 'alertService'];
+    .$inject = ['$resource', 'apiUrl', 'alertService', 'errorService'];
 
-  function Technology($resource, apiUrl, alertService) {
+  function Technology($resource, apiUrl, alertService, errorService) {
 
     function Technology() {}
 
@@ -33,7 +33,10 @@
           alertService.success(model, 'save');
           return data;
         })
-        .catch(() => alertService.error(model, 'save'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'save');
+        });
 
       return promise;
     };
@@ -52,7 +55,10 @@
           alertService.success(model, 'saveJson');
           return data;
         })
-        .catch(() => alertService.error(model, 'saveJson'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'saveJson');
+        });
 
       return promise;
     };
@@ -68,7 +74,10 @@
           alertService.success(model, 'update');
           return data;
         })
-        .catch(() => alertService.error(model, 'update'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'update');
+        });
 
       return promise;
     };
@@ -79,7 +88,10 @@
 
       promise = resource.$promise
         .then(data => data)
-        .catch(() => alertService.error(model, 'getById'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getById');
+        });
 
       return promise;
     };
@@ -95,7 +107,10 @@
 
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'getAll'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getAll');
+        });
 
       return promise;
     };
@@ -111,7 +126,10 @@
 
       promise = resource.$promise
         .then(data => data)
-        .catch(() => alertService.error(model, 'getEmployeeTechnologies'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getEmployeeTechnologies');
+        });
       return promise;
     };
 
@@ -126,7 +144,10 @@
 
       promise = resource.$promise
         .then(data => data)
-        .catch(() => alertService.error(model, 'getProjectsTechnologies'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getProjectsTechnologies');
+        });
       return promise;
     };
 
@@ -139,7 +160,10 @@
           alertService.success(model, 'remove');
           return data;
         })
-        .catch(() => alertService.error(model, 'remove'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'remove');
+        });
 
       return promise;
     };
