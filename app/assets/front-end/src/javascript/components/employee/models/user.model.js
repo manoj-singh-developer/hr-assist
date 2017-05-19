@@ -59,7 +59,7 @@
       promise = resource.$promise
         .then(data => data)
         .catch((error) => {
-          alertService.error(model, 'getById'); 
+          alertService.error(model, 'getById');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -285,7 +285,7 @@
 
       return promise;
     };
-    
+
 
 
     User.getEducations = (id) => {
@@ -364,7 +364,7 @@
       let projectId = project.project_id;
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
-      }).update({ id: user.id, 
+      }).update({ id: user.id,
                   project_id: projectId}, project);
       promise = resource.$promise
         .then((data) => {
@@ -420,7 +420,7 @@
 
       promise = resource.$promise
         .then(data => data)
-        .catch((error) => { 
+        .catch((error) => {
           alertService.error(model, 'getUserHolidays');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
@@ -450,6 +450,58 @@
     User.removeHolidays = () => {
 
     };
+
+    User.getTechnologies = () => {
+
+      let userId= $stateParams.id;
+      url = apiUrl + '/users/'+userId+'/technologies';
+      resource = $resource(url).get();
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch(() => alertService.error(model, 'getUserTechnologies'));
+
+      return promise;
+    };
+
+    User.addUserTechnologies = (data) => {
+
+      let userId = $stateParams.id;
+      url = apiUrl + '/users/'+userId+'/technologies';
+      resource = $resource(url, {}, {
+        'post': { method: 'POST' }
+      }).save(data);
+
+      promise = resource.$promise
+          .then((data) => {
+          alertService.success(model, 'addUserTechnologies');
+      return data;
+      })
+      .catch(() => alertService.error(model, 'addUserTechnologies'));
+
+      return promise;
+    };
+
+    User.deleteUserTechnologies = (technologies) => {
+      let data = {};
+      let userId =$stateParams.id;
+      data["technology_ids[]"] = technologies.map(technologies => technologies.id);
+
+      url = apiUrl+ '/users/'+userId+'/technologies';
+
+      resource = $resource(url, data).delete({ id: userId });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'deleteUserTechnologies');
+          return data;
+        })
+        .catch(() => {
+          alertService.error(model, 'deleteUserTechnologies')
+        })
+
+      return promise;
+    }
 
     return User;
 

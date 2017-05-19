@@ -100,12 +100,34 @@
       return promise;
     };
 
-    Technology.getEmployees = () => {
-      // TODO: Need a specific route for this
+    Technology.getEmployees = (id) => {
+      url = apiUrl + '/technologies/:id/users';
+      resource = $resource(url, {id: id}, {
+        'get': {
+          method: 'GET',
+          isArray: true
+        }
+      }).get();
+
+      promise = resource.$promise
+        .then(data => data)
+        .catch(() => alertService.error(model, 'getEmployeeTechnologies'));
+      return promise;
     };
 
-    Technology.getProjects = () => {
-      // TODO: Need a specific route for this
+    Technology.getProjects = (id) => {
+      url = apiUrl + '/technologies/:id/projects';
+      resource = $resource(url, {id: id}, {
+        'get': {
+          method: 'GET',
+          isArray: true
+        }
+      }).get();
+
+      promise = resource.$promise
+        .then(data => data)
+        .catch(() => alertService.error(model, 'getProjectsTechnologies'));
+      return promise;
     };
 
     Technology.remove = (id) => {
