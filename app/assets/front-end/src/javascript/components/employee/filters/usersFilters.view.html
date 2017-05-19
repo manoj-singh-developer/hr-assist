@@ -1,0 +1,128 @@
+<md-content
+  class="c-filters md-padding"
+  ng-show="users.showFilters">
+
+
+
+  <md-button
+    class="md-warn"
+    label="Reset all filters"
+    aria-label="Reset all filters"
+    ng-click="users.resetFilters()">
+    <md-icon class="material-icons">autorenew</md-icon>
+    Reset filters
+    <md-tooltip md-autohide="true">
+      Reset all filters
+    </md-tooltip>
+  </md-button>
+
+
+
+  <section layout="row" layout-align="left center" class="md-padding">
+    <p>Filter by projects:</p>
+    <md-chips
+      ng-model="users.filters.projects"
+      md-autocomplete-snap=""
+      md-on-remove="users.filterUsers(users.filterType.remove)"
+      md-on-add="users.filterUsers(users.filterType.add)"
+      md-require-match=true>
+      <md-autocomplete
+        md-search-text="users.search.projects"
+        md-items="item in users.querySearch(users.search.projects, users.resources.projects)"
+        md-item-text="item.name"
+        placeholder="Project">
+        <span md-highlight-text="users.search.projects">
+          {{item.name}}
+        </span>
+      </md-autocomplete>
+      <md-chip-template>
+        <span>
+          <em>({{$chip.name}})</em>
+        </span>
+      </md-chip-template>
+    </md-chips>
+  </section>
+
+
+
+  <section layout="row" layout-align="left center" class="md-padding">
+    <p>Filter by technologies: </p>
+    <md-chips
+      ng-model="users.filters.technologies"
+      md-on-remove="users.filterUsers(users.filterType.remove)"
+      md-on-add="users.filterUsers(users.filterType.add)"
+      md-require-match=true>
+      <md-autocomplete
+        md-search-text="users.search.technologies"
+        md-items="item in users.querySearch(users.search.technologies, users.resources.technologies)"
+        md-item-text="item.name"
+        placeholder="Technology">
+        <span md-highlight-text="users.search.technologies">
+          {{item.name}}
+        </span>
+      </md-autocomplete>
+      <md-chip-template>
+        <span>
+          <em>({{$chip.name}})</em>
+        </span>
+      </md-chip-template>
+    </md-chips>
+  </section>
+
+
+
+  <section layout="row" layout-align="left center" class="md-padding">
+    <p>Filter by languages:</p>
+    <md-chips
+      ng-model="users.filters.languages"
+      md-autocomplete-snap=""
+      md-on-remove="users.filterUsers(users.filterType.remove)"
+      md-on-add="users.filterUsers(users.filterType.add)"
+      md-require-match=true>
+      <md-autocomplete
+        md-search-text="users.search.languages"
+        md-items="item in users.querySearch(users.search.languages, users.resources.languages)"
+        md-item-text="item.long_name"
+        placeholder="Languages">
+        <span md-highlight-text="users.search.languages">
+          {{item.long_name}}
+        </span>
+      </md-autocomplete>
+      <md-chip-template>
+        <span>
+          <em>({{$chip.long_name}})</em>
+        </span>
+      </md-chip-template>
+    </md-chips>
+  </section>
+
+
+<!-- 
+  <section layout="row" layout-align="left center" class="md-padding">
+    <p>Filter by application Types: </p>
+    <md-chips
+      ng-model="users.filters.application_types"
+      md-autocomplete-snap=""
+      md-on-remove="users.filterUsers(users.filterType.remove)"
+      md-on-add="users.filterUsers(users.filterType.add)"
+      md-require-match=true>
+      <md-autocomplete
+        md-search-text="users.search.application_types"
+        md-items="item in users.querySearch(users.search.application_types, users.application_types)"
+        md-item-text="item.name"
+        placeholder="application Type">
+        <span md-highlight-text="users.search.application_types">
+          {{item.name}}
+        </span>
+      </md-autocomplete>
+      <md-chip-template>
+        <span>
+          <em>({{$chip.name}})</em>
+        </span>
+      </md-chip-template>
+    </md-chips>
+  </section> -->
+
+
+
+</md-content>

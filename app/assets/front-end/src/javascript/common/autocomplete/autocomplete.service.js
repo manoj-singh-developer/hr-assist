@@ -22,7 +22,7 @@
         var results = query ? list.filter(createFilterFor(query)) : list;
         return results;
       } else {
-        return [];
+        return list;
       }
     }
 
