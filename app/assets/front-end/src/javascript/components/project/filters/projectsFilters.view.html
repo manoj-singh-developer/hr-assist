@@ -98,4 +98,31 @@
 
 
 
+  <section layout="row" layout-align="left center" class="md-padding">
+    <p>Filter by application Types: </p>
+    <md-chips
+      ng-model="projects.filters.application_types"
+      md-autocomplete-snap=""
+      md-on-remove="projects.filterProjects(projects.filterType.remove)"
+      md-on-add="projects.filterProjects(projects.filterType.add)"
+      md-require-match=true>
+      <md-autocomplete
+        md-search-text="projects.search.application_types"
+        md-items="item in projects.querySearch(projects.search.application_types, projects.resources.application_types)"
+        md-item-text="item.name"
+        placeholder="application Type">
+        <span md-highlight-text="projects.search.application_types">
+          {{item.name}}
+        </span>
+      </md-autocomplete>
+      <md-chip-template>
+        <span>
+          <em>({{$chip.name}})</em>
+        </span>
+      </md-chip-template>
+    </md-chips>
+  </section>
+{{projects.resources.appTypes}}
+
+
 </md-content>

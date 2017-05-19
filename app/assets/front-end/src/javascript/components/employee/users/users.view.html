@@ -63,19 +63,21 @@
         ng-disabled="users.isDisabled"
         ng-model="users.searchText"
         md-selected-item="users.selectedItem"
-        md-search-text-change="users.searchTextChange(users.searchText)"
+        md-search-text-change="users.querySearch(users.searchText, users.users)"
         md-search-text="users.searchText"
         md-selected-item-change="users.selectedItemChange(item)"
-        md-items="item in users.querySearch(users.searchText)"
+        md-items="item in users.querySearch(users.searchText, users.users)"
         md-item-text="item.first_name + ' ' +  item.last_name"
-        md-min-length="0"
+        md-min-length="1"
         placeholder="Search">
 
         <md-item-template>
           <span class="item-metadata">
             {{item.first_name}} {{item.last_name}}
         </md-item-template>
-
+        <md-not-found>
+          No employee matching <strong>{{users.searchText}}</strong> were found.
+        </md-not-found>
       </md-autocomplete>
     </form>
   </md-content><!-- /AUTOCOMPLETE SEARCH -->
@@ -86,10 +88,10 @@
   <!-- SELECTED ROWS -->
   <md-toolbar
     class="md-table-toolbar alternate"
-    ng-show="users.table.options.rowSelection && users.table.selected.length">
+    ng-show="users.tableSettings.options.rowSelection && users.tableSettings.selected.length">
     <div class="md-toolbar-tools">
       <span>
-        {{users.table.selected.length}} {{users.table.selected.length > 1 ? 'employees' : 'employee'}} selected
+        {{users.tableSettings.selected.length}} {{users.tableSettings.selected.length > 1 ? 'employees' : 'employee'}} selected
       </span>
     </div>
   </md-toolbar><!-- /SELECTED ROWS -->
@@ -98,394 +100,10 @@
 
 
   <!-- ALL FILTERS -->
-  <md-content class="c-filters c-filters--employee md-padding" ng-show="users.showFilters">
+  
 
-
-
-
-    <md-button
-      class="md-warn"
-      label="Reset all filters"
-      aria-label="Reset all filters"
-      ng-click="users.reset()">
-      <md-icon class="material-icons">autorenew</md-icon>
-      Reset filters
-      <md-tooltip md-autohide="true">
-        Reset all filters
-      </md-tooltip>
-    </md-button>
-
-
-
-
-    <!-- FILTER BY PROJECTS -->
-    <section layout="row" layout-align="center center" ng-hide="users.candidate">
-
-      <!-- SEARCH INPUT -->
-      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
-        <md-content class="md-padding">
-          <form ng-submit="$event.preventDefault()">
-            <md-autocomplete
-              md-selected-item="users.selectedProject"
-              md-search-text-change="users.searchProjectChange(users.searchProject)"
-              md-search-text="users.searchProject"
-              md-selected-item-change="users.selectedProjectChange(itemPr.name, users.employees)"
-              md-items="itemPr in users.querySearchProjects(users.searchProject)"
-              md-item-text="itemPr.name"
-              md-min-length="0"
-              placeholder="Filter by projects">
-
-              <md-item-template>
-                <span class="item-metadata">
-                  {{itemPr.name}}
-              </md-item-template>
-
-            </md-autocomplete>
-          </form>
-        </md-content>
-      </div><!-- /SEARCH INPUT -->
-
-      <!-- SEARCH OUPUT -->
-      <div flex="50" flex-gt-sm="65" flex-gt-md="75" layout-align="left center">
-        <md-list layout="row" layout-wrap>
-          <md-list-item
-            class="md-2-line c-filters__label">
-            <div class="md-list-item-text " layout="column">
-              <h4>Involved in following projects: </h4>
-            </div>
-          </md-list-item>
-          <md-list-item
-            class="md-2-line"
-            ng-repeat="project in users.arrayProject track by $index">
-            <div class="md-list-item-text" layout="column">
-              <p ng-click="users.removeSearchProject($index)" class="c-filters__item">
-                {{$index + 1}} {{project}}
-                <span class="material-icons c-filters__icon">close</span>
-              </p>
-            </div>
-          </md-list-item>
-        </md-list>
-      </div><!-- /SEARCH OUPUT -->
-
-    </section><!-- /FILTER BY PROJECTS -->
-
-
-
-
-    <!-- FILTER BY SKILLS -->
-    <section layout="row" layout-align="center center">
-
-      <!-- SEARCH INPUT -->
-      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
-        <md-content class="md-padding">
-          <form ng-submit="$event.preventDefault()">
-            <md-autocomplete
-              md-selected-item="users.selectedSkill"
-              md-search-text-change="users.searchSkillChange(users.searchSkill)"
-              md-search-text="users.searchSkill"
-              md-selected-item-change="users.selectedSkillChange(item.label, users.employees)"
-              md-items="item in users.querySearchSkills(users.searchSkill)"
-              md-item-text="item.label"
-              md-min-length="0"
-              placeholder="Filter by skills">
-
-              <md-item-template>
-                <span class="item-metadata">
-                  {{item.label}}
-              </md-item-template>
-
-            </md-autocomplete>
-          </form>
-        </md-content>
-      </div><!-- /SEARCH INPUT -->
-
-      <!-- SEARCH OUPUT -->
-      <div flex="50" flex-gt-sm="65" flex-gt-md="75">
-        <md-list layout="row" layout-wrap>
-          <md-list-item
-            class="md-2-line c-filters__label">
-            <div class="md-list-item-text" layout="column">
-              <h4>Has the following skills: </h4>
-            </div>
-          </md-list-item>
-          <md-list-item
-            class="md-2-line"
-            ng-repeat="skill in users.arraySkill track by $index">
-            <div class="md-list-item-text" layout="column">
-              <p ng-click="users.removeSearchSkills($index)">{{$index + 1}} {{skill}}
-                <span class="material-icons c-filters__icon">close</span>
-              </p>
-            </div>
-          </md-list-item>
-        </md-list>
-      </div><!-- /SEARCH OUPUT -->
-
-    </section><!-- /FILTER BY SKILLS -->
-
-
-
-
-    <!-- FILTER BY LANGUAGES -->
-    <section layout="row" layout-align="center center">
-
-      <!-- SEARCH INPUT -->
-      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
-        <md-content class="md-padding">
-          <form ng-submit="$event.preventDefault()">
-            <md-autocomplete
-              md-selected-item="users.selectedLanguage"
-              md-search-text-change="users.searchLanguageChange(users.searchLanguage)"
-              md-search-text="users.searchLanguage"
-              md-selected-item-change="users.selectedLanguageChange(itemLg.name, users.employees)"
-              md-items="itemLg in users.querySearchLanguage(users.searchLanguage)"
-              md-item-text="itemLg.name"
-              md-min-length="0"
-              placeholder="Filter by languages">
-
-              <md-item-template>
-                <span class="item-metadata">
-                  {{itemLg.name}}
-              </md-item-template>
-
-            </md-autocomplete>
-          </form>
-        </md-content>
-      </div><!-- /SEARCH INPUT -->
-
-      <!-- SEARCH OUPUT -->
-      <div flex="50" flex-gt-sm="65" flex-gt-md="75">
-        <md-list layout="row" layout-wrap>
-          <md-list-item
-            class="md-2-line c-filters__label">
-            <div class="md-list-item-text" layout="column">
-              <h4>Knows the following languages: </h4>
-            </div>
-          </md-list-item>
-          <md-list-item
-            class="md-2-line"
-            ng-repeat="language in users.arrayLanguage track by $index">
-            <div class="md-list-item-text" layout="column">
-              <p ng-click="users.removeSearchLanguage($index)">{{$index + 1}} {{language}}
-                <span class="material-icons c-filters__icon">close</span>
-              </p>
-            </div>
-          </md-list-item>
-        </md-list>
-      </div><!-- /SEARCH OUPUT -->
-
-    </section><!-- /FILTER BY LANGUAGES -->
-
-
-
-
-    <!-- FILTER BY EMPLOYEE EXPERIENCE -->
-    <section layout="row" layout-align="center center">
-      <!--
-        @!TODO: de facut ca si la filtrele de mai sus un preview in dreapta.
-        Sa se mentina consistenta
-       -->
-
-      <!-- SEARCH INPUT -->
-      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
-        <md-content class="md-padding">
-          <md-select
-            ng-click="users.changeSkillLevelFilter()"
-            aria-label="skillLevel"
-            class="u-no-margin"
-            ng-model="users.selectedSkillLevel"
-            placeholder="Skill Level"
-            md-selected-text="users.selectedSkillLeve(users.selectedSkillLevel, users.employees)"
-            class="md-select-level">
-            <md-optgroup label="Level">
-              <md-option
-                value="{{skillLevel}}"
-                ng-repeat="skillLevel in users.skillLevels">
-                {{skillLevel}}
-              </md-option>
-            </md-optgroup>
-          </md-select>
-        </md-content>
-      </div><!-- /SEARCH INPUT -->
-
-      <!-- SEARCH OUPUT -->
-      <div flex="50" flex-gt-sm="65" flex-gt-md="75">
-        <md-button
-          class="md-warn"
-          ng-click="users.clearPositionTitle()">
-          Clear
-        </md-button>
-      </div> <!-- /SEARCH OUPUT -->
-
-    </section><!-- /FILTER BY EMPLOYEE EXPERIENCE -->
-
-
-
-
-    <!-- FILTER BY MANAGER -->
-   <!--  <section layout="row" layout-align="center center" ng-hide="users.candidate"> -->
-
-      <!-- SEARCH INPUT -->
-      <!-- <div flex="50" flex-gt-sm="35" flex-gt-md="25">
-        <md-content class="md-padding">
-          <md-select
-            aria-label="manager"
-            ng-model="users.selectedManager"
-            placeholder ="Manager"
-            md-selected-text="users.selectedManagerPr(users.selectedManager, users.employees)"
-            class="md-select-level">
-          <md-optgroup label="Level">
-            <md-option
-              value="{{manager}}"
-              ng-repeat="manager in users.manager">
-              {{manager}}
-            </md-option>
-          </md-optgroup>
-          </md-select>
-        </md-content> --> <!-- end of project manager search -->
-      <!-- </div> --><!-- /SEARCH INPUT -->
-
-      <!-- SEARCH OUPUT -->
-     <!--  <div flex="50" flex-gt-sm="65" flex-gt-md="75"> -->
-
-     <!--  </div> --><!-- /SEARCH OUPUT -->
-
-    <!-- </section> --><!-- /FILTER BY MANAGER -->
-
-
-
-
-    <!-- FILTER BY POSITION -->
-    <section layout="row" layout-align="center center" ng-hide="users.candidate">
-
-      <!-- SEARCH INPUT -->
-      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
-        <md-content class="md-padding">
-          <md-select
-            aria-label="positionTitle"
-            ng-model="users.positionTitle"
-            placeholder ="Position Title"
-            md-selected-text="users.selectedPositionTitle(users.positionTitle, users.employees)"
-            class="md-select-level">
-              <md-optgroup label="Level">
-                <md-option
-                  value="{{position}}"
-                  ng-repeat="position in users.positionTitles">
-                    {{position}}
-                </md-option>
-              </md-optgroup>
-          </md-select>
-
-        </md-content> <!-- end of project manager search -->
-      </div> <!-- /SEARCH INPUT -->
-
-      <!-- SEARCH OUPUT -->
-      <div flex="50" flex-gt-sm="65" flex-gt-md="75">
-        <md-button
-          class="md-warn"
-          ng-click="users.clearPositionTitle()">
-          Clear
-        </md-button>
-      </div> <!-- /SEARCH OUPUT -->
-
-    </section><!-- /FILTER BY POSITION -->
-
-
-
-
-    <!-- FILTER BY CANDIDATE POSITION -->
-    <section layout="row" layout-align="center center" ng-show="users.candidate">
-
-      <!-- SEARCH INPUT -->
-      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
-        <md-select
-          aria-label="positionTitle"
-          ng-model="users.positionTitle"
-          placeholder ="Position Title"
-          md-selected-text="users.selectedPositionTitle(users.positionTitle, users.employees)"
-          class="md-select-level">
-            <md-optgroup label="Level">
-              <md-option
-                value="{{position}}"
-                ng-repeat="position in users.candidatesPositionTitle">
-                  {{position}}
-              </md-option>
-            </md-optgroup>
-        </md-select>
-      </div> <!-- /SEARCH INPUT -->
-
-      <!-- SEARCH OUPUT -->
-      <div flex="50" flex-gt-sm="65" flex-gt-md="75">
-        <md-button
-          class="md-warn"
-          ng-click="users.clearPositionTitle()">
-          Clear
-        </md-button>
-      </div> <!-- /SEARCH OUPUT -->
-
-    </section><!-- /FILTER BY CANDIDATE POSITION -->
-
-
-
-
-    <!-- FILTER BY BIRDHDAY -->
-    <section layout="row" layout-align="center center" ng-hide="users.candidate">
-
-      <!-- SEARCH INPUT -->
-      <div flex="50" flex-gt-sm="50" flex-gt-md="25">
-       <md-input-container md-no-float class="" flex-gt-md="50">
-        <md-select
-          aria-label="birthdayMonth"
-          ng-model="users.birthdayMonth"
-          placeholder ="Select month"
-          md-selected-text="users.selectedbirthdayMonth(users.birthdayMonth, users.employees)"
-          class="md-select-level">
-            <md-optgroup label="Month">
-              <md-option
-                value="{{month}}"
-                ng-repeat="month in users.monthsList">
-                  {{month}}
-              </md-option>
-            </md-optgroup>
-        </md-select>
-         </md-input-container>
-        <md-input-container md-no-float class="" flex-gt-md="50">
-
-          <input
-          ng-model="users.bornYear"
-          aria-label="bornYear"
-          name="bornYear"
-          placeholder="Birthday year">
-
-        </md-input-container>
-       <!--  <md-datepicker
-          required
-          ng-model="users.birthdayDate"
-          md-placeholder="Birthday"
-          ng-change="users.searchBirthdayFilter(users.employees, users.birthdayDate)"
-          md-open-on-focus>
-        </md-datepicker> -->
-      </div> <!-- /SEARCH INPUT -->
-
-      <!-- SEARCH OUPUT -->
-      <div flex="50" flex-gt-sm="65" flex-gt-md="75">
-      <md-button
-        class="md-warn"
-        ng-click="users.searchBirthdayFilter(users.bornYear,  users.employees)">
-        Search
-      </md-button>
-        <md-button
-          class="md-warn"
-          ng-click="users.clearBirthdayFilter()">
-          Clear
-        </md-button>
-      </div> <!-- /SEARCH OUPUT -->
-
-    </section><!-- /FILTER BY BIRDHDAY -->
-
-
-
-
-  </md-content><!-- / ALL FILTERS -->
+  <hra-users-filters></hra-users-filters>
+<!-- / ALL FILTERS -->
 
   <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
 
@@ -497,23 +115,24 @@
     <table
       class="c-table--actions c-table--big table-employees"
       md-table
-      md-row-select="users.table.options.rowSelection"
-      multiple="{{users.table.options.multiSelect}}"
-      ng-model="users.table.selected"
+      md-row-select="users.tableSettings.options.rowSelection"
+      multiple="{{users.tableSettings.options.multiSelect}}"
+      ng-model="users.tableSettings.selected"
       md-progress="promise">
 
       <thead
-        ng-if="!users.table.options.decapitate"
+        ng-if="!users.tableSettings.options.decapitate"
         md-head
-        md-order="users.table.query.order">
+        md-order="users.tableSettings.query.order">
         <tr md-row>
-          <th md-column md-order-by="firstName">First Name</th>
-          <th md-column md-order-by="lastName">Last Name</th>
+        <th md-column>Nr.</th>
+          <th md-column md-order-by="first_name">First Name</th>
+          <th md-column md-order-by="last_name">Last Name</th>
           <th md-column>Email/Phone</th>
           <th md-column>Languages</th>
-          <th md-column>Skills</th>
-          <th md-column ng-hide="users.candidate">Projects</th>
-          <th md-column ng-hide="users.candidate">Last update</th>
+          <th md-column>Technologies</th>
+          <th md-column>Projects</th>
+          <!-- <th md-column>Last update</th> -->
           <th md-column>Actions</th>
         </tr>
       </thead>
@@ -523,9 +142,13 @@
           md-row
           md-select="employee"
           md-on-select="logItem"
-          md-auto-select="users.options.autoSelect"
-          ng-repeat="employee in users.users | filter: users.searchText | orderBy: users.table.query.order | limitTo: users.table.query.limit : (users.table.query.page - 1) * users.table.query.limit track by $index">
-
+          ng-repeat="employee in users.users 
+          | filter: users.searchText 
+          | orderBy: users.tableSettings.query.order 
+          | limitTo: users.tableSettings.query.limit : (users.tableSettings.query.page - 1) * users.tableSettings.query.limit track by $index">
+          <td md-cell>
+            {{$index + 1}}
+          </td>
           <td md-cell>
             <p>{{employee.first_name}}</p>
           </td>
@@ -542,20 +165,20 @@
           <td md-cell>
             <ul class="c-list" ng-if="employee.languages">
               <li ng-repeat="language in employee.languages">
-                {{$index + 1}}. {{language.language}}
+                {{$index + 1}}. {{language.long_name}}
               </li>
             </ul>
           </td>
 
           <td md-cell>
-            <ul class="c-list" ng-if="employee.skills">
-              <li ng-repeat="skill in employee.skills">
-                {{$index + 1}}. {{skill.name}}
+            <ul class="c-list" ng-if="employee.technologies">
+              <li ng-repeat="technologies in employee.technologies">
+                {{$index + 1}}. {{technologies.name}}
               </li>
             </ul>
           </td>
 
-          <td md-cell ng-hide="users.candidate">
+          <td md-cell ng-hide="employee.candidate">
             <ul class="c-list" ng-if="employee.projects">
               <li ng-repeat="project in employee.projects">
                 {{$index + 1}}. {{project.name}}
@@ -563,9 +186,9 @@
             </ul>
           </td>
 
-          <td md-cell ng-hide="users.candidate">
+          <!-- <td md-cell ng-hide="employee.candidate">
             {{employee.updatedAt | date: longDate}}
-          </td>
+          </td> -->
 
           <td md-cell>
 
@@ -581,7 +204,7 @@
               </md-tooltip>
             </md-button>
 
-            <md-button
+            <!-- <md-button
               ng-show="users.candidate"
               class="md-icon-button md-primary"
               label="View candidate details"
@@ -591,9 +214,9 @@
               <md-tooltip md-autohide="true">
                 View candidate details
               </md-tooltip>
-            </md-button>
+            </md-button> -->
 
-            <md-button
+            <!-- <md-button
               ng-show="users.candidate"
               class="md-icon-button md-primary"
               label="Conver to employee"
@@ -603,19 +226,19 @@
               <md-tooltip md-autohide="true">
                 Convert to employee
               </md-tooltip>
-            </md-button>
+            </md-button> -->
 
-            <md-button
+            <!-- <md-button
               class="md-icon-button md-warn"
               label="{{users.candidate ? 'Remove candidate' : 'Remove employee'}}"
               aria-label="{{users.candidate ? 'Remove candidate' : 'Remove employee'}}"
-              ng-click="users.deleteConfirm($event, employee, $index)">
+              ng-click="users.remove( employee, $event, $index)">
               <md-icon class="material-icons">delete</md-icon>
               <md-tooltip md-autohide="true">
                 <span ng-show="!users.candidate">Remove employee</span>
                 <span ng-show="users.candidate">Remove candidate</span>
               </md-tooltip>
-            </md-button>
+            </md-button> -->
 
           </td>
 
@@ -628,15 +251,11 @@
 
 
 
-  <!-- TABLE PAGINATION -->
-  <md-table-pagination
-    md-limit="users.table.query.limit"
-    md-limit-options="users.table.limitOptions"
-    md-page="users.table.query.page"
-    md-total="{{users.users.length}}"
-    md-page-select="users.table.options.pageSelect"
-    md-boundary-links="users.table.options.boundaryLinks">
-  </md-table-pagination><!-- /TABLE PAGINATION -->
+
+   <!-- TABLE PAGINATION -->
+  <hra-table-pagination settings="users.tableSettings">
+  <hra-table-pagination>
+  <!-- /TABLE PAGINATION -->
 
 
 
