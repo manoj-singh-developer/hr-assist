@@ -34,17 +34,15 @@
         return null;
       } else {
         return list.map(function(item) {
-          if(item[attributes[index]]){
-            item.autoCompleteVal = '';
-            for (index = 0; index < attributes.length; index++) {
-              if (index !== 0) {
-                item.autoCompleteVal = item.autoCompleteVal + ' ' + item[attributes[index]].toLowerCase();
-              } else {
-                item.autoCompleteVal = item[attributes[index]].toLowerCase();
-              }
+          item.autoCompleteVal = '';
+          for (index = 0; index < attributes.length; index++) {
+            if (index !== 0) {
+              item.autoCompleteVal = item.autoCompleteVal + ' ' + item[attributes[index]].toLowerCase();
+            } else {
+              item.autoCompleteVal = item[attributes[index]].toLowerCase();
             }
-          return item;
           }
+          return item;
         });
       }
     }
