@@ -516,7 +516,11 @@
           <input
             type="text"
             name="office"
-            ng-model="userGeneral.user.office_nr">
+            ng-model="userGeneral.user.office_nr"
+            ng-pattern="/^[A-Za-z0-9 _]{1,4}$/">
+            <div ng-messages="generalInfoForm.office.$error">
+            <div ng-message="pattern">Please enter a valid Number Office</div>
+          </div>
         </md-input-container>
 
         <md-input-container md-no-float class="md-block" flex-gt-xs="50">
