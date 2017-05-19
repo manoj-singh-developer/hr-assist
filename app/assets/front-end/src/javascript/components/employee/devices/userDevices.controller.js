@@ -19,6 +19,7 @@
     vm.userDevices = [];
     vm.copyUserDevices = [];
     vm.addNewDevice = addNewDevice;
+    vm.disableSaveBtn = true;
 
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
@@ -53,7 +54,7 @@
         }
       vm.searchText = ' ';  
       }
-      
+      vm.disableSaveBtn = false;
     }
 
     function removeFromQueue(device) {
@@ -61,6 +62,7 @@
       vm.copyUserDevices = _.without(vm.copyUserDevices, toRemove);
       devicesToAdd = _.without(devicesToAdd, toRemove);
       devicesToRemove.push(device.id);
+       vm.disableSaveBtn = false;
     }
 
     function cancel(){
@@ -70,6 +72,8 @@
           vm.userDevices = data;
           vm.copyUserDevices.push(...vm.userDevices);
         });
+        vm.searchText = "";
+        vm.disableSaveBtn = true;
     }
 
     function saveDevices() {
@@ -87,6 +91,8 @@
       }
       
       vm.showEditDevices = false;
+      vm.disableSaveBtn = true;
+      vm.searchText = "";
     }
 
     function _getDevices() {

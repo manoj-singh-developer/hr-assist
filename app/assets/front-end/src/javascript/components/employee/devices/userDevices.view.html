@@ -12,6 +12,19 @@
 
 
 
+
+
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here with the devices that you are using.
+    </p>
+  </md-content> <!-- CARD NOTES -->
+
+
+
+
+
     <!-- PREVIEW  -->
     <md-content
             ng-show="!userDevices.showEditDevices"
@@ -35,6 +48,7 @@
 
 
     <!-- EDIT -->
+    <form ng-submit="$event.preventDefault()"  name="deviceForm">
     <md-content
             class = "md-padding"
             ng-show="userDevices.showEditDevices">
@@ -66,8 +80,6 @@
                 layout-gt-xs="row"
                 layout-align="center center"
                 ng-repeat="device in userDevices.devicesToAdd track by $index" >
-
-
 
             <!-- DEVICE INPUT-->
             <div flex="100" >
@@ -144,7 +156,7 @@
         <md-button 
                    class="md-raised md-primary"
                    ng-click="userDevices.saveDevices()"
-                   ng-disabled="btnIsDisabled">
+                   ng-disabled="userDevices.disableSaveBtn">
             Save
         </md-button>
 
@@ -156,7 +168,7 @@
 
     </md-card-actions>
     <!-- /CARD ACTIONS-->
-
+  </form>
 
 
 </md-card>
