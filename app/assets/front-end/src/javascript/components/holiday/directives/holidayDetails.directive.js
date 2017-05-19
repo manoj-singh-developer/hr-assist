@@ -29,10 +29,8 @@
     .module('HRA')
     .controller('holidayDetailsController', holidayDetailsController);
 
-  holidayDetailsController
-    .$inject = ['$rootScope', '$scope', '$stateParams', 'HolidayModel', '$mdToast', 'User', '$timeout'];
 
-  function holidayDetailsController($rootScope, $scope, $stateParams, HolidayModel, $mdToast, User, $timeout) {
+  function holidayDetailsController($rootScope, $scope, $stateParams, HolidayModel, $mdToast, User, $timeout, errorService) {
 
     var vm = this;
     vm.viewLists = null;
@@ -87,6 +85,7 @@
           }, 1000);
         })
         .catch(function (error) {
+          errorService.forceLogout(error);
           console.log(error);
         })
     }
@@ -103,6 +102,7 @@
           holidayReplace = response.employee_replacements;
         })
         .catch(function (error){
+          errorService.forceLogout(error);
           $rootScope.showToast('Error on loading data! Please refresh!');
         })
     }
