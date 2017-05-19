@@ -32,10 +32,8 @@
     .module('HRA')
     .controller('holidayFormController', holidayFormController);
 
-  holidayFormController
-    .$inject = ['$rootScope', '$scope', '$timeout', '$mdToast', '$mdDialog', 'Upload', 'autocompleteService', 'miscellaneousService', 'HolidayModel', 'User',  '$state', 'Project'];
 
-  function holidayFormController($rootScope, $scope, $timeout, $mdToast, $mdDialog, Upload, autocompleteService, miscellaneousService, HolidayModel, User, $state, Project) {
+  function holidayFormController($rootScope, $scope, $timeout, $mdToast, $mdDialog, Upload, autocompleteService, miscellaneousService, HolidayModel, User, $state, Project, errorService) {
 
 
     var vm = this;
@@ -184,6 +182,7 @@
             },
             function(error) {
               $rootScope.showToast('Holiday creation failed!');
+              errorService.forceLogout(error);
               onSaveError(error);
             });
         } else {
@@ -198,6 +197,7 @@
 
             },
             function(error) {
+              errorService.forceLogout(error);
               $rootScope.showToast('Holiday update failed!');
               onSaveError();
             });
@@ -337,7 +337,10 @@
         },
         function(data) {
           $rootScope.showToast('Holiday update failed!');
-        });
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+        })
     }
 
 
@@ -359,7 +362,10 @@
         },
         function(data) {
           $rootScope.showToast('Holiday update failed!');
-        });
+        })
+          .catch((error) => {
+            errorService.forceLogout(error);
+          })
     }
 
     function onSaveSuccess(action, holiday) {

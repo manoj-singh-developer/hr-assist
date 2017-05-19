@@ -24,10 +24,8 @@
     .module('HRA')
     .controller('HolidaysController', HolidaysController);
 
-  HolidaysController
-    .$inject = ['$rootScope', '$scope', '$mdDialog', 'autocompleteService', 'miscellaneousService', 'HolidayModel', 'User', '$timeout'];
 
-  function HolidaysController($rootScope, $scope, $mdDialog, autocompleteService, miscellaneousService, HolidayModel, User, $timeout ) {
+  function HolidaysController($rootScope, $scope, $mdDialog, autocompleteService, miscellaneousService, HolidayModel, User, $timeout, errorService ) {
 
 
     var vm = this;
@@ -160,7 +158,10 @@
         },
         function(data) {
           $rootScope.showToast('Holiday update failed!');
-        });
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+        })
     }
 
     function searchFilter() {
@@ -251,7 +252,10 @@
           holCopy = $scope.holidaysTable;
           //return autocompleteService.buildList(vm.holidays, ['employee']);
         },
-        function(data) {});
+        function(data) {})
+        .catch((error) => {
+          errorService.forceLogout(error);
+        })
     }
 
     function removeHoliday(id) {
@@ -268,7 +272,10 @@
         },
         function(err) {
           $rootScope.showToast('Error on deleting the holiday!');
-        });
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+        })
     }
 
     $scope.$on('holidaysListChanged', function(event, args) {
