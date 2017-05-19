@@ -109,7 +109,7 @@
         }
       }
 
-      if(objToSave) {
+      if(objToSave.names.length > 0) {
         User.addUserTechnologies(objToSave)
           .then((response) => {
             vm.displayOrHide = false;
@@ -135,6 +135,8 @@
               $scope.addTechForm.$invalid = true;
             }, 100);
             vm.displayOrHide = false;
+            technologiesToRemove = [];
+            _getUserTech();
           })
           .catch((error) => {
             console.log(error);
