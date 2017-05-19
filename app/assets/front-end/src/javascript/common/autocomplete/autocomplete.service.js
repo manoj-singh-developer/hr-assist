@@ -22,7 +22,7 @@
         var results = query ? list.filter(createFilterFor(query)) : list;
         return results;
       } else {
-        return [];
+        return list;
       }
     }
 
@@ -36,8 +36,8 @@
         return list.map(function(item) {
           item.autoCompleteVal = '';
           for (index = 0; index < attributes.length; index++) {
-            if (index !== 0) {
-              item.autoCompleteVal = item.autoCompleteVal + ' ' + item[attributes[index]].toLowerCase();
+            if (index !== 0 && item[attributes[index]]) {
+                item.autoCompleteVal = item.autoCompleteVal + ' ' + item[attributes[index]].toLowerCase();
             } else {
               item.autoCompleteVal = item[attributes[index]].toLowerCase();
             }

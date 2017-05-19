@@ -7,7 +7,6 @@
     .controller('userEducationController', userEducationController);
 
   userEducationController
-    .$inject = ['$rootScope', '$scope', '$stateParams', 'User', 'autocompleteService', 'miscellaneousService'];
 
   function userEducationController($rootScope, $scope, $stateParams, User, autocompleteService, miscellaneousService) {
 
@@ -15,7 +14,8 @@
     vm.userEducationList = [];
     vm.userEducations = [];
     vm.showEditEducation = false;
-    vm.validateDate = false;
+    vm.validateDate = [];
+    vm.validateDates = false;
 
     var getUser = $rootScope.$on('event:userResourcesLoaded', (event, data) => {
       vm.user = data.user;
@@ -35,7 +35,6 @@
       vm.showEditEducation = !vm.showEditEducation;
     }
 
-
     function addNewEducation() {
       vm.userEducationList.push({});
     }
@@ -47,12 +46,14 @@
 
         vm.userEducations.splice(index, 1);
         vm.userEducationList.splice(index, 1);
-      } else
+      } else {
         vm.userEducationList.splice(index, 1);
+        vm.validateDate[index] = false;
+      }
+       checkDates();
     }
 
     function save() {
-
       var saveEducationsObj = {};
       var updateEducationsObj = {};
       saveEducationsObj["educations"] = [];
@@ -83,19 +84,35 @@
     function cancelAdd() {
       vm.userEducationList = [];
       vm.userEducationList = _.map(vm.userEducations, _.clone);
+      vm.validateDate = [];
     }
 
     function initEducations() {
       vm.userEducationList = _.map(vm.userEducations, _.clone);
     }
 
+    let startDate = [];
+    let endDate = []
+    vm.validateDate = [];
+
     function checkDates(index) {
-      if (vm.userEducationList[index].start_date != undefined && vm.userEducationList[index].end_date != undefined && vm.userEducationList[index].start_date > vm.userEducationList[index].end_date) {
-        vm.validateDate = true;
+
+      for (let i = 0; i < vm.userEducationList.length; i++) {
+        startDate[i] = new Date(vm.userEducationList[i].start_date);
+        endDate[i] = new Date(vm.userEducationList[i].end_date);
+        if (startDate[i] != undefined && endDate[i] != undefined && startDate[i] > endDate[i]) {
+          vm.validateDate[i] = true;
+        } else {
+          vm.validateDate[i] = false;
+        }
+      }
+      if (vm.validateDate.indexOf(true) !== -1) {
+        vm.validateDates = true;
       } else {
-        vm.validateDate = false;
+        vm.validateDates = false;
       }
     }
+
   }
 
 }());

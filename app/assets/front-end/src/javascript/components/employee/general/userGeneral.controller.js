@@ -15,6 +15,7 @@
     let userCopy = {};
     let positionCopy = {};
     let scheduleCopy = {};
+    vm.today = new Date();
     vm.isAdmin = false;
     vm.user = {};
     vm.position = {};
@@ -36,7 +37,7 @@
 
     _getPositions();
 
-    if($rootScope.isAdmin === true){
+    if ($rootScope.isAdmin === true) {
       vm.isAdmin = false;
     } else {
       vm.isAdmin = true;

@@ -6,7 +6,7 @@
     .module('HRA')
     .controller('usersCtrl', usersCtrl);
 
-  function usersCtrl($scope, $rootScope, $mdDialog, autocompleteService, User, Technology, Project, AppType, $q, filterService) {
+  function usersCtrl($scope, $rootScope, $mdDialog, autocompleteService, User, Technology, Project, AppType, $q, filterService, tableSettings) {
 
     var vm = this;
     vm.ids = [];
@@ -14,28 +14,9 @@
     vm.users = [];
     vm.resources = {};
     vm.filterType = filterService.getTypes();
+    vm.tableSettings = tableSettings;
+    vm.tableSettings.query.order = 'last_name';
 
-    vm.table = {
-      options: {
-        rowSelection: true,
-        multiSelect: true,
-        autoSelect: false,
-        decapitate: false,
-        largeEditDialog: false,
-        boundaryLinks: true,
-        limitSelect: true,
-        pageSelect: true
-      },
-      query: {
-        order: 'last_name',
-        filter: '',
-        limit: 10,
-        page: 1
-      },
-      "limitOptions": [10, 15, 20],
-      selected: [],
-      total: 0
-    };
     vm.showFilters = false;
     vm.filters = {
       technologies: [],
@@ -86,7 +67,7 @@
 
     function remove(employee, event) {
       var confirm = $mdDialog.confirm()
-        .title('Would you like to delete ' + employee.first_name+" "+employee.last_name + ' employee?')
+        .title('Would you like to delete ' + employee.first_name + " " + employee.last_name + ' employee?')
         .targetEvent(event)
         .ok('Yes')
         .cancel('No');
@@ -114,6 +95,7 @@
         vm.usersCopy,
         vm.filters,
         filteringType);
+      vm.tableSettings.total = vm.users.length;
     }
 
     function resetFilters() {
@@ -122,11 +104,16 @@
     }
 
     function querySearch(query, list) {
+      if (query != "" && query != " ") {
+        vm.tableSettings.total = autocompleteService.querySearch(query, list).length;
+      } else {
+        vm.tableSettings.total = list.length;
+      }
       return autocompleteService.querySearch(query, list);
     }
 
     function _updateTablePagination(data) {
-      vm.table.total = data.length;
+      vm.tableSettings.total = data.length;
     }
 
     function _getResources() {
@@ -148,7 +135,7 @@
         //will use this for filters
         vm.users = vm.resources.users;
         vm.usersCopy = angular.copy(vm.resources.users); //[1]
-        vm.table.total = vm.resources.users.length;
+        vm.tableSettings.total = vm.resources.users.length;
 
         _buildAutocompleteLists();
       });

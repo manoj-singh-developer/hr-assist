@@ -157,7 +157,7 @@
                                    md-item-text="project.name"
                                    md-min-length="1"
                                    placeholder="Select an project"
-                                   md-input-name="autocompleteProject"
+                                   md-input-name="autocompleteProject_{{$index}}"
                                    md-require-match
                                    required>
 
@@ -172,9 +172,9 @@
 
                   </md-autocomplete>
 
-                  <div ng-messages="holidaysForm.autocompleteProject.$error"
+                  <div ng-messages="holidaysForm['autocompleteProject_'+$index].$error"
                     layout-gt-xs="row" layout-align="center center"
-                    ng-if="holidaysForm.autocompleteProject.$touched">
+                    ng-if="holidaysForm['autocompleteProject_'+$index].$touched">
                     <span ng-message="md-require-match" class="alert-error fade" role="alert">
                       You must select an option!
                     </span>
@@ -199,7 +199,7 @@
                                    md-item-text="user.first_name +' '+ user.last_name"
                                    md-min-length="1"
                                    placeholder="Select an employee"
-                                   md-input-name="autocompleteUser"
+                                   md-input-name="autocompleteUser_{{$index}}"
                                    md-require-match
                                    required>
                     <md-item-template>
@@ -208,13 +208,13 @@
                       </span>
                     </md-item-template>
                     <md-not-found>
-                      No project matching were found.
+                      No employee matching were found.
                      </md-not-found>
                   </md-autocomplete>
 
-                  <div ng-messages="holidaysForm.autocompleteUser.$error"
+                  <div ng-messages="holidaysForm['autocompleteUser_'+$index].$error"
                     layout-gt-xs="row" layout-align="center center"
-                    ng-if="holidaysForm.autocompleteUser.$touched">
+                    ng-if="holidaysForm['autocompleteUser_'+$index].$touched">
                     <span ng-message="md-require-match" class="alert-error fade" role="alert">
                       You must select an option!
                     </span>
