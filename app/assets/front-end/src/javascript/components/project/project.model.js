@@ -7,9 +7,9 @@
     .factory('Project', Project);
 
   Project
-    .$inject = ['$resource', 'apiUrl', 'alertService'];
+    .$inject = ['$resource', 'apiUrl', 'alertService', 'errorService'];
 
-  function Project($resource, apiUrl, alertService) {
+  function Project($resource, apiUrl, alertService, errorService) {
 
     function Project() {}
 
@@ -32,7 +32,10 @@
         .then((data) => {
           alertService.success(model, 'save');
           return data;
-        }).catch(() => alertService.error(model, 'save'));
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'save');
+        });
 
       return promise;
     };
@@ -48,7 +51,10 @@
           alertService.success(model, 'update');
           return data;
         })
-        .catch(() => alertService.error(model, 'update'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'update');
+        });
 
       return promise;
     };
@@ -63,7 +69,10 @@
       }).get();
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'getAll'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getAll');
+        });
 
       return promise;
     };
@@ -74,7 +83,10 @@
 
       promise = resource.$promise
         .then(data => data)
-        .catch(() => alertService.error(model, 'getById'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getById');
+        });
 
       return promise;
     };
@@ -88,7 +100,10 @@
           alertService.success(model, 'remove');
           return data;
         })
-        .catch(() => alertService.error(model, 'remove'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'remove');
+        });
 
       return promise;
     };
@@ -105,7 +120,10 @@
 
       promise = resource.$promise
         .then(data => data)
-        .catch(() => alertService.error(model, 'getEmployees'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getEmployees');
+        });
 
       return promise;
     };
@@ -126,7 +144,10 @@
         .then((data) => {
           alertService.success(model, 'updateTechnologies');
           return data.technologies;
-        }).catch(() => alertService.error(model, 'updateTechnologies'));
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'updateTechnologies');
+        });
 
       return promise;
     };
@@ -143,7 +164,10 @@
 
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'getTechnologies'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getTechnologies');
+        });
 
       return promise;
     };
@@ -160,7 +184,10 @@
         .then((data) => {
           alertService.success(model, 'updateTechnologies');
           return data.technologies;
-        }).catch(() => alertService.error(model, 'updateTechnologies'));
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'updateTechnologies');
+        });
 
       return promise;
     };
@@ -181,7 +208,10 @@
         .then((data) => {
           alertService.success(model, 'updateIndustries');
           return data.technologies;
-        }).catch(() => alertService.error(model, 'updateIndustries'));
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'updateIndustries');
+        });
 
       return promise;
     };
@@ -198,7 +228,10 @@
 
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'getIndustries'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getIndustries');
+        });
 
       return promise;
     };
@@ -215,7 +248,10 @@
         .then((data) => {
           alertService.success(model, 'remove technology');
           return data.technologies;
-        }).catch(() => alertService.error(model, 'remove technology'));
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'remove technology');
+        });
 
       return promise;
     };
@@ -232,7 +268,10 @@
         .then((data) => {
           alertService.success(model, 'remove industry');
           return data.technologies;
-        }).catch(() => alertService.error(model, 'remove industry'));
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'remove industry');
+        });
 
       return promise;
     }
@@ -249,7 +288,10 @@
 
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'get customers'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'get customers');
+        });
 
       return promise;
     }
@@ -269,7 +311,10 @@
         .then((data) => {
           alertService.success(model, 'update customers');
           return data.customers;
-        }).catch(() => alertService.error(model, 'update customers'));
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'update customers');
+        });
 
       return promise;
     }
@@ -286,7 +331,10 @@
         .then((data) => {
           alertService.success(model, 'remove customer');
           return data.customers;
-        }).catch(() => alertService.error(model, 'remove customer'));
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'remove customer');
+        });
 
       return promise;
     }

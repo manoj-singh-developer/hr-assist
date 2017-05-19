@@ -31,7 +31,10 @@
         .then((data) => {
           alertService.success(model, 'save');
           return data;
-        }).catch(() => alertService.error(model, 'save'));
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'save')
+        });
 
       return promise;
     };
@@ -47,7 +50,10 @@
           alertService.success(model, 'update');
           return data;
         })
-        .catch(() => alertService.error(model, 'update'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'update')
+        });
 
       return promise;
     };
@@ -78,7 +84,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getAll')
+          alertService.error(model, 'getAll');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
       });
@@ -95,7 +101,10 @@
           alertService.success(model, 'remove');
           return data;
         })
-        .catch(() => alertService.error(model, 'remove'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'remove')
+        });
 
       return promise;
     };
@@ -127,7 +136,10 @@
           alertService.success(model, 'update');
           return data;
         })
-        .catch(() => alertService.error(model, 'update'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'update')
+        });
 
       return promise;
     };
@@ -165,7 +177,10 @@
           alertService.success(model, 'updatePosition');
           return data;
         })
-        .catch(() => alertService.error(model, 'updatePosition'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'updatePosition')
+        });
 
       return promise;
     };
@@ -197,7 +212,10 @@
           alertService.success(model, 'updateDevices');
       return data;
       })
-      .catch(() => alertService.error(model, 'updateDevices'));
+      .catch((error) => {
+        errorService.forceLogout(error);
+        alertService.error(model, 'updateDevices');
+      });
 
       return promise;
     };
@@ -213,7 +231,10 @@
           alertService.success(model, 'removeDevices');
       return data;
       })
-      .catch(() => alertService.error(model, 'removeDevices'));
+      .catch((error) => {
+        errorService.forceLogout(error);
+        alertService.error(model, 'removeDevices')
+      });
 
       return promise;
     };
@@ -265,7 +286,10 @@
           alertService.success(model, 'updateLanguages');
           return data.items;
         })
-        .catch(() => alertService.error(model, 'updateLanguages'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'updateLanguages')
+        });
 
       return promise;
     };
@@ -281,7 +305,10 @@
           alertService.success(model, 'removeLanguages');
       return data;
       })
-      .catch(() => alertService.error(model, 'removeLanguages'));
+      .catch((error) => {
+        errorService.forceLogout(error);
+        alertService.error(model, 'removeLanguages')
+      });
 
       return promise;
     };
@@ -312,7 +339,10 @@
 
       promise = resource.$promise
         .then(data =>data.items)
-        .catch(() => alertService.error(model, 'saveEducations'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'saveEducations')
+        });
 
       return promise;
     };
@@ -325,7 +355,10 @@
 
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'updateEducations'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'updateEducations')
+        });
 
       return promise;
     };
@@ -339,7 +372,10 @@
           alertService.success(model, 'remove');
           return data;
         })
-        .catch(() => alertService.error(model, 'remove'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'remove');
+        });
 
       return promise;
     };
@@ -371,7 +407,10 @@
           alertService.success(model, 'updateProjects');
            return data;
         })
-        .catch(() => alertService.error(model, 'updateProjects'));
+        .catch((error) => {
+          alertService.error(model, 'updateProjects');
+          errorService.forceLogout(error);
+        });
 
       return promise;
     };
@@ -388,7 +427,10 @@
           alertService.success(model, 'remove');
           // return data;
         })
-        .catch(() => alertService.error(model, 'remove'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'remove')
+        });
 
       return promise;
     };
@@ -407,7 +449,10 @@
           alertService.success(model, 'removeProjectTechnologies');
           // return data;
         })
-        .catch(() => alertService.error(model, 'removeProjectTechnologies'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'removeProjectTechnologies');
+        });
 
       return promise;
     };
@@ -442,7 +487,10 @@
         .then((data) => {
           alertService.success(model, 'save');
           return data;
-        }).catch(() => alertService.error(model, 'save'));
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'save');
+        });
 
       return promise;
     };
@@ -459,7 +507,10 @@
 
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'getUserTechnologies'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getUserTechnologies');
+        });
 
       return promise;
     };
@@ -477,7 +528,10 @@
           alertService.success(model, 'addUserTechnologies');
       return data;
       })
-      .catch(() => alertService.error(model, 'addUserTechnologies'));
+      .catch((error) => {
+        errorService.forceLogout(error);
+        alertService.error(model, 'addUserTechnologies');
+      });
 
       return promise;
     };
@@ -496,9 +550,10 @@
           alertService.success(model, 'deleteUserTechnologies');
           return data;
         })
-        .catch(() => {
-          alertService.error(model, 'deleteUserTechnologies')
-        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'deleteUserTechnologies');
+        });
 
       return promise;
     }
