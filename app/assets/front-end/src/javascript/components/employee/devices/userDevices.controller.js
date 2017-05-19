@@ -46,13 +46,13 @@
       
       if (device) {
         let notToAdd = _.findWhere(vm.copyUserDevices, { id: device.id });
-        if(notToAdd === undefined){
+        if(!notToAdd){
           let toRemove = _.findWhere(devicesToRemove, { id: device.id });
           devicesToRemove = _.without(devicesToRemove, toRemove);
           devicesToAdd.push(device);
           vm.copyUserDevices.push(device);
         }
-      vm.searchText = "";  
+      vm.searchText = ' ';  
       }
       vm.disableSaveBtn = false;
     }
@@ -92,6 +92,7 @@
       
       vm.showEditDevices = false;
       vm.disableSaveBtn = true;
+      vm.searchText = "";
     }
 
     function _getDevices() {

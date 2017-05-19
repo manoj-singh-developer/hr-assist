@@ -79,51 +79,38 @@
 
       </md-list>
 
-      <!-- FILTER LANGUAGES -->
-      <section
-        layout-gt-xs="row"
-        layout-align="center center"
-        ng-repeat="language in userLanguages.languagesToAdd track by $index" >
+    <!-- FILTER LANGUAGES -->
+    <section
+      layout-gt-xs="row"
+      layout-align="center center"
+      ng-repeat="language in userLanguages.languagesToAdd track by $index" >
 
 
 
-        <!-- LANGUAGE INPUT-->
-        <div flex="100" >
-          <!-- LANGUAGE SELECT-->
-          <md-content class="md-padding">
+      <!-- LANGUAGE INPUT-->
+      <div flex="100" >
+        <!-- LANGUAGE SELECT-->
+        <md-content class="md-padding">
 
-              <md-autocomplete
-                md-selected-item="userLanguages.selectedItem"
-                md-search-text-change="userLanguages.searchTextChange(userLanguages.searchText)"
-                md-search-text="userLanguages.searchText"
-                md-selected-item-change="userLanguages.addInQueue(item)"
-                md-items="item in userLanguages.querySearch(userLanguages.searchText, userLanguages.languages)"
-                md-item-text="item.long_name"
-                md-min-length="1"
-                placeholder="Search"
-                md-input-name="autocompleteLanguage"
-                md-require-match
-                required>
+            <md-autocomplete
+              md-selected-item="userLanguages.selectedItem"
+              md-search-text-change="userLanguages.searchTextChange(userLanguages.searchText)"
+              md-search-text="userLanguages.searchText"
+              md-selected-item-change="userLanguages.addInQueue(item)"
+              md-items="item in userLanguages.querySearch(userLanguages.searchText, userLanguages.languages)"
+              md-item-text="item.long_name"
+              md-min-length="0"
+              placeholder="Search"
+              md-dropdown-position="bottom">
 
-                <md-item-template>
-                  <span
-                  class="item-metadata"
-                  md-highlight-text="userLanguages.searchText">
-                    {{item.long_name}}
-                  </span>
-                </md-item-template>
-                <md-not-found>
-                  No language matching <strong>{{userLanguages.searchText}}</strong> were found.
-                </md-not-found>
-              </md-autocomplete>
-
-              <div ng-messages="languageForm.autocompleteLanguage.$error"
-                layout-gt-xs="row" layout-align="center center"
-                ng-if="languageForm.autocompleteLanguage.$touched">
-                <span ng-message="md-require-match" class="alert-error fade" role="alert">
-                  You must select an option from the list!
+              <md-item-template>
+                <span
+                class="item-metadata"
+                md-highlight-text="userLanguages.searchText">
+                  {{item.long_name}}
                 </span>
-              </div>
+              </md-item-template>
+            </md-autocomplete>
           </md-content>
           <!-- /LANGUAGE SELECT-->
 

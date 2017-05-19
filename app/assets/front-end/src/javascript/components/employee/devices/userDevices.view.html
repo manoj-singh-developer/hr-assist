@@ -85,39 +85,28 @@
             <div flex="100" >
                 <!-- DEVICE SELECT-->
                 <md-content class="md-padding">
-                  
-                    <md-autocomplete
-                            md-selected-item="userDevices.selectedItem"
-                            md-search-text-change="userDevices.searchTextChange(userDevices.searchText)"
-                            md-search-text="userDevices.searchText"
-                            md-selected-item-change="userDevices.addInQueue(item)"
-                            md-items="item in userDevices.querySearch(userDevices.searchText, userDevices.devices)"
-                            md-item-text="item.name"
-                            md-min-length="1"
-                            placeholder="Search"
-                            md-input-name="autocompleteDevice"
-                            md-require-match
-                            required>
+                    <form ng-submit="$event.preventDefault()">
 
-                        <md-item-template>
-                            <span class="item-metadata"
-                                  md-highlight-text="userDevices.searchText">
-                              {{item.name}}
-                            </span>
-                        </md-item-template>
-                        <md-not-found>
-                          No device matching <strong>{{userDevices.searchText}}</strong> were found.
-                        </md-not-found>
-                    </md-autocomplete>
+                        <md-autocomplete
+                                md-selected-item="userDevices.selectedItem"
+                                md-search-text-change="userDevices.searchTextChange(userDevices.searchText)"
+                                md-search-text="userDevices.searchText"
+                                md-selected-item-change="userDevices.addInQueue(item)"
+                                md-items="item in userDevices.querySearch(userDevices.searchText, userDevices.devices)"
+                                md-item-text="item.name"
+                                md-min-length="0"
+                                placeholder="Search"
+                                md-dropdown-position="bottom">
 
-                    <div ng-messages="
-                      deviceForm.autocompleteDevice.$error"
-                      layout-gt-xs="row" layout-align="center center"
-                      ng-if="deviceForm.autocompleteDevice.$touched">
-                      <span ng-message="md-require-match" class="alert-error fade" role="alert">
-                        You must select an option from the list!
-                      </span>
-                    </div>
+                            <md-item-template>
+                                <span class="item-metadata"
+                                      md-highlight-text="userDevices.searchText">
+                                  {{item.name}}
+                                </span>
+                            </md-item-template>
+
+                        </md-autocomplete>
+                    </form>
                 </md-content>
                 <!-- /DEVICE SELECT-->
 

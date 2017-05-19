@@ -25,7 +25,7 @@
     <md-card-title-text>
       <span class="md-headline">General informations</span>
       <p class="u-font-small u-no-margin">
-        <strong>Last Update at: {{userGeneral.user.updatedAt | date: 'longDate'}}</strong>
+        <!-- <strong>Last Update at: {{userGeneral.user.updatedAt | date: 'longDate'}}</strong> -->
       </p>
     </md-card-title-text>
 
@@ -119,8 +119,6 @@
         <strong>Address: </strong>
         <span class="u-float-right">
           {{ userGeneral.user.address }}
-<!--           {{ userGeneral.user.address.zip }}
-          {{ userGeneral.user.address.city }} -->
         </span>
       </p>
 
@@ -201,387 +199,418 @@
 
 
   <!-- EDIT -->
-  <md-content
-    class="md-padding"
-    ng-show="userGeneral.settings.showForm">
-
-    <!--<div layout-gt-xs="row">-->
-      <!--<md-input-container md-no-float class="md-block u-mb-20">-->
-        <!--<md-button-->
-          <!--class="md-raised u-no-margin"-->
-          <!--ng-model="userGeneral.picture"-->
-          <!--ngf-select="userGeneral.upload($file)"-->
-          <!--ngf-pattern="'image/*'"-->
-          <!--ngf-accept="'image/*'"-->
-          <!--ngf-max-size="1MB"-->
-          <!--&gt;-->
-          <!--Upload profile picture-->
-          <!--&lt;!&ndash; @!TODO: de aratat si in modul edit poza daca asceasta exista &ndash;&gt;-->
-       <!--</md-button>-->
-      <!--</md-input-container>-->
-    <!--</div>-->
-
-    <!--<div ng-show="userGeneral.showSuccessMsg"-->
-      <!--class="alert-success fade"-->
-      <!--role="alert">-->
-      <!--Your picture has been successfully uploaded.-->
-    <!--</div>-->
-
-    <!--<div ng-show="userGeneral.showErrMsg"-->
-      <!--class="alert-error fade"-->
-      <!--role="alert">-->
-      <!--A problem occurred while uploading the prohile picture.-->
-    <!--</div>-->
-
-     <!--<div ng-show="userGeneral.showToLargeImage"-->
-      <!--class="alert-error fade"-->
-      <!--role="alert">-->
-      <!--Image size is too big. The size limit is 1MB.-->
-    <!--</div>-->
-
-
-
-    <!-- PERSONAL INFO -->
-    <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
-
-    <!-- First Name -->
-    <div layout-gt-xs="row">
-      <md-input-container md-no-float class="md-block" flex-gt-xs="">
-
-        <label>First Name</label>
-        <input
-          type="text"
-          ng-value="userGeneral.user.first_name"
-          ng-model="userGeneral.user.first_name"
-          name=firstName
-          >
-
-        <div ng-messages="userGeneral.firstName.$error">
-          <div ng-message="required">This field is required</div>
-        </div>
-
-      </md-input-container>
-    </div><!-- /First Name -->
-
-    <!-- Middle Name -->
-    <div layout-gt-xs="row">
-      <md-input-container md-no-float class="md-block" flex-gt-xs="">
-
-        <label>Middle Name</label>
-        <input
-          type="text"
-          ng-model="userGeneral.user.middle_name"
-          ng-value="userGeneral.user.middle_name"
-          name="middleName"
-          ng-disabled="userGeneral.disabledgeneralInfo">
-
-        <div ng-messages="userGeneral.middleName.$error">
-          <div ng-message="required">This field is required</div>
-        </div>
-
-      </md-input-container>
-    </div><!-- /Middle Name -->
-
-    <!-- Last Name -->
-    <div layout-gt-xs="row">
-      <md-input-container md-no-float class="md-block" flex-gt-xs="">
-
-        <label>Last Name</label>
-        <input
-          type="text"
-          ng-model="userGeneral.user.last_name"
-          ng-value="userGeneral.user.last_name"
-          name="lastName"
-          >
-
-        <div ng-messages="userGeneral.lastName.$error">
-          <div ng-message="required">This field is required</div>
-        </div>
-
-      </md-input-container>
-    </div><!-- Last Name -->
-
-    <!-- BIRTHDAY -->
-    <div layout-gt-xs="row" layout-align="start center" class="u-ml-10 u-mr-10">
+  <form novalidate
+    name="generalInfoForm"
+    ng-submit="$event.preventDefault()">
+    <md-content
+      class="md-padding"
+      ng-show="userGeneral.settings.showForm">
+
+      <!--<div layout-gt-xs="row">-->
+        <!--<md-input-container md-no-float class="md-block u-mb-20">-->
+          <!--<md-button-->
+            <!--class="md-raised u-no-margin"-->
+            <!--ng-model="userGeneral.picture"-->
+            <!--ngf-select="userGeneral.upload($file)"-->
+            <!--ngf-pattern="'image/*'"-->
+            <!--ngf-accept="'image/*'"-->
+            <!--ngf-max-size="1MB"-->
+            <!--&gt;-->
+            <!--Upload profile picture-->
+            <!--&lt;!&ndash; @!TODO: de aratat si in modul edit poza daca asceasta exista &ndash;&gt;-->
+         <!--</md-button>-->
+        <!--</md-input-container>-->
+      <!--</div>-->
+
+      <!--<div ng-show="userGeneral.showSuccessMsg"-->
+        <!--class="alert-success fade"-->
+        <!--role="alert">-->
+        <!--Your picture has been successfully uploaded.-->
+      <!--</div>-->
+
+      <!--<div ng-show="userGeneral.showErrMsg"-->
+        <!--class="alert-error fade"-->
+        <!--role="alert">-->
+        <!--A problem occurred while uploading the prohile picture.-->
+      <!--</div>-->
+
+       <!--<div ng-show="userGeneral.showToLargeImage"-->
+        <!--class="alert-error fade"-->
+        <!--role="alert">-->
+        <!--Image size is too big. The size limit is 1MB.-->
+      <!--</div>-->
+
+
+
+      <!-- PERSONAL INFO -->
+      <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
+
+      <!-- First Name -->
+      <div layout-gt-xs="row">
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+          <label>First Name</label>
+          <input
+            type="text"
+            ng-model="userGeneral.user.first_name"
+            name=first_name
+            ng-pattern="/[a-zA-Z\.'-\s]{3,30}$/"
+            required>
+
+          <div ng-messages="generalInfoForm.first_name.$error">
+            <div ng-message="required">First Name field is required</div>
+            <div ng-message="pattern">Please enter a valid first name</div>
+          </div>
+
+        </md-input-container>
+      </div><!-- /First Name -->
+
+      <!-- Middle Name -->
+      <div layout-gt-xs="row">
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+          <label>Middle Name</label>
+          <input
+            type="text"
+            ng-model="userGeneral.user.middle_name"
+            name="middleName"
+            ng-pattern="/[a-zA-Z\.'-\s]{3,30}$/"
+            ng-disabled="userGeneral.disabledgeneralInfo">
+
+          <div ng-messages="generalInfoForm.middleName.$error">
+            <div ng-message="required">This field is required</div>
+            <div ng-message="pattern">Please enter a valid middle name</div>
+          </div>
+
+        </md-input-container>
+      </div><!-- /Middle Name -->
+
+      <!-- Last Name -->
+      <div layout-gt-xs="row">
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+          <label>Last Name</label>
+          <input
+            type="text"
+            ng-model="userGeneral.user.last_name"
+            name="last_name"
+            ng-pattern="/[a-zA-Z\.'-\s]{3,30}$/"
+            required>
+
+          <div ng-messages="generalInfoForm.last_name.$error">
+            <div ng-message="required">This field is required</div>
+            <div ng-message="pattern">Please enter a valid Last Name</div>
+          </div>
 
-      <label class="u-mr-20">Birthday</label>
-      <hra-date-select
-        ng-model="userGeneral.user.birthday" >
-      </hra-date-select>
+        </md-input-container>
+      </div><!-- Last Name -->
 
-    </div><!-- /BIRTHDAY -->
+      <!-- BIRTHDAY -->
+      <div layout-gt-xs="row" layout-align="start center" class="u-ml-10 u-mr-10">
 
+        <label class="u-mr-20">Birthday</label>
+        <md-datepicker
+          ng-model="userGeneral.user.birthday"
+          md-placeholder="Birthday"
+          md-open-on-focus
+          md-max-date="userGeneral.today">
+        </md-datepicker>
 
+
+      </div><!-- /BIRTHDAY -->
+
 
 
-    <!-- CONTACT INFO -->
-    <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
 
-    <!-- Address -->
-    <div layout-gt-xs="row">
+      <!-- CONTACT INFO -->
+      <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
 
-      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
-        <label>City</label>
-        <input
-          type="text"
-          name=judet
-          ng-value="userGeneral.user.city"
-          ng-model="userGeneral.user.city"
-          >
-      </md-input-container>
+      <!-- Address -->
+      <div layout-gt-xs="row">
 
-      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
-        <label>ZIP</label>
-        <input
-          type="text"
-          name=localitate
-          ng-value="userGeneral.user.zip_code"
-          ng-model="userGeneral.user.zip_code"
-          ng-disabled="userGeneral.disabledgeneralInfo">
-      </md-input-container>
+        <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+          <label>City</label>
+          <input
+            type="text"
+            name="city"
+            ng-model="userGeneral.user.city"
+            ng-pattern="/[a-zA-Z\.'-\s]{3,30}$/">
 
-    </div>
+          <div ng-messages="generalInfoForm.city.$error">
+            <div ng-message="pattern">Please enter a valid City name</div>
+          </div>
+        </md-input-container>
 
-    <div layout-gt-xs="row">
-      <md-input-container md-no-float class="md-block" flex-gt-xs="100">
-        <label>Address</label>
-        <input
-          type="text"
-          name=adresa
-          ng-value="userGeneral.user.address"
-          ng-model="userGeneral.user.address"
-          ng-disabled="userGeneral.disabledgeneralInfo">
-      </md-input-container>
-    </div>
-    <!-- /Address -->
+        <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+          <label>ZIP</label>
+          <input
+            type="text"
+            name="zip_code"
+            ng-model="userGeneral.user.zip_code"
+            ng-disabled="userGeneral.disabledgeneralInfo"
+            ng-pattern="/^\d{6}(?:[-\s]\d{4})?$/">
 
-    <!-- PHONE AND EMAIL -->
-    <div layout-gt-xs="row">
+          <div ng-messages="generalInfoForm.zip_code.$error">
+            <div ng-message="pattern">Please enter a valid ZIP code</div>
+          </div>
+        </md-input-container>
 
-      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
-
-        <label>Phone</label>
-        <input
-          ng-value="userGeneral.user.phone"
-          ng-model="userGeneral.user.phone">
-
-        <div ng-messages="serverErrors">
-          {{serverErrorsArray.data.invalidAttributes.phone[0].message}}
-        </div>
-
-      </md-input-container>
-
-      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+      </div>
 
-        <label>Email</label>
-        <input
-          ng-value="userGeneral.user.other_email"
-          ng-model="userGeneral.user.other_email"
-          name="emailOther"
-          type="email">
-
-        <div ng-messages="userGeneral.email.$error">
-          <div ng-message="email">Please insert a valid email</div>
-        </div>
-
-      </md-input-container>
+      <div layout-gt-xs="row">
+        <md-input-container md-no-float class="md-block" flex-gt-xs="100">
+          <label>Address</label>
+          <input
+            type="text"
+            name="adresa"
+            ng-model="userGeneral.user.address"
+            ng-disabled="userGeneral.disabledgeneralInfo">
+        </md-input-container>
+      </div>
+      <!-- /Address -->
 
-    </div><!-- /PHONE AND EMAIL -->
+      <!-- PHONE AND EMAIL -->
+      <div layout-gt-xs="row">
 
-    <!-- CAR LICENSE -->
-    <div layout-gt-xs="row">
-      <md-input-container md-no-float class="md-block" flex-gt-xs="">
-
-        <label>Car's license plate</label>
-        <input
-          type="text"
-          ng-value="userGeneral.user.car_plate"
-          ng-model="userGeneral.user.car_plate">
-
-      </md-input-container>
-    </div><!-- CAR LICENSE -->
-
-
-
-
-
-    <!-- ASSIST INFO -->
-    <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
-
-    <!-- STARTED WORKING ON -->
-    <div layout-gt-xs="row" layout-align="start center" ng-hide="userGeneral.candidate">
-      <label flex-gt-xs="35" class="md-padding">
-        <strong>Start date at Company</strong>
-      </label>
-
-      <hra-date-select class="hide-days"
-        flex-gt-xs="65"
-        ng-model="userGeneral.user.company_start_date">
-      </hra-date-select>
-
-    </div><!-- STARTED WORKING ON -->
+        <md-input-container md-no-float class="md-block" flex-gt-xs="50">
 
-    <!-- ASSIST POSITION -->
-    <div layout-gt-xs="row" layout-align="start center" ng-hide="userGeneral.candidate">
-
-      <label flex-gt-xs="35" class="md-padding">
-        <strong>Position</strong>
-      </label>
-
-      <md-input-container md-no-float class="md-block" flex-gt-xs="65">
-        <md-select
-          aria-label="Position"
-          ng-model="userGeneral.position"
-          ng-change="userGeneral.savePosition()"
-          md-selected-text="userGeneral.position.name || 'Position'" >
-            <md-option
-             ng-value="item"
-             ng-repeat="item in userGeneral.positions track by $index">
-               {{item.name}}
-            </md-option>
-        </md-select>
-      </md-input-container>
-
-    </div><!-- ASSIST POSITION -->
-
-    <!-- ASSIST CANDIDATE POSITION -->
-    <div layout-gt-xs="row" layout-align="start center" ng-show="userGeneral.candidate">
-
-      <label flex-gt-xs="35" class="md-padding u-mb-20">
-        <strong>Position</strong>
-      </label>
-
-      <md-input-container md-no-float class="md-block" flex-gt-xs="30">
-        <md-select
-          aria-label ="Position"
-          ng-model="userGeneral.user.assistPositionTitle"
-          md-selected-text="userGeneral.getSelectedText(userGeneral.user.assistPositionTitle, position=1)">
-            <md-option
-             ng-value="position"
-             ng-repeat="position in userGeneral.candidatesPositionTitle">
-               {{position}}
-            </md-option>
-        </md-select>
-      </md-input-container>
-
-    </div><!-- ASSIST CANDIDATE POSITION -->
-
-    <!-- ASSIST EMAIL -->
-    <div layout-gt-xs="row">
-      <md-input-container md-no-float class="md-block" flex-gt-xs="">
-
-        <label>ASSIST Email</label>
-
-        <input
-          ng-value="userGeneral.user.email"
-          ng-model="userGeneral.user.email"
-          name="emailAssist"
-          type="email"
-
-          readonly>
-
-        <div ng-messages="userGeneral.email.$error">
-          <div ng-message="email">Please insert a valid email</div>
-        </div>
-
-      </md-input-container>
-    </div><!-- /ASSIST EMAIL -->
-
-    <!-- OFFICE AND CONTRACT -->
-    <div layout-gt-xs="row"
-      layout-align="start center"
-      ng-hide="userGeneral.candidate">
-
-      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
-        <!-- @!TODO: De facut autocomplete aici, se cunosc birourile -->
-        <label>Office Nr.</label>
-        <input
-          type="text"
-          name="office"
-          ng-value="userGeneral.user.office_nr"
-          ng-model="userGeneral.user.office_nr">
-      </md-input-container>
-
-      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
-        <label>Schedule type</label>
-        <input
-          type="text"
-          name="schedule"
-          ng-model="userGeneral.schedule.name"
-          readonly/>
-      </md-input-container>
-
-    </div><!-- /OFFICE AND CONTRACT -->
-
-
-
-
-    <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
-    <!-- Urgent Contact -->
-    <div layout-gt-xs="row">
-
-      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
-        <label>Urgent Contact Name</label>
-        <input
-          type="text"
-          name="urgentContactName"
-          ng-value="userGeneral.user.urgent_contact_name"
-          ng-model="userGeneral.user.urgent_contact_name"
-           />
-      </md-input-container>
-
-      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
-       <label>Urgent Contact Phone</label>
-        <input
-          type="text"
-          name="urgentContactPhone"
-          ng-value="userGeneral.user.urgent_contact_phone"
-          ng-model="userGeneral.user.urgent_contact_phone"
-           />
-      </md-input-container>
-
-    </div><!-- /Urgent Contact -->
-
-  </md-content><!-- /EDIT -->
-
-
-
-
-
-  <!-- CARD ACTIONS-->
-  <md-card-actions
-    layout="column"
-    layout-align="start"
-    ng-show="!userGeneral.settings.showForm">
-    <md-button
-      class="c-card-profile__btn no-margin noPrint"
-      ng-click="userGeneral.toggleForm(); userGeneral.saveCopy()">
-      Add/Edit general information
-    </md-button>
-  </md-card-actions>
-
-  <md-card-actions
-    layout="row"
-    layout-align="center center"
-    ng-show="userGeneral.settings.showForm"
-    class="additional">
-
-    <md-button
-      class="md-raised md-primary"
-      ng-click="userGeneral.save()"
-      ng-disabled="btnIsDisabled">
-      Save
-    </md-button>
-
-    <md-button
-      class="md-raised"
-      ng-click="userGeneral.toggleForm(); userGeneral.cancel()">
-      Cancel
-    </md-button>
-
-  </md-card-actions>
-  <!-- /CARD ACTIONS-->
-
+          <label>Phone</label>
+          <input
+            name="phone"
+            ng-model="userGeneral.user.phone"
+            ng-pattern="/^[0-9\-\+]{6,15}$/">
+
+          <div ng-messages="generalInfoForm.phone.$error">
+            <div ng-message="pattern">Please insert a valid phone number</div>
+          </div>
+
+        </md-input-container>
+
+        <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+
+          <label>Email</label>
+          <input
+            ng-model="userGeneral.user.other_email"
+            name="emailOther"
+            type="email"
+            ng-pattern="/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/">
+
+          <div ng-messages="generalInfoForm.emailOther.$error">
+            <div ng-message="pattern">Please insert a valid email</div>
+          </div>
+
+        </md-input-container>
+
+      </div><!-- /PHONE AND EMAIL -->
+
+      <!-- CAR LICENSE -->
+      <div layout-gt-xs="row">
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+          <label>Car license plate</label>
+          <input
+            type="text"
+            name="car_plate"
+            ng-model="userGeneral.user.car_plate">
+
+          <div ng-messages="generalInfoForm.car_plate.$error">
+            <div ng-message="pattern">Please enter a valid Car license plate</div>
+          </div>
+        </md-input-container>
+      </div><!-- CAR LICENSE -->
+
+
+
+
+
+      <!-- ASSIST INFO -->
+      <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
+
+      <!-- STARTED WORKING ON -->
+      <div layout-gt-xs="row" layout-align="start center" ng-hide="userGeneral.candidate">
+        <label flex-gt-xs="35" class="md-padding">
+          <strong>Start date at Company</strong>
+        </label>
+
+        <md-datepicker
+          ng-model="userGeneral.user.company_start_date"
+          md-placeholder="Start date"
+          md-open-on-focus
+          md-max-date="userGeneral.today">
+        </md-datepicker>
+
+      </div><!-- STARTED WORKING ON -->
+
+      <!-- ASSIST POSITION -->
+      <div layout-gt-xs="row" layout-align="start center" ng-hide="userGeneral.candidate">
+
+        <label flex-gt-xs="35" class="md-padding">
+          <strong>Position</strong>
+        </label>
+
+        <md-input-container md-no-float class="md-block" flex-gt-xs="65">
+          <md-select
+            aria-label="Position"
+            ng-model="userGeneral.position"
+            ng-change="userGeneral.savePosition()"
+            md-selected-text="userGeneral.position.name || 'Position'" >
+              <md-option
+               ng-value="item"
+               ng-repeat="item in userGeneral.positions track by $index">
+                 {{item.name}}
+              </md-option>
+          </md-select>
+        </md-input-container>
+
+      </div><!-- ASSIST POSITION -->
+
+      <!-- ASSIST POSITION -->
+      <div layout-gt-xs="row" layout-align="start center" ng-show="userGeneral.candidate">
+
+        <label flex-gt-xs="35" class="md-padding u-mb-20">
+          <strong>Position</strong>
+        </label>
+
+        <md-input-container md-no-float class="md-block" flex-gt-xs="30">
+          <md-select
+            aria-label ="Position"
+            ng-model="userGeneral.user.assistPositionTitle"
+            md-selected-text="userGeneral.getSelectedText(userGeneral.user.assistPositionTitle, position=1)">
+              <md-option
+               ng-value="position"
+               ng-repeat="position in userGeneral.candidatesPositionTitle">
+                 {{position}}
+              </md-option>
+          </md-select>
+        </md-input-container>
+
+      </div><!-- ASSIST POSITION -->
+
+      <!-- ASSIST EMAIL -->
+      <div layout-gt-xs="row">
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+          <label>ASSIST Email</label>
+
+          <input
+            ng-model="userGeneral.user.email"
+            name="emailAssist"
+            type="email"
+            readonly>
+
+          <div ng-messages="generalInfoForm.email.$error">
+            <div ng-message="email">Please insert a valid email</div>
+          </div>
+
+        </md-input-container>
+      </div><!-- /ASSIST EMAIL -->
+
+      <!-- OFFICE AND CONTRACT -->
+      <div layout-gt-xs="row"
+        layout-align="start center"
+        ng-hide="userGeneral.candidate">
+
+        <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+          <!-- @!TODO: De facut autocomplete aici, se cunosc birourile -->
+          <label>Office Nr.</label>
+          <input
+            type="text"
+            name="office"
+            ng-model="userGeneral.user.office_nr"
+            ng-pattern="/^[A-Za-z0-9 _]{1,4}$/">
+            <div ng-messages="generalInfoForm.office.$error">
+            <div ng-message="pattern">Please enter a valid Number Office</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+          <label>Schedule type</label>
+          <input
+            type="text"
+            name="schedule"
+            ng-model="userGeneral.schedule.name"
+            readonly/>
+        </md-input-container>
+
+      </div><!-- /OFFICE AND CONTRACT -->
+
+
+
+
+      <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
+      <!-- Urgent Contact -->
+      <div layout-gt-xs="row">
+
+        <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+          <label>Urgent Contact Name</label>
+          <input
+            type="text"
+            name="urgentContactName"
+            ng-model="userGeneral.user.urgent_contact_name"
+            ng-pattern="/[a-zA-Z\.'-\s]{3,30}$/"/>
+
+          <div ng-messages="generalInfoForm.urgentContactName.$error">
+            <div ng-message="required">This field is required</div>
+            <div ng-message="pattern">Please enter a valid name</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+         <label>Urgent Contact Phone</label>
+          <input
+            type="text"
+            name="urgentContactPhone"
+            ng-model="userGeneral.user.urgent_contact_phone"
+            ng-pattern="/^[0-9\-\+]{6,15}$/"/>
+
+            <div ng-messages="generalInfoForm.urgentContactPhone.$error">
+              <div ng-message="required">This field is required</div>
+              <div ng-message="pattern">Please enter a valid phone number</div>
+          </div>
+        </md-input-container>
+
+      </div><!-- /Urgent Contact -->
+
+    </md-content><!-- /EDIT -->
+
+
+
+
+
+    <!-- CARD ACTIONS-->
+    <md-card-actions
+      layout="column"
+      layout-align="start"
+      ng-show="!userGeneral.settings.showForm">
+      <md-button
+        class="c-card-profile__btn no-margin noPrint"
+        ng-click="userGeneral.toggleForm(); userGeneral.saveCopy()">
+        Add/Edit general information
+      </md-button>
+    </md-card-actions>
+
+    <md-card-actions
+      layout="row"
+      layout-align="center center"
+      ng-show="userGeneral.settings.showForm"
+      class="additional">
+
+      <md-button
+        class="md-raised md-primary"
+        ng-click="userGeneral.save()"
+        ng-disabled="generalInfoForm.$invalid">
+        Save
+      </md-button>
+
+      <md-button
+        class="md-raised"
+        ng-click="userGeneral.toggleForm(); userGeneral.cancel()">
+        Cancel
+      </md-button>
+
+    </md-card-actions>
+    <!-- /CARD ACTIONS-->
+</form>
 
 
 
