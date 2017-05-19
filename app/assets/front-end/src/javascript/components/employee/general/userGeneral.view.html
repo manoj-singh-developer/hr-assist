@@ -15,9 +15,9 @@
       <span class="c-profile-progress__bar" style="width: {{userGeneral.progress}}%"></span>
     </div> -->
 
-    <span 
-      class="userLogout" 
-      ng-click="userGeneral.userLogOut()" 
+    <span
+      class="userLogout noPrint"
+      ng-click="userGeneral.userLogOut()"
       ng-show="userGeneral.isAdmin">
       Logout
     </span>
@@ -31,16 +31,16 @@
 
     <md-button
       ng-hide="userGeneral.candidate"
-      class="md-primary"
-      ui-sref="usersParent.cv({id: userGeneral.pId})">
+      class="md-primary noPrint"
+      onclick="$('#printMe').print({noPrintSelector: '.noPrint', manuallyCopyFormValues: true, mediaPrint: true, globalStyle:false})">
       <!-- @!TODO: De adaugat info despre proiecte la CV -->
       Generate CV
     </md-button>
 
     <md-button
       ng-show="userGeneral.candidate"
-      class="md-primary"
-      ui-sref="candidateParent.cv({id: userGeneral.pId})">
+      onclick="$('#printMe').print({noPrintSelector: '.noPrint', manuallyCopyFormValues: true, mediaPrint: true, globalStyle:false})"
+      class="md-primary noPrint">
       Generate CV
     </md-button>
 
@@ -69,21 +69,20 @@
 
     <div class="c-card-profile__picture"
       flex="20"
-      ng-if="userGeneral.user.picture"
       layout-align="top center">
       <img
-        ng-src="{{userGeneral.user.picture}}"
+        gravatar-src="userGeneral.user.email" gravatar-size="100"
         class="md-card-image cv-picture">
     </div>
 
-    <div class="c-card-profile__picture"
-      flex="20"
-      ng-if="!userGeneral.user.picture"
-      layout-align="top center">
-      <img
-        src="http://www.85percent.co.uk/wp-content/uploads/2015/08/default-placeholder-1024x1024-570x321.png"
-        class="md-card-image">
-     </div>
+    <!--<div class="c-card-profile__picture"-->
+      <!--flex="20"-->
+      <!--ng-if="!userGeneral.user.picture"-->
+      <!--layout-align="top center">-->
+      <!--<img-->
+        <!--src="http://www.85percent.co.uk/wp-content/uploads/2015/08/default-placeholder-1024x1024-570x321.png"-->
+        <!--class="md-card-image">-->
+     <!--</div>-->
 
      <div flex="80" class="c-card-profile__general-info">
 
@@ -206,38 +205,39 @@
     class="md-padding"
     ng-show="userGeneral.settings.showForm">
 
-    <div layout-gt-xs="row">
-      <md-input-container md-no-float class="md-block u-mb-20">
-        <md-button
-          class="md-raised u-no-margin"
-          ngf-select="userGeneral.upload($file)"
-          ngf-pattern="'image/*'"
-          ngf-accept="'image/*'"
-          ngf-max-size="1MB"
-          >
-          Upload profile picture
-          <!-- @!TODO: de aratat si in modul edit poza daca asceasta exista -->
-       </md-button>
-      </md-input-container>
-    </div>
+    <!--<div layout-gt-xs="row">-->
+      <!--<md-input-container md-no-float class="md-block u-mb-20">-->
+        <!--<md-button-->
+          <!--class="md-raised u-no-margin"-->
+          <!--ng-model="userGeneral.picture"-->
+          <!--ngf-select="userGeneral.upload($file)"-->
+          <!--ngf-pattern="'image/*'"-->
+          <!--ngf-accept="'image/*'"-->
+          <!--ngf-max-size="1MB"-->
+          <!--&gt;-->
+          <!--Upload profile picture-->
+          <!--&lt;!&ndash; @!TODO: de aratat si in modul edit poza daca asceasta exista &ndash;&gt;-->
+       <!--</md-button>-->
+      <!--</md-input-container>-->
+    <!--</div>-->
 
-    <div ng-show="userGeneral.showSuccessMsg"
-      class="alert-success fade"
-      role="alert">
-      Your picture has been successfully uploaded.
-    </div>
+    <!--<div ng-show="userGeneral.showSuccessMsg"-->
+      <!--class="alert-success fade"-->
+      <!--role="alert">-->
+      <!--Your picture has been successfully uploaded.-->
+    <!--</div>-->
 
-    <div ng-show="userGeneral.showErrMsg"
-      class="alert-error fade"
-      role="alert">
-      A problem occurred while uploading the prohile picture.
-    </div>
+    <!--<div ng-show="userGeneral.showErrMsg"-->
+      <!--class="alert-error fade"-->
+      <!--role="alert">-->
+      <!--A problem occurred while uploading the prohile picture.-->
+    <!--</div>-->
 
-     <div ng-show="userGeneral.showToLargeImage"
-      class="alert-error fade"
-      role="alert">
-      Image size is too big. The size limit is 1MB.
-    </div>
+     <!--<div ng-show="userGeneral.showToLargeImage"-->
+      <!--class="alert-error fade"-->
+      <!--role="alert">-->
+      <!--Image size is too big. The size limit is 1MB.-->
+    <!--</div>-->
 
 
 
@@ -504,10 +504,10 @@
 
       <md-input-container md-no-float class="md-block" flex-gt-xs="50">
         <label>Schedule type</label>
-        <input 
-          type="text" 
-          name="schedule" 
-          ng-model="userGeneral.schedule.name" 
+        <input
+          type="text"
+          name="schedule"
+          ng-model="userGeneral.schedule.name"
           readonly/>
       </md-input-container>
 
@@ -554,7 +554,7 @@
     layout-align="start"
     ng-show="!userGeneral.settings.showForm">
     <md-button
-      class="c-card-profile__btn no-margin"
+      class="c-card-profile__btn no-margin noPrint"
       ng-click="userGeneral.toggleForm(); userGeneral.saveCopy()">
       Add/Edit general information
     </md-button>

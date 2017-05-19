@@ -30,7 +30,7 @@
 
 
   <!-- EMPLOYEE CARDS -->
-  <section>
+  <section id="printMe">
 
      <hra-card hra-user-general
               class="c-card-profile"
@@ -50,7 +50,7 @@
     </hra-card>
 
     <hra-card hra-user-devices
-              class="c-card-profile [ js-employee-card ]"
+              class="c-card-profile [ js-employee-card ] noPrint"
               md-whiteframe='6'
               class="c-card-profile [ js-employee-card ]"
               toggle-form="card.toggleForm"
@@ -60,17 +60,17 @@
 
 
     <hra-card hra-employee-holiday
-              class="c-card-profile [ js-employee-card ]"
+              class="c-card-profile [ js-employee-card ] noPrint"
               md-whiteframe='6'>
     </hra-card>
 
     <hra-card hra-user-schedule
-              class="c-card-profile [ js-employee-card ]"
+              class="c-card-profile [ js-employee-card ] noPrint"
               md-whiteframe='6'
               toggle-form="card.toggleForm"
               settings="card.settings">
     </hra-card>
- 
+
 
     <hra-card
       hra-user-projects
@@ -81,8 +81,23 @@
       settings="card.settings">
     </hra-card>
 
-    <!-- 
-     <hra-employee-observations
+    <hra-card hra-employee-skills
+              class="c-card-profile [ js-employee-card ]"
+              query-search="card.querySearch"
+              md-whiteframe='6'>
+    </hra-card>
+
+    <hra-card
+      hra-user-education
+      class="c-card-profile [ js-employee-card ]"
+      md-whiteframe='6'
+      toggle-form="card.toggleForm"
+      settings="card.settings">
+    </hra-card>
+
+ <!--
+
+    <hra-employee-observations
       class="c-card-profile [ js-employee-card ]"
       md-whiteframe='6'>
     </hra-employee-observations>-->
@@ -93,11 +108,6 @@
       class="c-card-profile [ js-employee-card ]"
       md-whiteframe='6'>
     </hra-employee-project>
-
-    <hra-employee-skills
-      class="c-card-profile [ js-employee-card ]"
-      md-whiteframe='6'>
-    </hra-employee-skills>
 
     <hra-employee-upload-files
       class="c-card-profile [ js-employee-card ]"
@@ -115,13 +125,6 @@
       md-whiteframe='6'>
     </hra-jobs>
  -->
-    <hra-card 
-      hra-user-education
-      class="c-card-profile [ js-employee-card ]"
-      md-whiteframe='6'
-      toggle-form="card.toggleForm"
-      settings="card.settings">
-    </hra-card>
     <!--
     <hra-employee-course
       class="c-card-profile [ js-employee-card ]"

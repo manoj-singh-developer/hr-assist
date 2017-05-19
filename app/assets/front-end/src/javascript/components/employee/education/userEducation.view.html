@@ -89,7 +89,7 @@
             ng-model="userEducation.userEducationList[$index].name"
             name="name_{{$index}}"
             required>
-          
+
           <div ng-messages="addEduForm['name_'+$index].$error">
             <div ng-message="required">This field is required</div>
           </div>
@@ -203,7 +203,7 @@
     layout-align="start"
     ng-show="!userEducation.showEditEducation">
     <md-button
-      class="c-card-profile__btn no-margin"
+      class="c-card-profile__btn no-margin noPrint"
       ng-click="userEducation.displayEditEducation()">
       Add Educations
     </md-button>
