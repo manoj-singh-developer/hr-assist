@@ -4,8 +4,8 @@
 
   let tableSettings = {
     options: {
-      rowSelection: true,
-      multiSelect: true,
+      rowSelection: false,
+      multiSelect: false,
       autoSelect: false,
       decapitate: false,
       largeEditDialog: false,

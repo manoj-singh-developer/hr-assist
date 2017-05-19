@@ -35,7 +35,7 @@
 
 
     _getPositions();
-    
+
     if($rootScope.isAdmin === true){
       vm.isAdmin = false;
     } else {
@@ -55,7 +55,7 @@
 
     $rootScope.$on('notifyScheduleUpdate', (event, data) => {
       _getUserSchedule();
-    })
+    });
 
     function save() {
       User.update(vm.user).then((data) => {

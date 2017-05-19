@@ -63,3 +63,12 @@ countries.each do |coun|
     country.long_name = coun[1]
   end
 end
+
+roles = [{name: :admin, description: "Administrator role"},{name: :employee, description: "Employee role"}]
+
+roles.each do |role|
+  Role.populate 1 do |rol|
+      rol.name = role[:name]
+      rol.description = role[:description]
+  end
+end

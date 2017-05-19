@@ -66,7 +66,7 @@
                 class="md-fab md-mini md-warn c-card-group__remove"
                 label="delete"
                 aria-label="delete"
-                ng-click="userProjects.deleteProject(project)">
+                ng-click="userProjects.deleteProject(project, $event)">
                   <md-icon class="material-icons">delete</md-icon>
                   <md-tooltip>DELETE</md-tooltip>
               </md-button>
@@ -111,8 +111,9 @@
       <!-- SELECT PROJECT -->
       <section layout="row" layout-align="start center">
         <div class="u-mr-5 u-ml-5 u-mb-20" flex-gt-xs="100">
-          <label>Project </label>
+          <label>Project: <span ng-show="userProjects.disableProjectName">{{userProjects.searchText}}</span></label>
           <md-autocomplete
+            ng-if="!userProjects.disableProjectName"
             md-selected-item="userProjects.selectedItem"
             md-search-text-change="userProjects.searchTextChange(userProjects.searchText)"
             md-search-text="userProjects.searchText"
@@ -121,7 +122,8 @@
             md-item-text="item.name"
             md-min-length="1"
             placeholder="Search"
-            ng-disabled="userProjects.disableProjectName"
+            md-input-name="autocompleteProjects"
+            md-require-match
             required>
 
             <md-item-template>
@@ -137,6 +139,13 @@
             </md-not-found>
           </md-autocomplete>
 
+          <div ng-messages="prjForm.autocompleteProjects.$error"
+            layout-gt-xs="row" layout-align="center center"
+            ng-if="prjForm.autocompleteProjects.$touched">
+            <span ng-message="md-require-match" class="alert-error fade" role="alert">
+              You must select an option from list!
+            </span>
+          </div>
         </div>
       </section><!-- SELECT PROJECT -->
 
@@ -144,7 +153,7 @@
         <section layout-gt-xs="row" layout-align="start center">
           <div flex-gt-xs="50">
             <label class="u-ml-5">From</label>
-            <md-datepicker 
+            <md-datepicker
               ng-model="userProjects.start_date"
               md-placeholder="Start date"
               md-open-on-focus
@@ -152,10 +161,10 @@
               required>
             </md-datepicker>
           </div>
-          
+
           <div flex-gt-xs="50">
             <label class="u-ml-5">To</label>
-            <md-datepicker 
+            <md-datepicker
               ng-model="userProjects.end_date"
               md-placeholder="End date"
               md-open-on-focus
@@ -211,7 +220,7 @@
                 placeholder="Search Technologies"
                 md-input-name="autocompleteTechnology"
                 md-require-match>
-              
+
               <md-item-template>
                   <span
                   class="item-metadata"
@@ -260,7 +269,7 @@
     layout-align="start"
     ng-show="!userProjects.displayOrHide">
     <md-button
-      class="c-card-profile__btn no-margin"
+      class="c-card-profile__btn no-margin noPrint"
       ng-click="userProjects.displayForm()"
       ng-disabled="btnIsDisabled">
       Add Project
@@ -283,7 +292,7 @@
 
     <md-button
       class="md-raised"
-      ng-click="userProjects.displayForm()">
+      ng-click="userProjects.displayForm(); userProjects.clearInputs();">
       Cancel
     </md-button>
 

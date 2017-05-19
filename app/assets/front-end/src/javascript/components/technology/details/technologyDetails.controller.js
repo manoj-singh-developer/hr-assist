@@ -14,7 +14,8 @@
     var vm = this;
     var technologyId = $stateParams.id;
     vm.technology = null;
-
+    vm.usersTech;
+    vm.projectsTech;
 
     _getTechnologyById(technologyId);
     _getEmployees(technologyId);
@@ -25,12 +26,24 @@
       Technology.getById(id).then(data => vm.technology = data);
     }
 
-    function _getEmployees() {
-      // TODO: need a specific api url
+    function _getEmployees(id) {
+      Technology.getEmployees(id)
+        .then((data) => {
+          vm.usersTech = data;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
     }
 
-    function _getProjects() {
-      // TODO: need a specific api url
+    function _getProjects(id) {
+      Technology.getProjects(id)
+        .then((data) => {
+          vm.projectsTech = data;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
     }
 
   }

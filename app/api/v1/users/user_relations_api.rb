@@ -51,7 +51,7 @@ module V1
 
         get ':user_id/position' do
           user = find_user(params[:user_id])
-          user.positions.last ? user.positions.last : []
+          user.positions.last ? user.positions.last : {}
         end
 
         params do
