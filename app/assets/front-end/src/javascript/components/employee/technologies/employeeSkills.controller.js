@@ -6,7 +6,7 @@
     .module('HRA')
     .controller('employeeSkillsController', employeeSkillsController);
 
-  function employeeSkillsController($rootScope, autocompleteService, User, $stateParams, $timeout) {
+  function employeeSkillsController($rootScope, autocompleteService, User, $stateParams, $timeout, $scope) {
 
     let vm = this;
     let technologiesToAdd = [];
@@ -17,7 +17,6 @@
     vm.displayOrHide = false;
     vm.skillLvlTxt = [];
     vm.replaceInputs = [1];
-    vm.showDelete = false;
 
     vm.queryTechnologySearch = queryTechnologySearch;
     vm.addNewTechnologie = addNewTechnologie;
@@ -25,7 +24,6 @@
     vm._getUserTech = _getUserTech;
     vm.getLvlTxt = getLvlTxt;
     vm.deleteTechQuery = deleteTechQuery;
-    vm.deleteTechnologies = deleteTechnologies;
 
     _getUserTech();
 
@@ -43,6 +41,28 @@
 
     function queryTechnologySearch(query){
        return autocompleteService.querySearch(query, vm.technologies);
+    }
+
+    function deleteTechQuery(technology) {
+
+      let techId = technology.id;
+      let userId = $stateParams.id;
+
+      let delObj = {
+        technology_ids: technology.id,
+        user_id: userId
+      };
+
+      let toRemove = _.findWhere(vm.userTechnologies, { id: technology.id });
+      vm.userTechnologies = _.without(vm.userTechnologies, toRemove);
+      technologiesToAdd = _.without(technologiesToAdd, toRemove);
+      technologiesToRemove.push(technology);
+
+      if(technologiesToRemove.length > 0) {
+       $timeout(() => {
+         $scope.addTechForm.$invalid = false;
+       }, 100);
+      }
     }
 
     function saveTechnologies() {
@@ -89,55 +109,39 @@
         }
       }
 
-      User.addUserTechnologies(objToSave)
-        .then((response) => {
-          vm.displayOrHide = false;
-          vm.technologiesToAdd = [1];
+      if(objToSave) {
+        User.addUserTechnologies(objToSave)
+          .then((response) => {
+            vm.displayOrHide = false;
+            vm.technologiesToAdd = [1];
 
-          vm.searchText = '';
-          vm.selectedSkillTypes = '';
-          vm.selectedSkillLevel = '';
+            vm.searchText = '';
+            vm.selectedSkillTypes = '';
+            vm.selectedSkillLevel = '';
 
-          $timeout(() => {
-            _getUserTech();
+            $timeout(() => {
+              _getUserTech();
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }
+
+      if (technologiesToRemove.length > 0) {
+        User.deleteUserTechnologies(technologiesToRemove)
+          .then((response) => {
+            $timeout(() => {
+              $scope.addTechForm.$invalid = true;
+            }, 100);
+            vm.displayOrHide = false;
+          })
+          .catch((error) => {
+            console.log(error);
           });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-    }
-
-    function deleteTechQuery(technology) {
-
-      let techId = technology.id;
-      let userId = $stateParams.id;
-
-      let delObj = {
-        technology_ids: technology.id,
-        user_id: userId
-      };
-
-      let toRemove = _.findWhere(vm.userTechnologies, { id: technology.id });
-      vm.userTechnologies = _.without(vm.userTechnologies, toRemove);
-      technologiesToAdd = _.without(technologiesToAdd, toRemove);
-      technologiesToRemove.push(technology);
-
-      if(technologiesToRemove.length > 0) {
-        vm.showDelete = true;
       }
     }
 
-    function deleteTechnologies() {
-      console.log(technologiesToRemove);
-      User.deleteUserTechnologies(technologiesToRemove)
-        .then((response) => {
-          vm.showDelete = false;
-          vm.displayOrHide = false;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
 
     function _getUserTech(){
       User.getTechnologies()

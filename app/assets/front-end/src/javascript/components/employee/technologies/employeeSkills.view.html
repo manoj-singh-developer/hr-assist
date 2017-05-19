@@ -160,15 +160,15 @@
 
         <!--TECHNOLOGY LEVEL-->
 
-        <!--TECHNOLOGY LEVEL-->
-        <div class="md-padding" flex-gt-xs="10">
-          <md-button class="md-icon-button md-warn"
-                    label="Add technology"
-                    aria-label="add technology"
-                    ng-click="employeeSkills.addNewTechnologie()">
-            <md-icon class="material-icons">add</md-icon>
-          </md-button>
-        </div>
+        <!-- ADD TECHNOLOGY-->
+        <!--<div class="md-padding" flex-gt-xs="10">-->
+          <!--<md-button class="md-icon-button md-warn"-->
+                    <!--label="Add technology"-->
+                    <!--aria-label="add technology"-->
+                    <!--ng-click="employeeSkills.addNewTechnologie()">-->
+            <!--<md-icon class="material-icons">add</md-icon>-->
+          <!--</md-button>-->
+        <!--</div>-->
         <!-- REMOVE  TECHNOLOGY-->
         <div class="md-padding" flex-gt-xs="10">
           <md-button class="md-icon-button md-warn"
@@ -204,15 +204,14 @@
 
       <md-button class="md-raised md-primary"
                 ng-click="employeeSkills.saveTechnologies()"
-                ng-disabled="addTechForm.$invalid"
-                ng-show="!employeeSkills.showDelete">
+                ng-disabled="addTechForm.$invalid">
         Save
       </md-button>
-      <md-button class="md-raised md-primary"
-                 ng-click="employeeSkills.deleteTechnologies()"
-                 ng-show="employeeSkills.showDelete">
-        Save
-      </md-button>
+      <!--<md-button class="md-raised md-primary"-->
+                 <!--ng-click="employeeSkills.deleteTechnologies()"-->
+                 <!--ng-show="employeeSkills.showDelete">-->
+        <!--Save-->
+      <!--</md-button>-->
 
       <md-button class="md-raised"
                 ng-click=employeeSkills.cancelSave()>
