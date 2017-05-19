@@ -7,9 +7,9 @@
     .factory('Device', Device);
 
   Device
-    .$inject = ['$resource', 'apiUrl', 'alertService'];
+    .$inject = ['$resource', 'apiUrl', 'alertService', 'errorService'];
 
-  function Device($resource, apiUrl, alertService) {
+  function Device($resource, apiUrl, alertService, errorService) {
 
     function Device() {}
 
@@ -32,7 +32,10 @@
         .then((data) => {
           alertService.success(model, 'save');
           return data;
-        }).catch(() => alertService.error(model, 'save'));
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'save');
+        });
 
       return promise;
     };
@@ -51,7 +54,10 @@
           alertService.success(model, 'saveJson');
           return data;
         })
-        .catch(() => alertService.error(model, 'saveJson'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'saveJson');
+        });
 
       return promise;
     };
@@ -67,7 +73,10 @@
           alertService.success(model, 'update');
           return data;
         })
-        .catch(() => alertService.error(model, 'update'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'update');
+        });
 
       return promise;
     };
@@ -78,7 +87,10 @@
 
       promise = resource.$promise
         .then(data => data)
-        .catch(() => alertService.error(model, 'getById'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getById');
+        });
 
       return promise;
     };
@@ -94,7 +106,10 @@
 
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'getAll'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getAll');
+        });
 
       return promise;
     };
@@ -105,7 +120,10 @@
 
       promise = resource.$promise
         .then(data => data.items)
-        .catch(() => alertService.error(model, 'getEmployees'));
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getEmployees');
+        });
 
       return promise;
     };
@@ -119,7 +137,10 @@
           alertService.success(model, 'remove');
           return data;
         })
-        .catch(() => alertService.error(model, 'remove'));
+        .catch((error) => {
+          errorService.forceLogout(error);;
+          alertService.error(model, 'remove');
+        });
 
       return promise;
     };

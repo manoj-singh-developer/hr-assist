@@ -64,8 +64,8 @@
         return a +b;
       }
       noHr = arrayHr.reduce(add, 0);
-      
-      if(noHr <= 20) {
+
+      if(noHr <= 20 || noHr <= 29) {
         scheduleType = 'Part-time 4h'
       } else if (noHr >= 30 && noHr <= 39) {
         scheduleType = 'Part-time 6h'
@@ -99,13 +99,13 @@
         $rootScope.$emit('loadUserSchedule', data);
       })
       .then( () => {
-        if (vm.schedule.timetable !== "" && 
-          vm.schedule.timetable !== undefined && 
+        if (vm.schedule.timetable !== "" &&
+          vm.schedule.timetable !== undefined &&
           vm.schedule.timetable !== null && vm.schedule.timetable.length!=0) {
-          
+
           str = vm.schedule.timetable;
           arrayHr = str.split(",").map(Number);
-          
+
           function add(a, b) {
             return a +b;
           }
