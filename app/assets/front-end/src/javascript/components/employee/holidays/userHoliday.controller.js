@@ -8,10 +8,9 @@
     .controller('userHolidayCtrl', userHolidayCtrl);
 
   userHolidayCtrl
-    .$inject = ['$rootScope', '$stateParams', 'User', 'autocompleteService'];
 
 
-  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService) {
+  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, formatDate) {
 
 
     let vm = this;
@@ -46,6 +45,7 @@
     vm.to = new Date();
     vm.signingDate = new Date();
 
+    vm.formatDate = formatDate;
     vm.clearFields = clearFields;
     vm.checkDates = checkDates;
     vm.queryProjectSearch = queryProjectSearch;
@@ -112,8 +112,8 @@
 
       let userId = $stateParams.id;
       let daysNo = days;
-      let startDate = vm.from;
-      let endDate = vm.to;
+      let startDate = vm.formatDate.getStandard(vm.from);
+      let endDate = vm.formatDate.getStandard(vm.to);
       let signingDate = vm.signingDate;
 
       let usersArr = $.map(usersObj, (value, index) => {

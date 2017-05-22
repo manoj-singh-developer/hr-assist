@@ -274,7 +274,7 @@
             type="text"
             ng-model="userGeneral.user.middle_name"
             name="middleName"
-            ng-pattern="/[a-zA-Z\.'-\s]{3,30}$/"
+            ng-pattern="/[a-zA-Z\.'-\s]{1,30}$/"
             ng-disabled="userGeneral.disabledgeneralInfo">
 
           <div ng-messages="generalInfoForm.middleName.$error">
@@ -487,7 +487,7 @@
       </div><!-- ASSIST POSITION -->
 
       <!-- ASSIST EMAIL -->
-      <div layout-gt-xs="row">
+      <!-- <div layout-gt-xs="row">
         <md-input-container md-no-float class="md-block" flex-gt-xs="">
 
           <label>ASSIST Email</label>
@@ -503,16 +503,17 @@
           </div>
 
         </md-input-container>
-      </div><!-- /ASSIST EMAIL -->
+      </div> --><!-- /ASSIST EMAIL -->
 
       <!-- OFFICE AND CONTRACT -->
       <div layout-gt-xs="row"
         layout-align="start center"
         ng-hide="userGeneral.candidate">
-
-        <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+        <label flex-gt-xs="35" class="md-padding u-mb-20">
+          <strong>Office Nr.</strong>
+        </label>
+        <md-input-container md-no-float class="md-block" flex-gt-xs="65">
           <!-- @!TODO: De facut autocomplete aici, se cunosc birourile -->
-          <label>Office Nr.</label>
           <input
             type="text"
             name="office"
@@ -523,14 +524,14 @@
           </div>
         </md-input-container>
 
-        <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+        <!-- <md-input-container md-no-float class="md-block" flex-gt-xs="50">
           <label>Schedule type</label>
           <input
             type="text"
             name="schedule"
             ng-model="userGeneral.schedule.name"
             readonly/>
-        </md-input-container>
+        </md-input-container> -->
 
       </div><!-- /OFFICE AND CONTRACT -->
 
