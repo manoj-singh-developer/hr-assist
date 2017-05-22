@@ -76,7 +76,7 @@ module V1
           optional :status, type: Integer
           optional :city, type: String
           optional :zip_code, type: String
-          optional :office_nr, type: Integer
+          optional :office_nr, type: String
           optional :urgent_contact_phone, type: String
           optional :upload_ids, type: Array[Integer]
         end
@@ -129,7 +129,7 @@ module V1
         optional :status, type: Integer
         optional :city, type: String
         optional :zip_code, type: String
-        optional :office_nr, type: Integer
+        optional :office_nr, type: String
         optional :urgent_contact_phone, type: String
       end
 
