@@ -7,9 +7,8 @@
     .controller('userGeneralCtrl', userGeneralCtrl);
 
   userGeneralCtrl
-    .$inject = ['$rootScope', '$scope', '$stateParams', 'autocompleteService', 'Upload', 'User', 'Position', '$state'];
 
-  function userGeneralCtrl($rootScope, $scope, $stateParams, autocompleteService, Upload, User, Position, $state) {
+  function userGeneralCtrl($rootScope, $scope, $stateParams, autocompleteService, Upload, User, Position, $state, formatDate) {
 
     var vm = this;
     let userCopy = {};
@@ -20,6 +19,7 @@
     vm.user = {};
     vm.position = {};
     vm.schedule = {};
+    vm.formatDate = formatDate;
     vm.contractType = [
       'Full-time',
       'Part-time 4h',
@@ -59,9 +59,13 @@
     });
 
     function save() {
+      debugger
+      vm.user.company_start_date = vm.user.company_start_date ? vm.formatDate.getStandard(vm.user.company_start_date) : null;
+      vm.user.birthday = vm.user.birthday ? vm.formatDate.getStandard(vm.user.birthday) : null;
       User.update(vm.user).then((data) => {
         if (data) {
           vm.user = data;
+
         } else {
           _getUser();
         }
