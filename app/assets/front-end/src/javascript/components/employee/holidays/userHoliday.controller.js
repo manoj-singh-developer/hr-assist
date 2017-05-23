@@ -10,7 +10,7 @@
   userHolidayCtrl
 
 
-  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, formatDate) {
+  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, dateService) {
 
 
     let vm = this;
@@ -45,7 +45,7 @@
     vm.to = new Date();
     vm.signingDate = new Date();
 
-    vm.formatDate = formatDate;
+    vm.dateService = dateService;
     vm.clearFields = clearFields;
     vm.checkDates = checkDates;
     vm.queryProjectSearch = queryProjectSearch;
@@ -111,9 +111,10 @@
       let replacerId = [];
 
       let userId = $stateParams.id;
+      let teamLeader = vm.selectedLeader;
       let daysNo = days;
-      let startDate = vm.formatDate.getStandard(vm.from);
-      let endDate = vm.formatDate.getStandard(vm.to);
+      let startDate = vm.dateService.format(vm.from);
+      let endDate = vm.dateService.format(vm.to);
       let signingDate = vm.signingDate;
 
       let usersArr = $.map(usersObj, (value, index) => {
@@ -155,7 +156,8 @@
         signing_day: signingDate,
         project_ids: projectId,
         replacer_ids: replacerId,
-        user_id: userId
+        user_id: userId,
+        team_leader_name: teamLeader
       };
 
       User.addHolidays(objToSave)

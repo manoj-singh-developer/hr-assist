@@ -5,15 +5,15 @@
 
   angular
     .module('HRA')
-    .service('formatDate', formatDate);
+    .service('dateService', dateService);
 
-  function formatDate() {
+  function dateService() {
 
     return {
-      getStandard: getStandard
+      format: format
     };
 
-    function getStandard(d) {
+    function format(d) {
       let date = new Date(d)
       let dd = date.getDate();
       let mm = date.getMonth() + 1;
