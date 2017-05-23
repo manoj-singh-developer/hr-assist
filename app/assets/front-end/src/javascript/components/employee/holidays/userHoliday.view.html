@@ -14,12 +14,19 @@
     <p>
       <strong>NOTE: </strong> Complete here your vacation requests.
     </p>
-  </md-content> <!-- CARD NOTES -->
-
+  </md-content>
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes"
+              ng-if="!userHoliday.userHolidays.length > 0">
+    <p>
+      <strong>You not have any vacation request added.</strong>
+    </p>
+  </md-content>
 
   <!-- PREVIEW HOLIDAY -->
   <md-content  class="md-padding"
-               ng-show="!userHoliday.displayOrHide">
+               ng-show="!userHoliday.displayOrHide"
+               ng-if="userHoliday.userHolidays.length > 0">
       <md-table-container>
 
           <table class="c-table--actions"
@@ -44,11 +51,11 @@
                       ng-repeat="holiday in userHoliday.userHolidays | limitTo: userHoliday.table.query.limit : (userHoliday.table.query.page - 1) * userHoliday.table.query.limit">
 
                       <td md-cell>
-                          {{holiday.start_date}}
+                          {{holiday.start_date | date:'dd/MM/yyyy'}}
                       </td>
 
                       <td md-cell>
-                          {{holiday.end_date}}
+                          {{holiday.end_date | date:'dd/MM/yyyy'}}
                       </td>
 
                       <td md-cell>
@@ -234,9 +241,15 @@
 
       </section><!-- /HOLIDAYS ng-repeat -->
 
+      <span ng-show="userHoliday.errMsg"
+            class="alert-error fade holiday-error"
+            role="alert">
+        Your vacation request with this interval, exist!
+      </span>
 
     </md-content><!-- /FORM HOLIDAY -->
   </form>
+
 
   <!-- CARD ACTIONS -->
   <md-card-actions layout="column" layout-align="start">

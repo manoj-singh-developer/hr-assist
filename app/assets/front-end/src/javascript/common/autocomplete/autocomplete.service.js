@@ -36,14 +36,30 @@
         return list.map(function(item) {
           item.autoCompleteVal = '';
           for (index = 0; index < attributes.length; index++) {
-            if (index !== 0 && item[attributes[index]]) {
-                item.autoCompleteVal = item.autoCompleteVal + ' ' + item[attributes[index]].toLowerCase();
+            if (index !== 0) {
+              item.autoCompleteVal = item.autoCompleteVal + checkIfSpace(item.autoCompleteVal) + checkIfNull(item[attributes[index]]);
             } else {
-              item.autoCompleteVal = item[attributes[index]].toLowerCase();
+              item.autoCompleteVal = checkIfNull(item[attributes[index]]);
             }
           }
           return item;
         });
+      }
+    }
+
+    function checkIfNull(item){
+      if(item){
+        return item.toLowerCase();
+      }else {
+        return '';
+      }
+    }
+
+    function checkIfSpace(item) {
+      if(item){
+        return ' ';
+      } else {
+        return '';
       }
     }
 

@@ -10,7 +10,7 @@
   userHolidayCtrl
 
 
-  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, formatDate) {
+  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, formatDate, $timeout) {
 
 
     let vm = this;
@@ -37,6 +37,7 @@
       selected: []
     };
 
+    vm.errMsg = false;
     vm.displayOrHide = false;
     vm.replaceInputs = [1];
     vm.dateList = [];
@@ -57,7 +58,6 @@
       vm.projects = data.projects;
       vm.users = data.users;
       vm.userHolidays = data.holidays;
-
       autocompleteService.buildList(vm.projects, ['name']);
       autocompleteService.buildList(vm.users, ['first_name', 'last_name']);
     });
@@ -148,7 +148,7 @@
         }
       }
 
-      let objToSave = {
+      vm.objToSave = {
         days: daysNo,
         start_date: startDate,
         end_date: endDate,
@@ -158,6 +158,32 @@
         user_id: userId
       };
 
+      if(vm.userHolidays.length > 0) {
+        for(let i = 0; i < vm.userHolidays.length; i++) {
+
+          if(vm.objToSave.start_date !== vm.userHolidays[i].start_date  &&
+            vm.objToSave.end_date !== vm.userHolidays[i].end_date &&
+            vm.objToSave.signing_day !== vm.userHolidays[i].signing_day) {
+
+            _addHoliday(vm.objToSave);
+            break;
+
+          } else {
+
+            vm.errMsg = true;
+            $timeout(() => {
+              vm.errMsg = false;
+            }, 3500);
+            break;
+
+          }
+        }
+      } else {
+        _addHoliday(vm.objToSave);
+      }
+    }
+
+    function _addHoliday(objToSave){
       User.addHolidays(objToSave)
         .then((response) => {
           _getUserHolidays();

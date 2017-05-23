@@ -19,9 +19,21 @@ const rootTemplatePath = './views/components/';
 
 
   setConfig
-    .$inject = ['$stateProvider', '$urlRouterProvider', '$httpProvider'];
+    .$inject = ['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdDateLocaleProvider'];
 
-  function setConfig($stateProvider, $urlRouterProvider, $httpProvider) {
+  function setConfig($stateProvider, $urlRouterProvider, $httpProvider, $mdDateLocaleProvider) {
+
+    $mdDateLocaleProvider.firstDayOfWeek = 1;
+    $mdDateLocaleProvider.formatDate = function() {
+
+      let date = new Date();
+      let day = date.getDate();
+      let monthIndex = date.getMonth();
+      let year = date.getFullYear();
+
+      return day + '/' + (monthIndex + 1) + '/' + year;
+
+    };
 
     $urlRouterProvider.otherwise('/');
     $httpProvider.interceptors.push('AuthInterceptor');
@@ -36,16 +48,16 @@ const rootTemplatePath = './views/components/';
         },
         resolve: {
           controller: function ($location, tokenService) {
-            if(localStorage.auth_token && 
-              window.location.href === 'http://localhost:8000/#/' || 
-              window.location.href === 'http://localhost:8000' || 
+            if(localStorage.auth_token &&
+              window.location.href === 'http://localhost:8000/#/' ||
+              window.location.href === 'http://localhost:8000' ||
               window.location.href === 'https://hr.assist.ro/' ||
               window.location.href === 'https://hr.assist.ro/#/') {
 
               var tokenToDecode = localStorage.getItem('user_token');
               var decodeToken = tokenService.decodeToken(tokenToDecode);
               var userId  = decodeToken.user_id;
-              
+
               $location.path("employees/" + userId);
             }
           }
