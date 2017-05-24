@@ -99,7 +99,7 @@ module V1
         optional :signing_day, type: Date
         optional :days, type: Integer
         requires :project_ids, allow_blank: false, type: Array[Integer], desc: "Test using postman [Swagger UI issue]"
-        requires :team_leader_ids, allow_blank: false, type: Array[Integer]
+        optional :team_leader_ids, allow_blank: false, type: Array[Integer]
         requires :replacer_ids, allow_blank: true, type: Array[Integer], desc: "Test using postman [Swagger UI issue]"
       end
       post 'new' do
