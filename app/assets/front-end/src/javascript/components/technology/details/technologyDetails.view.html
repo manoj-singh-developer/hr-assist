@@ -52,7 +52,8 @@
 
         <div class="md-list-item-text"
              ng-repeat="employee in technologyDetails.usersTech track by $index">
-         {{$index+1}}. {{employee.first_name}} {{employee.last_name}}
+          <span>{{$index+1}}. {{employee.user.first_name}} {{employee.user.last_name}}</span>
+          <span>- Technology level: <strong>{{employee.technology_level}}</strong></span>
         </div>
 
       </section>
