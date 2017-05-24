@@ -302,7 +302,7 @@ module V1
           requires :signing_day, allow_blank: :false, type: Date
           requires :project_ids, allow_blank: false, type: Array[Integer]
           requires :replacer_ids, allow_blank: true, type: Array[Integer]
-          requires :team_leader_ids, allow_blank: false, type: Array[Integer]
+          optional :team_leader_ids, allow_blank: false, type: Array[Integer]
         end
         post ':user_id/holidays' do
           User.find(params[:replacer_ids], params[:team_leader_ids])
