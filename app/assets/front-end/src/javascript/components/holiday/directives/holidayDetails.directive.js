@@ -39,7 +39,7 @@
     var empArr = [];
     var holidayId, days, signingDay, startDate, endDate, holidayReplace;
     $scope.today = new Date();
-
+    vm.leaders=[];
     // public methods
     // ------------------------------------------------------------------------
     vm.getHolidays = getHolidays;
@@ -100,6 +100,11 @@
           signingDay = response.signing_day;
           holidayId = response.user_id;
           holidayReplace = response.employee_replacements;
+          vm.leaders = $.map(response.employee_replacements, (value, index)=> {
+            if (value.team_leader) {
+            return [value.team_leader];
+            }
+          });
         })
         .catch(function (error){
           errorService.forceLogout(error);
