@@ -22,8 +22,8 @@ module V1
             project_name: holiday_replacement.project.name
           }
           partial_response.merge!({
-            team_leader: holiday_replacement.project.team_leader.name
-          }) if holiday_replacement.project.team_leader
+            team_leader: holiday_replacement.team_leader.name
+          }) if holiday_replacement.team_leader
 
           partial_response.merge!({
             replacer_id: holiday_replacement.replacer_id,
@@ -99,16 +99,17 @@ module V1
         optional :signing_day, type: Date
         optional :days, type: Integer
         requires :project_ids, allow_blank: false, type: Array[Integer], desc: "Test using postman [Swagger UI issue]"
+        optional :team_leader_ids, allow_blank: false, type: Array[Integer]
         requires :replacer_ids, allow_blank: true, type: Array[Integer], desc: "Test using postman [Swagger UI issue]"
       end
       post 'new' do
-        User.find(params[:user_id], params[:replacer_id])
+        User.find(params[:user_id], params[:replacer_id], params[:team_leader_ids])
         params[:project_ids].each do |project_id|
           project = Project.find(project_id)
         end
         holiday = authorizeAndCreate(Holiday, postParams)
-        params[:project_ids].zip(params[:replacer_ids]).each do |project_id, replacer_id|
-          holiday_replacement = HolidayReplacement.create(holiday_id: holiday.id, project_id: project_id, replacer_id:replacer_id)
+        params[:project_ids].zip(params[:replacer_ids], params[:team_leader_ids]).each do |project_id, replacer_id, team_leader_id|
+          holiday_replacement = HolidayReplacement.create(holiday_id: holiday.id, project_id: project_id, replacer_id:replacer_id, team_leader_id: team_leader_id)
           holiday.holiday_replacements << holiday_replacement
         end
         holiday_replacements = holiday.holiday_replacements
