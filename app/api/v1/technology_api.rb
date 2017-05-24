@@ -56,9 +56,13 @@ module V1
       end
 
       get ':id/users' do
-        technology = Technology.find_by_id(params[:id])
-        users = technology.users
-        users
+        technology = Technology.find(params[:id])
+        technology.user_technologies.map do |user_tech|
+          result = {
+            user: user_tech.user,
+            technology_level: user_tech.level
+          }
+        end
       end
 
       delete ':id/users' do
