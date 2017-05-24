@@ -45,7 +45,6 @@
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
       }).update({ id: data.id }, data);
-
       promise = resource.$promise
         .then((data) => {
           alertService.success(model, 'update');
@@ -240,7 +239,7 @@
       let id = project.id;
       let data = {};
 
-      data["technology_ids[]"]= technologies.map(technology => technology.id);
+      data["technology_ids[]"] = technologies.map(technology => technology.id);
       url = apiUrl + '/projects/:id/technologies';
       resource = $resource(url, data).delete({ id: id });
 
@@ -260,7 +259,7 @@
       let id = project.id;
       let data = {};
 
-      data["industry_ids[]"]= industries.map(industry => industry.id);
+      data["industry_ids[]"] = industries.map(industry => industry.id);
       url = apiUrl + '/projects/:id/industries';
       resource = $resource(url, data).delete({ id: id });
 
@@ -323,7 +322,7 @@
       let id = project.id;
       let data = {};
 
-      data["customer_ids[]"]= customers.map(customer => customer.id);
+      data["customer_ids[]"] = customers.map(customer => customer.id);
       url = apiUrl + '/projects/:id/customers';
       resource = $resource(url, data).delete({ id: id });
 

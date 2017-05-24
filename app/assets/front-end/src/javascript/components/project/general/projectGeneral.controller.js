@@ -6,39 +6,46 @@
     .module('HRA')
     .controller('projectGeneralCtrl', projectGeneralCtrl);
 
-  projectGeneralCtrl.$inject = ['$rootScope'];
+  function projectGeneralCtrl($rootScope, autocompleteService, formatDate, Project) {
 
-  function projectGeneralCtrl($rootScope) {
+    let vm = this;
+    let projectCoppy = {};
 
-    var vm = this;
+    vm.project = {};
+    vm.validateDate = false;
+    vm.displayOrHide = false;
+    vm.formatDate = formatDate;
 
+    vm.save = save;
+    vm.cancel = cancel;
+    vm.checkDates = checkDates;
 
-    vm.saveProject = saveProject;
-    vm.disabledgeneralInfo = true;
-    vm.cancelAdd = cancelAdd;
-
-
-    $rootScope.$on('projectIsLoadedEvent', function(event, project) {
-      vm.project = project;
-      vm.projectCpy = angular.copy(vm.project);
-      vm.project.startDate = new Date(vm.project.startDate);
-      vm.project.deadline = new Date(vm.project.deadline);
+    $rootScope.$on("event:projectLoaded", (event, data) => {
+      vm.project = data;
+      projectCoppy = angular.copy(data);
     });
 
-
-    function saveProject(project) {
-      $rootScope.$emit("callSaveMethodCardsProjects", project);
-      vm.disabledgeneralInfo = true;
+    function save() {
+      vm.project.start_date = vm.project.start_date ? vm.formatDate.getStandard(vm.project.start_date) : null;
+      vm.project.end_date = vm.formatDate.getStandard(vm.project.end_date);
+      Project.update(vm.project);
+      vm.displayOrHide = false;
     }
 
-    function cancelAdd() {
-      vm.project.name = vm.projectCpy.name;
-      vm.project.description = vm.projectCpy.description;
-      vm.project.startDate = new Date(vm.projectCpy.startDate);
-      vm.project.deadline = new Date(vm.projectCpy.deadline);
-      vm.disabledgeneralInfo = true;
+    function cancel() {
+      vm.displayOrHide = !vm.displayOrHide;
+      vm.project = angular.copy(projectCoppy);
     }
 
+    function checkDates() {
+      let startDate = new Date(vm.project.start_date);
+      let endDate = new Date(vm.project.end_date);
+      if (startDate != undefined && endDate != undefined && startDate > endDate) {
+        vm.validateDate = true;
+      } else {
+        vm.validateDate = false;
+      }
+    }
   }
 
 })();

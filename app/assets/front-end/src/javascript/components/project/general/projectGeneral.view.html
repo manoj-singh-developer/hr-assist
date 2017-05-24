@@ -5,128 +5,147 @@
 	   <md-card-title-text>
 	     <span class="md-headline">General informations</span>
 			 <p class="u-font-small u-no-margin">
-        <strong>Last Update at: {{prjGeneral.project.updatedAt | date: longDate}}</strong>
+			 <!-- TODO  implement Last Update at on API-->
+        <!-- <strong>Last Update at: {{prjGeneral.project.updatedAt | date: longDate}}</strong> -->
       </p>
 	   </md-card-title-text>
   </md-card-title>
 
   <!-- PREVIEW GENERAL INFO -->
   <md-content
-  	ng-show="prjGeneral.disabledgeneralInfo"
+  	ng-show="!prjGeneral.displayOrHide"
     class="c-card-profile__preview">
 
    <section layout-gt-xs="row">
 
      <div flex="100" class="c-card-profile__general-info">
 
-       <p class="c-card-profile__info c-card-profile__name">
+       <div class="c-card-profile__info c-card-profile__name">
         <strong>Name: </strong>
          {{prjGeneral.project.name}}
-       </p>
+       </div>
 
-       <p class="c-card-profile__info c-card-profile__email">
-         <strong>Description: </strong>{{prjGeneral.project.description}}
-       </p>
+       <div class="c-card-profile__info c-card-profile__description">
+         <strong>Description: </strong>
+         <p ng-bind-html="prjGeneral.project.description"></p>
+       </div>
 
-       <p class="c-card-profile__info c-card-profile__email">
-         <strong>Start date: </strong>{{prjGeneral.project.startDate | date:'longDate'}}
-       </p>
+       <div class="c-card-profile__info c-card-profile__date">
+         <strong>Start date: </strong>{{prjGeneral.project.start_date | date:'longDate'}}
+       </div>
 
-       <p class="c-card-profile__info c-card-profile__phone">
-         <strong>Deadline: </strong>
-         {{prjGeneral.project.deadline | date:'longDate'}}
-       </p>
+       <div class="c-card-profile__info c-card-profile__date">
+         <strong>End Date: </strong>
+         {{prjGeneral.project.end_date | date:'longDate'}}
+       </div>
 
      </div>
 
     </section>
-  </md-content><!-- /PREVIEW GENERAL INFO -->
+  </md-content>
+  <!-- /PREVIEW GENERAL INFO -->
+
+	<!-- EDIT PROJECT FORM -->
+	<form ng-submit="$event.preventDefault()" 
+		novalidate 
+		name="editeProjectForm">
+		<md-content
+			class="md-padding"
+			ng-show="prjGeneral.displayOrHide">
+
+			<!-- Name -->
+			<div layout-gt-xs="row">
+			  <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+				  <label>Name</label>
+				  <input ng-model="prjGeneral.project.name" 
+				  	name="projectName" 
+				  	required>
+				  <div ng-messages="editeProjectForm.projectName.$error">
+				    <div ng-message="required">This field is required</div>
+				  </div>
+
+			  </md-input-container>
+			</div><!-- /Name -->
 
 
-	<md-content
-		class="md-padding"
-		ng-hide="prjGeneral.disabledgeneralInfo">
+			<!-- Description -->
+			<div layout-gt-xs="row">
+			  <md-input-container md-no-float class="md-block" flex-gt-xs="">
 
-		<!-- Name -->
-		<div layout-gt-xs="row">
-		  <md-input-container md-no-float class="md-block" flex-gt-xs="">
+			    <label>Description</label>
+		      <textarea
+	          ng-model="prjGeneral.project.description"
+	          name="description"
+	          required>
+	        </textarea>
+					<div ng-messages="editeProjectForm.description.$error">
+				    <div ng-message="required">This field is required</div>
+				  </div>
 
-				 <label>Name</label>
-				 <input ng-model="prjGeneral.project.name" name=name required>
-				 <div ng-messages="prjGeneral.name.$error">
-				   <div ng-message="required">This field is required</div>
-				 </div>
+			  </md-input-container>
+			</div><!-- /Description -->
 
-		  </md-input-container>
-		</div><!-- /Name -->
-
-
-		<!-- Description -->
-		<div layout-gt-xs="row">
-		  <md-input-container md-no-float class="md-block" flex-gt-xs="">
-
-		    <label>Description</label>
-			      <textarea
-		          ng-model="prjGeneral.project.description"
-		          name="description"
-		          required>
-		        </textarea>
-
-		  </md-input-container>
-		</div><!-- /Description -->
-
-		<!-- Start date/ Deadline -->
-		<div layout-gt-xs="row">
+			<!-- Start date/ Deadline -->
+			<div layout-gt-xs="row">
 
 		    <label>Start date</label>
 		    <md-datepicker
-		      ng-model="prjGeneral.project.startDate"
-		      md-placeholder="Enter date">
+		      ng-model="prjGeneral.project.start_date"
+		      md-placeholder="Enter date"
+		      ng-change="prjGeneral.checkDates()"
+		      required>
 		    </md-datepicker>
 
-
-
-		    <label>Deadline</label>
+		    <label>End date</label>
 		    <md-datepicker
-		      ng-model="prjGeneral.project.deadline"
-		      md-min-date = "prjGeneral.project.startDate"
-		      md-placeholder="Enter date">
+		      ng-model="prjGeneral.project.end_date"
+		      md-placeholder="Enter date"
+		      ng-change="prjGeneral.checkDates()"
+		      required>
 		    </md-datepicker>
 
-		</div><!-- /Start date/ Deadline -->
+			</div>
+			<div ng-show="prjGeneral.validateDate" 
+				layout-gt-xs="row" layout-align="center center">
+        <span class="alert-error fade"
+        role="alert">
+          End date must be greater than Start date!
+        </span>
+      </div><!-- /Start date/ end date -->
+		</md-content>
+		<!-- CARD ACTIONS-->
+		<md-card-actions
+		  layout="column"
+		  layout-align="start"
+		  ng-show="!prjGeneral.displayOrHide">
+		  <md-button
+		    class="c-card-profile__btn no-margin"
+		    ng-click="prjGeneral.displayOrHide = true">
+		    Add general information
+		  </md-button>
+		</md-card-actions>
 
-	</md-content>
+		<md-card-actions
+		  layout="row"
+		  layout-align="center center"
+		  ng-show="prjGeneral.displayOrHide"
+		  class="additional">
 
-	<!-- CARD ACTIONS-->
-	<md-card-actions
-	  layout="column"
-	  layout-align="start"
-	  ng-show="prjGeneral.disabledgeneralInfo">
-	  <md-button
-	    class="c-card-profile__btn no-margin"
-	    ng-click="prjGeneral.disabledgeneralInfo = false">
-	    Add general information
-	  </md-button>
-	</md-card-actions>
+		  <md-button
+		    class="md-raised md-primary"
+		    ng-click="prjGeneral.save()"
+		    ng-disabled="editeProjectForm.$invalid || prjGeneral.validateDate">
+		    Save
+		  </md-button>
 
-	<md-card-actions
-	  layout="row"
-	  layout-align="center center"
-	  ng-show="!prjGeneral.disabledgeneralInfo"
-	  class="additional">
+		  <md-button
+		    class="md-raised"
+		    ng-click="prjGeneral.cancel()">
+		    Cancel
+		  </md-button>
+		</md-card-actions><!-- /CARD ACTIONS-->
+	</form>
+	<!-- EDIT PROJECT FORM -->
 
-	  <md-button
-	    class="md-raised md-primary"
-	    ng-click="prjGeneral.saveProject(prjGeneral.project)"
-	    ng-disabled="btnIsDisabled">
-	    Save
-	  </md-button>
-
-	  <md-button
-	    class="md-raised"
-	    ng-click="prjGeneral.cancelAdd()">
-	    Cancel
-	  </md-button>
-
-	</md-card-actions><!-- /CARD ACTIONS-->
 </md-card>
