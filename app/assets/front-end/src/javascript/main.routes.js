@@ -19,21 +19,9 @@ const rootTemplatePath = './views/components/';
 
 
   setConfig
-    .$inject = ['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdDateLocaleProvider'];
+    .$inject = ['$stateProvider', '$urlRouterProvider', '$httpProvider'];
 
-  function setConfig($stateProvider, $urlRouterProvider, $httpProvider, $mdDateLocaleProvider) {
-
-    $mdDateLocaleProvider.firstDayOfWeek = 1;
-    $mdDateLocaleProvider.formatDate = function() {
-
-      let date = new Date();
-      let day = date.getDate();
-      let monthIndex = date.getMonth();
-      let year = date.getFullYear();
-
-      return day + '/' + (monthIndex + 1) + '/' + year;
-
-    };
+  function setConfig($stateProvider, $urlRouterProvider, $httpProvider) {
 
     $urlRouterProvider.otherwise('/');
     $httpProvider.interceptors.push('AuthInterceptor');
