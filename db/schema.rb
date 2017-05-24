@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170420144103) do
+ActiveRecord::Schema.define(version: 20170523082641) do
 
   create_table "active_admin_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "namespace"
@@ -160,8 +160,10 @@ ActiveRecord::Schema.define(version: 20170420144103) do
     t.integer  "replaced_user_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.integer  "team_leader_id"
     t.index ["holiday_id"], name: "index_holiday_replacements_on_holiday_id", using: :btree
     t.index ["project_id"], name: "index_holiday_replacements_on_project_id", using: :btree
+    t.index ["team_leader_id"], name: "index_holiday_replacements_on_team_leader_id", using: :btree
   end
 
   create_table "holidays", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -374,6 +376,7 @@ ActiveRecord::Schema.define(version: 20170420144103) do
   add_foreign_key "educations_users", "users"
   add_foreign_key "holiday_replacements", "holidays"
   add_foreign_key "holiday_replacements", "projects"
+  add_foreign_key "holiday_replacements", "users", column: "team_leader_id"
   add_foreign_key "holidays", "users"
   add_foreign_key "industries_projects", "industries"
   add_foreign_key "industries_projects", "projects"
