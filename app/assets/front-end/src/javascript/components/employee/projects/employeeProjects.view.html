@@ -25,7 +25,12 @@
       Add the period in which you were involved in the project and the technologies that you used.
     </p>
   </md-content> <!-- CARD NOTES -->
-
+  <md-content class="c-card-profile__notes"
+              ng-if="!userProjects.userProjects.length > 0">
+    <p>
+      <strong>You not have any project added.</strong>
+    </p>
+  </md-content>
 
 
 

@@ -6,7 +6,11 @@
     <md-card-title-text>
       <span class="md-headline">Holidays</span>
     </md-card-title-text>
-  </md-card-title><!-- /CARD TITLE -->
+  </md-card-title>
+  <!-- /CARD TITLE -->
+
+
+
 
 
   <!-- CARD NOTES -->
@@ -14,83 +18,101 @@
     <p>
       <strong>NOTE: </strong> Complete here your vacation requests.
     </p>
-  </md-content> <!-- CARD NOTES -->
+  </md-content>
+
+
+
+
+
+  <md-content 
+    class="c-card-profile__notes"
+    ng-if="!userHoliday.userHolidays.length > 0">
+    <p>
+      <strong>You not have any vacation request added.</strong>
+    </p>
+  </md-content>
+  <!-- /CARD NOTES -->
+
+
+
 
 
   <!-- PREVIEW HOLIDAY -->
-  <md-content  class="md-padding"
-               ng-show="!userHoliday.displayOrHide">
-      <md-table-container>
+  <md-content  
+    class="md-padding"
+    ng-show="!userHoliday.displayOrHide"
+    ng-if="userHoliday.userHolidays.length > 0">
+    <md-table-container>
+        <table class="c-table--actions"
+          md-table
+          md-progress="promise">
 
-          <table class="c-table--actions"
-                 md-table
-                 md-progress="promise">
+          <thead md-head
+            md-order="query.order">
+            <tr md-row>
+              <th md-column>Start date</th>
+              <th md-column>End date</th>
+              <th md-column>Number of days</th>
+              <th md-column>Project</th>
+              <th md-column>Action</th>
+            </tr>
+          </thead>
 
-              <thead md-head
-                     md-order="query.order">
-                  <tr md-row>
-                      <th md-column>Start date</th>
-                      <th md-column>End date</th>
-                      <th md-column>Number of days</th>
-                      <th md-column>Project</th>
-                      <th md-column>Action</th>
-                  </tr>
-              </thead>
+          <tbody md-body>
+            <tr md-row
+              md-select="holiday"
+              md-auto-select
+              ng-repeat="holiday in userHoliday.userHolidays | limitTo: userHoliday.table.query.limit : (userHoliday.table.query.page - 1) * userHoliday.table.query.limit">
 
-              <tbody md-body>
-                  <tr md-row
-                      md-select="holiday"
-                      md-auto-select
-                      ng-repeat="holiday in userHoliday.userHolidays | limitTo: userHoliday.table.query.limit : (userHoliday.table.query.page - 1) * userHoliday.table.query.limit">
+              <td md-cell>
+                {{holiday.start_date | date:'dd-MM-yyyy'}}
+              </td>
 
-                      <td md-cell>
-                          {{holiday.start_date}}
-                      </td>
+              <td md-cell>
+                {{holiday.end_date | date:'dd-MM-yyyy'}}
+              </td>
 
-                      <td md-cell>
-                          {{holiday.end_date}}
-                      </td>
+              <td md-cell>
+                {{holiday.days}}
+              </td>
 
-                      <td md-cell>
-                          {{holiday.days}}
-                      </td>
+              <td md-cell>
+                <div ng-repeat="project in holiday.employee_replacements">
+                  <span>{{project.project_name}}</span>
+                </div>
+              </td>
 
-                      <td md-cell>
-                          <div ng-repeat="project in holiday.employee_replacements">
-                              <span>{{project.project_name}}</span>
-                          </div>
-                      </td>
+              <td md-cell>
+                <md-button class="md-icon-button md-primary"
+                  label="View Holiday"
+                  aria-label="View Holiday"
+                  ui-sref="holidayParent.details({id: holiday.holiday_id})">
+                  <md-icon class="material-icons">visibility</md-icon>
+                  <md-tooltip md-autohide="true">
+                    View Holiday
+                  </md-tooltip>
+                </md-button>
+              </td>
 
-                      <td md-cell>
-                          <md-button 
-                            class="md-icon-button md-primary"
-                            label="View Holiday"
-                            aria-label="View Holiday"
-                            ui-sref="holidayParent.details({id: holiday.holiday_id})">
-                              <md-icon class="material-icons">visibility</md-icon>
-                              <md-tooltip md-autohide="true">
-                                  View Holiday
-                              </md-tooltip>
-                          </md-button>
+            </tr>
+          </tbody>
 
-                      </td>
+        </table>
+    </md-table-container>
 
-                  </tr>
-              </tbody>
+    <md-table-pagination md-limit="userHoliday.table.query.limit"
+      md-limit-options="userHoliday.table.limitOptions"
+      md-page="userHoliday.table.query.page"
+      md-total="{{userHoliday.userHolidays.length}}"
+      md-page-select="userHoliday.table.options.pageSelect"
+      md-boundary-links="userHoliday.table.options.boundaryLinks">
+    </md-table-pagination>
+  </md-content>
+  <!-- /PREVIEW HOLIDAY -->
 
-          </table>
 
-      </md-table-container>
-      <md-table-pagination 
-        md-limit="userHoliday.table.query.limit"
-        md-limit-options="userHoliday.table.limitOptions"
-        md-page="userHoliday.table.query.page"
-        md-total="{{userHoliday.userHolidays.length}}"
-        md-page-select="userHoliday.table.options.pageSelect"
-        md-boundary-links="userHoliday.table.options.boundaryLinks">
 
-      </md-table-pagination>
-  </md-content><!-- /PREVIEW HOLIDAY -->
+
 
   <form novalidate
     name="holidaysForm">
@@ -111,6 +133,7 @@
             md-placeholder="Signing date"
             md-open-on-focus
             ng-change="userHoliday.checkDates()"
+            md-date-filter="userHoliday.onlyWorkDay"
             required>
           </md-datepicker>
 
@@ -118,6 +141,7 @@
             md-placeholder="Start date"
             md-open-on-focus
             ng-change="userHoliday.checkDates()"
+            md-date-filter="userHoliday.onlyWorkDay"
             required>
           </md-datepicker>
 
@@ -125,18 +149,14 @@
             md-placeholder="End date"
             md-open-on-focus
             ng-change="userHoliday.checkDates()"
+            md-date-filter="userHoliday.onlyWorkDay"
             required>
           </md-datepicker>
 
-          <!--<md-button class="md-raised md-primary"-->
-                     <!--ng-click="userHoliday.addEmptyInterval()">-->
-              <!--Add Date-->
-          <!--</md-button>-->
-
-        </section><!-- /SELECT PERIOD -->
-
+        </section>
+        <!-- /SELECT PERIOD -->
         <section ng-show="userHoliday.validateDate" layout-gt-xs="row" layout-align="center center">
-          <span class="alert-error fade"
+          <span class="alert alert-info fade"
           role="alert">
             End date must be greater than Start date and Signing date lesser than Start date !
           </span>
@@ -190,9 +210,10 @@
 
 
 
+
         <!-- SELECT PROJECT AND REPLACEMENT -->
         <section layout-gt-xs="row"
-                 ng-repeat="date in userHoliday.replaceInputs track by $index">
+          ng-repeat="date in userHoliday.replaceInputs track by $index">
 
           <div flex="50" layout-fill class="md-padding">
             <div layout="column" layout-align="start start" layout-fill>
@@ -200,6 +221,7 @@
               <!-- SELECT REPLACEMENT PROJECT -->
               <div class="md-block u-mb-20"
                 layout-fill>
+
                   <md-autocomplete
                     ng-model="userHoliday.searchProj[$index]"
                     md-selected-item="userHoliday.selectedProj[$index]"
@@ -229,6 +251,7 @@
                       You must select an option!
                     </span>
                   </div>
+
               </div><!-- /SELECT REPLACEMENT PROJECT -->
 
             </div>
@@ -275,18 +298,41 @@
             </div>
           </div>
 
-          <span ng-click="userHoliday.addEmptyReplacement()" class="add-holiday" title="Add project">
+          <span ng-click="userHoliday.addEmptyReplacement()" 
+            class="add-holiday" title="Add project">
               <i class="material-icons">add_circle_outline</i>
           </span>
 
-        </section><!-- SELECT PROJECT AND REPLACEMENT -->
+        </section>
+        <!-- SELECT PROJECT AND REPLACEMENT -->
 
 
-      </section><!-- /HOLIDAYS ng-repeat -->
 
+
+
+
+
+      </section>
+      <!-- /HOLIDAYS ng-repeat -->
+
+      <span ng-show="userHoliday.errMsg"
+        class="alert alert-error fade holiday-error"
+        role="alert">
+        Your vacation request with this interval, exist !
+      </span>
+
+      <span ng-show="userHoliday.errMsgIntersectInterval"
+        class="alert alert-info fade holiday-error"
+        role="alert">
+        Another vacation intersect with this interval !
+      </span>
 
     </md-content><!-- /FORM HOLIDAY -->
   </form>
+
+
+
+
 
   <!-- CARD ACTIONS -->
   <md-card-actions layout="column" layout-align="start">
@@ -304,16 +350,22 @@
     class="additional">
 
     <md-button class="md-raised md-primary"
-      ng-click="userHoliday.saveHoliday(); userHoliday.clearFields()"
+      ng-click="userHoliday.saveHoliday();"
       ng-disabled="holidaysForm.$invalid || userHoliday.validateDate">
       Save
     </md-button>
+
     <md-button class="md-raised"
       ng-click="userHoliday.displayForm(); userHoliday.clearFields()">
       Close
     </md-button>
 
-  </md-card-actions><!-- /CARD ACTIONS -->
+  </md-card-actions>
+  <!-- /CARD ACTIONS -->
 
 
-</md-card><!-- CARD HOLIDAYS -->
+
+
+
+</md-card>
+<!-- CARD HOLIDAYS -->

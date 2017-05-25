@@ -22,7 +22,12 @@
       <strong>Secondary technologies </strong>are the technologies that you are familiar or perhaps even worked with but you didn't have the opportunity to use them in a specific company project.
     </p>
   </md-content> <!-- CARD NOTES -->
-
+  <md-content class="c-card-profile__notes"
+              ng-if="!employeeSkills.userTechnologies.length > 0">
+    <p>
+      <strong>You not have any technology added.</strong>
+    </p>
+  </md-content>
 
   <!-- PREVIEW TECHNOLOGIES -->
   <md-content ng-show="!employeeSkills.displayOrHide" class="c-card-profile__preview">

@@ -23,7 +23,12 @@
       <strong>NOTE: </strong>Complete here with your education experience.
     </p>
   </md-content> <!-- CARD NOTES -->
-
+  <md-content class="c-card-profile__notes"
+              ng-if="!userEducation.userEducationList.length > 0">
+    <p>
+      <strong>You not have any education experience added.</strong>
+    </p>
+  </md-content>
 
 
 

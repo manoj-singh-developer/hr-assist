@@ -9,9 +9,7 @@
 
   userHolidayCtrl
 
-
-  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, dateService) {
-
+  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, dateService, $timeout) {
 
     let vm = this;
     let days;
@@ -39,6 +37,7 @@
       selected: []
     };
 
+    vm.errMsg = false;
     vm.displayOrHide = false;
     vm.replaceInputs = [1];
     vm.dateList = [];
@@ -60,7 +59,6 @@
       vm.projects = data.projects;
       vm.users = data.users;
       vm.userHolidays = data.holidays;
-
       autocompleteService.buildList(vm.projects, ['name']);
       autocompleteService.buildList(vm.users, ['first_name', 'last_name']);
     });
@@ -115,6 +113,7 @@
 
       let userId = $stateParams.id;
       let daysNo = days;
+
       let startDate = vm.dateService.format(vm.from);
       let endDate = vm.dateService.format(vm.to);
       let signingDate = vm.dateService.format(vm.signingDate);
@@ -155,7 +154,7 @@
         }
       }
 
-      let objToSave = {
+      vm.objToSave = {
         days: daysNo,
         start_date: startDate,
         end_date: endDate,
@@ -166,6 +165,35 @@
         team_leader_ids: leaders
       };
 
+      if (vm.userHolidays.length > 0) {
+        let toSaveStartDate = vm.objToSave.start_date;
+        let toSaveEndDate = vm.objToSave.end_date;
+        let intervalExist = false;
+
+        for (let i = 0; i < vm.userHolidays.length; i++) {
+          let existingStartDate = vm.userHolidays[i].start_date;
+          let existingEndDate = vm.userHolidays[i].end_date;
+
+          if ((toSaveStartDate <= existingEndDate) && (existingStartDate <= toSaveEndDate)) {
+            vm.errMsg = true;
+
+            $timeout(() => {
+              vm.errMsg = false;
+            }, 5500);
+            intervalExist = true;
+            break;
+          }
+        }
+
+        if (!intervalExist) {
+          _addHoliday(vm.objToSave);
+        }
+      } else {
+        _addHoliday(vm.objToSave);
+      }
+    }
+
+    function _addHoliday(objToSave) {
       User.addHolidays(objToSave)
         .then((response) => {
           _getUserHolidays();
@@ -174,6 +202,7 @@
         .catch((error) => {
           console.log(error);
         });
+      clearFields();
     }
 
     function calculateHolidays(dDate1, dDate2) {
@@ -224,6 +253,9 @@
       vm.from = new Date();
       vm.to = new Date();
       vm.signingDate = new Date();
+      vm.errMsg = false;
+      vm.errMsgIntersectInterval = false;
+
     }
 
     function addEmptyReplacement() {
@@ -234,10 +266,14 @@
       vm.displayOrHide = !vm.displayOrHide;
     }
 
+    vm.onlyWorkDay = function(date) {
+      var day = date.getDay();
+      return !(day === 0 || day === 6);
+    };
+
     function addLeaders() {
       vm.leader = ' ';
     }
-
   }
 
 })();
