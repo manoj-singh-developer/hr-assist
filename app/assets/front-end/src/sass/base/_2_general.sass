@@ -195,23 +195,34 @@ img.info-pic
   margin-left: auto
   margin-right: auto
 
-.alert-success
-  background-color: #DFF0D8
-  color: #47A447
+.alert
   width: 70%
   padding: 5px 0px 5px 10px
   margin-bottom: 10px
+  border-radius: .25rem
+  
+  &-success
+    background-color: #DFF0D8
+    color: #47A447
+  
+  &-error
+    background-color: #F2DEDE
+    color: #AB445A
+  
+  &-info
+    background-color: #d9edf7
+    border-color: #bcdff1
+    color: #31708f
+  
+  &-warning
+    background-color: #fcf8e3
+    border-color: #faf2cc
+    color: #8a6d3b
 
   .fade.ng-hide
     transition: 5s linear all
     opacity: 0
 
-.alert-error
-  background-color: #F2DEDE
-  color: #AB445A
-  width: 70%
-  padding: 5px 0px 5px 10px
-  margin-bottom: 10px
 
 md-divider.divider-bold
   border-top-width: 3px

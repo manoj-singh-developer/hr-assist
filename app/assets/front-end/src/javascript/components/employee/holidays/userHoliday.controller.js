@@ -9,9 +9,7 @@
 
   userHolidayCtrl
 
-
   function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, formatDate, $timeout) {
-
 
     let vm = this;
     let days;
@@ -38,6 +36,7 @@
     };
 
     vm.errMsg = false;
+    vm.errMsgIntersectInterval = false;
     vm.displayOrHide = false;
     vm.replaceInputs = [1];
     vm.dateList = [];
@@ -114,7 +113,7 @@
       let daysNo = days;
       let startDate = vm.formatDate.getStandard(vm.from);
       let endDate = vm.formatDate.getStandard(vm.to);
-      let signingDate = vm.signingDate;
+      let signingDate = vm.formatDate.getStandard(vm.signingDate);
 
       let usersArr = $.map(usersObj, (value, index) => {
         return [value];
@@ -155,27 +154,40 @@
         signing_day: signingDate,
         project_ids: projectId,
         replacer_ids: replacerId,
-        user_id: userId
+        user_id: userId,
+        team_leader_ids: []
       };
 
-      if(vm.userHolidays.length > 0) {
-        for(let i = 0; i < vm.userHolidays.length; i++) {
+      if (vm.userHolidays.length > 0) {
+        let toSaveStartDate = vm.objToSave.start_date;
+        let toSaveEndDate = vm.objToSave.end_date;
 
-          if(vm.objToSave.start_date !== vm.userHolidays[i].start_date  &&
-            vm.objToSave.end_date !== vm.userHolidays[i].end_date &&
-            vm.objToSave.signing_day !== vm.userHolidays[i].signing_day) {
+        for (let i = 0; i < vm.userHolidays.length; i++) {
+          let existingStartDate = vm.userHolidays[i].start_date;
+          let existingEndDate = vm.userHolidays[i].end_date;
 
-            _addHoliday(vm.objToSave);
-            break;
+          if (toSaveStartDate !== existingStartDate &&
+            toSaveEndDate !== existingEndDate) {
+
+            if ((toSaveStartDate <= existingEndDate) && (existingStartDate <= toSaveEndDate)) {
+
+              vm.errMsgIntersectInterval = true;
+              $timeout(() => {
+                vm.errMsgIntersectInterval = false;
+              }, 5500);
+              console.error("holiday not Added this date intersect another");
+              break;
+
+            } else {
+              _addHoliday(vm.objToSave);
+            }
 
           } else {
-
             vm.errMsg = true;
             $timeout(() => {
               vm.errMsg = false;
-            }, 3500);
-            break;
-
+            }, 5500);
+            console.error("holiday not Added exact same date exist");
           }
         }
       } else {
@@ -183,7 +195,7 @@
       }
     }
 
-    function _addHoliday(objToSave){
+    function _addHoliday(objToSave) {
       User.addHolidays(objToSave)
         .then((response) => {
           _getUserHolidays();
@@ -192,6 +204,7 @@
         .catch((error) => {
           console.log(error);
         });
+      clearFields();
     }
 
     function calculateHolidays(dDate1, dDate2) {
@@ -240,6 +253,8 @@
       vm.from = undefined;
       vm.to = undefined;
       vm.signingDate = undefined;
+      vm.errMsg = false;
+      vm.errMsgIntersectInterval = false;
     }
 
     function addEmptyReplacement() {
@@ -250,6 +265,10 @@
       vm.displayOrHide = !vm.displayOrHide;
     }
 
+    vm.onlyWorkDay = function(date) {
+      var day = date.getDay();
+      return !(day === 0 || day === 6);
+    };
   }
 
 })();

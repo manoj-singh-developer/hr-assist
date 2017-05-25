@@ -113,6 +113,7 @@
                          md-placeholder="Signing date"
                          md-open-on-focus
                          ng-change="userHoliday.checkDates()"
+                         md-date-filter="userHoliday.onlyWorkDay"
                          required>
           </md-datepicker>
 
@@ -120,6 +121,7 @@
                          md-placeholder="Start date"
                          md-open-on-focus
                          ng-change="userHoliday.checkDates()"
+                         md-date-filter="userHoliday.onlyWorkDay"
                          required>
           </md-datepicker>
 
@@ -127,6 +129,7 @@
                          md-placeholder="End date"
                          md-open-on-focus
                          ng-change="userHoliday.checkDates()"
+                         md-date-filter="userHoliday.onlyWorkDay"
                          required>
           </md-datepicker>
 
@@ -138,7 +141,7 @@
         </section><!-- /SELECT PERIOD -->
 
         <section ng-show="userHoliday.validateDate" layout-gt-xs="row" layout-align="center center">
-          <span class="alert-error fade"
+          <span class="alert alert-info fade"
           role="alert">
             End date must be greater than Start date and Signing date lesser than Start date !
           </span>
@@ -242,9 +245,15 @@
       </section><!-- /HOLIDAYS ng-repeat -->
 
       <span ng-show="userHoliday.errMsg"
-            class="alert-error fade holiday-error"
-            role="alert">
-        Your vacation request with this interval, exist!
+        class="alert alert-error fade holiday-error"
+        role="alert">
+        Your vacation request with this interval, exist !
+      </span>
+
+      <span ng-show="userHoliday.errMsgIntersectInterval"
+        class="alert alert-info fade holiday-error"
+        role="alert">
+        Another vacation intersect with this interval !
       </span>
 
     </md-content><!-- /FORM HOLIDAY -->
@@ -266,7 +275,7 @@
                    class="additional">
 
     <md-button class="md-raised md-primary"
-               ng-click="userHoliday.saveHoliday(); userHoliday.clearFields()"
+               ng-click="userHoliday.saveHoliday();"
                ng-disabled="holidaysForm.$invalid || userHoliday.validateDate">
       Save
     </md-button>
