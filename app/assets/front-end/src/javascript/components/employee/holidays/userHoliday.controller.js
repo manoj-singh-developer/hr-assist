@@ -10,7 +10,7 @@
   userHolidayCtrl
 
 
-  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, formatDate) {
+  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, dateService) {
 
 
     let vm = this;
@@ -18,6 +18,8 @@
     vm.userHolidays;
     vm.projects = [];
     vm.users = [];
+    vm.teamLeaders = [];
+
     vm.table = {
       options: {
         rowSelection: true,
@@ -45,7 +47,8 @@
     vm.to = new Date();
     vm.signingDate = new Date();
 
-    vm.formatDate = formatDate;
+    vm.addLeaders = addLeaders;
+    vm.dateService = dateService;
     vm.clearFields = clearFields;
     vm.checkDates = checkDates;
     vm.queryProjectSearch = queryProjectSearch;
@@ -112,9 +115,13 @@
 
       let userId = $stateParams.id;
       let daysNo = days;
-      let startDate = vm.formatDate.getStandard(vm.from);
-      let endDate = vm.formatDate.getStandard(vm.to);
-      let signingDate = vm.signingDate;
+      let startDate = vm.dateService.format(vm.from);
+      let endDate = vm.dateService.format(vm.to);
+      let signingDate = vm.dateService.format(vm.signingDate);
+
+      let leaders = $.map(vm.teamLeaders, (value, index) => {
+        return [value.id];
+      });
 
       let usersArr = $.map(usersObj, (value, index) => {
         return [value];
@@ -155,7 +162,8 @@
         signing_day: signingDate,
         project_ids: projectId,
         replacer_ids: replacerId,
-        user_id: userId
+        user_id: userId,
+        team_leader_ids: leaders
       };
 
       User.addHolidays(objToSave)
@@ -211,9 +219,11 @@
     function clearFields() {
       vm.searchUser = '';
       vm.searchProj = '';
-      vm.from = undefined;
-      vm.to = undefined;
-      vm.signingDate = undefined;
+      vm.leader = '';
+      vm.teamLeaders = [];
+      vm.from = new Date();
+      vm.to = new Date();
+      vm.signingDate = new Date();
     }
 
     function addEmptyReplacement() {
@@ -222,6 +232,10 @@
 
     vm.displayForm = () => {
       vm.displayOrHide = !vm.displayOrHide;
+    }
+
+    function addLeaders() {
+      vm.leader = ' ';
     }
 
   }

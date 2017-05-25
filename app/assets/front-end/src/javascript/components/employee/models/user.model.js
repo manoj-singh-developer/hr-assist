@@ -475,6 +475,7 @@
     };
 
     User.addHolidays = (data) => {
+
       let userId= $stateParams.id;
       url = apiUrl + '/users/'+userId+'/holidays';
       resource = $resource(url, {}, {
