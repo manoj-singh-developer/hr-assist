@@ -117,7 +117,7 @@
       let daysNo = days;
       let startDate = vm.dateService.format(vm.from);
       let endDate = vm.dateService.format(vm.to);
-      let signingDate = vm.signingDate;
+      let signingDate = vm.dateService.format(vm.signingDate);
 
       let leaders = $.map(vm.teamLeaders, (value, index) => {
         return [value.id];
