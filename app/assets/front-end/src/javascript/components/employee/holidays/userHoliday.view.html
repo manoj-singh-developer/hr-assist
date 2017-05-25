@@ -10,15 +10,20 @@
   <!-- /CARD TITLE -->
 
 
+
+
+
   <!-- CARD NOTES -->
   <md-content class="c-card-profile__notes">
     <p>
       <strong>NOTE: </strong> Complete here your vacation requests.
     </p>
   </md-content>
-  
 
-  <!-- CARD NOTES -->
+
+
+
+
   <md-content 
     class="c-card-profile__notes"
     ng-if="!userHoliday.userHolidays.length > 0">
@@ -26,6 +31,10 @@
       <strong>You not have any vacation request added.</strong>
     </p>
   </md-content>
+  <!-- /CARD NOTES -->
+
+
+
 
 
   <!-- PREVIEW HOLIDAY -->
@@ -101,11 +110,19 @@
   </md-content>
   <!-- /PREVIEW HOLIDAY -->
 
+
+
+
+
   <form novalidate
     name="holidaysForm">
     <!-- FORM HOLIDAY -->
     <md-content ng-show="userHoliday.displayOrHide" class="md-padding">
       <section layout='column'>
+
+
+
+
 
         <!-- SELECT PERIOD -->
         <section class="u-mb-20 u-mt-20"
@@ -136,14 +153,63 @@
             required>
           </md-datepicker>
 
-        </section><!-- /SELECT PERIOD -->
-
+        </section>
+        <!-- /SELECT PERIOD -->
         <section ng-show="userHoliday.validateDate" layout-gt-xs="row" layout-align="center center">
           <span class="alert alert-info fade"
           role="alert">
             End date must be greater than Start date and Signing date lesser than Start date !
           </span>
         </section>
+
+
+
+
+
+        <!-- TEAM LEADER -->
+        <section layout-gt-xs="row">
+          <div flex="100" layout-fill class="md-padding">
+            <div layout="column" layout-align="start start" layout-fill>
+
+              <!-- SELECT TEAM LEADER -->
+              <div class="md-block u-mb-20" layout-fill>
+
+                <md-chips
+                  ng-model="userHoliday.teamLeaders"
+                  md-on-remove
+                  md-on-add="userHoliday.addLeaders()"
+                  md-require-match
+                  md-input-name="autocompleteLeader">
+                  <md-autocomplete
+                    md-search-text="userHoliday.leader"
+                    md-items="user in userHoliday.querySearch(userHoliday.leader, userHoliday.users)"
+                    md-item-text="user.first_name+' '+user.last_name"
+                    md-min-length="0"
+                    
+                    placeholder="Select team leader">
+                    <md-item-template>
+                      <span md-highlight-text="userHoliday.leader">
+                        {{user.first_name}} {{user.last_name}}
+                      </span>
+                    </md-item-template>
+                  </md-autocomplete>
+                  <md-chip-template>
+                    <span>
+                      <em>{{$chip.first_name}} {{$chip.last_name}}</em>
+                    </span>
+                  </md-chip-template>
+                </md-chips>
+
+              </div><!-- /SELECT TEAM LEADER -->
+
+            </div>
+          </div>
+        </section>
+        <!-- /TEAM LEADER -->
+
+
+
+
 
         <!-- SELECT PROJECT AND REPLACEMENT -->
         <section layout-gt-xs="row"
@@ -155,15 +221,16 @@
               <!-- SELECT REPLACEMENT PROJECT -->
               <div class="md-block u-mb-20"
                 layout-fill>
-                  <md-autocomplete ng-disabled="userHoliday.isDisabled"
+
+                  <md-autocomplete
                     ng-model="userHoliday.searchProj[$index]"
                     md-selected-item="userHoliday.selectedProj[$index]"
                     md-search-text-change="userHoliday.searchProjChange(userHoliday.searchProj[$index])"
                     md-search-text="userHoliday.searchProj[$index]"
                     md-selected-item-change="userHoliday.selectedProjChange(item, $index)"
-                    md-items="project in userHoliday.queryProjectSearch(userHoliday.searchProj[$index])"
+                    md-items="project in userHoliday.querySearch(userHoliday.searchProj[$index], userHoliday.projects)"
                     md-item-text="project.name"
-                    md-min-length="1"
+                    md-min-length="0"
                     placeholder="Select an project"
                     md-input-name="autocompleteProject_{{$index}}"
                     md-require-match
@@ -174,9 +241,6 @@
                         {{project.name}}
                       </span>
                     </md-item-template>
-                    <md-not-found>
-                      No project matching were found.
-                    </md-not-found>
 
                   </md-autocomplete>
 
@@ -187,6 +251,7 @@
                       You must select an option!
                     </span>
                   </div>
+
               </div><!-- /SELECT REPLACEMENT PROJECT -->
 
             </div>
@@ -197,7 +262,7 @@
 
               <!-- SELECT REPLACEMENT EMPLOYEE -->
               <div class="md-block u-mb-20" layout-fill>
-                <md-autocomplete ng-disabled="userHoliday.isDisabled"
+                <md-autocomplete
                   ng-model="userHoliday.searchUser[$index]"
                   md-selected-item="userHoliday.selectedUser[$index]"
                   md-search-text-change="userHoliday.searchUserChange(userHoliday.searchUser[$index])"
@@ -238,10 +303,17 @@
               <i class="material-icons">add_circle_outline</i>
           </span>
 
-        </section><!-- SELECT PROJECT AND REPLACEMENT -->
+        </section>
+        <!-- SELECT PROJECT AND REPLACEMENT -->
 
 
-      </section><!-- /HOLIDAYS ng-repeat -->
+
+
+
+
+
+      </section>
+      <!-- /HOLIDAYS ng-repeat -->
 
       <span ng-show="userHoliday.errMsg"
         class="alert alert-error fade holiday-error"
@@ -259,6 +331,9 @@
   </form>
 
 
+
+
+
   <!-- CARD ACTIONS -->
   <md-card-actions layout="column" layout-align="start">
     <md-button class="c-card-profile__btn no-margin"
@@ -268,7 +343,8 @@
     </md-button>
   </md-card-actions>
 
-  <md-card-actions layout="row"
+  <md-card-actions 
+    layout="row"
     layout-align="center center"
     ng-show="userHoliday.displayOrHide"
     class="additional">
@@ -280,12 +356,15 @@
     </md-button>
 
     <md-button class="md-raised"
-       ng-click="userHoliday.displayForm(); userHoliday.clearFields()">
+      ng-click="userHoliday.displayForm(); userHoliday.clearFields()">
       Close
     </md-button>
 
   </md-card-actions>
   <!-- /CARD ACTIONS -->
+
+
+
 
 
 </md-card>

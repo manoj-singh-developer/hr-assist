@@ -37,32 +37,15 @@
           item.autoCompleteVal = '';
           for (index = 0; index < attributes.length; index++) {
             if (index !== 0) {
-              item.autoCompleteVal = item.autoCompleteVal + checkIfSpace(item.autoCompleteVal) + checkIfNull(item[attributes[index]]);
+              item.autoCompleteVal = item.autoCompleteVal + (item.autoCompleteVal ? ' ' : '') + item[attributes[index]] ? item[attributes[index]].toLowerCase() : '';
             } else {
-              item.autoCompleteVal = checkIfNull(item[attributes[index]]);
+              item.autoCompleteVal = item[attributes[index]] ? item[attributes[index]].toLowerCase() : '';
             }
           }
           return item;
         });
       }
     }
-
-    function checkIfNull(item){
-      if(item){
-        return item.toLowerCase();
-      }else {
-        return '';
-      }
-    }
-
-    function checkIfSpace(item) {
-      if(item){
-        return ' ';
-      } else {
-        return '';
-      }
-    }
-
 
     function createFilterFor(query) {
       var lowercaseQuery = angular.lowercase(query);

@@ -15,6 +15,11 @@
       restrict: 'A',
       scope: {},
       require: 'hraCard',
+      bindToController: {
+        'toggleForm': '=',
+        'querySearch': '=',
+        'settings': '='
+      },
       controller: 'userHolidayCtrl',
       controllerAs: 'userHoliday',
       templateUrl: rootTemplatePath + 'employee/holidays/userHoliday.view.html'

@@ -1,6 +1,4 @@
-/*jshint esversion: 6 */
-
-(function() {
+(() => {
 
   'use strict';
 
@@ -18,8 +16,15 @@
     'ui.gravatar'
   ]);
 
-  angular
-    .module('HRA')
-    .constant('apiUrl', 'http://192.168.200.115:3000/api/v1');
+    angular
+      .module('HRA')
+      .constant('apiUrl', 'http://192.168.200.115:3000/api/v1')
+      .config(SetFormatDate);
 
-}());
+    function SetFormatDate($mdDateLocaleProvider) {
+      $mdDateLocaleProvider.formatDate = function(date) {
+        return moment(date).format('DD-MM-YYYY');
+      };
+    }
+
+})();

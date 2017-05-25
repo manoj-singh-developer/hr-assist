@@ -9,13 +9,15 @@
 
   userHolidayCtrl
 
-  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, formatDate, $timeout) {
+  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, dateService, $timeout) {
 
     let vm = this;
     let days;
     vm.userHolidays;
     vm.projects = [];
     vm.users = [];
+    vm.teamLeaders = [];
+
     vm.table = {
       options: {
         rowSelection: true,
@@ -36,7 +38,6 @@
     };
 
     vm.errMsg = false;
-    vm.errMsgIntersectInterval = false;
     vm.displayOrHide = false;
     vm.replaceInputs = [1];
     vm.dateList = [];
@@ -45,7 +46,8 @@
     vm.to = new Date();
     vm.signingDate = new Date();
 
-    vm.formatDate = formatDate;
+    vm.addLeaders = addLeaders;
+    vm.dateService = dateService;
     vm.clearFields = clearFields;
     vm.checkDates = checkDates;
     vm.queryProjectSearch = queryProjectSearch;
@@ -111,9 +113,14 @@
 
       let userId = $stateParams.id;
       let daysNo = days;
-      let startDate = vm.formatDate.getStandard(vm.from);
-      let endDate = vm.formatDate.getStandard(vm.to);
-      let signingDate = vm.formatDate.getStandard(vm.signingDate);
+
+      let startDate = vm.dateService.format(vm.from);
+      let endDate = vm.dateService.format(vm.to);
+      let signingDate = vm.dateService.format(vm.signingDate);
+
+      let leaders = $.map(vm.teamLeaders, (value, index) => {
+        return [value.id];
+      });
 
       let usersArr = $.map(usersObj, (value, index) => {
         return [value];
@@ -155,40 +162,31 @@
         project_ids: projectId,
         replacer_ids: replacerId,
         user_id: userId,
-        team_leader_ids: []
+        team_leader_ids: leaders
       };
 
       if (vm.userHolidays.length > 0) {
         let toSaveStartDate = vm.objToSave.start_date;
         let toSaveEndDate = vm.objToSave.end_date;
+        let intervalExist = false;
 
         for (let i = 0; i < vm.userHolidays.length; i++) {
           let existingStartDate = vm.userHolidays[i].start_date;
           let existingEndDate = vm.userHolidays[i].end_date;
 
-          if (toSaveStartDate !== existingStartDate &&
-            toSaveEndDate !== existingEndDate) {
-
-            if ((toSaveStartDate <= existingEndDate) && (existingStartDate <= toSaveEndDate)) {
-
-              vm.errMsgIntersectInterval = true;
-              $timeout(() => {
-                vm.errMsgIntersectInterval = false;
-              }, 5500);
-              console.error("HOLIDAY NOT ADDED this date intersect another");
-              break;
-
-            } else {
-              _addHoliday(vm.objToSave);
-            }
-
-          } else {
+          if ((toSaveStartDate <= existingEndDate) && (existingStartDate <= toSaveEndDate)) {
             vm.errMsg = true;
+
             $timeout(() => {
               vm.errMsg = false;
             }, 5500);
-            console.error("HOLIDAY NOT ADDED exact same date exist");
+            intervalExist = true;
+            break;
           }
+        }
+
+        if (!intervalExist) {
+          _addHoliday(vm.objToSave);
         }
       } else {
         _addHoliday(vm.objToSave);
@@ -250,11 +248,14 @@
     function clearFields() {
       vm.searchUser = '';
       vm.searchProj = '';
-      vm.from = undefined;
-      vm.to = undefined;
-      vm.signingDate = undefined;
+      vm.leader = '';
+      vm.teamLeaders = [];
+      vm.from = new Date();
+      vm.to = new Date();
+      vm.signingDate = new Date();
       vm.errMsg = false;
       vm.errMsgIntersectInterval = false;
+
     }
 
     function addEmptyReplacement() {
@@ -269,6 +270,10 @@
       var day = date.getDay();
       return !(day === 0 || day === 6);
     };
+
+    function addLeaders() {
+      vm.leader = ' ';
+    }
   }
 
 })();
