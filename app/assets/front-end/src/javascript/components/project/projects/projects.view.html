@@ -101,12 +101,12 @@
       md-progress="promise">
 
       <thead
-        ng-if="!projects.options.decapitate"
+        ng-if="!projects.tableSettings.options.decapitate"
         md-head
-        md-order="projects.query.order"
+        md-order="projects.tableSettings.query.order"
         md-on-reorder="logOrder">
         <tr md-row>
-          <th md-column md-order-by="name"></th>
+          <th md-column>Nr.</th>
           <th md-column md-order-by="name">Name</th>
           <th md-column md-order-by="start_date">Start</th>
           <th md-column md-order-by="end_date">End</th>
@@ -128,7 +128,7 @@
           md-auto-select="projects.options.autoSelect"
           ng-repeat="project in projects.projects
             | filter: projects.searchProject
-            | orderBy: projects.query.order
+            | orderBy: projects.tableSettings.query.order
             | limitTo: projects.tableSettings.query.limit : (projects.tableSettings.query.page - 1) * projects.tableSettings.query.limit track by $index">
 
           <td md-cell> {{$index + 1}}</td>

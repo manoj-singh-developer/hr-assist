@@ -1,6 +1,6 @@
 <md-card>
 
-
+	<!-- CARD TITLE -->
   <md-card-title>
 	   <md-card-title-text>
 	     <span class="md-headline">General informations</span>
@@ -10,6 +10,11 @@
       </p>
 	   </md-card-title-text>
   </md-card-title>
+	<!-- CARD TITLE -->
+
+
+
+
 
   <!-- PREVIEW GENERAL INFO -->
   <md-content
@@ -31,12 +36,12 @@
        </div>
 
        <div class="c-card-profile__info c-card-profile__date">
-         <strong>Start date: </strong>{{prjGeneral.project.start_date | date:'longDate'}}
+         <strong>Start date: </strong>{{prjGeneral.project.start_date | date:'dd MMMM, yyyy'}}
        </div>
 
        <div class="c-card-profile__info c-card-profile__date">
          <strong>End Date: </strong>
-         {{prjGeneral.project.end_date | date:'longDate'}}
+         {{prjGeneral.project.end_date | date:'dd MMMM, yyyy'}}
        </div>
 
      </div>
@@ -45,10 +50,15 @@
   </md-content>
   <!-- /PREVIEW GENERAL INFO -->
 
+
+
+
+
 	<!-- EDIT PROJECT FORM -->
 	<form ng-submit="$event.preventDefault()" 
 		novalidate 
 		name="editeProjectForm">
+
 		<md-content
 			class="md-padding"
 			ng-show="prjGeneral.displayOrHide">
@@ -84,36 +94,46 @@
 				  </div>
 
 			  </md-input-container>
-			</div><!-- /Description -->
+			</div>
+			<!-- /Description -->
+
 
 			<!-- Start date/ Deadline -->
-			<div layout-gt-xs="row">
+			<section layout-gt-xs="row" layout-align="start center">
+				<div flex-gt-xs="50">
+			    <label class="u-ml-5">Start date*</label>
+			    <md-datepicker
+			      ng-model="prjGeneral.project.start_date"
+			      md-placeholder="Enter date"
+			      ng-change="prjGeneral.checkDates()"
+			      required>
+			    </md-datepicker>
+				</div>
 
-		    <label>Start date</label>
-		    <md-datepicker
-		      ng-model="prjGeneral.project.start_date"
-		      md-placeholder="Enter date"
-		      ng-change="prjGeneral.checkDates()"
-		      required>
-		    </md-datepicker>
+				<div flex-gt-xs="50">
+			    <label class="u-ml-5">End date*</label>
+			    <md-datepicker
+			      ng-model="prjGeneral.project.end_date"
+			      md-placeholder="Enter date"
+			      ng-change="prjGeneral.checkDates()"
+			      required>
+			    </md-datepicker>
+				</div>
 
-		    <label>End date</label>
-		    <md-datepicker
-		      ng-model="prjGeneral.project.end_date"
-		      md-placeholder="Enter date"
-		      ng-change="prjGeneral.checkDates()"
-		      required>
-		    </md-datepicker>
+			</section>
 
-			</div>
 			<div ng-show="prjGeneral.validateDate" 
 				layout-gt-xs="row" layout-align="center center">
-        <span class="alert-error fade"
+        <span class="alert alert-info fade"
         role="alert">
           End date must be greater than Start date!
         </span>
-      </div><!-- /Start date/ end date -->
+      </div>
+      <!-- /Start date/ end date -->
+
 		</md-content>
+
+
 		<!-- CARD ACTIONS-->
 		<md-card-actions
 		  layout="column"
@@ -122,9 +142,10 @@
 		  <md-button
 		    class="c-card-profile__btn no-margin"
 		    ng-click="prjGeneral.displayOrHide = true">
-		    Add general information
+		    Add/Edit general information
 		  </md-button>
 		</md-card-actions>
+
 
 		<md-card-actions
 		  layout="row"
@@ -144,7 +165,9 @@
 		    ng-click="prjGeneral.cancel()">
 		    Cancel
 		  </md-button>
-		</md-card-actions><!-- /CARD ACTIONS-->
+		</md-card-actions>
+		<!-- /CARD ACTIONS-->
+
 	</form>
 	<!-- EDIT PROJECT FORM -->
 

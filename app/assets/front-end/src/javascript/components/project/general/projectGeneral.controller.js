@@ -6,7 +6,7 @@
     .module('HRA')
     .controller('projectGeneralCtrl', projectGeneralCtrl);
 
-  function projectGeneralCtrl($rootScope, autocompleteService, formatDate, Project) {
+  function projectGeneralCtrl($rootScope, autocompleteService, dateService, Project) {
 
     let vm = this;
     let projectCoppy = {};
@@ -14,7 +14,7 @@
     vm.project = {};
     vm.validateDate = false;
     vm.displayOrHide = false;
-    vm.formatDate = formatDate;
+    vm.dateService = dateService;
 
     vm.save = save;
     vm.cancel = cancel;
@@ -26,8 +26,8 @@
     });
 
     function save() {
-      vm.project.start_date = vm.project.start_date ? vm.formatDate.getStandard(vm.project.start_date) : null;
-      vm.project.end_date = vm.formatDate.getStandard(vm.project.end_date);
+      vm.project.start_date = vm.project.start_date ? vm.dateService.format(vm.project.start_date) : null;
+      vm.project.end_date = vm.dateService.format(vm.project.end_date);
       Project.update(vm.project);
       vm.displayOrHide = false;
     }
