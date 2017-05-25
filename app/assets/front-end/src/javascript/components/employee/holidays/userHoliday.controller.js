@@ -9,15 +9,15 @@
 
   userHolidayCtrl
 
-
-  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, formatDate) {
-
+  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, dateService, $timeout) {
 
     let vm = this;
     let days;
     vm.userHolidays;
     vm.projects = [];
     vm.users = [];
+    vm.teamLeaders = [];
+
     vm.table = {
       options: {
         rowSelection: true,
@@ -37,6 +37,7 @@
       selected: []
     };
 
+    vm.errMsg = false;
     vm.displayOrHide = false;
     vm.replaceInputs = [1];
     vm.dateList = [];
@@ -45,7 +46,8 @@
     vm.to = new Date();
     vm.signingDate = new Date();
 
-    vm.formatDate = formatDate;
+    vm.addLeaders = addLeaders;
+    vm.dateService = dateService;
     vm.clearFields = clearFields;
     vm.checkDates = checkDates;
     vm.queryProjectSearch = queryProjectSearch;
@@ -57,7 +59,6 @@
       vm.projects = data.projects;
       vm.users = data.users;
       vm.userHolidays = data.holidays;
-
       autocompleteService.buildList(vm.projects, ['name']);
       autocompleteService.buildList(vm.users, ['first_name', 'last_name']);
     });
@@ -112,9 +113,14 @@
 
       let userId = $stateParams.id;
       let daysNo = days;
-      let startDate = vm.formatDate.getStandard(vm.from);
-      let endDate = vm.formatDate.getStandard(vm.to);
-      let signingDate = vm.signingDate;
+
+      let startDate = vm.dateService.format(vm.from);
+      let endDate = vm.dateService.format(vm.to);
+      let signingDate = vm.dateService.format(vm.signingDate);
+
+      let leaders = $.map(vm.teamLeaders, (value, index) => {
+        return [value.id];
+      });
 
       let usersArr = $.map(usersObj, (value, index) => {
         return [value];
@@ -148,16 +154,46 @@
         }
       }
 
-      let objToSave = {
+      vm.objToSave = {
         days: daysNo,
         start_date: startDate,
         end_date: endDate,
         signing_day: signingDate,
         project_ids: projectId,
         replacer_ids: replacerId,
-        user_id: userId
+        user_id: userId,
+        team_leader_ids: leaders
       };
 
+      if (vm.userHolidays.length > 0) {
+        let toSaveStartDate = vm.objToSave.start_date;
+        let toSaveEndDate = vm.objToSave.end_date;
+        let intervalExist = false;
+
+        for (let i = 0; i < vm.userHolidays.length; i++) {
+          let existingStartDate = vm.userHolidays[i].start_date;
+          let existingEndDate = vm.userHolidays[i].end_date;
+
+          if ((toSaveStartDate <= existingEndDate) && (existingStartDate <= toSaveEndDate)) {
+            vm.errMsg = true;
+
+            $timeout(() => {
+              vm.errMsg = false;
+            }, 5500);
+            intervalExist = true;
+            break;
+          }
+        }
+
+        if (!intervalExist) {
+          _addHoliday(vm.objToSave);
+        }
+      } else {
+        _addHoliday(vm.objToSave);
+      }
+    }
+
+    function _addHoliday(objToSave) {
       User.addHolidays(objToSave)
         .then((response) => {
           _getUserHolidays();
@@ -166,6 +202,7 @@
         .catch((error) => {
           console.log(error);
         });
+      clearFields();
     }
 
     function calculateHolidays(dDate1, dDate2) {
@@ -211,9 +248,14 @@
     function clearFields() {
       vm.searchUser = '';
       vm.searchProj = '';
-      vm.from = undefined;
-      vm.to = undefined;
-      vm.signingDate = undefined;
+      vm.leader = '';
+      vm.teamLeaders = [];
+      vm.from = new Date();
+      vm.to = new Date();
+      vm.signingDate = new Date();
+      vm.errMsg = false;
+      vm.errMsgIntersectInterval = false;
+
     }
 
     function addEmptyReplacement() {
@@ -224,6 +266,14 @@
       vm.displayOrHide = !vm.displayOrHide;
     }
 
+    vm.onlyWorkDay = function(date) {
+      var day = date.getDay();
+      return !(day === 0 || day === 6);
+    };
+
+    function addLeaders() {
+      vm.leader = ' ';
+    }
   }
 
 })();

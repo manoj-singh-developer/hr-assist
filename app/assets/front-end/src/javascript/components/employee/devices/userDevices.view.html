@@ -21,6 +21,12 @@
     </p>
   </md-content> <!-- CARD NOTES -->
 
+  <md-content class="c-card-profile__notes"
+              ng-if="!userDevices.copyUserDevices.length > 0">
+    <p>
+      <strong>You not have any device added.</strong>
+    </p>
+  </md-content>
 
 
 
@@ -153,7 +159,7 @@
             ng-show="userDevices.showEditDevices"
             class="additional">
 
-        <md-button 
+        <md-button
                    class="md-raised md-primary"
                    ng-click="userDevices.saveDevices()"
                    ng-disabled="userDevices.disableSaveBtn">

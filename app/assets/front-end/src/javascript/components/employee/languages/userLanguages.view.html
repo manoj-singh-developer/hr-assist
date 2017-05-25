@@ -19,9 +19,15 @@
     <p>
       <strong>NOTE: </strong>Complete here with the languages that you know.
     </p>
-  </md-content> <!-- CARD NOTES -->
+  </md-content>
+  <!-- CARD NOTES -->
 
-
+  <md-content class="c-card-profile__notes"
+              ng-if="!userLanguages.copyUserLanguages.length > 0">
+    <p>
+      <strong>You not have any language added.</strong>
+    </p>
+  </md-content>
 
 
 
@@ -96,8 +102,9 @@
               md-selected-item="userLanguages.selectedItem"
               md-search-text-change="userLanguages.searchTextChange(userLanguages.searchText)"
               md-search-text="userLanguages.searchText"
+              ng-model="userLanguages.searchText"
               md-selected-item-change="userLanguages.addInQueue(item)"
-              md-items="item in userLanguages.querySearch(userLanguages.searchText, userLanguages.languages)"
+              md-items="item in userLanguages.querySearch(userLanguages.searchText)"
               md-item-text="item.long_name"
               md-min-length="0"
               placeholder="Search"
