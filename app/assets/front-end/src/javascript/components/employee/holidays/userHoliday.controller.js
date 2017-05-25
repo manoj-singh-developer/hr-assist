@@ -175,7 +175,7 @@
               $timeout(() => {
                 vm.errMsgIntersectInterval = false;
               }, 5500);
-              console.error("holiday not Added this date intersect another");
+              console.error("HOLIDAY NOT ADDED this date intersect another");
               break;
 
             } else {
@@ -187,7 +187,7 @@
             $timeout(() => {
               vm.errMsg = false;
             }, 5500);
-            console.error("holiday not Added exact same date exist");
+            console.error("HOLIDAY NOT ADDED exact same date exist");
           }
         }
       } else {
