@@ -1,0 +1,127 @@
+<md-card>
+
+
+
+  <md-card-title>
+     <md-card-title-text>
+       <span class="md-headline">
+       Application Types:
+      </span>
+     </md-card-title-text>
+  </md-card-title>
+
+
+
+  <!-- PREVIEW  -->
+  <md-content
+    ng-show="!prjAppTypes.displayOrHide"
+    class="c-card-profile__preview">
+    <md-list layout="row" layout-wrap>
+      <md-list-item
+        flex="25"
+        class="md-2-line"
+        ng-repeat="appType in prjAppTypes.copyPrjAppTypes track by $index">
+
+        <div class="md-list-item-text" layout="column">
+          <h4>{{appType.name}}</h4>
+        </div>
+
+      </md-list-item>
+    </md-list>
+
+  </md-content><!-- /PREVIEW -->
+
+
+
+    <!-- EDIT AppTypes-->
+    <md-content
+      class = "md-padding"
+      ng-show="prjAppTypes.displayOrHide">
+
+      <md-list layout="row" layout-wrap>
+
+        <md-list-item class="md-2-line c-filters__label">
+           <div class="md-list-item-text " layout="column">
+             <h4>Add/Remove AppTypes: </h4>
+           </div>
+         </md-list-item>
+
+         <md-list-item
+           class="md-2-line"
+           ng-repeat="appType in prjAppTypes.copyPrjAppTypes track by $index">
+           <div class="md-list-item-text" layout="column">
+             <p class="c-filters__item"
+              ng-click="prjAppTypes.removeFromQueue(appType)" >
+               {{$index + 1}} {{appType.name}}
+               <span class="material-icons c-filters__icon">close</span>
+             </p>
+           </div>
+         </md-list-item>
+
+      </md-list>
+
+      <md-content class="md-padding">
+        <form ng-submit="$event.preventDefault()">
+          <md-autocomplete
+            md-selected-item="prjAppTypes.selectedItem"
+            md-search-text-change="prjAppTypes.searchTextChange(prjAppTypes.searchText)"
+            md-search-text="prjAppTypes.searchText"
+            md-selected-item-change="prjAppTypes.addInQueue(item)"
+            md-items="item in prjAppTypes.querySearch(prjAppTypes.searchText, prjAppTypes.appTypes)"
+            md-item-text="item.name"
+            md-min-length="0"
+            placeholder="Search">
+
+            <md-item-template>
+              <span
+              class="item-metadata"
+              md-highlight-text="prjAppTypes.searchText">
+                {{item.name}}
+              </span>
+            </md-item-template>
+
+          </md-autocomplete>
+        </form>
+      </md-content>
+
+    </md-content><!-- /EDIT AppTypes-->
+
+
+
+  <!-- CARD ACTIONS-->
+  <md-card-actions
+    layout="column"
+    layout-align="start"
+    ng-show="!prjAppTypes.displayOrHide">
+    <md-button
+      class="c-card-profile__btn no-margin"
+      ng-click="prjAppTypes.displayForm()">
+      Add/Edit Application Types
+    </md-button>
+  </md-card-actions>
+
+  <md-card-actions
+    layout="row"
+    layout-align="center center"
+    ng-show="prjAppTypes.displayOrHide"
+    class="additional">
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="prjAppTypes.save()"
+      ng-disabled="prjAppTypes.disableSaveBtn">
+      Save
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ng-click="prjAppTypes.displayForm(); prjAppTypes.cancel()">
+      Cancel
+    </md-button>
+
+  </md-card-actions>
+  <!-- /CARD ACTIONS-->
+
+
+
+</md-card>
