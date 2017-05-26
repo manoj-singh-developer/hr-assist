@@ -169,6 +169,14 @@ module V1
         {items: project.users}
       end
 
+      params do
+        requires :user_ids, type: Array[Integer], allow_blank: false
+      end
+
+      delete ':id/users' do
+        delete_object(Project, User, params[:id], params[:user_ids])
+      end
+
       desc "Delete project"
       delete ':id' do
         Project.find(params[:id]).destroy
