@@ -43,6 +43,9 @@ module V1
           use :other
         end
         get do
+          if(current_user.is_employee)
+            return error({message: "Cannot access list"})
+
           getPaginatedItemsFor User, params[:with] , "auth_token"
         end
 
