@@ -420,10 +420,8 @@
 
     Project.saveUsers = (project, users) => {
       let id = project.id;
-      let data = {};
-      data.application_type_ids = users.map(user => user.id);
+      let data = users;
       url = apiUrl + '/projects/:id/users';
-
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
       }).update({ id: id }, data);
@@ -443,8 +441,7 @@
     Project.removeUsers = (project, users) => {
       let id = project.id;
       let data = {};
-
-      data["users_ids[]"] = users.map(user => user.id);
+      data["user_ids[]"] = users;
       url = apiUrl + '/projects/:id/users';
       resource = $resource(url, data).delete({ id: id });
 

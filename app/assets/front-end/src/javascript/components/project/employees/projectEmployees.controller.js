@@ -17,12 +17,13 @@
     vm.copyPrjUsers = [];
     vm.disableSaveBtn = true;
     vm.displayOrHide = false;
-
+    vm.teamLeader = {};
     _getUsers();
 
     $rootScope.$on("event:projectLoaded", (event, data) => {
       vm.project = data;
       _getPrjUsers();
+      _getTeamLeader();
     });
 
     vm.addInQueue = (users) => {
@@ -37,6 +38,15 @@
         vm.searchText = ' ';
       }
       vm.disableSaveBtn = false;
+    }
+
+    vm.addTeamLeader = (user) => {
+      if (user) {
+        vm.teamLeader.team_leader_id = user.id;
+        vm.teamLeader.first_name = user.first_name;
+        vm.teamLeader.last_name = user.last_name;
+        vm.disableSaveBtn = false;
+      }
     }
 
     vm.removeFromQueue = (users) => {
@@ -59,9 +69,14 @@
     }
 
     vm.save = () => {
+      let usersID = usersToAdd.map(user => user.id);
+      let objToSave = {
+        user_ids: usersID,
+        team_leader_id: vm.teamLeader.team_leader_id || vm.project.team_leader_id
+      }
 
-      if (usersToAdd.length > 0) {
-        Project.saveUsers(vm.project, usersToAdd);
+      if (usersToAdd.length > 0 || vm.project.team_leader_id) {
+        Project.saveUsers(vm.project, objToSave);
         usersToAdd = [];
       }
 
@@ -79,7 +94,6 @@
       User.getAll()
         .then((data) => {
           vm.users = data;
-          debugger
           autocompleteService.buildList(vm.users, ['first_name', 'last_name']);
         });
     }
@@ -90,6 +104,16 @@
           vm.prjUsers = data;
           vm.copyPrjUsers.push(...vm.prjUsers);
         });
+    }
+
+    function _getTeamLeader() {
+      let leader = vm.project.team_leader_id;
+      if (leader) {
+        User.getById(leader)
+          .then((data) => {
+            vm.teamLeader = data;
+          })
+      }
     }
 
     vm.displayForm = () => {
