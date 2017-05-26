@@ -84,6 +84,7 @@
         vm.projectsCopy,
         vm.filters,
         filteringType);
+      vm.tableSettings.total = vm.projects.length;
     }
 
     function resetFilters() {
@@ -92,7 +93,13 @@
     }
 
     function querySearch(query, list) {
+      if (query != "" && query != " ") {
+        vm.tableSettings.total = autocompleteService.querySearch(query, list).length;
+      } else {
+        vm.tableSettings.total = list.length;
+      }
       return autocompleteService.querySearch(query, list);
+
     }
 
 

@@ -45,7 +45,6 @@
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
       }).update({ id: data.id }, data);
-
       promise = resource.$promise
         .then((data) => {
           alertService.success(model, 'update');
