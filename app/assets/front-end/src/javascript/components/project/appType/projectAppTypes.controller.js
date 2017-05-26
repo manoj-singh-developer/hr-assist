@@ -15,33 +15,17 @@
     vm.appTypes = [];
     vm.prjAppTypes = [];
     vm.copyPrjAppTypes = [];
-    // vm.addNewLanguage = addNewLanguage;
     vm.disableSaveBtn = true;
-
-
-    vm.addInQueue = addInQueue;
-    vm.removeFromQueue = removeFromQueue;
-    vm.save = save;
-    vm.cancel = cancel;
     vm.displayOrHide = false;
 
     _getAppTypes();
-
 
     $rootScope.$on("event:projectLoaded", (event, data) => {
       vm.project = data;
       _getPrjAppTypes();
     });
 
-    // function addNewLanguage() {
-    //   if (!vm.appTypesToAdd) {
-    //     vm.appTypesToAdd = [];
-    //   }
-    //   vm.appTypesToAdd.push({});
-
-    // }
-
-    function addInQueue(appType) {
+    vm.addInQueue = (appType) => {
       if (appType) {
         let notToAdd = _.findWhere(vm.copyPrjAppTypes, { id: appType.id });
         if (!notToAdd) {
@@ -55,7 +39,7 @@
       vm.disableSaveBtn = false;
     }
 
-    function removeFromQueue(appType) {
+    vm.removeFromQueue = (appType) => {
       let toRemove = _.findWhere(vm.copyPrjAppTypes, { id: appType.id });
       vm.copyPrjAppTypes = _.without(vm.copyPrjAppTypes, toRemove);
       appTypesToAdd = _.without(appTypesToAdd, toRemove);
@@ -63,7 +47,7 @@
       vm.disableSaveBtn = false;
     }
 
-    function cancel() {
+    vm.cancel = () => {
       vm.searchText = "";
       vm.copyPrjAppTypes = [];
       Project.getAppTypes(vm.project)
@@ -74,7 +58,7 @@
       vm.disableSaveBtn = true;
     }
 
-    function save() {
+    vm.save = () => {
 
       if (appTypesToAdd.length > 0) {
         Project.saveAppTypes(vm.project, appTypesToAdd);
@@ -90,7 +74,6 @@
       vm.disableSaveBtn = true;
       vm.searchText = "";
     }
-
 
     function _getAppTypes() {
       AppType.getAll()
