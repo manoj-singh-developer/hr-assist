@@ -153,6 +153,22 @@ module V1
         delete_object(Project, Customer, params[:id], params[:customer_ids])
       end
 
+      params do
+        requires :user_ids, type: Array[Integer], allow_blank: false
+        optional :team_leader_id, type: Integer
+      end
+
+      put ':id/users' do
+        project = Project.find(params[:id])
+        if params[:team_leader_id]
+           project.team_leader_id = params[:team_leader_id]
+           project.save
+        end
+        users = User.where(id: params[:user_ids]) - project.users
+        project.users << users if users.count > 0
+        {items: project.users}
+      end
+
       desc "Delete project"
       delete ':id' do
         Project.find(params[:id]).destroy
