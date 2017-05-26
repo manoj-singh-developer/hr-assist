@@ -43,7 +43,19 @@ module V1
           use :other
         end
         get do
-          getPaginatedItemsFor User, params[:with] , "auth_token"
+
+          if current_user.is_employee
+              
+              params[:with] = []
+              exceptions = [
+                "address", "birthday", "car_plate", "city",
+                "company_start_date", "observations", "office_nr",
+                "phone", "picture", "schedule_id", "status", "uid",
+                "urgent_contact_name", "urgent_contact_phone", "zip_code",
+                "auth_token"]
+          end
+
+          getPaginatedItemsFor User, params[:with] , defined?(exceptions) ? exceptions : []
         end
 
         desc "Returns a user"

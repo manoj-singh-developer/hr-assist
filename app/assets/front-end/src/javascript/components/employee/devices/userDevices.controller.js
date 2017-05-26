@@ -43,16 +43,14 @@
     }
 
     function addInQueue(device) {
-      
+
       if (device) {
-        let notToAdd = _.findWhere(vm.copyUserDevices, { id: device.id });
-        if(!notToAdd){
-          let toRemove = _.findWhere(devicesToRemove, { id: device.id });
-          devicesToRemove = _.without(devicesToRemove, toRemove);
-          devicesToAdd.push(device);
-          vm.copyUserDevices.push(device);
-        }
-      vm.searchText = ' ';  
+        let toRemove = _.findWhere(devicesToRemove, { id: device.id });
+        devicesToRemove = _.without(devicesToRemove, toRemove);
+        devicesToAdd.push(device);
+        vm.copyUserDevices.push(device);
+
+        vm.searchText = ' ';
       }
       vm.disableSaveBtn = false;
     }
@@ -62,34 +60,34 @@
       vm.copyUserDevices = _.without(vm.copyUserDevices, toRemove);
       devicesToAdd = _.without(devicesToAdd, toRemove);
       devicesToRemove.push(device.id);
-       vm.disableSaveBtn = false;
+      vm.disableSaveBtn = false;
     }
 
-    function cancel(){
+    function cancel() {
       vm.copyUserDevices = [];
       User.getUserDevices($stateParams.id)
         .then((data) => {
           vm.userDevices = data;
           vm.copyUserDevices.push(...vm.userDevices);
         });
-        vm.searchText = "";
-        vm.disableSaveBtn = true;
+      vm.searchText = "";
+      vm.disableSaveBtn = true;
     }
 
     function saveDevices() {
-      
-      if(devicesToAdd.length > 0){
+
+      if (devicesToAdd.length > 0) {
         User.updateDevices(vm.user, devicesToAdd).then((data) => {
           vm.userDevices = data;
         });
         devicesToAdd = [];
       }
-       
-      if(devicesToRemove.length > 0){
-         User.removeDevices(vm.user, devicesToRemove);
-         devicesToRemove = [];
+
+      if (devicesToRemove.length > 0) {
+        User.removeDevices(vm.user, devicesToRemove);
+        devicesToRemove = [];
       }
-      
+
       vm.showEditDevices = false;
       vm.disableSaveBtn = true;
       vm.searchText = "";
@@ -116,5 +114,5 @@
     }
 
   }
-  
+
 })(_);
