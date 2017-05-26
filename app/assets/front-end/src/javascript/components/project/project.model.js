@@ -398,6 +398,67 @@
       return promise;
     }
 
+    Project.getUsers = (project) => {
+      let id = project.id;
+      url = apiUrl + '/projects/:id/users';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get({ id: id });
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getUsers');
+        });
+
+      return promise;
+    };
+
+    Project.saveUsers = (project, users) => {
+      let id = project.id;
+      let data = {};
+      data.application_type_ids = users.map(user => user.id);
+      url = apiUrl + '/projects/:id/users';
+
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: id }, data);
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'update users');
+          return data.application_types;
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'update users');
+        });
+
+      return promise;
+    }
+
+    Project.removeUsers = (project, users) => {
+      let id = project.id;
+      let data = {};
+
+      data["users_ids[]"] = users.map(user => user.id);
+      url = apiUrl + '/projects/:id/users';
+      resource = $resource(url, data).delete({ id: id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'remove user');
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'remove user');
+        });
+
+      return promise;
+    }
+
     return Project;
 
   }
