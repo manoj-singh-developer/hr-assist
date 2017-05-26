@@ -298,7 +298,6 @@
     Project.saveCustomers = (project, customers) => {
       let id = project.id;
       let data = {};
-
       data.customer_ids = customers.map(customer => customer.id);
       url = apiUrl + '/projects/:id/customers';
 
@@ -333,6 +332,67 @@
         }).catch((error) => {
           errorService.forceLogout(error);
           alertService.error(model, 'remove customer');
+        });
+
+      return promise;
+    }
+
+    Project.getAppTypes = (project) => {
+      let id = project.id;
+      url = apiUrl + '/projects/:id/application_types';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get({ id: id });
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'get appTypes');
+        });
+
+      return promise;
+    }
+
+    Project.saveAppTypes = (project, appTypes) => {
+      let id = project.id;
+      let data = {};
+      data.application_type_ids = appTypes.map(appType => appType.id);
+      url = apiUrl + '/projects/:id/application_types';
+
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: id }, data);
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'update appTypes');
+          return data.application_types;
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'update appTypes');
+        });
+
+      return promise;
+    }
+
+    Project.removeAppTypes = (project, appTypes) => {
+      let id = project.id;
+      let data = {};
+
+      data["application_type_ids[]"] = appTypes.map(appType => appType.id);
+      url = apiUrl + '/projects/:id/application_types';
+      resource = $resource(url, data).delete({ id: id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'remove appType');
+        }).catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'remove appType');
         });
 
       return promise;

@@ -104,7 +104,7 @@
               md-search-text="userLanguages.searchText"
               ng-model="userLanguages.searchText"
               md-selected-item-change="userLanguages.addInQueue(item)"
-              md-items="item in userLanguages.querySearch(userLanguages.searchText)"
+              md-items="item in userLanguages.querySearch(userLanguages.searchText, userLanguages.languages)"
               md-item-text="item.long_name"
               md-min-length="0"
               placeholder="Search"
