@@ -30,4 +30,7 @@ Rails.application.routes.draw do
   mount GrapeSwaggerRails::Engine => '/swagger'
   mount ApplicationApi, at: "/"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+  post '/deploy', to: 'deploy#index'
+  
 end
