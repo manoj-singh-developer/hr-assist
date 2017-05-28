@@ -8,14 +8,14 @@ class DeployController < ApplicationController
 
         PULL_REQUEST    = 'pull_request'
         PUSH            = 'push'
-        
+
         repo_url        = config['REPO_URL']
         branch_paths    = config['BRANCH_PATHS']
         github_ips      = config['GIT_IPS']
         token           = config['TOKEN']
 
         commands = [
-            #'cd app/assets/front-end/ && gulp',
+            'cd app/assets/front-end/ && gulp build',
             'sudo service apache2 reload'
         ]
 
