@@ -56,6 +56,11 @@ class DeployController < ApplicationController
 
     private
     def verify_signature(token, payload_body)
+
+        if !request.headers['HTTP_X_HUB_SIGNATURE']
+            return false
+        end
+
         signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), token, payload_body)
         Rack::Utils.secure_compare(signature, request.headers['HTTP_X_HUB_SIGNATURE'])
     end
