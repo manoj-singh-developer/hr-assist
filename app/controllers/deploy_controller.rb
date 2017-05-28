@@ -39,12 +39,12 @@ class DeployController < ApplicationController
         end
 
         Dir.chdir(branch_paths[payload_branch]) do
-            system 'git pull origin #{payload_branch}'
+            system 'git pull origin', payload_branch
             commands.each do |command|
                 system command
             end
         end
         
-        render plain: "Successfully deployed on from branch `#{payload_branch}` into directory `#{ENV['HOME']}/#{branch_paths[payload_branch]}`"
+        render plain: "Successfully deployed on from branch `#{payload_branch}` into directory `#{branch_paths[payload_branch]}`"
     end
 end
