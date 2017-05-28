@@ -20,26 +20,31 @@ class DeployController < ApplicationController
             return
         end
 
-        if !params['ref']
-            render plain: "Not a valid payload"
+        payload = params
+
+        if request.headers["X-GitHub-Event"] == 'pull_request' && request.request_parameters['action'] == 'closed'
+            payload_branch   = payload['pull_request']['base']['ref']
+            payload_url      = payload['pull_request']['head']['repo']['html_url']
+        elsif request.headers["X-GitHub-Event"] == 'push'
+            payload_branch   = payload['ref'].split("/").last
+            payload_url      = payload['repository']['url']
+        else
+            render plain: "Only push and pull_request events are supported! #{request.request_parameters['action']}"
             return
         end
 
-        payload         = params
-        remote_branch   = payload['ref'].split("/").last
-
-        if payload['repository']['url'] != repo_url || !branch_paths.key?(remote_branch)
-            render plain: "#{remote_branch} branch does not have any associated folder on server or repo is not correct"
+        if payload_url != repo_url || !branch_paths.key?(payload_branch)
+            render plain: "#{payload_branch} branch does not have any associated folder on server or repo is not correct"
             return
         end
 
-        Dir.chdir(branch_paths[remote_branch]) do
-            system 'git pull origin #{remote_branch}'
+        Dir.chdir(branch_paths[payload_branch]) do
+            system 'git pull origin #{payload_branch}'
             commands.each do |command|
                 system command
             end
         end
         
-        render plain: "Successfully deployed on from branch `#{remote_branch}` into directory `#{ENV['HOME']}/#{branch_paths[remote_branch]}`"
+        render plain: "Successfully deployed on from branch `#{payload_branch}` into directory `#{ENV['HOME']}/#{branch_paths[payload_branch]}`"
     end
 end
