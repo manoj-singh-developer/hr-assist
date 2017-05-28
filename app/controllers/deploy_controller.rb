@@ -9,11 +9,17 @@ class DeployController < ApplicationController
         repo_url        = config['REPO_URL']
         branch_paths    = config['BRANCH_PATHS']
         github_ips      = config['GIT_IPS']
+        token           = config['TOKEN']
 
         commands = [
             #'cd app/assets/front-end/ && gulp',
             'sudo service apache2 reload'
         ]
+
+        if !verify_signature(token, request.body.read)
+            render plain: "Signatures didn't match!"
+            return
+        end
 
         if !github_ips.include? request.remote_ip
             render plain: "Request is not from github"
@@ -46,5 +52,11 @@ class DeployController < ApplicationController
         end
         
         render plain: "Successfully deployed on from branch `#{payload_branch}` into directory `#{branch_paths[payload_branch]}`"
+    end
+
+    private
+    def verify_signature(token, payload_body)
+        signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), token, payload_body)
+        return false unless Rack::Utils.secure_compare(signature, request.headers['HTTP_X_HUB_SIGNATURE'])
     end
 end
