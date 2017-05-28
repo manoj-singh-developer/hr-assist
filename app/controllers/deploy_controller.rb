@@ -16,7 +16,7 @@ class DeployController < ApplicationController
             'sudo service apache2 reload'
         ]
 
-        if !verify_signature(token, request.body.read)
+        if !verify_signature(token, request.raw_post)
             render plain: "Signatures didn't match!"
             return
         end
@@ -57,6 +57,6 @@ class DeployController < ApplicationController
     private
     def verify_signature(token, payload_body)
         signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), token, payload_body)
-        return false unless Rack::Utils.secure_compare(signature, request.headers['HTTP_X_HUB_SIGNATURE'])
+        Rack::Utils.secure_compare(signature, request.headers['HTTP_X_HUB_SIGNATURE'])
     end
 end
