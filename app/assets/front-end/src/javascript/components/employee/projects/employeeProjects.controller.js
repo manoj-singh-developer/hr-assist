@@ -6,7 +6,7 @@
     .module('HRA')
     .controller('userProjectsCtrl', userProjectsCtrl);
 
-  function userProjectsCtrl($rootScope, autocompleteService, $mdDialog, Project, User) {
+  function userProjectsCtrl($rootScope, autocompleteService, $mdDialog, Project, User, dateService) {
 
     let vm = this;
     let projectsToAdd = [];
@@ -20,9 +20,8 @@
     vm.userTechnologies = [];
     vm.validateDate = false;
     vm.displayOrHide = false;
-    vm.start_date = new Date();
-    vm.end_date = new Date();
 
+    vm.dateService = dateService;
     vm.addProject = addProject;
     vm.addInQueue = addInQueue;
     vm.editProject = editProject;
@@ -45,8 +44,9 @@
     function editProject(project) {
       vm.searchText = project.project.name;
 
-      vm.start_date = new Date(project.user_project_start_date);
-      vm.end_date = new Date(project.user_project_end_date);
+      vm.start_date = project.user_project_start_date ? new Date(project.user_project_start_date) : undefined;
+      vm.end_date = project.user_project_end_date ? new Date(project.user_project_end_date) : undefined;
+      vm.onGoing = project.user_project_end_date ? undefined : true;
 
       projectsToAdd.push(project.project);
       vm.technologiesToAdd = project.technologies;
@@ -77,7 +77,7 @@
           technologiesToAdd.push(technology.id);
           vm.userTechnologies.push(technology);
         }
-        vm.searchTechnology = "";
+        vm.searchTechnology = " ";
       }
     }
 
@@ -104,17 +104,22 @@
     }
 
     function checkDates() {
-      if (vm.start_date != undefined && vm.end_date != undefined && vm.start_date > vm.end_date) {
-        vm.validateDate = true;
-      } else {
+      if (vm.onGoing) {
         vm.validateDate = false;
+      } else {
+        if (vm.start_date != undefined && vm.end_date != undefined && vm.start_date > vm.end_date) {
+          vm.validateDate = true;
+        } else {
+          vm.validateDate = false;
+        }
       }
+
     }
 
     function save() {
       let projectId = [];
-      let startDate = vm.start_date;
-      let endDate = vm.end_date;
+      let startDate = vm.dateService.format(vm.start_date);
+      let endDate = vm.end_date ? vm.dateService.format(vm.end_date) : null;
 
       for (let y = 0; y < projectsToAdd.length; y++) {
         projectId = projectsToAdd[y].id;
@@ -129,6 +134,7 @@
       };
 
       User.updateProjects(vm.user, projectObj).then((data) => {
+        clearInputs();
         _getUserProjects();
       });
 
@@ -150,8 +156,10 @@
       technologiesToAdd = [];
       vm.searchText = '';
       vm.disableProjectName = false;
-      vm.start_date = new Date();
-      vm.end_date = new Date();
+      vm.start_date = undefined;
+      vm.end_date = undefined;
+      vm.searchTechnology = "";
+      vm.onGoing = undefined;
     }
 
     function _getUserProjects() {
@@ -164,6 +172,10 @@
       vm.displayOrHide = !vm.displayOrHide;
     }
 
+    vm.checkOnGoing = () => {
+      vm.end_date = vm.onGoing ? null : vm.end_date;
+      return vm.onGoing;
+    }
   }
 
 })(_);
