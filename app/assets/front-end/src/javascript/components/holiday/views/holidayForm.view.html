@@ -15,113 +15,148 @@
           <md-content class="md-padding">
             <br>
 
-            <!--Employee start-->
+            
             <div ng-repeat = "holidaysRow in holidayForm.holidayEmpIncrement track by $index">
-              <div class="md-block md-padding">
-                  <md-autocomplete md-no-cache="true"
-                    md-search-text="holidayForm.searchUser"
-                    md-search-text-change="holidayForm.searchTextChange(holidayForm.searchUser)"
-                    md-selected-item-change="holidayForm.addUser(item, holidayForm.holiday, $index)"
-                    md-items="item in holidayForm.querySearch(holidayForm.searchUser)"
-                    ng-model="holidayForm.user"
-                    md-item-text="item.first_name +' '+ item.last_name"
-                    md-min-length="1"
-                    placeholder="Select User"
-                    md-input-name="autocompleteUser"
-                    md-require-match
-                    required>
-                    <md-item-template>
-                      <span class="item-metadata">
-                        {{item.first_name}}
-                        {{item.last_name}}
-                      </span>
-                    </md-item-template>
-                    <md-not-found>
-                      No employee matching <strong>{{holidayForm.searchUser}}</strong> were found.
-                    </md-not-found>
-                  </md-autocomplete>
 
-                  <div ng-messages="holidayform.autocompleteUser.$error"
-                    layout-gt-xs="row" layout-align="center center"
-                    ng-if="holidayform.autocompleteUser.$touched">
-                    <span ng-message="md-require-match" class="alert-error fade" role="alert">
-                      You must select an option!
+              <!--Employee start-->
+              <div class="md-block md-padding">
+                <md-autocomplete md-no-cache="true"
+                  md-search-text="holidayForm.searchUserText"
+                  md-search-text-change="holidayForm.searchTextChange(holidayForm.searchUserText)"
+                  md-selected-item-change="holidayForm.addUser(item, holidayForm.holiday, $index)"
+                  md-items="item in holidayForm.querySearch(holidayForm.searchUserText, holidayForm.empList)"
+                  ng-model="holidayForm.user"
+                  md-item-text="item.first_name +' '+ item.last_name"
+                  md-min-length="0"
+                  placeholder="Select User"
+                  md-input-name="autocompleteUser"
+                  md-require-match
+                  required>
+                  <md-item-template>
+                    <span class="item-metadata">
+                      {{item.first_name}}
+                      {{item.last_name}}
                     </span>
+                  </md-item-template>
+                  <md-not-found>
+                    No employee matching <strong>{{holidayForm.searchUserText}}</strong> were found.
+                  </md-not-found>
+                </md-autocomplete>
+
+                <div ng-messages="holidayform.autocompleteUser.$error"
+                  layout-gt-xs="row"
+                  ng-if="holidayform.autocompleteUser.$touched">
+                  <div ng-message="md-require-match" class="alert alert-info fade" role="alert">
+                    You must select an option!
                   </div>
+                </div>
 
               </div><!--Employee end-->
+
             </div>
+
+            <!-- SELECT TEAM LEADER -->
+            <div class="md-block md-padding">
+
+              <md-chips
+                ng-model="holidayForm.teamLeaders"
+                md-on-remove
+                md-on-add="holidayForm.addLeaders()"
+                md-require-match=true
+                md-input-name="autocompleteLeader">
+                <md-autocomplete
+                  md-search-text="holidayForm.leaderText"
+                  md-items="item in holidayForm.querySearch(holidayForm.leaderText, holidayForm.empList)"
+                  md-item-text="item.first_name+' '+item.last_name"
+                  placeholder="Search Team Leader">
+                  <md-item-template>
+                    <span md-highlight-text="holidayForm.leader">
+                      {{item.first_name}} {{item.last_name}}
+                    </span>
+                  </md-item-template>
+                </md-autocomplete>
+                <md-chip-template>
+                  <span>
+                    <em>{{$chip.first_name}} {{$chip.last_name}}</em>
+                  </span>
+                </md-chip-template>
+              </md-chips>
+
+            </div>
+            <!-- /SELECT TEAM LEADER -->
 
             <div layout-gt-xs="row" ng-repeat = "holidayRow in holidayForm.holidayReplaceIncrement track by $index">
 
               <!--Project start-->
               <div class="md-block md-padding" flex-gt-xs="40">
-                  <md-autocomplete
-                    md-no-cache="true"
-                    md-search-text="holidayForm.searchProjectHold[$index]"
-                    md-search-text-change="holidayForm.searchTextChange(holidayForm.searchProjectHold[$index])"
-                    md-selected-item-change="holidayForm.addRepProject(item, holidayForm.employee, $index)"
-                    md-items="item in holidayForm.querySearchProj(holidayForm.searchProjectHold[$index])"
-                    md-item-text="item.name"
-                    md-min-length="1"
-                    placeholder="Select a project"
-                    md-input-name="autocompleteProject"
-                    md-require-match
-                    required>
-                    <md-item-template>
-                      <span class="item-metadata">
-                        {{item.name}}
-                      </span>
-                    </md-item-template>
-                    <md-not-found>
-                      No project matching were found.
-                    </md-not-found>
-                  </md-autocomplete>
-
-                  <div ng-messages="holidayform.autocompleteProject.$error"
-                    layout-gt-xs="row" layout-align="center center"
-                    ng-if="holidayform.autocompleteProject.$touched">
-                    <span ng-message="md-require-match" class="alert-error fade" role="alert">
-                      You must select an option!
+                <md-autocomplete
+                  md-no-cache="true"
+                  md-search-text="holidayForm.searchProjectHold[$index]"
+                  md-search-text-change="holidayForm.searchTextChange(holidayForm.searchProjectHold[$index])"
+                  md-selected-item-change="holidayForm.addRepProject(item, holidayForm.employee, $index)"
+                  md-items="item in holidayForm.querySearch(holidayForm.searchProjectHold[$index], holidayForm.projList)"
+                  md-item-text="item.name"
+                  md-min-length="0"
+                  placeholder="Search project"
+                  md-input-name="autocompleteProject_{{$index}}"
+                  md-require-match
+                  required>
+                  <md-item-template>
+                    <span class="item-metadata">
+                      {{item.name}}
                     </span>
-                  </div>
+                  </md-item-template>
+                  <md-not-found>
+                    No project matching were found.
+                  </md-not-found>
+                </md-autocomplete>
 
-              </div><!--Project end-->
+                <div ng-messages="holidayform['autocompleteProject_'+$index].$error"
+                  layout-gt-xs="row" layout-align="center center"
+                  ng-if="holidayform['autocompleteProject_'+$index].$touched">
+                  <span ng-message="md-require-match" class="alert-info fade" role="alert">
+                    You must select an option!
+                  </span>
+                </div>
+
+              </div>
+              <!--Project end-->
 
               <!--Replacement Employee start-->
               <div class="md-block md-padding" flex-gt-xs="40">
-                  <md-autocomplete
-                    md-no-cache="true"
-                    md-search-text="holidayForm.searchEmp[$index]"
-                    md-search-text-change="holidayForm.searchTextChange(holidayForm.searchEmp[$index])"
-                    md-selected-item-change="holidayForm.addEmployee(item, holidayForm.holiday, $index)"
-                    md-items="item in holidayForm.querySearch(holidayForm.searchEmp[$index])"
-                    md-item-text="item.first_name +' '+ item.last_name"
-                    md-min-length="1"
-                    placeholder="Select an employee"
-                    md-input-name="autocompleteReplace"
-                    md-require-match
-                    required>
-                    <md-item-template>
-                      <span class="item-metadata">
-                        {{item.first_name}}
-                        {{item.last_name}}
-                      </span>
-                    </md-item-template>
-                    <md-not-found>
-                      No employee matching were found.
-                    </md-not-found>
-                  </md-autocomplete>
-                 
-                  <div ng-messages="holidayform.autocompleteReplace.$error"
-                    layout-gt-xs="row" layout-align="center center"
-                    ng-if="holidayform.autocompleteProject.$touched">
-                    <span ng-message="md-require-match" class="alert-error fade" role="alert">
-                      You must select an option!
+                <md-autocomplete
+                  md-no-cache="true"
+                  md-search-text="holidayForm.searchEmp[$index]"
+                  md-search-text-change="holidayForm.searchTextChange(holidayForm.searchEmp[$index])"
+                  md-selected-item-change="holidayForm.addEmployee(item, holidayForm.holiday)"
+                  md-items="item in holidayForm.querySearch(holidayForm.searchEmp[$index], holidayForm.empList)"
+                  md-item-text="item.first_name +' '+ item.last_name"
+                  md-min-length="0"
+                  placeholder="Search employee"
+                  md-input-name="autocompleteReplace_{{$index}}"
+                  md-require-match
+                  required>
+                  <md-item-template>
+                    <span class="item-metadata">
+                      {{item.first_name}}
+                      {{item.last_name}}
                     </span>
-                  </div>
+                  </md-item-template>
+                  <md-not-found>
+                    No employee matching were found.
+                  </md-not-found>
+                </md-autocomplete>
+               
+                <div ng-messages="holidayform['autocompleteReplace_'+$index].$error"
+                  layout-gt-xs="row" layout-align="center center"
+                  ng-if="holidayform['autocompleteReplace_'+$index].$touched">
+                  <span ng-message="md-require-match" class="alert-info fade" role="alert">
+                    You must select an option!
+                  </span>
+                </div>
 
-              </div><!--Replacement Employee start-->
+              </div>
+              <!--Replacement Employee start-->
 
               <div class="md-block md-padding" flex-gt-xs="20">
                 <md-button
@@ -131,30 +166,23 @@
                 </md-button>
               </div>
             </div>
-            <!--Period start-->
+
+          <!--Period start-->
           <section ng-repeat="holidayDate in holidayForm.holidayDateIncrement track by $index">
             <div layout-gt-xs="row">
-              <md-datepicker 
-                ng-model="holidayForm.dateList[$index].signing_day"
-                md-placeholder="Signing date"
-                ng-change="holidayForm.checkDates($index)"
-                md-open-on-focus
-                required>
-              </md-datepicker>
-            </div>
-
-            <div layout-gt-xs="row">
+              <label>Start date</label>
               <md-datepicker required
                 md-open-on-focus
                 ng-model="holidayForm.dateList[$index].from"
-                md-placeholder="Start date"
+                md-placeholder="Enter date"
                 ng-change="holidayForm.checkDates($index)"> 
               </md-datepicker>
 
+               <label>End date</label>
               <md-datepicker required
                 md-open-on-focus
                 ng-model="holidayForm.dateList[$index].to"
-                md-placeholder="End date"
+                md-placeholder="Enter date"
                 ng-change="holidayForm.checkDates($index)">
                           
               </md-datepicker>
@@ -164,9 +192,21 @@
                   ng-click="holidayForm.addNewDateHoliday($index)"
                   ng-show="!isDate">
                   New Date
-                </md-button> --><!--Period end-->
-            </div>            
+                </md-button> -->
+            </div>  
+             <label>Signing date</label>
+            <div layout-gt-xs="row">
+              <md-datepicker 
+                ng-model="holidayForm.dateList[$index].signing_day"
+                md-placeholder="Signing date"
+                ng-change="holidayForm.checkDates($index)"
+                md-open-on-focus
+                required>
+              </md-datepicker>
+            </div>
+          
           </section>
+          <!--Period end-->
 
             <section ng-show="holidayForm.validateDate" layout-gt-xs="row" 
               layout-align="center center">
@@ -221,7 +261,7 @@
               <p class="holiday__text text--lite"><strong>{{holidayForm.user[0].first_name}} {{holidayForm.user[0].last_name}}</strong></p>
               <p class="holiday__text text--lite2">Semnătura,</p>
               <p class="holiday__text text--lite">
-                Data: <strong><i ng-model = "holidayForm.today">{{holidayForm.today | date: 'dd.MM.yyyy'}}</i></strong>
+                Data: <strong><i ng-model = "holidayForm.today">{{holidayForm.dateList[0].signing_day | date: 'dd.MM.yyyy'}}</i></strong>
               </p>
               <h4>Mențiuni</h4>
               <p class="holiday__text text--ident">
@@ -254,16 +294,16 @@
               </p>
 
               <div class="holiday__inner clearfix">
-                <p class="holiday__text text--left">Team leader,</p>
+                <p class="holiday__text text--left">Team leader<span ng-show="holidayForm.teamLeaders.length > 1">s</span>,</p>
                 <br>
                 <p>
-                  <strong>
-                    {{holidayForm.holidayLeader[0].first_name}} 
-                    {{holidayForm.holidayLeader[0].last_name}} 
+                  <strong ng-repeat="leader in holidayForm.teamLeaders track by $index">
+                      {{leader.last_name}} {{leader.first_name}}<span ng-show="({{$index}} != holidayForm.teamLeaders.length-1)">,</span>
                   </strong>
                 </p>
+
                 <p class="holiday__text text--right">
-                  Data: <strong><i ng-model = "holidayForm.today">{{holidayForm.today | date: 'dd.MM.yyyy'}}</i></strong>
+                  Data: <strong><i ng-model = "holidayForm.today">{{holidayForm.dateList[0].signing_day | date: 'dd.MM.yyyy'}}</i></strong>
                 </p>
               </div>
 
