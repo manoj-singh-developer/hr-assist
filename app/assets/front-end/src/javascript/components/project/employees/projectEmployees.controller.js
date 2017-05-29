@@ -58,7 +58,8 @@
     }
 
     vm.cancel = () => {
-      vm.searchText = "";
+      vm.searchLeader = '';
+      vm.searchText = '';
       vm.copyPrjUsers = [];
       Project.getUsers(vm.project)
         .then((data) => {
@@ -87,7 +88,8 @@
 
       vm.displayOrHide = false;
       vm.disableSaveBtn = true;
-      vm.searchText = "";
+      vm.searchText = '';
+      vm.searchLeader = '';
     }
 
     function _getUsers() {
