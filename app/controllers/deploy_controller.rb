@@ -2,22 +2,22 @@ class DeployController < ApplicationController
 
     skip_before_action :verify_authenticity_token
 
+    attr_accessor :branch
+    attr_accessor :path
+    attr_accessor :commands
+
+    PULL_REQUEST    = 'pull_request'
+    PUSH            = 'push'
+    
     def index
 
         config = YAML::load_file(File.join(Rails.root, 'config', 'deploy.yml'))
 
-        PULL_REQUEST    = 'pull_request'
-        PUSH            = 'push'
-
         repo_url        = config['REPO_URL']
-        branch_paths    = config['BRANCH_PATHS']
+        branches        = config['BRANCHES']
         github_ips      = config['GIT_IPS']
         token           = config['TOKEN']
-
-        commands = [
-            'cd app/assets/front-end/ && gulp build',
-            'sudo service apache2 reload'
-        ]
+        common_commands = config['COMMANDS']
 
         if !verify_signature(token, request.raw_post)
             render plain: "Signatures didn't match!", status: 422 and return
@@ -30,27 +30,25 @@ class DeployController < ApplicationController
         payload = params
 
         if request.headers["X-GitHub-Event"] == PULL_REQUEST && request.request_parameters['action'] == 'closed'
-            payload_branch   = payload['pull_request']['base']['ref']
-            payload_url      = payload['pull_request']['head']['repo']['html_url']
+            @branch     = payload['pull_request']['base']['ref']
+            payload_url = payload['pull_request']['head']['repo']['html_url']
         elsif request.headers["X-GitHub-Event"] == PUSH
-            payload_branch   = payload['ref'].split("/").last
-            payload_url      = payload['repository']['url']
+            @branch     = payload['ref'].split("/").last
+            payload_url = payload['repository']['url']
         else
             render plain: "Only push and pull_request events are supported! #{request.request_parameters['action']}", status: 400 and return
         end
 
-        if payload_url != repo_url || !branch_paths.key?(payload_branch)
-            render plain: "#{payload_branch} branch does not have any associated folder on server or repo is not correct", status: 400 and return
+        if payload_url != repo_url || !branches.key?(@branch)
+            render plain: "#{@branch} branch does not have any associated folder on server or repo is not correct", status: 400 and return
         end
 
-        Dir.chdir(branch_paths[payload_branch]) do
-            system "git pull origin #{payload_branch}"
-            commands.each do |command|
-                system command
-            end
-        end
-        
-        render plain: "Successfully deployed on from branch `#{payload_branch}` into directory `#{branch_paths[payload_branch]}`"
+        @commands   = branches[@branch]['commands'].merge(common_commands) {|key, b_commands, c_commands| [*b_commands, *c_commands] }
+        @path       = branches[@branch]['path'];
+
+        deploy
+
+        render plain: "Successfully deployed on from branch `#{@branch}` into directory `#{branches[@branch]}`"
     end
 
     private
@@ -63,4 +61,19 @@ class DeployController < ApplicationController
         signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), token, payload_body)
         Rack::Utils.secure_compare(signature, request.headers['HTTP_X_HUB_SIGNATURE'])
     end
+
+    def deploy
+        Dir.chdir(@path) do
+            @commands['before_pull'].each do |command|
+                system command
+            end
+
+            system "git pull origin #{@branch}"
+
+            @commands['after_pull'].each do |command|
+                system command
+            end
+        end
+    end
+
 end
