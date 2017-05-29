@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   layout 'application'
 
-  before_filter :authenticate_admin_user!
+  #before_filter :authenticate_admin_user!
 
   def createOption hash
     AppSetting::create([key: hash.key, value: hash.value])
