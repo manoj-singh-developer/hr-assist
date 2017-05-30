@@ -20,16 +20,9 @@
     vm.userTechnologies = [];
     vm.validateDate = false;
     vm.displayOrHide = false;
+    vm.showTechnologies = false;
 
     vm.dateService = dateService;
-    vm.addProject = addProject;
-    vm.addInQueue = addInQueue;
-    vm.editProject = editProject;
-    vm.save = save;
-    vm.removeFromQueue = removeFromQueue;
-    vm.clearInputs = clearInputs;
-    vm.deleteProject = deleteProject;
-    vm.checkDates = checkDates;
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.user = data.user;
@@ -41,7 +34,7 @@
       _getUserProjects();
     });
 
-    function editProject(project) {
+    vm.editProject = (project) => {
       vm.searchText = project.project.name;
 
       vm.start_date = project.user_project_start_date ? new Date(project.user_project_start_date) : undefined;
@@ -55,20 +48,13 @@
       vm.displayOrHide = true;
     }
 
-    function addProject(project) {
+    vm.addProject = (project) => {
       if (project) {
         projectsToAdd.push(project);
       }
     }
 
-    function AddTechnology() {
-      if (!vm.technologiesToAdd) {
-        vm.technologiesToAdd = [];
-      }
-      vm.technologiesToAdd.push({});
-    }
-
-    function addInQueue(technology) {
+    vm.addInQueue = (technology) => {
       if (technology) {
         let notToAdd = _.findWhere(vm.userTechnologies, { id: technology.id });
         if (notToAdd === undefined) {
@@ -81,14 +67,14 @@
       }
     }
 
-    function removeFromQueue(technology) {
+    vm.removeFromQueue = (technology) => {
       let toRemove = _.findWhere(vm.userTechnologies, { id: technology.id });
       vm.userTechnologies = _.without(vm.userTechnologies, toRemove);
       technologiesToAdd = _.without(technologiesToAdd, toRemove);
       technologiesToRemove.push(technology);
     }
 
-    function deleteProject(project, event) {
+    vm.deleteProject = (project, event) => {
       var confirm = $mdDialog.confirm()
         .title('Would you like to delete ' + project.project.name + ' project?')
         .targetEvent(event)
@@ -103,7 +89,7 @@
       });
     }
 
-    function checkDates() {
+    vm.checkDates = () => {
       if (vm.onGoing) {
         vm.validateDate = false;
       } else {
@@ -113,10 +99,9 @@
           vm.validateDate = false;
         }
       }
-
     }
 
-    function save() {
+    vm.save = () => {
       let projectId = [];
       let startDate = vm.dateService.format(vm.start_date);
       let endDate = vm.end_date ? vm.dateService.format(vm.end_date) : null;
@@ -134,7 +119,7 @@
       };
 
       User.updateProjects(vm.user, projectObj).then((data) => {
-        clearInputs();
+        vm.clearInputs();
         _getUserProjects();
       });
 
@@ -145,27 +130,22 @@
         technologiesToRemove = [];
       }
 
-      clearInputs();
+      vm.clearInputs();
       vm.displayOrHide = false;
     }
 
-    function clearInputs() {
+    vm.clearInputs = () => {
       vm.userTechnologies = [];
-      projectsToAdd = [];
       vm.technologiesToAdd = [];
-      technologiesToAdd = [];
       vm.searchText = '';
       vm.disableProjectName = false;
       vm.start_date = undefined;
       vm.end_date = undefined;
       vm.searchTechnology = "";
       vm.onGoing = undefined;
-    }
-
-    function _getUserProjects() {
-      User.getProjects(vm.user).then((data) => {
-        vm.userProjects = data;
-      });
+      vm.showTechnologies = false;
+      projectsToAdd = [];
+      technologiesToAdd = [];
     }
 
     vm.displayForm = () => {
@@ -176,6 +156,13 @@
       vm.end_date = vm.onGoing ? null : vm.end_date;
       return vm.onGoing;
     }
+
+    function _getUserProjects() {
+      User.getProjects(vm.user).then((data) => {
+        vm.userProjects = data;
+      });
+    }
+
   }
 
 })(_);
