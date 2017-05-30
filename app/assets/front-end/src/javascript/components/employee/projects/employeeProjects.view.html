@@ -24,13 +24,15 @@
     <p>
       Add the period in which you were involved in the project and the technologies that you used.
     </p>
-  </md-content> <!-- CARD NOTES -->
+  </md-content> 
+
   <md-content class="c-card-profile__notes"
-              ng-if="!userProjects.userProjects.length > 0">
+      ng-if="!userProjects.userProjects.length > 0">
     <p>
       <strong>You not have any project added.</strong>
     </p>
   </md-content>
+  <!-- CARD NOTES -->
 
 
 
@@ -83,13 +85,20 @@
           </p>
 
           <p>
-            {{project.user_project_start_date | date: "MMMM y" }} - {{project.user_project_end_date | date: "MMMM y"}}
+            {{project.user_project_start_date | date: "MMMM y" }} - 
+            <span ng-show="project.user_project_end_date">{{project.user_project_end_date | date: "MMMM y"}}</span>
+            <span ng-show="!project.user_project_end_date">
+              ongoing
+            </span>
           </p>
 
-          <p class="u-mt-10">
+          <p class="u-mt-10" ng-show="project.technologies.length > 0">
             <strong>
               I worked with the following technologies:
             </strong>
+          </p>
+          <p ng-show="project.technologies.length == 0">
+            <strong>Technologies not selected yet.</strong>
           </p>
           <p ng-repeat="technology in project.technologies track by $index">
            {{technology.name}}
@@ -102,101 +111,147 @@
 
 
 
-<form ng-submit="$event.preventDefault()"
-  name="prjForm"
-  novalidate>
-  <!-- FORM PROJECTS -->
-  <md-content ng-show="userProjects.displayOrHide" class="md-padding">
+  <form ng-submit="$event.preventDefault()"
+    name="prjForm"
+    novalidate>
 
-    <!-- CARD GROUP  -->
-    <section
-      class="md-padding c-card-group"
-      layout-align="center center">
+    <!-- FORM PROJECTS -->
+    <md-content ng-show="userProjects.displayOrHide" class="md-padding">
 
-      <!-- SELECT PROJECT -->
-      <section layout="row" layout-align="start center">
-        <div class="u-mr-5 u-ml-5 u-mb-20" flex-gt-xs="100">
-          <label>Project: <span ng-show="userProjects.disableProjectName">{{userProjects.searchText}}</span></label>
-          <md-autocomplete
-            ng-if="!userProjects.disableProjectName"
-            md-selected-item="userProjects.selectedItem"
-            md-search-text-change="userProjects.searchTextChange(userProjects.searchText)"
-            md-search-text="userProjects.searchText"
-            md-selected-item-change="userProjects.addProject(item)"
-            md-items="item in userProjects.querySearch(userProjects.searchText, userProjects.projects)"
-            md-item-text="item.name"
-            md-min-length="1"
-            placeholder="Search"
-            md-input-name="autocompleteProjects"
-            md-require-match
-            required>
+      <!-- CARD GROUP  -->
+      <section
+        class="md-padding c-card-group"
+        layout-align="center center">
 
-            <md-item-template>
-              <span
-              class="item-metadata"
-              md-highlight-text="userProjects.projects.searchText">
-                {{item.name}}
+        <!-- SELECT PROJECT -->
+        <section layout="row" layout-align="start center">
+          <div class="u-mr-5 u-ml-5 u-mb-20" flex-gt-xs="100">
+            <label>Project<span ng-show="!userProjects.disableProjectName">*</span>: <span ng-show="userProjects.disableProjectName">{{userProjects.searchText}}</span></label>
+            <md-autocomplete
+              ng-show="!userProjects.disableProjectName"
+              md-selected-item="userProjects.selectedItem"
+              md-search-text-change="userProjects.searchTextChange(userProjects.searchText)"
+              md-search-text="userProjects.searchText"
+              md-selected-item-change="userProjects.addProject(item)"
+              md-items="item in userProjects.querySearch(userProjects.searchText, userProjects.projects)"
+              md-item-text="item.name"
+              md-min-length="0"
+              placeholder="Search"
+              md-input-name="autocompleteProjects"
+              md-require-match="!userProjects.disableProjectName">
+
+              <md-item-template>
+                <span
+                class="item-metadata"
+                md-highlight-text="userProjects.projects.searchText">
+                  {{item.name}}
+                </span>
+              </md-item-template>
+
+              <md-not-found>
+                No project matching "{{userProjects.searchText}}" were found.
+              </md-not-found>
+            </md-autocomplete>
+
+            <div ng-messages="prjForm.autocompleteProjects.$error"
+              layout-gt-xs="row"
+              ng-if="userProjects.searchText.length>1 && !userProjects.disableProjectName">
+              <span ng-message="md-require-match" class="alert-info fade" role="alert">
+                You must select an option from list!
               </span>
-            </md-item-template>
+            </div>
+          </div>
+        </section>
+        <!-- SELECT PROJECT -->
 
-            <md-not-found>
-              No project matching "{{userProjects.searchText}}" were found.
-            </md-not-found>
-          </md-autocomplete>
 
-          <div ng-messages="prjForm.autocompleteProjects.$error"
-            layout-gt-xs="row" layout-align="center center"
-            ng-if="prjForm.autocompleteProjects.$touched">
-            <span ng-message="md-require-match" class="alert-error fade" role="alert">
-              You must select an option from list!
+
+
+          <!-- SELECT START/END DATE -->
+          <section layout-gt-xs="row" layout-align="start center">
+            <div flex-gt-xs="50">
+              <label class="u-ml-5">From*</label>
+              <md-datepicker
+                ng-model="userProjects.start_date"
+                md-placeholder="Start date"
+                md-open-on-focus
+                ng-change="userProjects.checkDates()"
+                md-current-view="year"
+                required>
+              </md-datepicker>
+            </div>
+
+            <div flex-gt-xs="50">
+              <label class="u-ml-5">To*</label>
+              <md-datepicker
+                ng-model="userProjects.end_date"
+                md-placeholder="End date"
+                md-open-on-focus
+                ng-change="userProjects.checkDates()"
+                ng-disabled=userProjects.onGoing
+                ng-required="!userProjects.onGoing"
+                md-current-view="year"
+                name="test">
+              </md-datepicker>
+            </div>
+          </section>
+          <!-- /SELECT START/END DATE -->
+
+
+          <section ng-show="userProjects.validateDate" layout-gt-xs="row">
+            <span class="alert-info fade"
+              role="alert">
+                "To" date must be greater than "From" date!
             </span>
-          </div>
-        </div>
-      </section><!-- SELECT PROJECT -->
+          </section>
 
-        <!-- SELECT START/END DATE -->
-        <section layout-gt-xs="row" layout-align="start center">
-          <div flex-gt-xs="50">
-            <label class="u-ml-5">From</label>
-            <md-datepicker
-              ng-model="userProjects.start_date"
-              md-placeholder="Start date"
-              md-open-on-focus
-              ng-change="userProjects.checkDates()"
-              required>
-            </md-datepicker>
-          </div>
 
-          <div flex-gt-xs="50">
-            <label class="u-ml-5">To</label>
-            <md-datepicker
-              ng-model="userProjects.end_date"
-              md-placeholder="End date"
-              md-open-on-focus
-              ng-change="userProjects.checkDates()"
-              required>
-            </md-datepicker>
-          <div>
-        </section>
-        <section ng-show="userProjects.validateDate" layout-gt-xs="row" layout-align="center center">
-          <span class="alert-error fade"
-            role="alert">
-              "To" date must be greater than "From" date!
-          </span>
-        </section>
-        <!-- /SELECT START/END DATE -->
+          <!-- SELECT ONGOING PROJECT -->
+          <section layout-gt-xs="row">
+            <md-input-container class="md-block">
+              <md-checkbox name="onGoing" ng-model="userProjects.onGoing"
+                aria-label="Still working on this project."
+                ng-change="userProjects.checkOnGoing(); userProjects.checkDates();"
+                ng-required="!userProjects.end_date">
+                I'm still working on this project.
+              </md-checkbox>
+              <div ng-messages="prjForm.onGoing.$error" multiple md-auto-hide="false" ng-show="false">
+                <div ng-message="required"></div>
+              </div>
+            </md-input-container>
+          </section>
+          <!-- SELECT ONGOING PROJECT -->
 
-      <md-divider
-        class="md-padding divider-bold u-no-padding u-mt-20 u-mb-20">
-      </md-divider>
 
-      <p ng-show="userProjects.currentProject.technologies.length > 0" class="u-mb-10">
-        <strong>
-          On this project I worked with the following technologies:
-        </strong>
-      </p>
-      <!-- TECHNOLOGIES -->
-      <md-list layout="row" layout-wrap layout-align="left center">
+
+
+        <md-divider
+          class="md-padding divider-bold u-no-padding u-mt-20 u-mb-20">
+        </md-divider>
+
+        <p ng-show="userProjects.userTechnologies.length > 0" class="u-mb-10">
+          <strong>
+            On this project I worked with the following technologies:
+          </strong>
+        </p>
+
+
+
+
+        <!-- TECHNOLOGY NOTE -->
+        <md-content class="c-card-profile__notes"  flex-gt-xs="100"
+         ng-show="userProjects.userTechnologies.length == 0" >
+          <p>
+            <strong>Please select tehnologies that you use to this project.</strong>
+          </p>
+        </md-content>
+        <!-- TECHNOLOGY NOTE -->
+
+
+
+
+        <!-- TECHNOLOGIES -->
+        <md-list layout="row" layout-wrap layout-align="left center">
           <md-list-item
             class="md-2-line"
             ng-repeat="tech in userProjects.userTechnologies track by $index">
@@ -207,104 +262,100 @@
                 <span class="material-icons c-filters__icon">close</span>
               </p>
             </div>
-        </md-list-item>
-        <md-list-item
-          flex="100"
-          layout="row"
-          ng-show="showTechnologies">
+          </md-list-item>
 
-          <!-- TECHNOLOGIES AUTOCOMPLETE -->
-          <div class="md-block" flex-gt-xs="100">
-              <md-autocomplete
-                md-search-text-change="userProjects.searchTextChange(userProjects.searchTechnology)"
-                md-selected-item-change="userProjects.addInQueue(item)"
-                md-search-text="userProjects.searchTechnology"
-                md-items="item in userProjects.querySearch(userProjects.searchTechnology, userProjects.technologies)"
-                md-item-text="item.name"
-                md-min-length="1"
-                placeholder="Search Technologies"
-                md-input-name="autocompleteTechnology"
-                md-require-match>
+          <md-list-item
+            flex="100"
+            layout="row"
+            ng-show="userProjects.showTechnologies">
 
-              <md-item-template>
-                  <span
-                  class="item-metadata"
-                  md-highlight-text="userProjects.projects.searchTechnology">
-                    {{item.name}}
-                  </span>
-                </md-item-template>
+            <!-- TECHNOLOGIES AUTOCOMPLETE -->
+            <div class="md-block" flex-gt-xs="100">
+                <md-autocomplete
+                  md-search-text-change="userProjects.searchTextChange(userProjects.searchTechnology)"
+                  md-selected-item-change="userProjects.addInQueue(item)"
+                  md-search-text="userProjects.searchTechnology"
+                  md-items="item in userProjects.querySearch(userProjects.searchTechnology, userProjects.technologies)"
+                  md-item-text="item.name"
+                  md-min-length="0"
+                  placeholder="Search Technologies"
+                  md-input-name="autocompleteTechnology">
 
-                <md-not-found>
-                  No project matching "{{userProjects.searchTechnology}}" were found.
-                </md-not-found>
-              </md-autocomplete>
+                <md-item-template>
+                    <span
+                    class="item-metadata"
+                    md-highlight-text="userProjects.projects.searchTechnology">
+                      {{item.name}}
+                    </span>
+                  </md-item-template>
+                </md-autocomplete>
 
-              <div ng-messages="prjForm.autocompleteTechnology.$error"
-                layout-gt-xs="row" layout-align="center center"
-                ng-if="prjForm.autocompleteTechnology.$touched">
-                <span ng-message="md-require-match" class="alert-error fade" role="alert">
-                  You must select an option!
-                </span>
-              </div>
-          </div><!-- /TECHNOLOGIES AUTOCOMPLETE -->
+            </div><!-- /TECHNOLOGIES AUTOCOMPLETE -->
 
-        </md-list-item>
-      </md-list><!-- /TECHNOLOGIES -->
+          </md-list-item>
+        </md-list>
+        <!-- /TECHNOLOGIES -->
 
 
-      <section  ng-show="!showTechnologies">
-        <md-button
-          md-no-ink
-          class="md-primary small-text"
-          ng-click="userProjects.AddTechnology(); showTechnologies = ! showTechnologies">
-          Add New Technology
-        </md-button>
+
+
+        <section ng-show="!userProjects.showTechnologies">
+          <md-button
+            md-no-ink
+            class="md-primary small-text"
+            ng-click="userProjects.AddTechnology(); userProjects.showTechnologies='true';">
+            Add <span ng-show="userProjects.userTechnologies.length > 0">New</span> Technology
+          </md-button>
+        </section>
       </section>
-    </section><!-- /CARD GROUP ng-repeat -->
+      <!-- /CARD GROUP ng-repeat -->
 
-  </md-content><!-- /FORM PROJECTS -->
-
-
-
-
-
-  <!-- CARD ACTIONS -->
-  <md-card-actions
-    layout="column"
-    layout-align="start"
-    ng-show="!userProjects.displayOrHide">
-    <md-button
-      class="c-card-profile__btn no-margin noPrint"
-      ng-click="userProjects.displayForm()"
-      ng-disabled="btnIsDisabled">
-      Add Project
-    </md-button>
-  </md-card-actions>
-
-  <md-card-actions
-    layout="row"
-    layout-align="center center"
-    ng-show="userProjects.displayOrHide"
-    class="additional">
-
-    <md-button
-      class="md-raised md-primary"
-      ng-click="userProjects.save(); userProjects.clearInputs();"
-      type="submit"
-      ng-disabled="prjForm.$invalid || userProjects.validateDate">
-      Save
-    </md-button>
-
-    <md-button
-      class="md-raised"
-      ng-click="userProjects.displayForm(); userProjects.clearInputs();">
-      Cancel
-    </md-button>
-
-  </md-card-actions>
-  <!-- /CARD ACTIONS -->
-</form>
+    </md-content>
+    <!-- /FORM PROJECTS -->
 
 
 
-</md-card><!-- /CARD PROJECTS -->
+
+
+    <!-- CARD ACTIONS -->
+    <md-card-actions
+      layout="column"
+      layout-align="start"
+      ng-show="!userProjects.displayOrHide">
+      <md-button
+        class="c-card-profile__btn no-margin noPrint"
+        ng-click="userProjects.displayForm()"
+        ng-disabled="btnIsDisabled">
+        Add Project
+      </md-button>
+    </md-card-actions>
+
+    <md-card-actions
+      layout="row"
+      layout-align="center center"
+      ng-show="userProjects.displayOrHide"
+      class="additional">
+
+      <md-button
+        class="md-raised md-primary"
+        ng-click="userProjects.save()"
+        type="submit"
+        ng-disabled="prjForm.$invalid || userProjects.validateDate || userProjects.searchText==''">
+        Save
+      </md-button>
+
+      <md-button
+        class="md-raised"
+        ng-click="userProjects.displayForm(); userProjects.clearInputs(); userProjects.showTechnologies = 'false';">
+        Cancel
+      </md-button>
+
+    </md-card-actions>
+    <!-- /CARD ACTIONS -->
+  </form>
+
+
+
+
+</md-card>
+<!-- /CARD PROJECTS -->
