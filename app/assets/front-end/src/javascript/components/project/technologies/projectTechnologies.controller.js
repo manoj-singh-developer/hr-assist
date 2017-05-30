@@ -6,8 +6,6 @@
     .module('HRA')
     .controller('projectTechnologiesCtrl', projectTechnologiesCtrl);
 
-  projectTechnologiesCtrl.$inject = ['$rootScope', 'autocompleteService', 'Technology', 'Project'];
-
   function projectTechnologiesCtrl($rootScope, autocompleteService, Technology, Project) {
 
     let vm = this;
@@ -16,11 +14,13 @@
     vm.project = {};
     vm.technologies = [];
     vm.prjTechnologies = [];
+    vm.copyPrjTechnologies = [];
 
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.save = save;
     vm.cancel = cancel;
+    vm.disableSaveBtn = true;
     vm.displayOrHide = false;
 
     _getTechnologies();
@@ -31,23 +31,26 @@
       _getProjectTechnologies();
     });
 
-
     function addInQueue(technology) {
       if (technology) {
-        let toRemove = _.findWhere(technologiesToRemove, { id: technology.id });
-        technologiesToRemove = _.without(technologiesToRemove, toRemove);
-        technologiesToAdd.push(technology);
-        vm.prjTechnologies.push(technology);
-        vm.searchText = "";
+        let notToAdd = _.findWhere(vm.copyPrjTechnologies, { id: technology.id });
+        if (!notToAdd) {
+          let toRemove = _.findWhere(technologiesToRemove, { id: technology.id });
+          technologiesToRemove = _.without(technologiesToRemove, toRemove);
+          technologiesToAdd.push(technology);
+          vm.copyPrjTechnologies.push(technology);
+        }
+        vm.searchText = ' ';
       }
+      vm.disableSaveBtn = false;
     }
 
     function removeFromQueue(technology) {
-      let toRemove = _.findWhere(vm.prjTechnologies, { id: technology.id });
-      vm.prjTechnologies = _.without(vm.prjTechnologies, toRemove);
+      let toRemove = _.findWhere(vm.copyPrjTechnologies, { id: technology.id });
+      vm.copyPrjTechnologies = _.without(vm.copyPrjTechnologies, toRemove);
       technologiesToAdd = _.without(technologiesToAdd, toRemove);
       technologiesToRemove.push(technology);
-      vm.searchText = "";
+      vm.disableSaveBtn = false;
     }
 
     function save() {
@@ -55,25 +58,30 @@
       if (technologiesToAdd.length) {
         Project.saveTechnologies(vm.project, technologiesToAdd)
           .then(() => {
-            _getProjectTechnologies();
+            technologiesToAdd = [];
           });
       }
 
       if (technologiesToRemove.length) {
         Project.removeTechnologies(vm.project, technologiesToRemove)
           .then(() => {
-            _getProjectTechnologies();
+            technologiesToRemove = [];
           });
       }
 
       vm.displayOrHide = false;
+      vm.disableSaveBtn = true;
+      vm.searchText = '';
     }
 
     function cancel() {
-      vm.prjTechnologies = [];
+      vm.searchText = '';
+      vm.copyPrjTechnologies = [];
       Project.getTechnologies(vm.project).then((data) => {
         vm.prjTechnologies = data;
+        vm.copyPrjTechnologies.push(...vm.prjTechnologies);
       });
+      vm.disableSaveBtn = true;
     }
 
 
@@ -87,6 +95,7 @@
     function _getProjectTechnologies() {
       Project.getTechnologies(vm.project).then((data) => {
         vm.prjTechnologies = data;
+        vm.copyPrjTechnologies.push(...vm.prjTechnologies);
       });
     }
 

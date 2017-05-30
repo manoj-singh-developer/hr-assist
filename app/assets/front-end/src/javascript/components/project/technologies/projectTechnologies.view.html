@@ -12,6 +12,16 @@
 
 
 
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here with the tehnologies of this project.
+    </p>
+  </md-content> 
+  <!-- CARD NOTES -->
+
+
+
   <!-- PREVIEW  -->
   <md-content
     ng-show="!prjTechnologies.displayOrHide"
@@ -20,7 +30,7 @@
       <md-list-item
         flex="25"
         class="md-2-line"
-        ng-repeat="technology in prjTechnologies.prjTechnologies track by $index">
+        ng-repeat="technology in prjTechnologies.copyPrjTechnologies track by $index">
 
         <div class="md-list-item-text" layout="column">
           <h4>{{technology.name}}</h4>
@@ -29,7 +39,8 @@
       </md-list-item>
     </md-list>
 
-  </md-content><!-- /PREVIEW -->
+  </md-content>
+  <!-- /PREVIEW -->
 
 
 
@@ -37,6 +48,8 @@
     <md-content
       class = "md-padding"
       ng-show="prjTechnologies.displayOrHide">
+
+
 
       <md-list layout="row" layout-wrap>
 
@@ -48,7 +61,7 @@
 
          <md-list-item
            class="md-2-line"
-           ng-repeat="technology in prjTechnologies.prjTechnologies track by $index">
+           ng-repeat="technology in prjTechnologies.copyPrjTechnologies track by $index">
            <div class="md-list-item-text" layout="column">
              <p class="c-filters__item"
               ng-click="prjTechnologies.removeFromQueue(technology)" >
@@ -70,7 +83,8 @@
             md-items="item in prjTechnologies.querySearch(prjTechnologies.searchText, prjTechnologies.technologies)"
             md-item-text="item.name"
             md-min-length="0"
-            placeholder="Search">
+            placeholder="Search Technology"
+            md-dropdown-position="bottom">
 
             <md-item-template>
               <span
@@ -84,7 +98,8 @@
         </form>
       </md-content>
 
-    </md-content><!-- EDIT -->
+    </md-content>
+    <!-- EDIT -->
 
 
 
@@ -109,7 +124,7 @@
     <md-button
       class="md-raised md-primary"
       ng-click="prjTechnologies.save()"
-      ng-disabled="btnIsDisabled">
+      ng-disabled="prjTechnologies.disableSaveBtn">
       Save
     </md-button>
 
