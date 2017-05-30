@@ -441,7 +441,14 @@
     Project.removeUsers = (project, users) => {
       let id = project.id;
       let data = {};
-      data["user_ids[]"] = users;
+      if (users.usersToRemove) {
+        data['user_ids[]'] = users.usersToRemove;
+      };
+      
+      if (users.team_leader_id) {
+        data['team_leader_id']= users.team_leader_id;
+      };
+
       url = apiUrl + '/projects/:id/users';
       resource = $resource(url, data).delete({ id: id });
 

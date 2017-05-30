@@ -6,7 +6,7 @@
     .module('HRA')
     .controller('projectUsersCtrl', projectUsersCtrl);
 
-  function projectUsersCtrl(Project, $rootScope, User, autocompleteService) {
+  function projectUsersCtrl(Project, $rootScope, User, autocompleteService, $mdDialog, $stateParams) {
 
     let vm = this;
     let usersToAdd = [];
@@ -19,11 +19,11 @@
     vm.displayOrHide = false;
     vm.teamLeader = {};
     _getUsers();
+    _getTeamLeader();
 
     $rootScope.$on("event:projectLoaded", (event, data) => {
       vm.project = data;
       _getPrjUsers();
-      _getTeamLeader();
     });
 
     vm.addInQueue = (users) => {
@@ -67,6 +67,8 @@
           vm.copyPrjUsers.push(...vm.prjUsers);
         });
       vm.disableSaveBtn = true;
+      _getTeamLeader();
+      _clearInputs();
     }
 
     vm.save = () => {
@@ -76,20 +78,50 @@
         team_leader_id: vm.teamLeader.team_leader_id || vm.project.team_leader_id
       }
 
-      if (usersToAdd.length > 0 || vm.project.team_leader_id) {
-        Project.saveUsers(vm.project, objToSave);
-        usersToAdd = [];
+      if (usersToAdd.length > 0 || vm.teamLeader.team_leader_id) {
+
+        Project.saveUsers(vm.project, objToSave).then(() => {
+          _getPrjUsers();
+          _getTeamLeader();
+        });
       }
 
       if (usersToRemove.length > 0) {
-        Project.removeUsers(vm.project, usersToRemove);
-        usersToRemove = [];
+        let user = {};
+        user.usersToRemove = usersToRemove;
+        Project.removeUsers(vm.project, user).then(() => {
+          _getPrjUsers();
+          _getTeamLeader();
+        });
       }
+      _clearInputs();
+    }
 
+    function _clearInputs() {
       vm.displayOrHide = false;
       vm.disableSaveBtn = true;
       vm.searchText = '';
       vm.searchLeader = '';
+      usersToRemove = [];
+      usersToAdd = [];
+    }
+
+    vm.removeLeader = (leader) => {
+      var confirm = $mdDialog.confirm()
+        .title('Would you like to delete ' + leader.first_name + ' ' + leader.last_name + ' leader?')
+        .targetEvent(event)
+        .ok('Yes')
+        .cancel('No');
+
+      $mdDialog.show(confirm).then(() => {
+        let user = {};
+        user.team_leader_id = leader.id;
+        Project.removeUsers(vm.project, user).then(() => {
+          _clearInputs();
+          _getTeamLeader();
+
+        });
+      });
     }
 
     function _getUsers() {
@@ -104,18 +136,22 @@
       Project.getUsers(vm.project)
         .then((data) => {
           vm.prjUsers = data;
+          vm.copyPrjUsers = [];
           vm.copyPrjUsers.push(...vm.prjUsers);
         });
     }
 
     function _getTeamLeader() {
-      let leader = vm.project.team_leader_id;
-      if (leader) {
-        User.getById(leader)
-          .then((data) => {
-            vm.teamLeader = data;
-          })
-      }
+      Project.getById($stateParams.id).then((data) => {
+        vm.project = data;
+        let leader = vm.project.team_leader_id;
+        if (leader) {
+          User.getById(leader)
+            .then((data) => {
+              vm.teamLeader = data;
+            })
+        }
+      });
     }
 
     vm.displayForm = () => {
