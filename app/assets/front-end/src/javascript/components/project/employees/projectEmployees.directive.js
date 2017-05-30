@@ -4,28 +4,22 @@
 
   angular
     .module('HRA')
-    .directive('hraEmployeesProject', hraEmployeesProject);
+    .directive('hraProjectEmployees', hraProjectEmployees);
 
-  function hraEmployeesProject() {
+  function hraProjectEmployees() {
     return {
       restrict: 'EA',
       scope: {},
-      controller: 'projectEmployeesCtrl',
-      controllerAs: 'prjEmployess',
-      templateUrl: rootTemplatePath + 'project/views/projectEmployees.view.html',
+      require: 'hraCard',
+      bindToController: {
+        'toggleForm': '=',
+        'querySearch': '=',
+        'settings': '='
+      },
+      controller: 'projectUsersCtrl',
+      controllerAs: 'prjUsers',
+      templateUrl: rootTemplatePath + 'project/employees/projectEmployees.view.html',
     };
-  }
-
-
-  angular
-    .module('HRA')
-    .controller('projectEmployeesController', projectEmployeesController);
-
-  projectEmployeesController.$inject = ['$rootScope', '$scope', 'autocompleteService', 'miscellaneousService', 'Employee'];
-
-  function projectEmployeesController($rootScope, $scope, autocompleteService, miscellaneousService, Employee) {
-
-
   }
 
 }());
