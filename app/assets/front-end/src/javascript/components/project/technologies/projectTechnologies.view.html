@@ -12,15 +12,25 @@
 
 
 
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here with the tehnologies of this project.
+    </p>
+  </md-content> 
+  <!-- CARD NOTES -->
+
+
+
   <!-- PREVIEW  -->
   <md-content
-    ng-show="!prjTechnologies.displayOrHide"
+    ng-show="!prjTechnologies.showForm"
     class="c-card-profile__preview">
     <md-list layout="row" layout-wrap>
       <md-list-item
         flex="25"
         class="md-2-line"
-        ng-repeat="technology in prjTechnologies.prjTechnologies track by $index">
+        ng-repeat="technology in prjTechnologies.copyPrjTechnologies track by $index">
 
         <div class="md-list-item-text" layout="column">
           <h4>{{technology.name}}</h4>
@@ -29,14 +39,17 @@
       </md-list-item>
     </md-list>
 
-  </md-content><!-- /PREVIEW -->
+  </md-content>
+  <!-- /PREVIEW -->
 
 
 
     <!-- EDIT -->
     <md-content
       class = "md-padding"
-      ng-show="prjTechnologies.displayOrHide">
+      ng-show="prjTechnologies.showForm">
+
+
 
       <md-list layout="row" layout-wrap>
 
@@ -48,7 +61,7 @@
 
          <md-list-item
            class="md-2-line"
-           ng-repeat="technology in prjTechnologies.prjTechnologies track by $index">
+           ng-repeat="technology in prjTechnologies.copyPrjTechnologies track by $index">
            <div class="md-list-item-text" layout="column">
              <p class="c-filters__item"
               ng-click="prjTechnologies.removeFromQueue(technology)" >
@@ -70,7 +83,8 @@
             md-items="item in prjTechnologies.querySearch(prjTechnologies.searchText, prjTechnologies.technologies)"
             md-item-text="item.name"
             md-min-length="0"
-            placeholder="Search">
+            placeholder="Search Technology"
+            md-dropdown-position="bottom">
 
             <md-item-template>
               <span
@@ -84,7 +98,8 @@
         </form>
       </md-content>
 
-    </md-content><!-- EDIT -->
+    </md-content>
+    <!-- EDIT -->
 
 
 
@@ -92,10 +107,10 @@
   <md-card-actions
     layout="column"
     layout-align="start"
-    ng-show="!prjTechnologies.displayOrHide">
+    ng-show="!prjTechnologies.showForm">
     <md-button
       class="c-card-profile__btn no-margin"
-      ng-click="prjTechnologies.displayForm()">
+      ng-click="prjTechnologies.toggleForm()">
       Add/Edit technologies
     </md-button>
   </md-card-actions>
@@ -103,19 +118,19 @@
   <md-card-actions
     layout="row"
     layout-align="center center"
-    ng-show="prjTechnologies.displayOrHide"
+    ng-show="prjTechnologies.showForm"
     class="additional">
 
     <md-button
       class="md-raised md-primary"
       ng-click="prjTechnologies.save()"
-      ng-disabled="btnIsDisabled">
+      ng-disabled="prjTechnologies.disableSaveBtn">
       Save
     </md-button>
 
     <md-button
       class="md-raised"
-      ng-click="prjTechnologies.displayForm(); prjTechnologies.cancel()">
+      ng-click="prjTechnologies.cancel()">
       Cancel
     </md-button>
 

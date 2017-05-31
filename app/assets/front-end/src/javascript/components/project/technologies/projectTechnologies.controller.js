@@ -6,8 +6,6 @@
     .module('HRA')
     .controller('projectTechnologiesCtrl', projectTechnologiesCtrl);
 
-  projectTechnologiesCtrl.$inject = ['$rootScope', 'autocompleteService', 'Technology', 'Project'];
-
   function projectTechnologiesCtrl($rootScope, autocompleteService, Technology, Project) {
 
     let vm = this;
@@ -16,66 +14,78 @@
     vm.project = {};
     vm.technologies = [];
     vm.prjTechnologies = [];
-
-    vm.addInQueue = addInQueue;
-    vm.removeFromQueue = removeFromQueue;
-    vm.save = save;
-    vm.cancel = cancel;
-    vm.displayOrHide = false;
+    vm.copyPrjTechnologies = [];
+    vm.disableSaveBtn = true;
 
     _getTechnologies();
-
 
     $rootScope.$on("event:projectLoaded", (event, data) => {
       vm.project = data;
       _getProjectTechnologies();
     });
 
-
-    function addInQueue(technology) {
+    vm.addInQueue = (technology) => {
       if (technology) {
-        let toRemove = _.findWhere(technologiesToRemove, { id: technology.id });
-        technologiesToRemove = _.without(technologiesToRemove, toRemove);
-        technologiesToAdd.push(technology);
-        vm.prjTechnologies.push(technology);
-        vm.searchText = "";
+        let notToAdd = _.findWhere(vm.copyPrjTechnologies, { id: technology.id });
+        if (!notToAdd) {
+          let toRemove = _.findWhere(technologiesToRemove, { id: technology.id });
+          technologiesToRemove = _.without(technologiesToRemove, toRemove);
+          technologiesToAdd.push(technology);
+          vm.copyPrjTechnologies.push(technology);
+        }
+        vm.searchText = ' ';
+        _disableSaveBtn(false);
       }
+
     }
 
-    function removeFromQueue(technology) {
-      let toRemove = _.findWhere(vm.prjTechnologies, { id: technology.id });
-      vm.prjTechnologies = _.without(vm.prjTechnologies, toRemove);
+    vm.removeFromQueue = (technology) => {
+      let toRemove = _.findWhere(vm.copyPrjTechnologies, { id: technology.id });
+      vm.copyPrjTechnologies = _.without(vm.copyPrjTechnologies, toRemove);
       technologiesToAdd = _.without(technologiesToAdd, toRemove);
       technologiesToRemove.push(technology);
-      vm.searchText = "";
+      _disableSaveBtn(false);
     }
 
-    function save() {
+    vm.save = () => {
 
       if (technologiesToAdd.length) {
         Project.saveTechnologies(vm.project, technologiesToAdd)
           .then(() => {
-            _getProjectTechnologies();
+            technologiesToAdd = [];
           });
       }
 
       if (technologiesToRemove.length) {
         Project.removeTechnologies(vm.project, technologiesToRemove)
           .then(() => {
-            _getProjectTechnologies();
+            technologiesToRemove = [];
           });
       }
 
-      vm.displayOrHide = false;
+      vm.toggleForm();
+      _disableSaveBtn(true);
+      vm.searchText = '';
     }
 
-    function cancel() {
-      vm.prjTechnologies = [];
+    vm.cancel = () => {
+      vm.searchText = '';
+      vm.copyPrjTechnologies = [];
       Project.getTechnologies(vm.project).then((data) => {
         vm.prjTechnologies = data;
+        vm.copyPrjTechnologies.push(...vm.prjTechnologies);
       });
+      _disableSaveBtn(true);
+      vm.toggleForm();
     }
 
+    vm.toggleForm = () => {
+      vm.showForm = !vm.showForm;
+    }
+
+    function _disableSaveBtn(booleanValue) {
+      vm.disableSaveBtn = !booleanValue ? booleanValue : true;
+    }
 
     function _getTechnologies() {
       Technology.getAll().then((data) => {
@@ -87,11 +97,8 @@
     function _getProjectTechnologies() {
       Project.getTechnologies(vm.project).then((data) => {
         vm.prjTechnologies = data;
+        vm.copyPrjTechnologies.push(...vm.prjTechnologies);
       });
-    }
-
-    vm.displayForm = () => {
-      vm.displayOrHide = !vm.displayOrHide;
     }
 
   }
