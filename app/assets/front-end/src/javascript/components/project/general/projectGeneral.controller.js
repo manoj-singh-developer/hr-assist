@@ -11,8 +11,8 @@
     let vm = this;
     vm.project = {};
     vm.validateDate = false;
-    vm.displayOrHide = false;
     vm.dateService = dateService;
+    vm.showForm = false;
 
     $rootScope.$on("event:projectLoaded", (event, data) => {
       vm.project = data;
@@ -22,15 +22,15 @@
       vm.project.start_date = vm.project.start_date ? vm.dateService.format(vm.project.start_date) : null;
       vm.project.end_date = vm.dateService.format(vm.project.end_date);
       Project.update(vm.project);
-      vm.displayOrHide = false;
+      vm.toggleForm()
     }
 
     vm.cancel = () => {
-      vm.displayOrHide = !vm.displayOrHide;
       Project.getById(vm.project.id)
         .then((data) => {
           vm.project = data;
         });
+      vm.toggleForm();
     }
 
     vm.checkDates = () => {
@@ -42,6 +42,10 @@
         vm.validateDate = false;
       }
     }
+    vm.toggleForm = () => {
+      vm.showForm = !vm.showForm;
+    }
+
   }
 
 })();
