@@ -12,15 +12,25 @@
 
 
 
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here with the customers of this project.
+    </p>
+  </md-content> 
+  <!-- CARD NOTES -->
+
+
+
   <!-- PREVIEW  -->
   <md-content
-    ng-show="!prjCustomers.displayOrHide"
+    ng-show="!prjCustomers.showForm"
     class="c-card-profile__preview">
     <md-list layout="row" layout-wrap>
       <md-list-item
         flex="25"
         class="md-2-line"
-        ng-repeat="customer in prjCustomers.prjCustomers track by $index">
+        ng-repeat="customer in prjCustomers.copyPrjCustomers track by $index">
 
         <div class="md-list-item-text" layout="column">
           <h4>{{customer.name}}</h4>
@@ -29,14 +39,15 @@
       </md-list-item>
     </md-list>
 
-  </md-content><!-- /PREVIEW -->
+  </md-content>
+  <!-- /PREVIEW -->
 
 
 
     <!-- EDIT -->
     <md-content
-      class = "md-padding"
-      ng-show="prjCustomers.displayOrHide">
+      class="md-padding"
+      ng-show="prjCustomers.showForm">
 
       <md-list layout="row" layout-wrap>
 
@@ -48,7 +59,7 @@
 
          <md-list-item
            class="md-2-line"
-           ng-repeat="customer in prjCustomers.prjCustomers track by $index">
+           ng-repeat="customer in prjCustomers.copyPrjCustomers track by $index">
            <div class="md-list-item-text" layout="column">
              <p class="c-filters__item"
               ng-click="prjCustomers.removeFromQueue(customer)" >
@@ -84,7 +95,8 @@
         </form>
       </md-content>
 
-    </md-content><!-- EDIT -->
+    </md-content>
+    <!-- EDIT -->
 
 
 
@@ -92,10 +104,10 @@
   <md-card-actions
     layout="column"
     layout-align="start"
-    ng-show="!prjCustomers.displayOrHide">
+    ng-show="!prjCustomers.showForm">
     <md-button
       class="c-card-profile__btn no-margin"
-      ng-click="prjCustomers.displayForm()">
+      ng-click="prjCustomers.toggleForm()">
       Add/Edit customers
     </md-button>
   </md-card-actions>
@@ -103,19 +115,19 @@
   <md-card-actions
     layout="row"
     layout-align="center center"
-    ng-show="prjCustomers.displayOrHide"
+    ng-show="prjCustomers.showForm"
     class="additional">
 
     <md-button
       class="md-raised md-primary"
       ng-click="prjCustomers.save()"
-      ng-disabled="btnIsDisabled">
+      ng-disabled="prjCustomers.disableSaveBtn">
       Save
     </md-button>
 
     <md-button
       class="md-raised"
-      ng-click="prjCustomers.displayForm(); prjCustomers.cancel()">
+      ng-click="prjCustomers.cancel()">
       Cancel
     </md-button>
 
