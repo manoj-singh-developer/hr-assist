@@ -12,7 +12,6 @@
       scope: {},
       require: 'hraCard',
       bindToController: {
-        'toggleForm': '=',
         'querySearch': '=',
         'settings': '='
       },

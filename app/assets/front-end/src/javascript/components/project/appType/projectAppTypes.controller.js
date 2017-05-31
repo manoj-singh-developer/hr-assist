@@ -16,7 +16,6 @@
     vm.prjAppTypes = [];
     vm.copyPrjAppTypes = [];
     vm.disableSaveBtn = true;
-    vm.displayOrHide = false;
 
     _getAppTypes();
 
@@ -33,66 +32,73 @@
           appTypesToRemove = _.without(appTypesToRemove, toRemove);
           appTypesToAdd.push(appType);
           vm.copyPrjAppTypes.push(appType);
+          _disableSaveBtn(false);
         }
         vm.searchText = ' ';
       }
-      vm.disableSaveBtn = false;
+
     }
 
     vm.removeFromQueue = (appType) => {
       let toRemove = _.findWhere(vm.copyPrjAppTypes, { id: appType.id });
       vm.copyPrjAppTypes = _.without(vm.copyPrjAppTypes, toRemove);
       appTypesToAdd = _.without(appTypesToAdd, toRemove);
-      appTypesToRemove.push(appType.id);
-      vm.disableSaveBtn = false;
-    }
-
-    vm.cancel = () => {
-      vm.searchText = "";
-      vm.copyPrjAppTypes = [];
-      Project.getAppTypes(vm.project)
-        .then((data) => {
-          vm.prjAppTypes = data;
-          vm.copyPrjAppTypes.push(...vm.prjAppTypes);
-        });
-      vm.disableSaveBtn = true;
+      appTypesToRemove.push(appType);
+      _disableSaveBtn(false);
     }
 
     vm.save = () => {
 
-      if (appTypesToAdd.length > 0) {
-        Project.saveAppTypes(vm.project, appTypesToAdd);
-        appTypesToAdd = [];
+      if (appTypesToAdd.length) {
+        Project.saveAppTypes(vm.project, appTypesToAdd)
+          .then(() => {
+              appTypesToAdd = [];
+            });
+          }
+
+      if (appTypesToRemove.length) {
+        Project.removeAppTypes(vm.project, appTypesToRemove)
+          .then(() => {
+            appTypesToRemove = [];
+          });
       }
 
-      if (appTypesToRemove.length > 0) {
-        Project.removeAppTypes(vm.project, appTypesToRemove);
-        appTypesToRemove = [];
-      }
+      vm.toggleForm();
+      _disableSaveBtn(true);
+      vm.searchText = '';
+    }
 
-      vm.displayOrHide = false;
-      vm.disableSaveBtn = true;
-      vm.searchText = "";
+    vm.cancel = () => {
+      vm.searchText = '';
+      vm.copyPrjAppTypes = [];
+      Project.getAppTypes(vm.project).then((data) => {
+          vm.prjAppTypes = data;
+          vm.copyPrjAppTypes.push(...vm.prjAppTypes);
+        });
+      _disableSaveBtn(true);
+      vm.toggleForm();
+    }
+
+    vm.toggleForm = () => {
+      vm.showForm = !vm.showForm;
+    }
+
+    function _disableSaveBtn(booleanValue) {
+      vm.disableSaveBtn = !booleanValue ? booleanValue : true;
     }
 
     function _getAppTypes() {
-      AppType.getAll()
-        .then((data) => {
+      AppType.getAll().then((data) => {
           vm.appTypes = data;
           autocompleteService.buildList(vm.appTypes, ['name']);
         });
     }
 
     function _getPrjAppTypes() {
-      Project.getAppTypes(vm.project)
-        .then((data) => {
+      Project.getAppTypes(vm.project).then((data) => {
           vm.prjAppTypes = data;
           vm.copyPrjAppTypes.push(...vm.prjAppTypes);
         });
-    }
-
-    vm.displayForm = () => {
-      vm.displayOrHide = !vm.displayOrHide;
     }
 
   }
