@@ -16,8 +16,8 @@
     vm.prjUsers = [];
     vm.copyPrjUsers = [];
     vm.disableSaveBtn = true;
-    vm.displayOrHide = false;
     vm.teamLeader = {};
+
     _getUsers();
     _getTeamLeader();
 
@@ -34,10 +34,11 @@
           usersToRemove = _.without(usersToRemove, toRemove);
           usersToAdd.push(users);
           vm.copyPrjUsers.push(users);
+          _disableSaveBtn(false);
         }
         vm.searchText = ' ';
       }
-      vm.disableSaveBtn = false;
+
     }
 
     vm.addTeamLeader = (user) => {
@@ -45,7 +46,7 @@
         vm.teamLeader.team_leader_id = user.id;
         vm.teamLeader.first_name = user.first_name;
         vm.teamLeader.last_name = user.last_name;
-        vm.disableSaveBtn = false;
+        _disableSaveBtn(false);
       }
     }
 
@@ -54,24 +55,22 @@
       vm.copyPrjUsers = _.without(vm.copyPrjUsers, toRemove);
       usersToAdd = _.without(usersToAdd, toRemove);
       usersToRemove.push(users.id);
-      vm.disableSaveBtn = false;
+      _disableSaveBtn(false);
     }
 
     vm.cancel = () => {
-      vm.searchLeader = '';
       vm.searchText = '';
+      vm.searchLeader = '';
       vm.copyPrjUsers = [];
-      Project.getUsers(vm.project)
-        .then((data) => {
-          vm.prjUsers = data;
-          vm.copyPrjUsers.push(...vm.prjUsers);
-        });
-      vm.disableSaveBtn = true;
+      _getPrjUsers();
       _getTeamLeader();
-      _clearInputs();
+      vm.toggleForm();
+      _disableSaveBtn(true);
     }
 
     vm.save = () => {
+      vm.searchText = '';
+      vm.searchLeader = '';
       let usersID = usersToAdd.map(user => user.id);
       let objToSave = {
         user_ids: usersID,
@@ -81,6 +80,7 @@
       if (usersToAdd.length > 0 || vm.teamLeader.team_leader_id) {
 
         Project.saveUsers(vm.project, objToSave).then(() => {
+          usersToAdd = [];
           _getPrjUsers();
           _getTeamLeader();
         });
@@ -90,20 +90,13 @@
         let user = {};
         user.usersToRemove = usersToRemove;
         Project.removeUsers(vm.project, user).then(() => {
+          usersToRemove = [];
           _getPrjUsers();
           _getTeamLeader();
         });
       }
-      _clearInputs();
-    }
-
-    function _clearInputs() {
-      vm.displayOrHide = false;
-      vm.disableSaveBtn = true;
-      vm.searchText = '';
-      vm.searchLeader = '';
-      usersToRemove = [];
-      usersToAdd = [];
+      vm.toggleForm();
+      _disableSaveBtn(true);
     }
 
     vm.removeLeader = (leader) => {
@@ -117,11 +110,19 @@
         let user = {};
         user.team_leader_id = leader.id;
         Project.removeUsers(vm.project, user).then(() => {
-          _clearInputs();
+          vm.searchLeader = '';
           _getTeamLeader();
 
         });
       });
+    }
+
+    vm.toggleForm = () => {
+      vm.showForm = !vm.showForm;
+    }
+
+    function _disableSaveBtn(booleanValue) {
+      vm.disableSaveBtn = !booleanValue ? booleanValue : true;
     }
 
     function _getUsers() {
@@ -133,8 +134,7 @@
     }
 
     function _getPrjUsers() {
-      Project.getUsers(vm.project)
-        .then((data) => {
+      Project.getUsers(vm.project).then((data) => {
           vm.prjUsers = data;
           vm.copyPrjUsers = [];
           vm.copyPrjUsers.push(...vm.prjUsers);
@@ -152,10 +152,6 @@
             })
         }
       });
-    }
-
-    vm.displayForm = () => {
-      vm.displayOrHide = !vm.displayOrHide;
     }
 
   }
