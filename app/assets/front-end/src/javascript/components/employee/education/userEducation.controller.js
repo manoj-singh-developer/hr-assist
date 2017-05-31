@@ -8,7 +8,7 @@
 
   userEducationController
 
-  function userEducationController($rootScope, $scope, $stateParams, User, autocompleteService, miscellaneousService) {
+  function userEducationController($rootScope, $scope, $stateParams, User, autocompleteService, miscellaneousService, dateService) {
 
     var vm = this;
     vm.userEducationList = [];
@@ -23,6 +23,7 @@
       initEducations();
     });
 
+    vm.dateService = dateService;
     vm.removeEducation = removeEducation;
     vm.addNewEducation = addNewEducation;
     vm.save = save;
@@ -50,7 +51,7 @@
         vm.userEducationList.splice(index, 1);
         vm.validateDate[index] = false;
       }
-       checkDates();
+      checkDates();
     }
 
     function save() {
@@ -60,6 +61,8 @@
       updateEducationsObj["educations"] = [];
 
       vm.userEducationList.forEach(function(value, index) {
+        value.start_date = vm.dateService.format(value.start_date);
+        value.end_date = vm.dateService.format(value.end_date);
         if (index < vm.userEducations.length) {
           if (JSON.stringify(vm.userEducations[index]) !== JSON.stringify(value))
             updateEducationsObj["educations"].push(value);
@@ -75,9 +78,9 @@
 
       if (saveEducationsObj["educations"].length !== 0)
         User.saveEducations(vm.user.id, saveEducationsObj).then((data) => {
-          vm.userEducations = data;
-          initEducations();
-        });
+        vm.userEducations = data;
+        initEducations();
+      });
 
     }
 
