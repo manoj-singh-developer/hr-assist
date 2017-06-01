@@ -68,7 +68,7 @@
           });
       }
 
-      vm.toggleForm();
+      toggleForm();
       _disableSaveBtn(true);
       vm.searchText = '';
     }
@@ -81,7 +81,7 @@
         vm.copyPrjIndustries.push(...vm.prjIndustries);
       });
       _disableSaveBtn(true);
-      vm.toggleForm();
+      toggleForm();
     }
 
     function toggleForm() {
