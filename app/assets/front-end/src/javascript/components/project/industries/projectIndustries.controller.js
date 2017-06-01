@@ -17,6 +17,12 @@
     vm.copyPrjIndustries = [];
     vm.disableSaveBtn = true;
 
+    vm.addInQueue = addInQueue;
+    vm.removeFromQueue = removeFromQueue;
+    vm.save = save;
+    vm.cancel = cancel;
+    vm.toggleForm = toggleForm();
+
     _getIndustries();
 
     $rootScope.$on("event:projectLoaded", (event, data) => {
@@ -24,7 +30,7 @@
       _getProjectIndustries();
     });
 
-    vm.addInQueue = (industry) => {
+    function addInQueue(industry) {
       if (industry) {
         let notToAdd = _.findWhere(vm.copyPrjIndustries, { id: industry.id });
         if (!notToAdd) {
@@ -38,7 +44,7 @@
       }
     }
 
-    vm.removeFromQueue = (industry) => {
+    function removeFromQueue(industry) {
       let toRemove = _.findWhere(vm.copyPrjIndustries, { id: industry.id });
       vm.copyPrjIndustries = _.without(vm.copyPrjIndustries, toRemove);
       industriesToAdd = _.without(industriesToAdd, toRemove);
@@ -46,7 +52,7 @@
       _disableSaveBtn(false);
     }
 
-    vm.save = () => {
+    function save() {
 
       if (industriesToAdd.length) {
         Project.saveIndustries(vm.project, industriesToAdd)
@@ -67,7 +73,7 @@
       vm.searchText = '';
     }
 
-    vm.cancel = () => {
+    function cancel() {
       vm.searchText = '';
       vm.copyPrjIndustries = [];
       Project.getIndustries(vm.project).then((data) => {
@@ -77,7 +83,8 @@
       _disableSaveBtn(true);
       vm.toggleForm();
     }
-    vm.toggleForm = () => {
+
+    function toggleForm() {
       vm.showForm = !vm.showForm;
     }
 
