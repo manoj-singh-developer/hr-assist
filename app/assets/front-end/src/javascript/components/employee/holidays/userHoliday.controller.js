@@ -46,7 +46,6 @@
     vm.validateDate = false;
 
     vm.dateService = dateService;
-
     vm.queryUserSearch = queryUserSearch;
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
@@ -66,7 +65,6 @@
           console.log(error)
         });
     }
-
 
     function queryUserSearch(query) {
       let empArr = autocompleteService.querySearch(query, vm.users);
@@ -194,6 +192,7 @@
       vm.signingDate = undefined;
       vm.errMsg = false;
       vm.errMsgIntersectInterval = false;
+      vm.replaceInputs = [{}];
     }
 
     function _addHoliday(objToSave) {
