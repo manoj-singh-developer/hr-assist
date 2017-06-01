@@ -17,6 +17,8 @@
     vm.projects = [];
     vm.users = [];
     vm.teamLeaders = [];
+    vm.searchProj = [];
+    vm.searchUser = [];
 
     vm.table = {
       options: {
@@ -39,21 +41,13 @@
 
     vm.errMsg = false;
     vm.displayOrHide = false;
-    vm.replaceInputs = [1];
+    vm.replaceInputs = [{}];
     vm.dateList = [];
     vm.validateDate = false;
-    vm.from = new Date();
-    vm.to = new Date();
-    vm.signingDate = new Date();
 
-    vm.addLeaders = addLeaders;
     vm.dateService = dateService;
-    vm.clearFields = clearFields;
-    vm.checkDates = checkDates;
-    vm.queryProjectSearch = queryProjectSearch;
+
     vm.queryUserSearch = queryUserSearch;
-    vm.saveHoliday = saveHoliday;
-    vm.addEmptyReplacement = addEmptyReplacement;
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.projects = data.projects;
@@ -73,9 +67,6 @@
         });
     }
 
-    function queryProjectSearch(query) {
-      return autocompleteService.querySearch(query, vm.projects);
-    }
 
     function queryUserSearch(query) {
       let empArr = autocompleteService.querySearch(query, vm.users);
@@ -102,9 +93,9 @@
       return empArr;
     }
 
-    function saveHoliday() {
+    vm.saveHoliday = () => {
 
-      calculateHolidays(vm.from, vm.to);
+      _calculateHolidays(vm.from, vm.to);
 
       let usersObj = vm.searchUser;
       let projObj = vm.searchProj;
@@ -193,6 +184,18 @@
       }
     }
 
+    vm.clearFields = () => {
+      vm.searchUser = '';
+      vm.searchProj = '';
+      vm.leader = '';
+      vm.teamLeaders = [];
+      vm.from = undefined;
+      vm.to = undefined;
+      vm.signingDate = undefined;
+      vm.errMsg = false;
+      vm.errMsgIntersectInterval = false;
+    }
+
     function _addHoliday(objToSave) {
       User.addHolidays(objToSave)
         .then((response) => {
@@ -202,10 +205,10 @@
         .catch((error) => {
           console.log(error);
         });
-      clearFields();
+      vm.clearFields();
     }
 
-    function calculateHolidays(dDate1, dDate2) {
+    function _calculateHolidays(dDate1, dDate2) {
 
       let iWeeks, iDateDiff, iAdjust = 0;
 
@@ -237,7 +240,7 @@
 
     }
 
-    function checkDates() {
+    vm.checkDates = () => {
       if (vm.from != undefined && vm.signingDate != undefined && vm.to != undefined && vm.signingDate > vm.from || vm.from > vm.to) {
         vm.validateDate = true;
       } else {
@@ -245,21 +248,14 @@
       }
     }
 
-    function clearFields() {
-      vm.searchUser = '';
-      vm.searchProj = '';
-      vm.leader = '';
-      vm.teamLeaders = [];
-      vm.from = new Date();
-      vm.to = new Date();
-      vm.signingDate = new Date();
-      vm.errMsg = false;
-      vm.errMsgIntersectInterval = false;
-
+    vm.addEmptyReplacement = () => {
+      vm.replaceInputs.push({});
     }
 
-    function addEmptyReplacement() {
-      vm.replaceInputs.push({});
+    vm.removeEmptyReplacement = (index) => {
+      vm.replaceInputs.splice(index, 1);
+      vm.searchProj.splice(index, 1);
+      vm.searchUser.splice(index, 1);
     }
 
     vm.displayForm = () => {
@@ -271,7 +267,7 @@
       return !(day === 0 || day === 6);
     };
 
-    function addLeaders() {
+    vm.addLeaders = () => {
       vm.leader = ' ';
     }
   }
