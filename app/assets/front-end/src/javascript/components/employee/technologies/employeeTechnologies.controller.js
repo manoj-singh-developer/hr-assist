@@ -116,10 +116,7 @@
             $timeout(() => {
               _getUserTech();
             });
-          })
-          .catch((error) => {
-            console.log(error);
-          })
+          });
       }
 
       if (technologiesToRemove.length) {
@@ -130,9 +127,6 @@
             }, 100);
             technologiesToRemove = [];
             _getUserTech();
-          })
-          .catch((error) => {
-            console.log(error);
           });
       }
       toggleForm();
@@ -215,14 +209,10 @@
                 vm.userTechnologies = userTechnologies;
               });
           }
-        })
-        .catch((error) => {
-          console.log(error);
         });
     }
 
     function _validateForm() {
-      console.log(vm.searchText );
       $timeout(() => {
         $scope.addTechForm.$invalid = !vm.searchText ? false : true;
       }, 100);
