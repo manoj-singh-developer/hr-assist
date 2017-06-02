@@ -30,7 +30,7 @@
   </md-content>
 
   <!-- PREVIEW TECHNOLOGIES -->
-  <md-content ng-show="!employeeSkills.displayOrHide" class="c-card-profile__preview">
+  <md-content ng-show="!employeeSkills.showForm" class="c-card-profile__preview">
 
     <md-subheader class="md-no-sticky">Main technologies</md-subheader>
 
@@ -63,7 +63,7 @@
 
   <!-- EDIT TECHNOLOGIES -->
     <form ng-submit="$event.preventDefault()" name="addTechForm">
-      <md-content class = "md-padding" ng-show="employeeSkills.displayOrHide">
+      <md-content class = "md-padding" ng-show="employeeSkills.showForm">
 
         <md-list layout="row" layout-wrap>
 
@@ -97,16 +97,15 @@
             <md-input-container>
               <label>Select technology</label>
               <md-autocomplete md-selected-item="employeeSkills.selectedItem[$index]"
-                               md-search-text-change="employeeSkills.searchTextChange(employeeSkills.searchText[$index])"
-                               ng-model="employeeSkills.searchText[$index]"
-                               md-search-text="employeeSkills.searchText[$index]"
-                               md-selected-item-change="employeeSkills.selectedTechnologyChange(item, $index)"
-                               md-items="item in employeeSkills.queryTechnologySearch(employeeSkills.searchText[$index])"
-                               md-item-text="item.name"
-                               md-min-length="0"
-                               placeholder="Select technology"
-                               class="select-tech"
-                               required>
+                md-search-text-change="employeeSkills.searchTextChange(employeeSkills.searchText[$index])"
+                ng-model="employeeSkills.searchText[$index]"
+                md-search-text="employeeSkills.searchText[$index]"
+                md-selected-item-change="employeeSkills.selectedTechnologyChange(item, $index)"
+                md-items="item in employeeSkills.querySearch(employeeSkills.searchText[$index], employeeSkills.technologies)"
+                md-item-text="item.name"
+                md-min-length="0"
+                placeholder="Select technology"
+                class="select-tech">
 
                 <md-item-template>
                   <span class="item-metadata"
@@ -195,16 +194,16 @@
     <!-- CARD ACTIONS -->
     <md-card-actions layout="column"
                     layout-align="start"
-                    ng-show="!employeeSkills.displayOrHide">
+                    ng-show="!employeeSkills.showForm">
       <md-button class="c-card-profile__btn no-margin"
-                ng-click="employeeSkills.displayForm()">
+                ng-click="employeeSkills.toggleForm()">
         Add/Edit Technologies
       </md-button>
     </md-card-actions>
 
     <md-card-actions layout="row"
                     layout-align="center center"
-                    ng-show="employeeSkills.displayOrHide"
+                    ng-show="employeeSkills.showForm"
                     class="additional">
 
       <md-button class="md-raised md-primary"
@@ -212,14 +211,9 @@
                 ng-disabled="addTechForm.$invalid">
         Save
       </md-button>
-      <!--<md-button class="md-raised md-primary"-->
-                 <!--ng-click="employeeSkills.deleteTechnologies()"-->
-                 <!--ng-show="employeeSkills.showDelete">-->
-        <!--Save-->
-      <!--</md-button>-->
 
       <md-button class="md-raised"
-                ng-click=employeeSkills.cancelSave()>
+                ng-click=employeeSkills.cancel()>
         Cancel
       </md-button>
 

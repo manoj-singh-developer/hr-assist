@@ -14,18 +14,18 @@
     vm.user = {};
     vm.technologies = [];
     vm.userTechnologies = [];
-    vm.displayOrHide = false;
+    vm.showForm = false;
     vm.skillLvlTxt = [];
-    vm.replaceInputs = [1];
+    vm.replaceInputs = [{}];
 
-    vm.queryTechnologySearch = queryTechnologySearch;
     vm.addNewTechnologie = addNewTechnologie;
     vm.saveTechnologies = saveTechnologies;
-    vm._getUserTech = _getUserTech;
-    vm.getLvlTxt = getLvlTxt;
     vm.deleteTechQuery = deleteTechQuery;
+    vm.toggleForm = toggleForm;
+    vm.cancel = cancel;
 
     _getUserTech();
+    _validateForm();
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.user = data.user;
@@ -37,10 +37,6 @@
 
     function addNewTechnologie() {
       vm.replaceInputs.push({});
-    }
-
-    function queryTechnologySearch(query){
-       return autocompleteService.querySearch(query, vm.technologies);
     }
 
     function deleteTechQuery(technology) {
@@ -58,10 +54,10 @@
       technologiesToAdd = _.without(technologiesToAdd, toRemove);
       technologiesToRemove.push(technology);
 
-      if(technologiesToRemove.length > 0) {
-       $timeout(() => {
-         $scope.addTechForm.$invalid = false;
-       }, 100);
+      if (technologiesToRemove.length) {
+        $timeout(() => {
+          $scope.addTechForm.$invalid = false;
+        }, 100);
       }
     }
 
@@ -84,15 +80,15 @@
         return [value];
       })
 
-      for(var i = 0; i < techNameArr.length; i++) {
+      for (let i = 0; i < techNameArr.length; i++) {
         techName.push(techNameArr[i]);
       }
 
-      for(var x = 0; x < techTypesArr.length; x++) {
+      for (let x = 0; x < techTypesArr.length; x++) {
         techTypes.push(techTypesArr[x]);
       }
 
-      for(var y = 0; y < techLvlArr.length; y++) {
+      for (let y = 0; y < techLvlArr.length; y++) {
         techLvl.push(techLvlArr[y]);
       }
 
@@ -104,17 +100,15 @@
       };
 
       for (let i = 0; i < userTechArr.length; i++) {
-        if(userTechArr[i].name === objToSave.names[0]){
+        if (userTechArr[i].name === objToSave.names[0]) {
           User.deleteUserTechnologies([userTechArr[i]]);
         }
       }
 
-      if(objToSave.names.length > 0) {
+      if (objToSave.names.length) {
         User.addUserTechnologies(objToSave)
           .then((response) => {
-            vm.displayOrHide = false;
-            vm.technologiesToAdd = [1];
-
+            vm.technologiesToAdd = [{}];
             vm.searchText = '';
             vm.selectedSkillTypes = '';
             vm.selectedSkillLevel = '';
@@ -128,13 +122,12 @@
           })
       }
 
-      if (technologiesToRemove.length > 0) {
+      if (technologiesToRemove.length) {
         User.deleteUserTechnologies(technologiesToRemove)
           .then((response) => {
             $timeout(() => {
               $scope.addTechForm.$invalid = true;
             }, 100);
-            vm.displayOrHide = false;
             technologiesToRemove = [];
             _getUserTech();
           })
@@ -142,52 +135,28 @@
             console.log(error);
           });
       }
+      toggleForm();
     }
 
-
-    function _getUserTech(){
-      User.getTechnologies()
-        .then((response) => {
-          let userTechnologies = response;
-
-          for(var j = 0; j< userTechnologies.length; j++){
-
-            let promise = new Promise((resolve) => {
-              resolve (getLvlTxt(userTechnologies[j].level));
-            });
-
-            vm.skillLvlTxt = [];
-            promise
-              .then((response) => {
-                vm.skillLvlTxt.push(response);
-                for(var i = 0; i < userTechnologies.length; i++) {
-                  userTechnologies[i].level = _.assign(vm.skillLvlTxt[i], userTechnologies[i].level);
-                }
-
-                vm.userTechnologies = userTechnologies;
-              });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    function toggleForm() {
+      vm.showForm = !vm.showForm;
     }
 
-    vm.displayForm = () => {
-      vm.displayOrHide = !vm.displayOrHide;
-    };
-
-    vm.cancelSave = () => {
+    function cancel() {
       vm.displayOrHide = false;
       vm.showDelete = false;
       technologiesToRemove = [];
       vm.userTechnologies = [];
+      vm.searchText = '';
+      vm.selectedSkillTypes = '';
+      vm.selectedSkillLevel = '';
       $timeout(() => {
         _getUserTech();
       });
+      toggleForm();
     };
 
-    function getLvlTxt(data) {
+    function _getLvlTxt(data) {
       switch (data) {
         case 1:
           return "Junior";
@@ -222,6 +191,41 @@
         default:
           return "Please select your experience level";
       }
+    }
+
+    function _getUserTech() {
+      User.getTechnologies()
+        .then((response) => {
+          let userTechnologies = response;
+
+          for (let j = 0; j < userTechnologies.length; j++) {
+
+            let promise = new Promise((resolve) => {
+              resolve(_getLvlTxt(userTechnologies[j].level));
+            });
+
+            vm.skillLvlTxt = [];
+            promise
+              .then((response) => {
+                vm.skillLvlTxt.push(response);
+                for (let i = 0; i < userTechnologies.length; i++) {
+                  userTechnologies[i].level = _.assign(vm.skillLvlTxt[i], userTechnologies[i].level);
+                }
+
+                vm.userTechnologies = userTechnologies;
+              });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    function _validateForm() {
+      console.log(vm.searchText );
+      $timeout(() => {
+        $scope.addTechForm.$invalid = !vm.searchText ? false : true;
+      }, 100);
     }
 
   }

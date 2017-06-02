@@ -14,9 +14,7 @@
       scope: {},
       require: 'hraCard',
       bindToController: {
-        'toggleForm': '=',
-        'querySearch': '=',
-        'settings': '='
+        'querySearch': '='
       },
       controller: 'employeeSkillsController',
       controllerAs: 'employeeSkills',
