@@ -8,32 +8,33 @@
 
   userEducationController
 
-  function userEducationController($rootScope, $scope, $stateParams, User, autocompleteService, miscellaneousService, dateService, $mdDialog) {
+  function userEducationController($rootScope, $scope, $stateParams, User, autocompleteService, dateService, $mdDialog) {
 
-    var vm = this;
+    let vm = this;
     vm.userEducationList = [];
     vm.userEducations = [];
-    vm.showEditEducation = false;
+    vm.showForm = false;
     vm.validateDate = [];
     vm.validateDates = false;
-
-    var getUser = $rootScope.$on('event:userResourcesLoaded', (event, data) => {
-      vm.user = data.user;
-      vm.userEducations = data.educations;
-      initEducations();
-    });
+    let startDate = [];
+    let endDate = []
 
     vm.dateService = dateService;
     vm.removeEducation = removeEducation;
     vm.addNewEducation = addNewEducation;
     vm.save = save;
-    vm.cancelAdd = cancelAdd;
-    vm.displayEditEducation = displayEditEducation;
+    vm.cancel = cancel;
+    vm.toggleForm = toggleForm;
     vm.checkDates = checkDates;
 
-    function displayEditEducation() {
+    $rootScope.$on('event:userResourcesLoaded', (event, data) => {
+      vm.user = data.user;
+      vm.userEducations = data.educations;
+      _initEducations();
+    });
 
-      vm.showEditEducation = !vm.showEditEducation;
+    function toggleForm() {
+      vm.showForm = !vm.showForm;
     }
 
     function addNewEducation() {
@@ -59,12 +60,11 @@
         vm.userEducationList.splice(index, 1);
         vm.validateDate[index] = false;
       }
-      checkDates();
     }
 
     function save() {
-      var saveEducationsObj = {};
-      var updateEducationsObj = {};
+      let saveEducationsObj = {};
+      let updateEducationsObj = {};
       saveEducationsObj["educations"] = [];
       updateEducationsObj["educations"] = [];
 
@@ -81,30 +81,27 @@
       if (updateEducationsObj["educations"].length !== 0)
         User.updateEducations(vm.user.id, updateEducationsObj).then((data) => {
           vm.userEducations = data;
-          initEducations();
+          _initEducations();
         });
 
       if (saveEducationsObj["educations"].length !== 0)
         User.saveEducations(vm.user.id, saveEducationsObj).then((data) => {
           vm.userEducations = data;
-          initEducations();
+          _initEducations();
         });
-
+      toggleForm();
     }
 
-    function cancelAdd() {
+    function cancel() {
       vm.userEducationList = [];
       vm.userEducationList = _.map(vm.userEducations, _.clone);
       vm.validateDate = [];
+      toggleForm();
     }
 
-    function initEducations() {
+    function _initEducations() {
       vm.userEducationList = _.map(vm.userEducations, _.clone);
     }
-
-    let startDate = [];
-    let endDate = []
-    vm.validateDate = [];
 
     function checkDates(index) {
 

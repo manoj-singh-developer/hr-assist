@@ -10,7 +10,8 @@
     <md-card-title-text>
       <span class="md-headline">Education</span>
     </md-card-title-text>
-  </md-card-title><!-- /CARD TITLE -->
+  </md-card-title>
+  <!-- /CARD TITLE -->
 
 
 
@@ -22,21 +23,21 @@
     <p>
       <strong>NOTE: </strong>Complete here with your education experience.
     </p>
-  </md-content> <!-- CARD NOTES -->
+  </md-content>
   <md-content class="c-card-profile__notes"
-              ng-if="!userEducation.userEducationList.length > 0">
+    ng-if="!userEducation.userEducationList.length > 0">
     <p>
       <strong>You not have any education experience added.</strong>
     </p>
   </md-content>
-
+  <!-- CARD NOTES -->
 
 
 
 
   <!-- PREVIEW EDUCATION -->
   <md-content
-    ng-show="!userEducation.showEditEducation"
+    ng-show="!userEducation.showForm"
     class="c-card-profile__preview">
     <md-list layout="row" layout-wrap>
       <md-list-item
@@ -52,7 +53,8 @@
         </div>
       </md-list-item>
     </md-list>
-  </md-content><!-- /PREVIEW EDUCATION -->
+  </md-content>
+  <!-- /PREVIEW EDUCATION -->
 
 
 
@@ -61,7 +63,7 @@
   <!-- FORM EDUCATION -->
   <form ng-submit="$event.preventDefault()" name="addEduForm">
   <md-content
-    ng-show="userEducation.showEditEducation"
+    ng-show="userEducation.showForm"
     class="md-padding">
 
     <!-- CARD GROUP  -->
@@ -80,7 +82,8 @@
         ng-click="userEducation.removeEducation($index, $event)">
         <md-icon class="material-icons">delete</md-icon>
         <md-tooltip>Remove education</md-tooltip>
-      </md-button><!-- /REMOVE EDUCATION -->
+      </md-button>
+      <!-- /REMOVE EDUCATION -->
 
 
 
@@ -101,7 +104,8 @@
 
           {{addEduForm.name}}
         </md-input-container>
-      </section><!-- /SCHOOL -->
+      </section>
+      <!-- /SCHOOL -->
 
 
 
@@ -121,7 +125,8 @@
             <div ng-message="required">This field is required</div>
           </div>
         </md-input-container>
-      </section><!-- /FIELD OF STUDY -->
+      </section>
+      <!-- /FIELD OF STUDY -->
 
 
 
@@ -139,7 +144,8 @@
             <div ng-message="required">This field is required</div>
           </div>
         </md-input-container>
-      </section><!-- DIPLOMA -->
+      </section>
+      <!-- DIPLOMA -->
 
 
 
@@ -190,7 +196,8 @@
       </md-button>
     </section>
 
-  </md-content><!-- /FORM EDUCATION -->
+  </md-content>
+  <!-- /FORM EDUCATION -->
 
 
 
@@ -200,10 +207,10 @@
   <md-card-actions
     layout="column"
     layout-align="start"
-    ng-show="!userEducation.showEditEducation">
+    ng-show="!userEducation.showForm">
     <md-button
       class="c-card-profile__btn no-margin noPrint"
-      ng-click="userEducation.displayEditEducation()">
+      ng-click="userEducation.toggleForm()">
       Add Educations
     </md-button>
   </md-card-actions>
@@ -211,19 +218,19 @@
   <md-card-actions
     layout="row"
     layout-align="center center"
-    ng-show="userEducation.showEditEducation"
+    ng-show="userEducation.showForm"
     class="additional">
 
     <md-button
       class="md-raised md-primary"
-      ng-click="userEducation.save(); userEducation.displayEditEducation()"
+      ng-click="userEducation.save();"
       ng-disabled="addEduForm.$invalid || userEducation.validateDates">
       Save
     </md-button>
 
     <md-button
       class="md-raised"
-      ng-click="userEducation.cancelAdd(); userEducation.displayEditEducation()">
+      ng-click="userEducation.cancel();">
       Cancel
     </md-button>
 
@@ -235,4 +242,5 @@
 
 
 
-</md-card><!-- /CARD EDUCATION -->
+</md-card>
+<!-- /CARD EDUCATION -->
