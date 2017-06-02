@@ -15,13 +15,23 @@
 
 
 
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here with general information  of this project.
+    </p>
+  </md-content> 
+  <!-- CARD NOTES -->
+
+
+
 
   <!-- PREVIEW GENERAL INFO -->
   <md-content
-  	ng-show="!prjGeneral.displayOrHide"
+  	ng-show="!prjGeneral.showForm"
     class="c-card-profile__preview">
 
-   <section layout-gt-xs="row">
+   	<section layout-gt-xs="row">
 
      <div flex="100" class="c-card-profile__general-info">
 
@@ -57,11 +67,11 @@
 	<!-- EDIT PROJECT FORM -->
 	<form ng-submit="$event.preventDefault()" 
 		novalidate 
-		name="editeProjectForm">
+		name="editProjectForm">
 
 		<md-content
 			class="md-padding"
-			ng-show="prjGeneral.displayOrHide">
+			ng-show="prjGeneral.showForm">
 
 			<!-- Name -->
 			<div layout-gt-xs="row">
@@ -71,7 +81,7 @@
 				  <input ng-model="prjGeneral.project.name" 
 				  	name="projectName" 
 				  	required>
-				  <div ng-messages="editeProjectForm.projectName.$error">
+				  <div ng-messages="editProjectForm.projectName.$error">
 				    <div ng-message="required">This field is required</div>
 				  </div>
 
@@ -89,7 +99,7 @@
 	          name="description"
 	          required>
 	        </textarea>
-					<div ng-messages="editeProjectForm.description.$error">
+					<div ng-messages="editProjectForm.description.$error">
 				    <div ng-message="required">This field is required</div>
 				  </div>
 
@@ -138,10 +148,10 @@
 		<md-card-actions
 		  layout="column"
 		  layout-align="start"
-		  ng-show="!prjGeneral.displayOrHide">
+		  ng-show="!prjGeneral.showForm">
 		  <md-button
 		    class="c-card-profile__btn no-margin"
-		    ng-click="prjGeneral.displayOrHide = true">
+		    ng-click="prjGeneral.toggleForm()">
 		    Add/Edit general information
 		  </md-button>
 		</md-card-actions>
@@ -150,13 +160,13 @@
 		<md-card-actions
 		  layout="row"
 		  layout-align="center center"
-		  ng-show="prjGeneral.displayOrHide"
+		  ng-show="prjGeneral.showForm"
 		  class="additional">
 
 		  <md-button
 		    class="md-raised md-primary"
 		    ng-click="prjGeneral.save()"
-		    ng-disabled="editeProjectForm.$invalid || prjGeneral.validateDate">
+		    ng-disabled="editProjectForm.$invalid || prjGeneral.validateDate">
 		    Save
 		  </md-button>
 
