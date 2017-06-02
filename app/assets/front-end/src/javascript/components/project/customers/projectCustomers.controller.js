@@ -14,12 +14,14 @@
     vm.project = {};
     vm.customers = [];
     vm.prjCustomers = [];
-    vm.displayOrHide = false;
+    vm.copyPrjCustomers = [];
+    vm.disableSaveBtn = true;
 
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.save = save;
     vm.cancel = cancel;
+    vm.toggleForm = toggleForm;
 
     _getCustomers();
 
@@ -28,48 +30,63 @@
       _getProjectCustomers();
     });
 
-    function addInQueue(customer){      
-      if(customer){ 
-        let toRemove = _.findWhere(customersToRemove, { id: customer.id });
-        customersToRemove = _.without(customersToRemove, toRemove);
-        customersToAdd.push(customer);
-        vm.prjCustomers.push(customer);
-        vm.searchText = "";
+    function addInQueue(customer) {
+      if (customer) {
+        let notToAdd = _.findWhere(vm.copyPrjCustomers, { id: customer.id });
+        if (!notToAdd) {
+          let toRemove = _.findWhere(customersToRemove, { id: customer.id });
+          customersToRemove = _.without(customersToRemove, toRemove);
+          customersToAdd.push(customer);
+          vm.copyPrjCustomers.push(customer);
+        }
+        vm.searchText = ' ';
+        _disableSaveBtn(false);
       }
     }
 
-    function removeFromQueue(customer){
-      let toRemove = _.findWhere(vm.prjCustomers, { id: customer.id });
-      vm.prjCustomers = _.without(vm.prjCustomers, toRemove);
+    function removeFromQueue(customer) {
+      let toRemove = _.findWhere(vm.copyPrjCustomers, { id: customer.id });
+      vm.copyPrjCustomers = _.without(vm.copyPrjCustomers, toRemove);
       customersToAdd = _.without(customersToAdd, toRemove);
       customersToRemove.push(customer);
-      vm.searchText = "";
+      _disableSaveBtn(false);
     }
 
     function save() {
-      
+
       if (customersToAdd.length) {
         Project.saveCustomers(vm.project, customersToAdd)
           .then(() => {
-            _getProjectCustomers();
+            customersToAdd = [];
           });
       }
 
       if (customersToRemove.length) {
         Project.removeCustomers(vm.project, customersToRemove)
           .then(() => {
-            _getProjectCustomers();
+            customersToRemove = [];
           });
       }
 
-      vm.displayOrHide = false;
+      toggleForm();
+      _disableSaveBtn(true);
+      vm.searchText = '';
     }
 
     function cancel() {
-      vm.prjCustomers = [];
-      Project.getCustomers(vm.project).then((data) => {
-        vm.prjCustomers = data;
-      });
+      vm.searchText = '';
+      vm.copyPrjCustomers = [];
+      _getProjectCustomers();
+      _disableSaveBtn(true);
+      toggleForm();
+    }
+
+    function toggleForm() {
+      vm.showForm = !vm.showForm;
+    }
+
+    function _disableSaveBtn(booleanValue) {
+      vm.disableSaveBtn = !booleanValue ? booleanValue : true;
     }
 
     function _getCustomers() {
@@ -80,15 +97,12 @@
         })
     }
 
-    function _getProjectCustomers(){
+    function _getProjectCustomers() {
       Project.getCustomers(vm.project)
         .then((data) => {
           vm.prjCustomers = data;
+          vm.copyPrjCustomers.push(...vm.prjCustomers);
         });
-    }
-
-    vm.displayForm = () => {
-      vm.displayOrHide = !vm.displayOrHide;
     }
 
   }

@@ -16,7 +16,7 @@
         <strong>NOTE: </strong>Complete here with the team leader and employees of this project.
       </p>
     </md-content> 
-    <!-- CARD NOTES -->
+    
 
     <md-content class="c-card-profile__notes"
       ng-show="!prjUsers.teamLeader.id && prjUsers.copyPrjUsers.length === 0">
@@ -24,13 +24,13 @@
         <strong>You not have any employee assigned.</strong>
       </p>
     </md-content>
-
+    <!-- CARD NOTES -->
 
 
 
   <!-- PREVIEW  -->
   <md-content
-    ng-show="!prjUsers.displayOrHide"
+    ng-show="!prjUsers.showForm"
     class="c-card-profile__preview">
 
     <!-- IF TEAM LEADER IS SET -->
@@ -68,7 +68,7 @@
         ng-repeat="user in prjUsers.copyPrjUsers track by $index">
         <div class="md-list-item-text" layout="column">
           <span class="c-filters__item">
-            {{$index + 1}}. {{user.first_name}} {{user.last_name}}
+            {{user.first_name}} {{user.last_name}}
           </span>
         </div>
       </md-list-item>
@@ -86,7 +86,7 @@
   <!-- EDIT USERS-->
   <md-content
     class = "md-padding"
-    ng-show="prjUsers.displayOrHide">
+    ng-show="prjUsers.showForm">
 
     <md-list layout="row" layout-wrap>
 
@@ -206,10 +206,10 @@
   <md-card-actions
     layout="column"
     layout-align="start"
-    ng-show="!prjUsers.displayOrHide">
+    ng-show="!prjUsers.showForm">
     <md-button
       class="c-card-profile__btn no-margin"
-      ng-click="prjUsers.displayForm()">
+      ng-click="prjUsers.toggleForm()">
       Add/Edit Employees
     </md-button>
   </md-card-actions>
@@ -217,7 +217,7 @@
   <md-card-actions
     layout="row"
     layout-align="center center"
-    ng-show="prjUsers.displayOrHide"
+    ng-show="prjUsers.showForm"
     class="additional">
 
     <md-button
@@ -229,7 +229,7 @@
 
     <md-button
       class="md-raised"
-      ng-click="prjUsers.displayForm(); prjUsers.cancel()">
+      ng-click="prjUsers.cancel()">
       Cancel
     </md-button>
 

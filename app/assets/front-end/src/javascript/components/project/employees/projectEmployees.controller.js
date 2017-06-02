@@ -16,8 +16,16 @@
     vm.prjUsers = [];
     vm.copyPrjUsers = [];
     vm.disableSaveBtn = true;
-    vm.displayOrHide = false;
     vm.teamLeader = {};
+
+    vm.addInQueue = addInQueue;
+    vm.addTeamLeader = addTeamLeader;
+    vm.removeFromQueue = removeFromQueue;
+    vm.cancel = cancel;
+    vm.save = save;
+    vm.removeLeader = removeLeader;
+    vm.toggleForm = toggleForm;
+
     _getUsers();
     _getTeamLeader();
 
@@ -26,7 +34,7 @@
       _getPrjUsers();
     });
 
-    vm.addInQueue = (users) => {
+    function addInQueue(users) {
       if (users) {
         let notToAdd = _.findWhere(vm.copyPrjUsers, { id: users.id });
         if (!notToAdd) {
@@ -34,44 +42,43 @@
           usersToRemove = _.without(usersToRemove, toRemove);
           usersToAdd.push(users);
           vm.copyPrjUsers.push(users);
+          _disableSaveBtn(false);
         }
         vm.searchText = ' ';
       }
-      vm.disableSaveBtn = false;
+
     }
 
-    vm.addTeamLeader = (user) => {
+    function addTeamLeader(user) {
       if (user) {
         vm.teamLeader.team_leader_id = user.id;
         vm.teamLeader.first_name = user.first_name;
         vm.teamLeader.last_name = user.last_name;
-        vm.disableSaveBtn = false;
+        _disableSaveBtn(false);
       }
     }
 
-    vm.removeFromQueue = (users) => {
+    function removeFromQueue(users) {
       let toRemove = _.findWhere(vm.copyPrjUsers, { id: users.id });
       vm.copyPrjUsers = _.without(vm.copyPrjUsers, toRemove);
       usersToAdd = _.without(usersToAdd, toRemove);
       usersToRemove.push(users.id);
-      vm.disableSaveBtn = false;
+      _disableSaveBtn(false);
     }
 
-    vm.cancel = () => {
-      vm.searchLeader = '';
+    function cancel() {
       vm.searchText = '';
+      vm.searchLeader = '';
       vm.copyPrjUsers = [];
-      Project.getUsers(vm.project)
-        .then((data) => {
-          vm.prjUsers = data;
-          vm.copyPrjUsers.push(...vm.prjUsers);
-        });
-      vm.disableSaveBtn = true;
+      _getPrjUsers();
       _getTeamLeader();
-      _clearInputs();
+      toggleForm();
+      _disableSaveBtn(true);
     }
 
-    vm.save = () => {
+    function save() {
+      vm.searchText = '';
+      vm.searchLeader = '';
       let usersID = usersToAdd.map(user => user.id);
       let objToSave = {
         user_ids: usersID,
@@ -81,6 +88,7 @@
       if (usersToAdd.length > 0 || vm.teamLeader.team_leader_id) {
 
         Project.saveUsers(vm.project, objToSave).then(() => {
+          usersToAdd = [];
           _getPrjUsers();
           _getTeamLeader();
         });
@@ -90,23 +98,16 @@
         let user = {};
         user.usersToRemove = usersToRemove;
         Project.removeUsers(vm.project, user).then(() => {
+          usersToRemove = [];
           _getPrjUsers();
           _getTeamLeader();
         });
       }
-      _clearInputs();
+      toggleForm();
+      _disableSaveBtn(true);
     }
 
-    function _clearInputs() {
-      vm.displayOrHide = false;
-      vm.disableSaveBtn = true;
-      vm.searchText = '';
-      vm.searchLeader = '';
-      usersToRemove = [];
-      usersToAdd = [];
-    }
-
-    vm.removeLeader = (leader) => {
+    function removeLeader(leader) {
       var confirm = $mdDialog.confirm()
         .title('Would you like to delete ' + leader.first_name + ' ' + leader.last_name + ' leader?')
         .targetEvent(event)
@@ -117,11 +118,19 @@
         let user = {};
         user.team_leader_id = leader.id;
         Project.removeUsers(vm.project, user).then(() => {
-          _clearInputs();
+          vm.searchLeader = '';
           _getTeamLeader();
 
         });
       });
+    }
+
+    function toggleForm() {
+      vm.showForm = !vm.showForm;
+    }
+
+    function _disableSaveBtn(booleanValue) {
+      vm.disableSaveBtn = !booleanValue ? booleanValue : true;
     }
 
     function _getUsers() {
@@ -133,12 +142,11 @@
     }
 
     function _getPrjUsers() {
-      Project.getUsers(vm.project)
-        .then((data) => {
-          vm.prjUsers = data;
-          vm.copyPrjUsers = [];
-          vm.copyPrjUsers.push(...vm.prjUsers);
-        });
+      Project.getUsers(vm.project).then((data) => {
+        vm.prjUsers = data;
+        vm.copyPrjUsers = [];
+        vm.copyPrjUsers.push(...vm.prjUsers);
+      });
     }
 
     function _getTeamLeader() {
@@ -152,10 +160,6 @@
             })
         }
       });
-    }
-
-    vm.displayForm = () => {
-      vm.displayOrHide = !vm.displayOrHide;
     }
 
   }
