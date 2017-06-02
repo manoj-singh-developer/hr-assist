@@ -21,7 +21,7 @@
     vm.removeFromQueue = removeFromQueue;
     vm.save = save;
     vm.cancel = cancel;
-    vm.toggleForm = toggleForm();
+    vm.toggleForm = toggleForm;
 
     _getIndustries();
 
@@ -76,10 +76,7 @@
     function cancel() {
       vm.searchText = '';
       vm.copyPrjIndustries = [];
-      Project.getIndustries(vm.project).then((data) => {
-        vm.prjIndustries = data;
-        vm.copyPrjIndustries.push(...vm.prjIndustries);
-      });
+      _getProjectIndustries();
       _disableSaveBtn(true);
       toggleForm();
     }
