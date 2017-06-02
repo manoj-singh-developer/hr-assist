@@ -17,6 +17,12 @@
     vm.copyPrjCustomers = [];
     vm.disableSaveBtn = true;
 
+    vm.addInQueue = addInQueue;
+    vm.removeFromQueue = removeFromQueue;
+    vm.save = save;
+    vm.cancel = cancel;
+    vm.toggleForm = toggleForm;
+
     _getCustomers();
 
     $rootScope.$on("event:projectLoaded", (event, data) => {
@@ -24,7 +30,7 @@
       _getProjectCustomers();
     });
 
-    vm.addInQueue = (customer) => {
+    function addInQueue(customer) {
       if (customer) {
         let notToAdd = _.findWhere(vm.copyPrjCustomers, { id: customer.id });
         if (!notToAdd) {
@@ -38,14 +44,15 @@
       }
     }
 
-    vm.removeFromQueue = (customer) => {
+    function removeFromQueue(customer) {
       let toRemove = _.findWhere(vm.copyPrjCustomers, { id: customer.id });
       vm.copyPrjCustomers = _.without(vm.copyPrjCustomers, toRemove);
       customersToAdd = _.without(customersToAdd, toRemove);
       customersToRemove.push(customer);
+      _disableSaveBtn(false);
     }
 
-    vm.save = () => {
+    function save() {
 
       if (customersToAdd.length) {
         Project.saveCustomers(vm.project, customersToAdd)
@@ -61,23 +68,20 @@
           });
       }
 
-      vm.toggleForm();
+      toggleForm();
       _disableSaveBtn(true);
       vm.searchText = '';
     }
 
-    vm.cancel = () => {
+    function cancel() {
       vm.searchText = '';
       vm.copyPrjCustomers = [];
-      Project.getCustomers(vm.project).then((data) => {
-        vm.prjCustomers = data;
-        vm.copyPrjCustomers.push(...vm.prjCustomers);
-      });
+      _getProjectCustomers();
       _disableSaveBtn(true);
-      vm.toggleForm();
+      toggleForm();
     }
 
-    vm.toggleForm = () => {
+    function toggleForm() {
       vm.showForm = !vm.showForm;
     }
 
