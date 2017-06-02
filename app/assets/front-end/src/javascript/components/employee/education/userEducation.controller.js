@@ -8,7 +8,7 @@
 
   userEducationController
 
-  function userEducationController($rootScope, $scope, $stateParams, User, autocompleteService, miscellaneousService, dateService) {
+  function userEducationController($rootScope, $scope, $stateParams, User, autocompleteService, miscellaneousService, dateService, $mdDialog) {
 
     var vm = this;
     vm.userEducationList = [];
@@ -40,13 +40,21 @@
       vm.userEducationList.push({});
     }
 
-    function removeEducation(index) {
+    function removeEducation(index, event) {
       if (index < vm.userEducations.length) {
         let obj = { "education_ids": Array.of(vm.userEducations[index].id) };
-        User.removeEducations(vm.user.id, obj);
+        let confirm = $mdDialog.confirm()
+          .title('Would you like to delete ' + vm.userEducations[index].degree + ' degree?')
+          .targetEvent(event)
+          .ok('Yes')
+          .cancel('No');
 
-        vm.userEducations.splice(index, 1);
-        vm.userEducationList.splice(index, 1);
+        $mdDialog.show(confirm).then(() => {
+          User.removeEducations(vm.user.id, obj);
+          vm.userEducations.splice(index, 1);
+          vm.userEducationList.splice(index, 1);
+        });
+
       } else {
         vm.userEducationList.splice(index, 1);
         vm.validateDate[index] = false;
@@ -78,9 +86,9 @@
 
       if (saveEducationsObj["educations"].length !== 0)
         User.saveEducations(vm.user.id, saveEducationsObj).then((data) => {
-        vm.userEducations = data;
-        initEducations();
-      });
+          vm.userEducations = data;
+          initEducations();
+        });
 
     }
 
