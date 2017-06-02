@@ -9,7 +9,7 @@
 
   userHolidayCtrl
 
-  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, dateService, $timeout) {
+  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, dateService, $timeout, tableSettings) {
 
     let vm = this;
     let days;
@@ -20,24 +20,9 @@
     vm.searchProj = [];
     vm.searchUser = [];
 
-    vm.table = {
-      options: {
-        rowSelection: true,
-        multiSelect: true,
-        autoSelect: true,
-        decapitate: false,
-        largeEditDialog: false,
-        boundaryLinks: true,
-        limitSelect: true,
-        pageSelect: true
-      },
-      query: {
-        limit: 5,
-        page: 1
-      },
-      "limitOptions": [5, 10, 15],
-      selected: []
-    };
+    vm.tableSettings = tableSettings;
+    vm.tableSettings.query.limit = 5;
+    vm.tableSettings.limitOptions = [5, 10, 15];
 
     vm.errMsg = false;
     vm.displayOrHide = false;
@@ -61,6 +46,8 @@
       vm.projects = data.projects;
       vm.users = data.users;
       vm.userHolidays = data.holidays;
+      vm.tableSettings.total = vm.userHolidays.length;
+
       autocompleteService.buildList(vm.projects, ['name']);
       autocompleteService.buildList(vm.users, ['first_name', 'last_name']);
     });
@@ -192,6 +179,7 @@
       vm.errMsg = false;
       vm.errMsgIntersectInterval = false;
       vm.replaceInputs = [{}];
+      toggleForm();
     }
 
     function checkDates() {

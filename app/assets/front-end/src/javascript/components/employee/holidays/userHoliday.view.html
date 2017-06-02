@@ -62,7 +62,7 @@
             <tr md-row
               md-select="holiday"
               md-auto-select
-              ng-repeat="holiday in userHoliday.userHolidays | limitTo: userHoliday.table.query.limit : (userHoliday.table.query.page - 1) * userHoliday.table.query.limit">
+              ng-repeat="holiday in userHoliday.userHolidays | limitTo: userHoliday.tableSettings.query.limit : (userHoliday.tableSettings.query.page - 1) * userHoliday.tableSettings.query.limit">
 
               <td md-cell>
                 {{holiday.start_date | date:'dd-MM-yyyy'}}
@@ -100,13 +100,9 @@
         </table>
     </md-table-container>
 
-    <md-table-pagination md-limit="userHoliday.table.query.limit"
-      md-limit-options="userHoliday.table.limitOptions"
-      md-page="userHoliday.table.query.page"
-      md-total="{{userHoliday.userHolidays.length}}"
-      md-page-select="userHoliday.table.options.pageSelect"
-      md-boundary-links="userHoliday.table.options.boundaryLinks">
-    </md-table-pagination>
+    <hra-table-pagination settings="userHoliday.tableSettings">
+    <hra-table-pagination>
+
   </md-content>
   <!-- /PREVIEW HOLIDAY -->
 
