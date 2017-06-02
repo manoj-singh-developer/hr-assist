@@ -4,9 +4,9 @@
 
   angular
     .module('HRA')
-    .controller('employeeSkillsController', employeeSkillsController);
+    .controller('employeeTechnologiesController', employeeTechnologiesController);
 
-  function employeeSkillsController($rootScope, autocompleteService, User, $stateParams, $timeout, $scope) {
+  function employeeTechnologiesController($rootScope, autocompleteService, User, $stateParams, $timeout, $scope) {
 
     let vm = this;
     let technologiesToAdd = [];
