@@ -227,7 +227,6 @@
       User.addHolidays(objToSave)
         .then((response) => {
           _getUserHolidays();
-          toggleForm();
         })
         .catch((error) => {
           console.log(error);
