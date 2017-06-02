@@ -40,7 +40,7 @@
   <!-- PREVIEW HOLIDAY -->
   <md-content  
     class="md-padding"
-    ng-show="!userHoliday.displayOrHide"
+    ng-show="!userHoliday.showForm"
     ng-if="userHoliday.userHolidays.length > 0">
     <md-table-container>
         <table class="c-table--actions"
@@ -117,7 +117,7 @@
   <form novalidate
     name="holidaysForm">
     <!-- FORM HOLIDAY -->
-    <md-content ng-show="userHoliday.displayOrHide" class="md-padding">
+    <md-content ng-show="userHoliday.showForm" class="md-padding">
       <section layout='column'>
 
 
@@ -133,7 +133,7 @@
             md-placeholder="Signing date"
             md-open-on-focus
             ng-change="userHoliday.checkDates()"
-            md-date-filter="userHoliday.onlyWorkDay"
+            md-date-filter="userHoliday.getWorkingDay"
             required>
           </md-datepicker>
 
@@ -141,7 +141,7 @@
             md-placeholder="Start date"
             md-open-on-focus
             ng-change="userHoliday.checkDates()"
-            md-date-filter="userHoliday.onlyWorkDay"
+            md-date-filter="userHoliday.getWorkingDay"
             required>
           </md-datepicker>
 
@@ -149,7 +149,7 @@
             md-placeholder="End date"
             md-open-on-focus
             ng-change="userHoliday.checkDates()"
-            md-date-filter="userHoliday.onlyWorkDay"
+            md-date-filter="userHoliday.getWorkingDay"
             required>
           </md-datepicker>
 
@@ -329,6 +329,13 @@
         <p>
           <strong>INFO: All dates must be selected from the autocomplete list!</strong> 
         </p>
+        
+      </md-content>
+
+       <md-content class="c-card-profile__notes" layout-gt-xs="row">
+        <p>
+          <strong>All * fields are required.</strong> 
+        </p>
       </md-content>
       <!-- /CARD NOTES -->
 
@@ -354,8 +361,8 @@
   <!-- CARD ACTIONS -->
   <md-card-actions layout="column" layout-align="start">
     <md-button class="c-card-profile__btn no-margin"
-      ng-click="userHoliday.displayForm()"
-      ng-show="!userHoliday.displayOrHide">
+      ng-click="userHoliday.toggleForm()"
+      ng-show="!userHoliday.showForm">
       Add Holiday
     </md-button>
   </md-card-actions>
@@ -363,7 +370,7 @@
   <md-card-actions 
     layout="row"
     layout-align="center center"
-    ng-show="userHoliday.displayOrHide"
+    ng-show="userHoliday.showForm"
     class="additional">
 
     <md-button class="md-raised md-primary"
@@ -373,7 +380,7 @@
     </md-button>
 
     <md-button class="md-raised"
-      ng-click="userHoliday.displayForm(); userHoliday.clearFields()">
+      ng-click="userHoliday.displayForm(); userHoliday.cancel();">
       Close
     </md-button>
 
