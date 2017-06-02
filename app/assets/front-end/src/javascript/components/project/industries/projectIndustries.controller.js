@@ -6,76 +6,87 @@
     .module('HRA')
     .controller('projectIndustriesCtrl', projectIndustriesCtrl);
 
-  projectIndustriesCtrl.$inject = ['$rootScope', 'autocompleteService', 'Industry', 'Project'];
-
   function projectIndustriesCtrl($rootScope, autocompleteService, Industry, Project) {
 
     let vm = this;
-    let industrieToAdd = [];
-    let industrieToRemove = [];
+    let industriesToAdd = [];
+    let industriesToRemove = [];
     vm.project = {};
     vm.industries = [];
     vm.prjIndustries = [];
-
+    vm.copyPrjIndustries = [];
+    vm.disableSaveBtn = true;
 
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.save = save;
     vm.cancel = cancel;
-    vm.displayOrHide = false;
+    vm.toggleForm = toggleForm;
 
     _getIndustries();
-
 
     $rootScope.$on("event:projectLoaded", (event, data) => {
       vm.project = data;
       _getProjectIndustries();
     });
 
-
-    function addInQueue(technology) {
-      if (technology) {
-        let toRemove = _.findWhere(industrieToRemove, { id: technology.id });
-        industrieToRemove = _.without(industrieToRemove, toRemove);
-        industrieToAdd.push(technology);
-        vm.prjIndustries.push(technology);
-        vm.searchText = "";
+    function addInQueue(industry) {
+      if (industry) {
+        let notToAdd = _.findWhere(vm.copyPrjIndustries, { id: industry.id });
+        if (!notToAdd) {
+          let toRemove = _.findWhere(industriesToRemove, { id: industry.id });
+          industriesToRemove = _.without(industriesToRemove, toRemove);
+          industriesToAdd.push(industry);
+          vm.copyPrjIndustries.push(industry);
+        }
+        vm.searchText = ' ';
+        _disableSaveBtn(false);
       }
     }
 
-    function removeFromQueue(technology) {
-      let toRemove = _.findWhere(vm.prjIndustries, { id: technology.id });
-      vm.prjIndustries = _.without(vm.prjIndustries, toRemove);
-      industrieToAdd = _.without(industrieToAdd, toRemove);
-      industrieToRemove.push(technology);
-      vm.searchText = "";
+    function removeFromQueue(industry) {
+      let toRemove = _.findWhere(vm.copyPrjIndustries, { id: industry.id });
+      vm.copyPrjIndustries = _.without(vm.copyPrjIndustries, toRemove);
+      industriesToAdd = _.without(industriesToAdd, toRemove);
+      industriesToRemove.push(industry);
+      _disableSaveBtn(false);
     }
 
     function save() {
 
-      if (industrieToAdd.length) {
-        Project.saveIndustries(vm.project, industrieToAdd)
+      if (industriesToAdd.length) {
+        Project.saveIndustries(vm.project, industriesToAdd)
           .then(() => {
-            _getProjectIndustries();
-  
+            industriesToAdd = [];
           });
       }
 
-      if (industrieToRemove.length) {
-        Project.removeIndustries(vm.project, industrieToRemove)
+      if (industriesToRemove.length) {
+        Project.removeIndustries(vm.project, industriesToRemove)
           .then(() => {
-            _getProjectIndustries();
+            industriesToRemove = [];
           });
       }
 
-      vm.displayOrHide = false;
+      toggleForm();
+      _disableSaveBtn(true);
+      vm.searchText = '';
     }
 
     function cancel() {
-      vm.prjIndustries = [];
-       Project.getIndustries(vm.project).then((data) => {
-        vm.prjIndustries = data;
-      });
+      vm.searchText = '';
+      vm.copyPrjIndustries = [];
+      _getProjectIndustries();
+      _disableSaveBtn(true);
+      toggleForm();
+    }
+
+    function toggleForm() {
+      vm.showForm = !vm.showForm;
+    }
+
+    function _disableSaveBtn(booleanValue) {
+      vm.disableSaveBtn = !booleanValue ? booleanValue : true;
     }
 
     function _getIndustries() {
@@ -88,11 +99,8 @@
     function _getProjectIndustries() {
       Project.getIndustries(vm.project).then((data) => {
         vm.prjIndustries = data;
+        vm.copyPrjIndustries.push(...vm.prjIndustries);
       });
-    }
-
-    vm.showForm = () => {
-      vm.displayOrHide = !vm.displayOrHide;
     }
 
   }
