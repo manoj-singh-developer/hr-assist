@@ -18,6 +18,14 @@
     vm.disableSaveBtn = true;
     vm.teamLeader = {};
 
+    vm.addInQueue = addInQueue;
+    vm.addTeamLeader = addTeamLeader;
+    vm.removeFromQueue = removeFromQueue;
+    vm.cancel = cancel;
+    vm.save = save;
+    vm.removeLeader = removeLeader;
+    vm.toggleForm = toggleForm;
+
     _getUsers();
     _getTeamLeader();
 
@@ -26,7 +34,7 @@
       _getPrjUsers();
     });
 
-    vm.addInQueue = (users) => {
+    function addInQueue(users) {
       if (users) {
         let notToAdd = _.findWhere(vm.copyPrjUsers, { id: users.id });
         if (!notToAdd) {
@@ -41,7 +49,7 @@
 
     }
 
-    vm.addTeamLeader = (user) => {
+    function addTeamLeader(user) {
       if (user) {
         vm.teamLeader.team_leader_id = user.id;
         vm.teamLeader.first_name = user.first_name;
@@ -50,7 +58,7 @@
       }
     }
 
-    vm.removeFromQueue = (users) => {
+    function removeFromQueue(users) {
       let toRemove = _.findWhere(vm.copyPrjUsers, { id: users.id });
       vm.copyPrjUsers = _.without(vm.copyPrjUsers, toRemove);
       usersToAdd = _.without(usersToAdd, toRemove);
@@ -58,17 +66,17 @@
       _disableSaveBtn(false);
     }
 
-    vm.cancel = () => {
+    function cancel() {
       vm.searchText = '';
       vm.searchLeader = '';
       vm.copyPrjUsers = [];
       _getPrjUsers();
       _getTeamLeader();
-      vm.toggleForm();
+      toggleForm();
       _disableSaveBtn(true);
     }
 
-    vm.save = () => {
+    function save() {
       vm.searchText = '';
       vm.searchLeader = '';
       let usersID = usersToAdd.map(user => user.id);
@@ -95,11 +103,11 @@
           _getTeamLeader();
         });
       }
-      vm.toggleForm();
+      toggleForm();
       _disableSaveBtn(true);
     }
 
-    vm.removeLeader = (leader) => {
+    function removeLeader(leader) {
       var confirm = $mdDialog.confirm()
         .title('Would you like to delete ' + leader.first_name + ' ' + leader.last_name + ' leader?')
         .targetEvent(event)
@@ -117,7 +125,7 @@
       });
     }
 
-    vm.toggleForm = () => {
+    function toggleForm() {
       vm.showForm = !vm.showForm;
     }
 
@@ -135,10 +143,10 @@
 
     function _getPrjUsers() {
       Project.getUsers(vm.project).then((data) => {
-          vm.prjUsers = data;
-          vm.copyPrjUsers = [];
-          vm.copyPrjUsers.push(...vm.prjUsers);
-        });
+        vm.prjUsers = data;
+        vm.copyPrjUsers = [];
+        vm.copyPrjUsers.push(...vm.prjUsers);
+      });
     }
 
     function _getTeamLeader() {

@@ -17,6 +17,12 @@
     vm.copyPrjAppTypes = [];
     vm.disableSaveBtn = true;
 
+    vm.addInQueue = addInQueue;
+    vm.removeFromQueue = removeFromQueue;
+    vm.save = save;
+    vm.cancel = cancel;
+    vm.toggleForm = toggleForm;
+
     _getAppTypes();
 
     $rootScope.$on("event:projectLoaded", (event, data) => {
@@ -24,7 +30,7 @@
       _getPrjAppTypes();
     });
 
-    vm.addInQueue = (appType) => {
+    function addInQueue(appType) {
       if (appType) {
         let notToAdd = _.findWhere(vm.copyPrjAppTypes, { id: appType.id });
         if (!notToAdd) {
@@ -39,7 +45,7 @@
 
     }
 
-    vm.removeFromQueue = (appType) => {
+    function removeFromQueue(appType) {
       let toRemove = _.findWhere(vm.copyPrjAppTypes, { id: appType.id });
       vm.copyPrjAppTypes = _.without(vm.copyPrjAppTypes, toRemove);
       appTypesToAdd = _.without(appTypesToAdd, toRemove);
@@ -47,39 +53,32 @@
       _disableSaveBtn(false);
     }
 
-    vm.save = () => {
+    function save() {
 
       if (appTypesToAdd.length) {
         Project.saveAppTypes(vm.project, appTypesToAdd)
-          .then(() => {
-              appTypesToAdd = [];
-            });
-          }
+          .then(() => { appTypesToAdd = []; });
+      }
 
       if (appTypesToRemove.length) {
         Project.removeAppTypes(vm.project, appTypesToRemove)
-          .then(() => {
-            appTypesToRemove = [];
-          });
+          .then(() => { appTypesToRemove = []; });
       }
 
-      vm.toggleForm();
+      toggleForm();
       _disableSaveBtn(true);
       vm.searchText = '';
     }
 
-    vm.cancel = () => {
+    function cancel() {
       vm.searchText = '';
       vm.copyPrjAppTypes = [];
-      Project.getAppTypes(vm.project).then((data) => {
-          vm.prjAppTypes = data;
-          vm.copyPrjAppTypes.push(...vm.prjAppTypes);
-        });
+      _getPrjAppTypes();
       _disableSaveBtn(true);
-      vm.toggleForm();
+      toggleForm();
     }
 
-    vm.toggleForm = () => {
+    function toggleForm() {
       vm.showForm = !vm.showForm;
     }
 
@@ -89,16 +88,16 @@
 
     function _getAppTypes() {
       AppType.getAll().then((data) => {
-          vm.appTypes = data;
-          autocompleteService.buildList(vm.appTypes, ['name']);
-        });
+        vm.appTypes = data;
+        autocompleteService.buildList(vm.appTypes, ['name']);
+      });
     }
 
     function _getPrjAppTypes() {
       Project.getAppTypes(vm.project).then((data) => {
-          vm.prjAppTypes = data;
-          vm.copyPrjAppTypes.push(...vm.prjAppTypes);
-        });
+        vm.prjAppTypes = data;
+        vm.copyPrjAppTypes.push(...vm.prjAppTypes);
+      });
     }
 
   }
