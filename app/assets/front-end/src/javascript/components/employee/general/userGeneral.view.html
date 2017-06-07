@@ -18,7 +18,7 @@
     <span
       class="userLogout noPrint"
       ng-click="userGeneral.userLogOut()"
-      ng-show="userGeneral.isAdmin">
+      ng-show="!userGeneral.isAdmin">
       Logout
     </span>
 
@@ -28,23 +28,16 @@
         <!-- <strong>Last Update at: {{userGeneral.user.updatedAt | date: 'longDate'}}</strong> -->
       </p>
     </md-card-title-text>
-
-    <md-button
-      ng-hide="userGeneral.candidate"
-      class="md-primary noPrint"
-      onclick="$('#printMe').print({noPrintSelector: '.noPrint', manuallyCopyFormValues: true, mediaPrint: true, globalStyle:false})">
       <!-- @!TODO: De adaugat info despre proiecte la CV -->
-      Generate CV
-    </md-button>
 
     <md-button
-      ng-show="userGeneral.candidate"
-      onclick="$('#printMe').print({noPrintSelector: '.noPrint', manuallyCopyFormValues: true, mediaPrint: true, globalStyle:false})"
-      class="md-primary noPrint">
+      ng-if="userGeneral.isAdmin";
+      ng-click="userGeneral.generateCv();">
       Generate CV
     </md-button>
 
-  </md-card-title><!-- /CARD TITLE -->
+  </md-card-title>
+  <!-- /CARD TITLE -->
 
 
 
