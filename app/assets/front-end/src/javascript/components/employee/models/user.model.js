@@ -87,7 +87,7 @@
           alertService.error(model, 'getAll');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
-      });
+        });
 
       return promise;
     };
@@ -112,7 +112,7 @@
 
     User.getSchedule = () => {
       var userId = $stateParams.id;
-      url = apiUrl + '/users/'+userId+'/schedule';
+      url = apiUrl + '/users/' + userId + '/schedule';
       resource = $resource(url).get();
 
       promise = resource.$promise
@@ -187,7 +187,7 @@
 
     User.getUserDevices = (userId) => {
       var userID = userId;
-      url = apiUrl + '/users/'+userID+'/devices';
+      url = apiUrl + '/users/' + userID + '/devices';
       resource = $resource(url).get();
 
       promise = resource.$promise
@@ -208,14 +208,14 @@
       }).update({ id: user.id }, { device_ids: deviceIds });
 
       promise = resource.$promise
-          .then((data) => {
+        .then((data) => {
           alertService.success(model, 'updateDevices');
-      return data;
-      })
-      .catch((error) => {
-        errorService.forceLogout(error);
-        alertService.error(model, 'updateDevices');
-      });
+          return data;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'updateDevices');
+        });
 
       return promise;
     };
@@ -227,14 +227,14 @@
       resource = $resource(url, data).delete({ id: user.id });
 
       promise = resource.$promise
-          .then((data) => {
+        .then((data) => {
           alertService.success(model, 'removeDevices');
-      return data;
-      })
-      .catch((error) => {
-        errorService.forceLogout(error);
-        alertService.error(model, 'removeDevices')
-      });
+          return data;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'removeDevices')
+        });
 
       return promise;
     };
@@ -301,18 +301,17 @@
       resource = $resource(url, data).delete({ id: user.id });
 
       promise = resource.$promise
-          .then((data) => {
+        .then((data) => {
           alertService.success(model, 'removeLanguages');
-      return data;
-      })
-      .catch((error) => {
-        errorService.forceLogout(error);
-        alertService.error(model, 'removeLanguages')
-      });
+          return data;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'removeLanguages')
+        });
 
       return promise;
     };
-
 
 
     User.getEducations = (id) => {
@@ -338,7 +337,7 @@
       }).save({ id: id }, educations);
 
       promise = resource.$promise
-        .then(data =>data.items)
+        .then(data => data.items)
         .catch((error) => {
           errorService.forceLogout(error);
           alertService.error(model, 'saveEducations')
@@ -363,7 +362,7 @@
       return promise;
     };
 
-    User.removeEducations = (id,education) => {
+    User.removeEducations = (id, education) => {
       url = apiUrl + '/users/:id/educations';
       resource = $resource(url, education).delete({ id: id });
 
@@ -400,12 +399,14 @@
       let projectId = project.project_id;
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
-      }).update({ id: user.id,
-                  project_id: projectId}, project);
+      }).update({
+        id: user.id,
+        project_id: projectId
+      }, project);
       promise = resource.$promise
         .then((data) => {
           alertService.success(model, 'updateProjects');
-           return data;
+          return data;
         })
         .catch((error) => {
           alertService.error(model, 'updateProjects');
@@ -441,8 +442,10 @@
       let projId = project.project_id;
       data["technology_ids[]"] = technologies.map(technologies => technologies.id);
       url = apiUrl + '/users/:user_id/projects/:project_id/technologies';
-      resource = $resource(url, data).delete({ user_id: userId,
-               project_id: projId });
+      resource = $resource(url, data).delete({
+        user_id: userId,
+        project_id: projId
+      });
 
       promise = resource.$promise
         .then((data) => {
@@ -459,8 +462,8 @@
 
     User.getHolidays = () => {
 
-      let userId= $stateParams.id;
-      url = apiUrl + '/users/'+userId+'/holidays';
+      let userId = $stateParams.id;
+      url = apiUrl + '/users/' + userId + '/holidays';
       resource = $resource(url).query();
 
       promise = resource.$promise
@@ -476,8 +479,8 @@
 
     User.addHolidays = (data) => {
 
-      let userId= $stateParams.id;
-      url = apiUrl + '/users/'+userId+'/holidays';
+      let userId = $stateParams.id;
+      url = apiUrl + '/users/' + userId + '/holidays';
       resource = $resource(url, {}, {
         'post': {
           method: 'POST'
@@ -502,8 +505,8 @@
 
     User.getTechnologies = () => {
 
-      let userId= $stateParams.id;
-      url = apiUrl + '/users/'+userId+'/technologies';
+      let userId = $stateParams.id;
+      url = apiUrl + '/users/' + userId + '/technologies';
       resource = $resource(url).get();
 
       promise = resource.$promise
@@ -519,30 +522,30 @@
     User.addUserTechnologies = (data) => {
 
       let userId = $stateParams.id;
-      url = apiUrl + '/users/'+userId+'/technologies';
+      url = apiUrl + '/users/' + userId + '/technologies';
       resource = $resource(url, {}, {
         'post': { method: 'POST' }
       }).save(data);
 
       promise = resource.$promise
-          .then((data) => {
+        .then((data) => {
           alertService.success(model, 'addUserTechnologies');
-      return data;
-      })
-      .catch((error) => {
-        errorService.forceLogout(error);
-        alertService.error(model, 'addUserTechnologies');
-      });
+          return data;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'addUserTechnologies');
+        });
 
       return promise;
     };
 
     User.deleteUserTechnologies = (technologies) => {
       let data = {};
-      let userId =$stateParams.id;
+      let userId = $stateParams.id;
       data["technology_ids[]"] = technologies.map(technologies => technologies.id);
 
-      url = apiUrl+ '/users/'+userId+'/technologies';
+      url = apiUrl + '/users/' + userId + '/technologies';
 
       resource = $resource(url, data).delete({ id: userId });
 
@@ -558,6 +561,31 @@
 
       return promise;
     }
+
+    //Could not get right response from server using $resource
+    // responseType: 'arraybuffer' can be the problem
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    // User.getCv = (data) => {
+    //   url = 'https://europass.cedefop.europa.eu/rest/v1/document/to/pdf-cv';
+    //   resource = $resource(url, {}, {
+    //     'post': {
+    //       method: 'POST',
+    //       responseType: 'arraybuffer'
+    //     }
+    //   }).save(data);
+
+    //   promise = resource.$promise
+    //     .then((data) => {
+    //       alertService.success(model, 'getCv');
+    //       return data;
+    //     })
+    //     .catch((error) => {
+    //       errorService.forceLogout(error);
+    //       alertService.error(model, 'getCv');
+    //     });
+    //   return promise;
+    // };
 
     return User;
 
