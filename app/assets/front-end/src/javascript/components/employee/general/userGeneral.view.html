@@ -18,7 +18,7 @@
     <span
       class="userLogout noPrint"
       ng-click="userGeneral.userLogOut()"
-      ng-show="userGeneral.isAdmin">
+      ng-if="!userGeneral.isAdmin">
       Logout
     </span>
 
@@ -28,23 +28,16 @@
         <!-- <strong>Last Update at: {{userGeneral.user.updatedAt | date: 'longDate'}}</strong> -->
       </p>
     </md-card-title-text>
-
-    <md-button
-      ng-hide="userGeneral.candidate"
-      class="md-primary noPrint"
-      onclick="$('#printMe').print({noPrintSelector: '.noPrint', manuallyCopyFormValues: true, mediaPrint: true, globalStyle:false})">
       <!-- @!TODO: De adaugat info despre proiecte la CV -->
-      Generate CV
-    </md-button>
 
     <md-button
-      ng-show="userGeneral.candidate"
-      onclick="$('#printMe').print({noPrintSelector: '.noPrint', manuallyCopyFormValues: true, mediaPrint: true, globalStyle:false})"
-      class="md-primary noPrint">
+      ng-if="userGeneral.isAdmin";
+      ng-click="userGeneral.generateCv();">
       Generate CV
     </md-button>
 
-  </md-card-title><!-- /CARD TITLE -->
+  </md-card-title>
+  <!-- /CARD TITLE -->
 
 
 
@@ -313,7 +306,8 @@
           ng-model="userGeneral.user.birthday"
           md-placeholder="Birthday"
           md-open-on-focus
-          md-max-date="userGeneral.today">
+          md-max-date="userGeneral.today"
+          md-current-view="year">
         </md-datepicker>
 
 
@@ -436,7 +430,8 @@
           ng-model="userGeneral.user.company_start_date"
           md-placeholder="Start date"
           md-open-on-focus
-          md-max-date="userGeneral.today">
+          md-max-date="userGeneral.today"
+          md-current-view="year">
         </md-datepicker>
 
       </div><!-- STARTED WORKING ON -->
@@ -514,6 +509,7 @@
         </label>
         <md-input-container md-no-float class="md-block" flex-gt-xs="65">
           <!-- @!TODO: De facut autocomplete aici, se cunosc birourile -->
+          <label></label> <!-- required for accessibility to not show console warning -->
           <input
             type="text"
             name="office"

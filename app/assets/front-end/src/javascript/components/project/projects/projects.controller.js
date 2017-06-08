@@ -9,24 +9,30 @@
   function projectsCtrl($scope, $stateParams, $q, $rootScope, $mdDialog, $filter, tableSettings, autocompleteService, filterService, Project, Technology, Customer, Industry, AppType) {
 
     var vm = this;
+    let querySearchItems;
     vm.showFilters = false;
     vm.tableSettings = tableSettings;
+    vm.tableSettings.query = {
+      order: 'name',
+      limit: 10,
+      page: 1
+    };
+
     vm.resources = {};
     vm.filterType = filterService.getTypes();
-
     vm.filters = {
       technologies: [],
       industries: [],
       customers: [],
       application_types: []
     };
+
     vm.search = {
       technologies: '',
       industries: '',
       customers: '',
       application_types: ''
     };
-
 
     vm.showForm = showForm;
     vm.remove = remove;
@@ -35,9 +41,10 @@
     vm.toggleFilters = toggleFilters;
     vm.filterProjects = filterProjects;
     vm.resetFilters = resetFilters;
-
+    vm.csvHeader = csvHeader;
 
     _getResources();
+
     $rootScope.$on('event:projectAdd', (event, data) => {
       vm.projects = vm.projects.concat(data);
     });
@@ -84,24 +91,25 @@
         vm.projectsCopy,
         vm.filters,
         filteringType);
-      vm.tableSettings.total = vm.projects.length;
+      vm.tableSettings.total = vm.searchProject && querySearchItems < vm.projects.length ? querySearchItems : vm.projects.length;
     }
 
     function resetFilters() {
       angular.forEach(vm.filters, (item, key) => { vm.filters[key] = []; });
       filterProjects();
+      vm.searchProject = '';
     }
 
     function querySearch(query, list) {
       if (query != "" && query != " ") {
         vm.tableSettings.total = autocompleteService.querySearch(query, list).length;
+        querySearchItems = autocompleteService.querySearch(query, list).length;
       } else {
         vm.tableSettings.total = list.length;
       }
       return autocompleteService.querySearch(query, list);
 
     }
-
 
     function _getResources() {
       let promises = [];
@@ -125,6 +133,7 @@
         tableSettings.total = vm.projects.length;
 
         _buildAutocompleteLists();
+        _generateCSV();
       });
     }
 
@@ -136,6 +145,56 @@
       autocompleteService.buildList(vm.resources.application_types, ['name']);
     }
 
+    function csvHeader() {
+      return ["Project Name", "Start Date", "End Date", "Application Type", "Industry", "Customers", "Technologies", "Employees"]
+    }
+
+    function _generateCSV() {
+      vm.csvData = [];
+
+      for (let i = 0; i < vm.projects.length; i++) {
+        let appType = [];
+        let industries = [];
+        let customers = [];
+        let technologies = [];
+        let employees = [];
+
+        if (vm.projects[i].application_types) {
+          for (let j = 0; j < vm.projects[i].application_types.length; j++) appType.push(vm.projects[i].application_types[j].name);
+        }
+
+        if (vm.projects[i].industries) {
+          for (let j = 0; j < vm.projects[i].industries.length; j++) industries.push(vm.projects[i].industries[j].name);
+        }
+
+        if (vm.projects[i].customers) {
+          for (let j = 0; j < vm.projects[i].customers.length; j++) customers.push(vm.projects[i].customers[j].name);
+        }
+
+        if (vm.projects[i].technologies) {
+          for (let j = 0; j < vm.projects[i].technologies.length; j++) technologies.push(vm.projects[i].technologies[j].name);
+        }
+
+        if (vm.projects[i].users) {
+          for (let j = 0; j < vm.projects[i].users.length; j++) employees.push(vm.projects[i].users[j].first_name + " " + vm.projects[i].users[j].last_name);
+        }
+
+        vm.csvData.push({
+          name: vm.projects[i].name,
+          startDate: vm.projects[i].start_date,
+          endDate: vm.projects[i].end_date,
+          applicationTypes: appType.join(),
+          industries: industries.join(),
+          customers: customers.join(),
+          technologies: technologies.join(),
+          employees: employees.join()
+        });
+      }
+
+      return vm.csvData;
+    }
+
   }
+
 
 })(_);

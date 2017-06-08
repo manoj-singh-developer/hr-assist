@@ -9,7 +9,7 @@
 
   userHolidayCtrl
 
-  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, dateService, $timeout) {
+  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, dateService, $timeout, tableSettings) {
 
     let vm = this;
     let days;
@@ -17,65 +17,40 @@
     vm.projects = [];
     vm.users = [];
     vm.teamLeaders = [];
+    vm.searchProj = [];
+    vm.searchUser = [];
 
-    vm.table = {
-      options: {
-        rowSelection: true,
-        multiSelect: true,
-        autoSelect: true,
-        decapitate: false,
-        largeEditDialog: false,
-        boundaryLinks: true,
-        limitSelect: true,
-        pageSelect: true
-      },
-      query: {
-        limit: 5,
-        page: 1
-      },
-      "limitOptions": [5, 10, 15],
-      selected: []
-    };
+    vm.tableSettings = tableSettings;
+    vm.tableSettings.query.limit = 5;
+    vm.tableSettings.limitOptions = [5, 10, 15];
 
     vm.errMsg = false;
     vm.displayOrHide = false;
-    vm.replaceInputs = [1];
+    vm.replaceInputs = [{}];
     vm.dateList = [];
     vm.validateDate = false;
-    vm.from = new Date();
-    vm.to = new Date();
-    vm.signingDate = new Date();
+    vm.showForm = false;
 
-    vm.addLeaders = addLeaders;
     vm.dateService = dateService;
-    vm.clearFields = clearFields;
-    vm.checkDates = checkDates;
-    vm.queryProjectSearch = queryProjectSearch;
     vm.queryUserSearch = queryUserSearch;
     vm.saveHoliday = saveHoliday;
+    vm.cancel = cancel;
+    vm.checkDates = checkDates;
     vm.addEmptyReplacement = addEmptyReplacement;
+    vm.removeEmptyReplacement = removeEmptyReplacement;
+    vm.toggleForm = toggleForm;
+    vm.getWorkingDay = getWorkingDay;
+    vm.addLeaders = addLeaders;
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.projects = data.projects;
       vm.users = data.users;
       vm.userHolidays = data.holidays;
+      vm.tableSettings.total = vm.userHolidays.length;
+
       autocompleteService.buildList(vm.projects, ['name']);
       autocompleteService.buildList(vm.users, ['first_name', 'last_name']);
     });
-
-    function _getUserHolidays() {
-      User.getHolidays($stateParams.id)
-        .then((data) => {
-          vm.userHolidays = data;
-        })
-        .catch((error) => {
-          console.log(error)
-        });
-    }
-
-    function queryProjectSearch(query) {
-      return autocompleteService.querySearch(query, vm.projects);
-    }
 
     function queryUserSearch(query) {
       let empArr = autocompleteService.querySearch(query, vm.users);
@@ -104,7 +79,7 @@
 
     function saveHoliday() {
 
-      calculateHolidays(vm.from, vm.to);
+      _calculateHolidays(vm.from, vm.to);
 
       let usersObj = vm.searchUser;
       let projObj = vm.searchProj;
@@ -165,7 +140,7 @@
         team_leader_ids: leaders
       };
 
-      if (vm.userHolidays.length > 0) {
+      if (vm.userHolidays.length) {
         let toSaveStartDate = vm.objToSave.start_date;
         let toSaveEndDate = vm.objToSave.end_date;
         let intervalExist = false;
@@ -193,19 +168,73 @@
       }
     }
 
+    function cancel() {
+      vm.searchUser = '';
+      vm.searchProj = '';
+      vm.leader = '';
+      vm.teamLeaders = [];
+      vm.from = undefined;
+      vm.to = undefined;
+      vm.signingDate = undefined;
+      vm.errMsg = false;
+      vm.errMsgIntersectInterval = false;
+      vm.replaceInputs = [{}];
+      toggleForm();
+    }
+
+    function checkDates() {
+      if (vm.from != undefined && vm.signingDate != undefined && vm.to != undefined && vm.signingDate > vm.from || vm.from > vm.to) {
+        vm.validateDate = true;
+      } else {
+        vm.validateDate = false;
+      }
+    }
+
+    function addEmptyReplacement() {
+      vm.replaceInputs.push({});
+    }
+
+    function removeEmptyReplacement(index) {
+      vm.replaceInputs.splice(index, 1);
+      vm.searchProj.splice(index, 1);
+      vm.searchUser.splice(index, 1);
+    }
+
+    function toggleForm() {
+      vm.showForm = !vm.showForm;
+    }
+
+    function getWorkingDay(date) {
+      var day = date.getDay();
+      return !(day === 0 || day === 6);
+    };
+
+    function addLeaders() {
+      vm.leader = ' ';
+    }
+
+    function _getUserHolidays() {
+      User.getHolidays($stateParams.id)
+        .then((data) => {
+          vm.userHolidays = data;
+        })
+        .catch((error) => {
+          console.log(error)
+        });
+    }
+
     function _addHoliday(objToSave) {
       User.addHolidays(objToSave)
         .then((response) => {
           _getUserHolidays();
-          vm.displayOrHide = false;
         })
         .catch((error) => {
           console.log(error);
         });
-      clearFields();
+      cancel();
     }
 
-    function calculateHolidays(dDate1, dDate2) {
+    function _calculateHolidays(dDate1, dDate2) {
 
       let iWeeks, iDateDiff, iAdjust = 0;
 
@@ -237,43 +266,6 @@
 
     }
 
-    function checkDates() {
-      if (vm.from != undefined && vm.signingDate != undefined && vm.to != undefined && vm.signingDate > vm.from || vm.from > vm.to) {
-        vm.validateDate = true;
-      } else {
-        vm.validateDate = false;
-      }
-    }
-
-    function clearFields() {
-      vm.searchUser = '';
-      vm.searchProj = '';
-      vm.leader = '';
-      vm.teamLeaders = [];
-      vm.from = new Date();
-      vm.to = new Date();
-      vm.signingDate = new Date();
-      vm.errMsg = false;
-      vm.errMsgIntersectInterval = false;
-
-    }
-
-    function addEmptyReplacement() {
-      vm.replaceInputs.push({});
-    }
-
-    vm.displayForm = () => {
-      vm.displayOrHide = !vm.displayOrHide;
-    }
-
-    vm.onlyWorkDay = function(date) {
-      var day = date.getDay();
-      return !(day === 0 || day === 6);
-    };
-
-    function addLeaders() {
-      vm.leader = ' ';
-    }
   }
 
 })();

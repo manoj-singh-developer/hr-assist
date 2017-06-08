@@ -9,12 +9,9 @@
   function hraProjectTechnologies() {
     let directive = {
       restrict: 'A',
-      scope: {},
       require: 'hraCard',
       bindToController: {
-        'toggleForm': '=',
-        'querySearch': '=',
-        'settings': '='
+        'querySearch': '='
       },
       controller: 'projectTechnologiesCtrl',
       controllerAs: 'prjTechnologies',

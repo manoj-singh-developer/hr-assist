@@ -11,29 +11,31 @@
     let vm = this;
     vm.project = {};
     vm.validateDate = false;
-    vm.displayOrHide = false;
     vm.dateService = dateService;
+    vm.showForm = false;
+
+    vm.save = save;
+    vm.cancel = cancel;
+    vm.checkDates = checkDates;
+    vm.toggleForm = toggleForm;
 
     $rootScope.$on("event:projectLoaded", (event, data) => {
       vm.project = data;
     });
 
-    vm.save = () => {
+    function save() {
       vm.project.start_date = vm.project.start_date ? vm.dateService.format(vm.project.start_date) : null;
       vm.project.end_date = vm.dateService.format(vm.project.end_date);
       Project.update(vm.project);
-      vm.displayOrHide = false;
+      toggleForm();
     }
 
-    vm.cancel = () => {
-      vm.displayOrHide = !vm.displayOrHide;
-      Project.getById(vm.project.id)
-        .then((data) => {
-          vm.project = data;
-        });
+    function cancel() {
+      Project.getById(vm.project.id).then((data) => { vm.project = data; });
+      toggleForm();
     }
 
-    vm.checkDates = () => {
+    function checkDates() {
       let startDate = new Date(vm.project.start_date);
       let endDate = new Date(vm.project.end_date);
       if (startDate != undefined && endDate != undefined && startDate > endDate) {
@@ -42,6 +44,11 @@
         vm.validateDate = false;
       }
     }
+
+    function toggleForm() {
+      vm.showForm = !vm.showForm;
+    }
+
   }
 
 })();

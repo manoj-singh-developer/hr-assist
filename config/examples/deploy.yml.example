@@ -1,0 +1,23 @@
+REPO_URL: REPOSITORY_URL
+BRANCHES: {
+    BRANCH_NAME: {
+        path: SERVER_PATH,
+        commands: {
+            before_pull: [],
+            after_pull: []
+        }
+    },
+    BRANCH_NAME: {
+        path: SERVER_PATH,
+        commands: {
+            before_pull: [],
+            after_pull: []
+        }
+    }
+}
+GIT_IPS: ACCEPTED_REMOTE_IPS
+TOKEN: HOOK_TOKEN
+COMMANDS: {
+  before_pull: [],
+  after_pull: []
+}

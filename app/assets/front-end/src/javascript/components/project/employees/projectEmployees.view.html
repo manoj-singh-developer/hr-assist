@@ -1,140 +1,242 @@
 <md-card>
 
+
+
   <md-card-title>
-
-	   <md-card-title-text>
-	     <span class="md-headline">Employees</span>
-	   </md-card-title-text>
-
+    <md-card-title-text>
+      <span class="md-headline">
+      Employees 
+      </span>
+    </md-card-title-text>
   </md-card-title>
 
-  <!-- PREVIEW EMPLOYEE CARD -->
+    <!-- CARD NOTES -->
+    <md-content class="c-card-profile__notes">
+      <p>
+        <strong>NOTE: </strong>Complete here with the team leader and employees of this project.
+      </p>
+    </md-content> 
+    
+
+    <md-content class="c-card-profile__notes"
+      ng-show="!prjUsers.teamLeader.id && prjUsers.copyPrjUsers.length === 0">
+      <p>
+        <strong>You not have any employee assigned.</strong>
+      </p>
+    </md-content>
+    <!-- CARD NOTES -->
+
+
+
+  <!-- PREVIEW  -->
   <md-content
-  	ng-show="projectEmployess.disableEmployeeCard"
+    ng-show="!prjUsers.showForm"
     class="c-card-profile__preview">
-    <md-subheader class="md-no-sticky"><b>Manager: </b>{{projectEmployess.project.manager}}</md-subheader>
-    <md-subheader class="md-no-sticky"><b>Employees:</b></md-subheader>
+
+    <!-- IF TEAM LEADER IS SET -->
+    <md-subheader class="md-no-sticky"
+      ng-show="prjUsers.teamLeader.id">Team Leader: 
+      <span>&emsp; {{prjUsers.teamLeader.first_name}}</span> 
+      <span>{{prjUsers.teamLeader.last_name}}</span>
+    </md-subheader>
+    <!-- /IF TEAM LEADER IS SET -->
+
+    <!-- IF TEAM LEADER IS NOT SET, BUT IS SET EMPLOYEE -->
+    <md-subheader class="md-no-sticky"
+      ng-show="!prjUsers.teamLeader.id && prjUsers.copyPrjUsers.length !== 0">This project don't have an team leader yet.
+    </md-subheader>
+    <!-- /IF TEAM LEADER IS NOT SET, BUT IS SET EMPLOYEE -->
+
+    <!-- IF IS SET EMPLOYEE -->
+    <md-subheader class="md-no-sticky"
+      ng-show="prjUsers.copyPrjUsers.length === 0">This project don't have employee assign yet.
+    </md-subheader>
+    <!-- /IF IS SET EMPLOYEE -->
+
+
+    <!-- IF EMPLOYEE IS SET -->
+    <md-list layout="row" layout-wrap
+      ng-show="prjUsers.copyPrjUsers.length !== 0">
+      <md-list-item class="md-2-line c-filters__label">
+        <div class="md-list-item-text " layout="column">
+          <h4>Employee<span ng-if="prjUsers.copyPrjUsers.length>1">s</span>: </h4>
+        </div>
+       </md-list-item>
+
+      <md-list-item
+        class="md-2-line"
+        ng-repeat="user in prjUsers.copyPrjUsers track by $index">
+        <div class="md-list-item-text" layout="column">
+          <span class="c-filters__item">
+            {{user.first_name}} {{user.last_name}}
+          </span>
+        </div>
+      </md-list-item>
+    </md-list>
+    <!-- /IF EMPLOYEE IS SET -->
+
+
+  </md-content>
+  <!-- /PREVIEW -->
+
+
+
+
+
+  <!-- EDIT USERS-->
+  <md-content
+    class = "md-padding"
+    ng-show="prjUsers.showForm">
+
     <md-list layout="row" layout-wrap>
 
-	      <md-list-item
-	        flex="25"
-	        class="md-2-line"
-	        ng-repeat="item in projectEmployess.project.employees track by $index">
+      <md-list-item class="c-filters__label"
+        ng-show="prjUsers.teamLeader.id">
+         <div class="md-list-item-text" layout="row">
+            <h4>Team Leader:
+              <span class="c-filters__item" ng-click="prjUsers.removeLeader(prjUsers.teamLeader)">
+               <span>&emsp;{{prjUsers.teamLeader.first_name}}</span> 
+               <span>{{prjUsers.teamLeader.last_name}}</span>
+               <span class="material-icons c-filters__icon">close</span>
+              </span>
+            </h4>                  
+         </div>
+       </md-list-item>
 
-	        <div class="md-list-item-text" layout="column">
-	          <h4>{{item.firstName}} {{item.lastName}}</h4>
-	        </div>
+      <md-list-item class="c-filters__label"
+        ng-show="!prjUsers.teamLeader.id">
+         <div class="md-list-item-text " layout="row">
+            <h4>Add Team Leader: </h4>
+         </div>
+       </md-list-item>
 
-	      </md-list-item>
     </md-list>
 
-  </md-content><!-- /PREVIEW EMPLOYEE CARD -->
+    <md-list-item class="c-filters__label"
+      ng-show="prjUsers.teamLeader.id">
+      <div class="md-list-item-text" layout="row">
+        <span>Change Team Leader: </span>
+      </div>
+    </md-list-item>
 
-  <!-- Add - Remove Project Manager -->
-<md-content ng-hide="projectEmployess.disableEmployeeCard">
-  <md-content class="md-padding">
-    <md-input-container md-no-float class="md-block">
-
-     <form ng-submit="$event.preventDefault()">
+    <!-- TEAM LEADER SELECT-->
+    <md-content class="md-padding">
+      <form ng-submit="$event.preventDefault()">
         <md-autocomplete
-          ng-model="projectEmployess.project.manager"
-          md-no-cache="true"
-          md-selected-item="projectEmployess.selected"
-          md-search-text-change="projectEmployess.searchTextChange(projectEmployess.project.manager)"
-          md-search-text="projectEmployess.project.manager"
-          md-items="item in projectEmployess.querySearchEmployee(projectEmployess.project.manager)"
-          md-item-text="item.firstName + ' ' + item.lastName"
+          ng-model="prjUsers.searchLeader"
+          md-selected-item="prjUsers.selectedLeader"
+          md-search-text-change="prjUsers.querySearch(prjUsers.searchLeader, prjUsers.users)"
+          md-search-text="prjUsers.searchLeader"
+          md-selected-item-change="prjUsers.addTeamLeader(item)"
+          md-items="item in prjUsers.querySearch(prjUsers.searchLeader, prjUsers.users)"
+          md-item-text="item.first_name + ' ' +  item.last_name"
           md-min-length="0"
-          placeholder="Project Manager">
-        <md-item-template>
-          <span class="item-metadata">
-            {{item.firstName}} {{item.lastName}}
-          </span>
-        </md-item-template>
+          placeholder="Search employee"
+          md-dropdown-position="bottom">
+
+          <md-item-template>
+            <span
+            class="item-metadata"
+            md-highlight-text="prjUsers.searchText">
+              {{item.first_name}} {{item.last_name}}
+            </span>
+          </md-item-template>
+
         </md-autocomplete>
       </form>
+    </md-content>
+    <!-- /TEAM LEADER SELECT-->
 
-    </md-input-container>
-  </md-content><!-- /Add - Remove Project Manager -->
-
-
-  <!-- Add - Remove Employees -->
-
-  <md-content class="md-padding">
     <md-list layout="row" layout-wrap>
+      <md-list-item class="md-2-line c-filters__label">
+         <div class="md-list-item-text " layout="column">
+           <h4>Add/Remove Employee: </h4>
+         </div>
+       </md-list-item>
 
-    	<md-list-item class="md-2-line c-filters__label">
-    	   <div class="md-list-item-text " layout="column">
-    	     <h4>Add/Remove Employee: </h4>
-    	   </div>
-    	 </md-list-item>
-
-    	 <md-list-item
-    	   class="md-2-line"
-    	   ng-repeat="item in projectEmployess.project.employees track by $index">
-    	   <div class="md-list-item-text" layout="column">
-    	     <p ng-click="projectEmployess.removeEmployee(item, projectEmployess.project, $index)" class="c-filters__item">
-    	       {{$index + 1}} {{item.firstName}} {{item.lastName}}
-    	       <span class="material-icons c-filters__icon">close</span>
-    	     </p>
-    	   </div>
-    	 </md-list-item>
-
+       <md-list-item
+        class="md-2-line"
+        ng-repeat="user in prjUsers.copyPrjUsers track by $index">
+        <div class="md-list-item-text" layout="column">
+          <span class="c-filters__item"
+            ng-click="prjUsers.removeFromQueue(user)">
+             {{$index + 1}} {{user.first_name}} {{user.last_name}}
+            <span class="material-icons c-filters__icon">close</span>
+          </span>
+        </div>
+       </md-list-item>
     </md-list>
 
-    <form ng-submit="$event.preventDefault()">
-      <md-autocomplete
-        ng-model="projectEmployess.searchText"
-        md-no-cache="true"
-        md-selected-item="projectEmployess.selectedItem"
-        md-search-text-change="projectEmployess.searchTextChange(projectEmployess.searchText)"
-        md-search-text="projectEmployess.searchText"
-        md-selected-item-change="projectEmployess.addEmployee(item, projectEmployess.project)"
-        md-items="item in projectEmployess.querySearchEmployee(projectEmployess.searchText)"
-        md-item-text="item.firstName"
-        md-min-length="0"
-        placeholder="Search for an employee">
-      <md-item-template >
-        <span class="item-metadata">
-          {{item.firstName}} {{item.lastName}}
-        </span>
-      </md-item-template>
-      </md-autocomplete>
-    </form>
-  </md-content><!-- /Add - Remove Employees -->
-</md-content>
+     <!-- EMPLOYEE LEADER SELECT-->
+    <md-content class="md-padding">
+      <form ng-submit="$event.preventDefault()">
+        <md-autocomplete
+          ng-model="prjUsers.searchText"
+          md-selected-item="prjUsers.selectedItem"
+          md-search-text-change="prjUsers.querySearch(prjUsers.searchText, prjUsers.users)"
+          md-search-text="prjUsers.searchText"
+          md-selected-item-change="prjUsers.addInQueue(item)"
+          md-items="item in prjUsers.querySearch(prjUsers.searchText, prjUsers.users)"
+          md-item-text="item.first_name + ' ' +  item.last_name"
+          md-min-length="0"
+          placeholder="Search employee"
+          md-dropdown-position="bottom">
 
-   <!-- CARD ACTIONS-->
+          <md-item-template>
+            <span
+            class="item-metadata"
+            md-highlight-text="prjUsers.searchText">
+              {{item.first_name}} {{item.last_name}}
+            </span>
+          </md-item-template>
+
+        </md-autocomplete>
+      </form>
+    </md-content>
+    <!-- /EMPLOYEE LEADER SELECT-->
+
+  </md-content>
+  <!-- /EDIT USERS-->
+
+
+
+
+
+  <!-- CARD ACTIONS-->
   <md-card-actions
     layout="column"
     layout-align="start"
-    ng-show="projectEmployess.disableEmployeeCard">
+    ng-show="!prjUsers.showForm">
     <md-button
       class="c-card-profile__btn no-margin"
-      ng-click="projectEmployess.disableEmployeeCard = false">
-      Add information
+      ng-click="prjUsers.toggleForm()">
+      Add/Edit Employees
     </md-button>
   </md-card-actions>
 
   <md-card-actions
     layout="row"
     layout-align="center center"
-    ng-show="!projectEmployess.disableEmployeeCard"
+    ng-show="prjUsers.showForm"
     class="additional">
 
     <md-button
       class="md-raised md-primary"
-      ng-click="projectEmployess.saveProject(projectEmployess.project)"
-      ng-disabled="btnIsDisabled">
+      ng-click="prjUsers.save()"
+      ng-disabled="prjUsers.disableSaveBtn">
       Save
     </md-button>
 
     <md-button
       class="md-raised"
-      ng-click="projectEmployess.disableEmployeeCard = true">
+      ng-click="prjUsers.cancel()">
       Cancel
     </md-button>
 
-  </md-card-actions><!-- /CARD ACTIONS-->
+  </md-card-actions>
+  <!-- /CARD ACTIONS-->
+
+
+
 
 </md-card>

@@ -30,8 +30,8 @@
           Add Project
         </md-button>
 
-        <md-button md-no-ink class="md-primary" ng-csv="projects.getArray()" csv-header="projects.getHeader()" filename="RaportProjects.csv">
-          Export
+        <md-button md-no-ink class="md-primary" ng-csv="projects.csvData" csv-header="projects.csvHeader()" filename="RaportProjects.csv">
+          Export CSV
         </md-button>
 
       </div>
@@ -51,11 +51,14 @@
         ng-disabled="projects.isDisabled"
         ng-model="projects.searchProject"
         md-selected-item="projects.selectedItem"
-        md-search-text-change="projects.searchTextChange(projects.searchProject)"
+        md-search-text-change="projects.querySearch(projects.searchProject, projects.resources.projects)"
         md-search-text="projects.searchProject"
-        md-selected-item-change="projects.selectedItemChange(item)"
+        md-selected-item-change="projects.querySearch(projects.searchProject, projects.resources.projects)"
         md-items="item in projects.querySearch(projects.searchProject, projects.resources.projects)"
-        md-item-text="item.name" md-min-length="1" placeholder="Search">
+        md-item-text="item.name" 
+        md-min-length="0" 
+        md-dropdown-position="bottom"
+        placeholder="Search project">
         <md-item-template>
           <span class="item-metadata">
           {{item.name}}
