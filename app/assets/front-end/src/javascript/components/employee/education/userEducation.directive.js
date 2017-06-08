@@ -15,11 +15,6 @@
       restrict: 'A',
       scope: {},
       require: 'hraCard',
-      bindToController: {
-        'toggleForm': '=',
-        'querySearch': '=',
-        'settings': '='
-      },
       controller: 'userEducationController',
       controllerAs: 'userEducation',
       templateUrl: rootTemplatePath + '/employee/education/userEducation.view.html'
