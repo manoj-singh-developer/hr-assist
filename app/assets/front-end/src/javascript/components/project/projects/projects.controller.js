@@ -9,7 +9,7 @@
   function projectsCtrl($scope, $stateParams, $q, $rootScope, $mdDialog, $filter, tableSettings, autocompleteService, filterService, Project, Technology, Customer, Industry, AppType) {
 
     var vm = this;
-    let QuerySearchItems;
+    let querySearchItems;
     vm.showFilters = false;
     vm.tableSettings = tableSettings;
     vm.tableSettings.query = {
@@ -91,7 +91,7 @@
         vm.projectsCopy,
         vm.filters,
         filteringType);
-      vm.tableSettings.total = vm.searchProject && QuerySearchItems < vm.projects.length ? QuerySearchItems : vm.projects.length;
+      vm.tableSettings.total = vm.searchProject && querySearchItems < vm.projects.length ? querySearchItems : vm.projects.length;
     }
 
     function resetFilters() {
@@ -103,7 +103,7 @@
     function querySearch(query, list) {
       if (query != "" && query != " ") {
         vm.tableSettings.total = autocompleteService.querySearch(query, list).length;
-        QuerySearchItems = autocompleteService.querySearch(query, list).length;
+        querySearchItems = autocompleteService.querySearch(query, list).length;
       } else {
         vm.tableSettings.total = list.length;
       }
