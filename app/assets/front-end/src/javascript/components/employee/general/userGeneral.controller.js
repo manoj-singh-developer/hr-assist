@@ -15,7 +15,7 @@
     let positionCopy = {};
     let scheduleCopy = {};
     let technologiesString = '';
-    let Education = [];
+    let education = [];
     let userImage = '';
 
     vm.today = new Date();
@@ -211,7 +211,7 @@
                 }
               }
             }],
-            'Education': Education,
+            'Education': education,
             'Skills': {
               'Linguistic': {
                 'MotherTongue': [{
@@ -377,14 +377,14 @@
         edObj.Organisation.ContactInfo.Address.Contact.Country.Code = 'RO (field at education)';
         edObj.Organisation.ContactInfo.Address.Contact.Country.Label = 'Romania (missing field at education)';
 
-        Education.push(edObj);
+        education.push(edObj);
       }
 
-      Education.sort((a, b) => {
+      education.sort((a, b) => {
         return b.Period.To.Year - a.Period.To.Year;
       });
 
-      return Education;
+      return education;
     }
 
     function _getGravatar(email, size) {
