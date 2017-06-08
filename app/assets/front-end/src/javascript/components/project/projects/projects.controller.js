@@ -9,11 +9,17 @@
   function projectsCtrl($scope, $stateParams, $q, $rootScope, $mdDialog, $filter, tableSettings, autocompleteService, filterService, Project, Technology, Customer, Industry, AppType) {
 
     var vm = this;
+    let querySearchItems;
     vm.showFilters = false;
     vm.tableSettings = tableSettings;
+    vm.tableSettings.query = {
+      order: 'name',
+      limit: 10,
+      page: 1
+    };
+
     vm.resources = {};
     vm.filterType = filterService.getTypes();
-
     vm.filters = {
       technologies: [],
       industries: [],
@@ -85,17 +91,19 @@
         vm.projectsCopy,
         vm.filters,
         filteringType);
-      vm.tableSettings.total = vm.projects.length;
+      vm.tableSettings.total = vm.searchProject && querySearchItems < vm.projects.length ? querySearchItems : vm.projects.length;
     }
 
     function resetFilters() {
       angular.forEach(vm.filters, (item, key) => { vm.filters[key] = []; });
       filterProjects();
+      vm.searchProject = '';
     }
 
     function querySearch(query, list) {
       if (query != "" && query != " ") {
         vm.tableSettings.total = autocompleteService.querySearch(query, list).length;
+        querySearchItems = autocompleteService.querySearch(query, list).length;
       } else {
         vm.tableSettings.total = list.length;
       }
@@ -143,7 +151,7 @@
 
     function _generateCSV() {
       vm.csvData = [];
-      
+
       for (let i = 0; i < vm.projects.length; i++) {
         let appType = [];
         let industries = [];
