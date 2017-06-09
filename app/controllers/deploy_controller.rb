@@ -15,16 +15,11 @@ class DeployController < ApplicationController
 
         repo_url        = config['REPO_URL']
         branches        = config['BRANCHES']
-        github_ips      = config['GIT_IPS']
         token           = config['TOKEN']
         common_commands = config['COMMANDS']
 
         if !verify_signature(token, request.raw_post)
             render plain: "Signatures didn't match!", status: 422 and return
-        end
-
-        if !github_ips.include? request.remote_ip
-            render plain: "Request is not from github", status: 422 and return
         end
 
         payload = params
