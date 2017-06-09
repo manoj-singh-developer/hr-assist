@@ -45,6 +45,7 @@ class AccessPolicy
       can :manage, Customer
       can :manage, Department
       can :manage, Education
+      can :manage, Certification
       can :manage, Device
       can :manage, HolidayReplacement
       can :manage, Industry
