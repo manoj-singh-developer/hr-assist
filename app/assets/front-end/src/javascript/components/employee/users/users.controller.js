@@ -9,6 +9,7 @@
   function usersCtrl($scope, $rootScope, $mdDialog, autocompleteService, User, Technology, Project, AppType, $q, filterService, tableSettings) {
 
     var vm = this;
+    let querySearchItems;
     vm.ids = [];
     vm.selected = [];
     vm.users = [];
@@ -95,17 +96,19 @@
         vm.usersCopy,
         vm.filters,
         filteringType);
-      vm.tableSettings.total = vm.users.length;
+      vm.tableSettings.total = vm.searchText && querySearchItems < vm.users.length ? querySearchItems : vm.users.length;
     }
 
     function resetFilters() {
-      angular.forEach(vm.filters, (item, key) => { vm.filters[key] = []; });
+      angular.forEach(vm.filters, (item, key) => { vm.filters[key] = []; debugger});
       filterUsers();
+      vm.searchText = '';
     }
 
     function querySearch(query, list) {
       if (query != "" && query != " ") {
         vm.tableSettings.total = autocompleteService.querySearch(query, list).length;
+        querySearchItems = autocompleteService.querySearch(query, list).length;
       } else {
         vm.tableSettings.total = list.length;
       }
@@ -146,7 +149,7 @@
       autocompleteService.buildList(vm.resources.projects, ['name']);
       autocompleteService.buildList(vm.resources.technologies, ['name']);
       autocompleteService.buildList(vm.resources.languages, ['long_name']);
-      autocompleteService.buildList(vm.resources.users, ['first_name', 'last_name']);
+      autocompleteService.buildList(vm.resources.users, ['last_name', 'first_name']);
     }
 
   }

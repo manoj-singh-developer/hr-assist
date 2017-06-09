@@ -66,19 +66,17 @@
         md-selected-item="users.selectedItem"
         md-search-text-change="users.querySearch(users.searchText, users.users)"
         md-search-text="users.searchText"
-        md-selected-item-change="users.selectedItemChange(item)"
+        md-selected-item-change="users.querySearch(users.searchText, users.users)"
         md-items="item in users.querySearch(users.searchText, users.users)"
-        md-item-text="item.first_name + ' ' +  item.last_name"
-        md-min-length="1"
+        md-item-text="item.last_name + ' ' +  item.first_name"
+        md-min-length="0"
+        md-dropdown-position="bottom"
         placeholder="Search">
 
         <md-item-template>
           <span class="item-metadata">
-            {{item.first_name}} {{item.last_name}}
+            {{item.last_name}} {{item.first_name}}
         </md-item-template>
-        <md-not-found>
-          No employee matching <strong>{{users.searchText}}</strong> were found.
-        </md-not-found>
       </md-autocomplete>
     </form>
   </md-content><!-- /AUTOCOMPLETE SEARCH -->
@@ -146,7 +144,8 @@
           ng-repeat="employee in users.users 
           | filter: users.searchText 
           | orderBy: users.tableSettings.query.order 
-          | limitTo: users.tableSettings.query.limit : (users.tableSettings.query.page - 1) * users.tableSettings.query.limit track by $index">
+          | limitTo: users.tableSettings.query.limit : (users.tableSettings.query.page - 1) * users.tableSettings.query.limit track by $index"
+          ui-sref="employeesParent.details({id: employee.id})">
           <td md-cell>
             {{$index + 1}}
           </td>
