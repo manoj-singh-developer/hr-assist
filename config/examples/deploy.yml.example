@@ -15,7 +15,6 @@ BRANCHES: {
         }
     }
 }
-GIT_IPS: ACCEPTED_REMOTE_IPS
 TOKEN: HOOK_TOKEN
 COMMANDS: {
   before_pull: [],

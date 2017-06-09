@@ -74,6 +74,46 @@ module V1
           user.positions.delete_all
         end
 
+        get ':user_id/certifications' do
+          user = find_user(params[:user_id])
+          {items: user.certifications}
+        end
+
+        params do
+          requires :certifications, type: Array[Hash]
+        end
+        post ':user_id/certifications' do
+          user = find_user(params[:user_id])
+          params[:certifications].each do |certification|
+            user_certification = Certification.create(
+              name: certification.name,
+              authority: certification.authority,
+              licence_number: certification.licence_number,
+              year: certification.year,
+            )
+            user.certifications << user_certification
+          end
+          {items: user.certifications}
+        end
+
+        params do
+          requires :certifications, type: Array[Hash]
+        end
+        put ':user_id/certifications' do
+          user = User.find(params[:user_id])
+          params[:certifications].each do |certification|
+            user_certification = user.certifications.find(certification.id)
+            user_certification.update(
+              ActionController::Parameters.new(certification).permit(:name, :authority, :licence_number, :year)
+            )
+          end
+          {items: user.certifications}
+        end
+
+        delete ':user_id/certifications' do
+          delete_object(User, Certification, params[:user_id], params[:certification_ids])
+        end
+
         get ':user_id/educations' do
           user = find_user(params[:user_id])
           {items: user.educations}
