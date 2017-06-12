@@ -10,6 +10,18 @@
 
     var vm = this;
     let querySearchItems;
+    let excelData = [{
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      email: 'Email',
+      phone: 'Phone',
+      languages: 'Languages',
+      technologies: 'Technologies',
+      projects: 'Projects',
+      startDate: 'Start date Assist'
+    }];
+
+
     vm.ids = [];
     vm.selected = [];
     vm.users = [];
@@ -40,6 +52,7 @@
     vm.toggleFilters = toggleFilters;
     vm.filterUsers = filterUsers;
     vm.resetFilters = resetFilters;
+    vm.saveFile = saveFile;
 
     function showForm(device) {
       $mdDialog.show({
@@ -100,7 +113,9 @@
     }
 
     function resetFilters() {
-      angular.forEach(vm.filters, (item, key) => { vm.filters[key] = []; debugger});
+      angular.forEach(vm.filters, (item, key) => {
+        vm.filters[key] = [];
+      });
       filterUsers();
       vm.searchText = '';
     }
@@ -141,6 +156,7 @@
         vm.tableSettings.total = vm.resources.users.length;
 
         _buildAutocompleteLists();
+        _generateXls();
       });
     }
 
@@ -150,6 +166,50 @@
       autocompleteService.buildList(vm.resources.technologies, ['name']);
       autocompleteService.buildList(vm.resources.languages, ['long_name']);
       autocompleteService.buildList(vm.resources.users, ['last_name', 'first_name']);
+    }
+
+
+    function saveFile() {
+
+      var opts = [{
+        sheetid: 'Student Details',
+        headers: false
+      }];
+      var res = alasql('SELECT INTO XLSX("Raport Angajati.xlsx",?) FROM ? ORDER BY 1', [opts, [excelData]]);
+    }
+
+
+    function _generateXls() {
+
+      for (let i = 0; i < vm.users.length; i++) {
+        let languages = [];
+        let technologies = [];
+        let projects = [];
+
+        if (vm.users[i].languages) {
+          for (let j = 0; j < vm.users[i].languages.length; j++) languages.push(vm.users[i].languages[j].long_name);
+        }
+
+        if (vm.users[i].technologies) {
+          for (let j = 0; j < vm.users[i].technologies.length; j++) technologies.push(vm.users[i].technologies[j].name);
+        }
+
+        if (vm.users[i].projects) {
+          for (let j = 0; j < vm.users[i].projects.length; j++) projects.push(vm.users[i].projects[j].name);
+        }
+
+        excelData.push({
+          firstName: vm.users[i].first_name,
+          lastName: vm.users[i].last_name,
+          email: vm.users[i].email,
+          phone: vm.users[i].phone ? vm.users[i].phone.toString() : '',
+          languages: languages.join(', '),
+          technologies: technologies.join(', '),
+          projects: projects.join(', '),
+          startDate: vm.users[i].company_start_date
+        });
+      }
+      return excelData;
     }
 
   }
