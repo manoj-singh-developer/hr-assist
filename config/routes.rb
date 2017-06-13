@@ -5,7 +5,17 @@ Rails.application.routes.draw do
   get '/users/sign_in' , to: 'admin/authenticate#index'
   devise_for :users
   mount V1::Users::UserAPI => '/api'
-  mount V1::Users::UserRelationsAPI => '/api'
+  mount V1::Users::Relations::CertificationAPI => '/api'
+  mount V1::Users::Relations::DeviceAPI => '/api'
+  mount V1::Users::Relations::EducationAPI => '/api'
+  mount V1::Users::Relations::HolidayAPI => '/api'
+  mount V1::Users::Relations::LanguageAPI => '/api'
+  mount V1::Users::Relations::PositionAPI => '/api'
+  mount V1::Users::Relations::ProjectAPI => '/api'
+  mount V1::Users::Relations::ScheduleAPI => '/api'
+  mount V1::Users::Relations::TechnologyAPI => '/api'
+  mount V1::Users::Relations::UploadAPI => '/api'
+
   mount V1::ProjectAPI => '/api'
   mount V1::CustomerAPI => '/api'
   mount V1::TechnologyAPI => '/api'
@@ -32,5 +42,5 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   post '/deploy', to: 'deploy#index'
-  
+
 end
