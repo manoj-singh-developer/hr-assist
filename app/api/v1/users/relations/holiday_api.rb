@@ -51,6 +51,14 @@ module V1
             end
             get_holiday(holiday)
           end
+
+          desc "Delete holidays from user"
+          params do
+            requires :holiday_ids, type: Array[Integer], allow_blank: false
+          end
+          delete ':user_id/holidays' do
+            delete_object(User, Holiday, params[:user_id], params[:holiday_ids])
+          end
         end
       end
     end
