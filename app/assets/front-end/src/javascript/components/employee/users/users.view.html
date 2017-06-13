@@ -1,6 +1,6 @@
 <section layout="column">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/alasql/0.3.1/alasql.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
+
+
 
 
 
@@ -26,10 +26,6 @@
             Toggle filters
           </md-tooltip>
         </md-button>
-        <md-button
-        ng-click="users.saveFile()">
-          try it
-        </md-button> 
       </div>
 
       <div flex="" class="flex"></div>
@@ -41,6 +37,16 @@
           class="md-primary"
           ng-click="users.showFormDialog($event, {})">
           {{users.addTitle}}
+        </md-button>
+
+        <md-button
+          ng-click="users.saveExcelFile()"
+          class="md-primary">
+          <md-icon class="material-icons">file_download</md-icon>
+          <md-tooltip md-autohide="true">
+            Export Excel
+          </md-tooltip>
+          Export Excel
         </md-button>
 
       <!-- TODO Employee export CV -->
@@ -130,8 +136,8 @@
         md-order="users.tableSettings.query.order">
         <tr md-row>
         <th md-column>Nr.</th>
-          <th md-column md-order-by="first_name">First Name</th>
           <th md-column md-order-by="last_name">Last Name</th>
+          <th md-column md-order-by="first_name">First Name</th>
           <th md-column>Email/Phone</th>
           <th md-column>Languages</th>
           <th md-column>Technologies</th>
@@ -154,12 +160,13 @@
           <td md-cell>
             {{$index + 1}}
           </td>
-          <td md-cell>
-            <p>{{employee.first_name}}</p>
-          </td>
 
           <td md-cell>
             <p>{{employee.last_name}}</p>
+          </td>
+          
+          <td md-cell>
+            <p>{{employee.first_name}}</p>
           </td>
 
           <td md-cell>
