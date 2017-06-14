@@ -59,7 +59,6 @@ module APIHelpers
     authorize! :create, model
     block.call if block_given?
     object = model.create!(postParams)
-    success
     return object
   end
 

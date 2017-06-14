@@ -1,0 +1,2 @@
+class CandidateCv < ApplicationRecord
+end
