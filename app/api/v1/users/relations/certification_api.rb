@@ -21,7 +21,10 @@ module V1
 
         resource :users do
 
-          before { authenticate! }
+          before {
+            authenticate!
+            authorize_user!(find_user(params[:user_id]))
+          }
 
           desc 'Get certifications'
           get ':user_id/certifications' do

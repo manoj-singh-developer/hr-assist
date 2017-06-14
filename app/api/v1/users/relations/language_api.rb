@@ -16,18 +16,22 @@ module V1
 
         resource :users do
 
-          before { authenticate! }
+          before {
+            authenticate!
+            authorize_user!(find_user(params[:user_id]))
+          }
 
           get ':user_id/languages' do
             user = find_user(params[:user_id])
-            {items: user.languages}
+            { items: user.languages }
           end
 
           put ':user_id/languages' do
             user = User.find(params[:user_id])
+
             languages = Language.where(id: params[:language_ids]) - user.languages
             user.languages << languages if languages.count > 0
-            {items: user.languages}
+            { items: user.languages }
           end
 
           delete ':user_id/languages' do

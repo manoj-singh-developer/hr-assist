@@ -16,18 +16,21 @@ module V1
 
         resource :users do
 
-          before { authenticate! }
+          before {
+            authenticate!
+            authorize_user!(find_user(params[:user_id]))
+          }
 
           get ':user_id/uploads' do
             user = find_user(params[:user_id])
-            {items: user.uploads}
+            { items: user.uploads }
           end
 
           put ':user_id/uploads' do
-            user = User.find(params[:user_id])
+            user = find_user(params[:user_id])
             uploads = Upload.where(id: params[:upload_ids]) - user.uploads
             user.uploads << uploads if uploads.count > 0
-            {items: user.uploads}
+            { items: user.uploads }
           end
 
           delete ':user_id/uploads' do

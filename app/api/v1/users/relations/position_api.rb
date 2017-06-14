@@ -16,7 +16,10 @@ module V1
 
         resource :users do
 
-          before { authenticate! }
+          before {
+            authenticate!
+            authorize_user!(find_user(params[:user_id]))
+          }
 
           get ':user_id/position' do
             user = find_user(params[:user_id])

@@ -16,7 +16,10 @@ module V1
 
         resource :users do
 
-          before { authenticate! }
+          before {
+            authenticate!
+            authorize_user!(find_user(params[:user_id]))
+          }
 
           get ':user_id/holidays' do
             user = find_user(params[:user_id])
@@ -44,6 +47,7 @@ module V1
           post ':user_id/holidays' do
             User.find(params[:replacer_ids], params[:team_leader_ids])
             user = find_user(params[:user_id])
+
             holiday = Holiday.create(days: params[:days], start_date: params[:start_date], end_date: params[:end_date], signing_day: params[:signing_day], user_id: params[:user_id])
             params[:project_ids].zip(params[:replacer_ids], params[:team_leader_ids]).each do |project_id, replacer_id, team_leader_id|
               holiday_replacement = HolidayReplacement.create(holiday_id: holiday.id, project_id: project_id, replacer_id: replacer_id, team_leader_id: team_leader_id)

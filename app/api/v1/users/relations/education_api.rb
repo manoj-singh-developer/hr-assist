@@ -16,11 +16,14 @@ module V1
 
         resource :users do
 
-          before { authenticate! }
+          before {
+            authenticate!
+            authorize_user!(find_user(params[:user_id]))
+          }
 
           get ':user_id/educations' do
             user = find_user(params[:user_id])
-            {items: user.educations}
+            { items: user.educations }
           end
 
           params do
@@ -32,7 +35,7 @@ module V1
               user_education = Education.create(name: education.name, degree: education.degree, description: education.description, start_date: education.start_date, end_date: education.end_date)
               user.educations << user_education
             end
-            {items: user.educations}
+            { items: user.educations }
           end
 
           params do
@@ -44,7 +47,8 @@ module V1
               user_education = user.educations.find(education.id)
               user_education.update(ActionController::Parameters.new(education).permit(:name, :degree, :description, :start_date, :end_date))
             end
-            {items: user.educations}
+
+            { items: user.educations }
           end
 
           delete ':user_id/educations' do

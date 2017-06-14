@@ -16,18 +16,21 @@ module V1
 
         resource :users do
 
-          before { authenticate! }
+          before {
+            authenticate!
+            authorize_user!(find_user(params[:user_id]))
+          }
 
           get ':user_id/devices' do
             user = find_user(params[:user_id])
-            {items: user.devices}
+            { items: user.devices }
           end
 
           put ':user_id/devices' do
             user = User.find(params[:user_id])
             devices = Device.where(id: params[:device_ids]) - user.devices
             user.devices << devices if devices.count > 0
-            {items: user.devices}
+            { items: user.devices }
           end
         end
       end
