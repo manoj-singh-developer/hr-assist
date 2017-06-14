@@ -16,7 +16,10 @@ module V1
 
         resource :users do
 
-          before { authenticate! }
+          before {
+            authenticate!
+            authorize_user!
+          }
 
           get ':user_id/technologies' do
             user = find_user(params[:user_id])
@@ -50,7 +53,7 @@ module V1
                 technology_type: user_technology.technology_type
               }
             end
-            {items: response}
+            { items: response }
           end
 
           params do

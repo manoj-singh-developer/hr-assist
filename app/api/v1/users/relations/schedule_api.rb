@@ -16,7 +16,10 @@ module V1
 
         resource :users do
 
-          before { authenticate! }
+          before {
+            authenticate!
+            authorize_user!
+          }
 
           get ':user_id/schedule' do
             user = find_user(params[:user_id])
