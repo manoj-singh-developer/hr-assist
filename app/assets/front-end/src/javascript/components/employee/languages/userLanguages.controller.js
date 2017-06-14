@@ -20,16 +20,11 @@
     vm.copyUserLanguages = [];
     vm.addNewLanguage = addNewLanguage;
     vm.disableSaveBtn = true;
+    vm.selectedLanguageLevel = [];
+    vm.languagesToAdd = [];
+    vm.selectedItem = [];
+    vm.languageLvlTxt = [];
 
-    vm.levels = [
-      "Elementary proficiency",
-      "Limited working proficiency",
-      "Professional working proficiency",
-      "Full professional proficiency",
-      "Native or bilingual proficiency"
-    ];
-
-    vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.save = save;
     vm.cancel = cancel;
@@ -44,25 +39,7 @@
     });
 
     function addNewLanguage() {
-      if (!vm.languagesToAdd) {
-        vm.languagesToAdd = [];
-      }
       vm.languagesToAdd.push({});
-
-    }
-
-    function addInQueue(language) {
-      if (language) {
-        let notToAdd = _.findWhere(vm.copyUserLanguages, { id: language.id });
-        if (!notToAdd) {
-          let toRemove = _.findWhere(languagesToRemove, { id: language.id });
-          languagesToRemove = _.without(languagesToRemove, toRemove);
-          languagesToAdd.push(language);
-          vm.copyUserLanguages.push(language);
-        }
-        vm.searchText = ' ';
-      }
-      vm.disableSaveBtn = false;
     }
 
     function removeFromQueue(language) {
@@ -86,12 +63,28 @@
 
     function save() {
 
-      if (languagesToAdd.length > 0) {
-        User.updateLanguages(vm.user, languagesToAdd)
+      let objToSave = [];
+      let levelArr = $.map(vm.selectedLanguageLevel, (value, index) => {
+        return [value];
+      });
+      let languageIdArr = $.map(vm.selectedItem, (value, index) => {
+        return [value.id];
+      });
+
+      for (let i = 0; i < vm.selectedItem.length; i++) {
+        objToSave.push({
+          id: languageIdArr[i],
+          level: levelArr[i]
+        });
+        vm.copyUserLanguages.push(vm.selectedItem[i]);
+      }
+
+      if (objToSave.length > 0) {
+        User.updateLanguages(vm.user, objToSave)
           .then((data) => {
             vm.userLanguages = data;
           });
-        languagesToAdd = [];
+        objToSave = [];
       }
 
       if (languagesToRemove.length > 0) {
@@ -118,6 +111,24 @@
         .then((data) => {
           vm.userLanguages = data;
           vm.copyUserLanguages.push(...vm.userLanguages);
+
+          // for (let j = 0; j < vm.copyUserLanguages.length; j++) {
+
+          //   let promise = new Promise((resolve) => {
+          //     resolve(_getLvlTxt(vm.copyUserLanguages[j].level));
+          //   });
+
+          //   promise
+          //     .then((response) => {
+          //       vm.languageLvlTxt.push(response);
+          //       for (let i = 0; i < vm.copyUserLanguages.length; i++) {
+          //         vm.copyUserLanguages[i].level = _.assign(vm.languageLvlTxt[i], vm.copyUserLanguages[i].level);
+          //       }
+
+          //       vm.copyUserLanguages = vm.copyUserLanguages;
+          //     });
+          // }
+
         });
     }
 
@@ -125,6 +136,27 @@
       vm.showEditLanguages = !vm.showEditLanguages;
     }
 
+    function _getLvlTxt(data) {
+      switch (data) {
+        case 1:
+          return "Elementary proficiency";
+          break;
+        case 2:
+          return "Limited working proficiency";
+          break;
+        case 3:
+          return "Professional working proficiency";
+          break;
+        case 4:
+          return "Full professional proficiency";
+          break;
+        case 5:
+          return "Native or bilingual proficiency";
+          break;
+        default:
+          return "Please select your experience level";
+      }
+    }
   }
 
 })(_);

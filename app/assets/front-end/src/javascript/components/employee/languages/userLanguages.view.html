@@ -94,17 +94,17 @@
 
 
       <!-- LANGUAGE INPUT-->
-      <div flex="100" >
+      <div flex="100">
         <!-- LANGUAGE SELECT-->
+
         <md-content class="md-padding">
 
             <md-autocomplete
-              md-selected-item="userLanguages.selectedItem"
-              md-search-text-change="userLanguages.searchTextChange(userLanguages.searchText)"
-              md-search-text="userLanguages.searchText"
-              ng-model="userLanguages.searchText"
+              md-selected-item="userLanguages.selectedItem[$index]"
+              md-search-text-change="userLanguages.searchTextChange(userLanguages.searchText[$index])"
+              md-search-text="userLanguages.searchText[$index]"
               md-selected-item-change="userLanguages.addInQueue(item)"
-              md-items="item in userLanguages.querySearch(userLanguages.searchText, userLanguages.languages)"
+              md-items="item in userLanguages.querySearch(userLanguages.searchText[$index], userLanguages.languages)"
               md-item-text="item.long_name"
               md-min-length="0"
               placeholder="Search"
@@ -121,6 +121,27 @@
           </md-content>
           <!-- /LANGUAGE SELECT-->
 
+          <!--TECHNOLOGY LEVEL-->
+           <div class="md-padding" flex-gt-xs="100">
+            <div flex-gt-xs="100">
+              <div layout layout-align="center center">
+                <span class="u-font-small">
+                  Skill level(1  Elementary, 5  Native or bilingual)
+                </span>
+              </div>
+              <md-slider flex
+                md-discrete
+                ng-model="userLanguages.selectedLanguageLevel[$index]"
+                class="md-primary"
+                step="1"
+                min="1"
+                max="5"
+                aria-label="Skill level"
+                required>
+              </md-slider>
+            </div>
+          </div>
+          <!--TECHNOLOGY LEVEL -->
 
 
 
@@ -136,7 +157,7 @@
             <md-select
               aria-label="Proficiency"
               ng-model="nimic"
-              ng-disabled="!userLanguages.settings.showForm">
+              >
               <md-option
                 ng-repeat="level in userLanguages.levels">
                   {{level}}
@@ -144,6 +165,8 @@
             </md-select>
           </md-input-container> -->
           <!-- /LANGUAGE PROFICIENCY -->
+
+
 
         </div>
         <!-- LANGUAGE INPUT-->
@@ -158,7 +181,7 @@
         <md-button
           md-no-ink
           class="md-primary small-text"
-          ng-click="userLanguages.addNewLanguage(); showDetails = ! showDetails">
+          ng-click="userLanguages.addNewLanguage(); ">
           Add New Language
         </md-button>
       </section>
@@ -187,10 +210,16 @@
       ng-show="userLanguages.showEditLanguages"
       class="additional">
 
-      <md-button
+      <!-- <md-button
         class="md-raised md-primary"
         ng-click="userLanguages.save()"
         ng-disabled="userLanguages.disableSaveBtn">
+        Save
+      </md-button> -->
+      <md-button
+        class="md-raised md-primary"
+        ng-click="userLanguages.save()"
+        >
         Save
       </md-button>
       <md-button
