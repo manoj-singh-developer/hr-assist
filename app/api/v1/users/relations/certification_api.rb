@@ -23,7 +23,7 @@ module V1
 
           before {
             authenticate!
-            authorize_user!(find_user(params[:user_id]))
+            authorize_user!
           }
 
           desc 'Get certifications'
