@@ -17,7 +17,7 @@
     vm.validateDate = [];
     vm.validateDates = false;
     let startDate = [];
-    let endDate = []
+    let endDate = [];
 
     vm.dateService = dateService;
     vm.removeEducation = removeEducation;
@@ -26,6 +26,7 @@
     vm.cancel = cancel;
     vm.toggleForm = toggleForm;
     vm.checkDates = checkDates;
+    vm.checkOnGoing = checkOnGoing;
 
     $rootScope.$on('event:userResourcesLoaded', (event, data) => {
       vm.user = data.user;
@@ -70,7 +71,8 @@
 
       vm.userEducationList.forEach(function(value, index) {
         value.start_date = vm.dateService.format(value.start_date);
-        value.end_date = vm.dateService.format(value.end_date);
+        value.end_date = value.end_date ? vm.dateService.format(value.end_date) : null;
+
         if (index < vm.userEducations.length) {
           if (JSON.stringify(vm.userEducations[index]) !== JSON.stringify(value))
             updateEducationsObj["educations"].push(value);
@@ -99,25 +101,41 @@
       toggleForm();
     }
 
-    function _initEducations() {
-      vm.userEducationList = _.map(vm.userEducations, _.clone);
+    function checkOnGoing(index) {
+      vm.userEducationList[index].end_date = vm.userEducationList[index].onGoing ? null : vm.userEducationList[index].end_date;
+      return vm.userEducationList[index].onGoing;
     }
 
     function checkDates(index) {
 
       for (let i = 0; i < vm.userEducationList.length; i++) {
-        startDate[i] = new Date(vm.userEducationList[i].start_date);
-        endDate[i] = new Date(vm.userEducationList[i].end_date);
-        if (startDate[i] != undefined && endDate[i] != undefined && startDate[i] > endDate[i]) {
-          vm.validateDate[i] = true;
-        } else {
+        if (vm.userEducationList[i].onGoing) {
           vm.validateDate[i] = false;
+        } else {
+          startDate[i] = new Date(vm.userEducationList[i].start_date);
+          endDate[i] = new Date(vm.userEducationList[i].end_date);
+          if (startDate[i] != undefined && endDate[i] != undefined && startDate[i] > endDate[i]) {
+            vm.validateDate[i] = true;
+          } else {
+            vm.validateDate[i] = false;
+          }
         }
       }
       if (vm.validateDate.indexOf(true) !== -1) {
         vm.validateDates = true;
       } else {
         vm.validateDates = false;
+      }
+    }
+
+    function _initEducations() {
+      vm.userEducationList = _.map(vm.userEducations, _.clone);
+      for (let i = 0; i < vm.userEducationList.length; i++) {
+        if (vm.userEducationList[i].end_date) {
+          vm.userEducationList[i].onGoing = false;
+        } else {
+          vm.userEducationList[i].onGoing = true;
+        }
       }
     }
 

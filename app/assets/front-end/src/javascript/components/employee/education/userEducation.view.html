@@ -49,7 +49,8 @@
            <p>{{education.degree}}</p>
            <p>{{education.description}}</p>
            <p>{{education.start_date | date:'longDate'}}</p>
-           <p>{{education.end_date | date:'longDate'}}</p>
+           <p ng-if="education.end_date">{{education.end_date | date:'longDate'}}</p>
+           <p ng-if="!education.end_date">ongoing study</p>
         </div>
       </md-list-item>
     </md-list>
@@ -158,6 +159,7 @@
             <md-datepicker
               ng-model="userEducation.userEducationList[$index].start_date"
               md-placeholder="Start date"
+              name="from_{{$index}}"
               md-open-on-focus
               ng-change="userEducation.checkDates($index)"
               required>
@@ -169,21 +171,65 @@
             <md-datepicker
               ng-model="userEducation.userEducationList[$index].end_date"
               md-placeholder="End date"
+              name="to_{{$index}}"
               md-open-on-focus
               ng-change="userEducation.checkDates($index)"
-              required>
+              ng-disabled=userEducation.userEducationList[$index].onGoing
+              ng-required=!userEducation.userEducationList[$index].onGoing>
             </md-datepicker>
           <div>
         </section>
+        <!-- /SELECT START/END DATE -->
+
+        <!-- SELECT START/END DATE ERRORS MESSAGE-->
         <section ng-show="userEducation.validateDate[$index]" layout-gt-xs="row" layout-align="center center">
           <span class="alert-error fade"
             role="alert">
               "To" date must be greater than "From" date!
           </span>
         </section>
-        <!-- /SELECT START/END DATE -->
+        <section ng-messages="addEduForm['from_'+$index].$error" ng-if="addEduForm['from_'+$index].$touched" layout-gt-xs="row" layout-align="center center">
+          <span ng-message="required" class="alert-info fade" role="alert">
+            "From" date are required!
+          </span>
+        </section>
+        <section ng-messages="addEduForm['to_'+$index].$error" ng-if="addEduForm['to_'+$index].$touched" layout-gt-xs="row" layout-align="center center">
+          <span ng-message="required" class="alert-info fade" role="alert">
+            "To" date are required!
+          </span>
+        </section>
+        <!-- /SELECT START/END DATE ERRORS MESSAGE-->
 
 
+
+
+
+       <!-- SELECT ONGOING EDUCATION -->
+      <section layout-gt-xs="row">
+        <md-input-container class="md-block">
+          <md-checkbox name="onGoing" ng-model="userEducation.userEducationList[$index].onGoing"
+            aria-label="Ongoing study"
+            ng-change="userEducation.checkOnGoing($index); userProjects.checkDates();"
+            ng-required="!userEducation.userEducationList[$index].end_date">
+            Ongoing study.
+          </md-checkbox>
+          <div ng-messages="prjForm.onGoing.$error" multiple md-auto-hide="false" ng-show="false">
+            <div ng-message="required"></div>
+          </div>
+        </md-input-container>
+      </section>
+      <!-- /SELECT ONGOING EDUCATION -->
+
+
+
+
+      <!-- CARD NOTES -->
+      <md-content class="c-card-profile__notes">
+        <p>
+          <strong>NOTE: </strong>All * fields are required
+        </p>
+      </md-content>
+      <!-- CARD NOTES -->
 
     </section><!-- CARD GROUP  -->
 
@@ -220,7 +266,12 @@
     layout-align="center center"
     ng-show="userEducation.showForm"
     class="additional">
-
+    <!-- <md-button
+      class="md-raised md-primary"
+      ng-click="userEducation.save();"
+      ">
+      Save
+    </md-button> -->
     <md-button
       class="md-raised md-primary"
       ng-click="userEducation.save();"
