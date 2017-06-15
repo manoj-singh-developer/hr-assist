@@ -16,11 +16,14 @@ module V1
 
         resource :users do
 
-          before { authenticate! }
+          before {
+            authenticate!
+            authorize_user!
+          }
 
           get ':user_id/projects' do
             user = find_user(params[:user_id])
-            {items:
+            { items:
               user.user_projects.map do |user_project|
                 {
                   project: user_project.project,
@@ -60,6 +63,7 @@ module V1
             user_project.update(user_project_params)
             technologies = Technology.where(id: params[:technology_ids]) - user_project.technologies
             user_project.technologies << technologies if technologies.count > 0
+
             response = {
               start_date: user_project.start_date,
               end_date: user_project.end_date,
