@@ -1,0 +1,2 @@
+class CandidateFile < ApplicationRecord
+end
