@@ -26,12 +26,16 @@ module V1
             { items: user.user_languages }
           end
 
+          params do
+            requires :languages, allow_blank: false, type: []
+          end
+  
           put ':user_id/languages' do
             user = User.find(params[:user_id])
 
             params[:languages].each do |language|
 
-              lang = Language.find(language.id)
+              lang = Language.find(language['id'])
               user_language = UserLanguage.create(level: language['level'], language_id: lang.id, user_id: user.id)
 
             end
