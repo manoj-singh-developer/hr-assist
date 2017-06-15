@@ -13,8 +13,6 @@ module V1
 
       def postParams
 
-        local_param = params.dup
-
         if(params[:candidate_cv])
           upload = ActionDispatch::Http::UploadedFile.new(
               tempfile: params[:candidate_cv][:tempfile],
@@ -23,10 +21,10 @@ module V1
               headers:  params[:candidate_cv][:head],
             )
 
-          local_param[:candidate_cv] = upload
+          params[:candidate_cv] = upload
         end
 
-        ActionController::Parameters.new(local_param).permit(:name, :university_start_year, :university_end_year, :projects, :category,
+        ActionController::Parameters.new(params).permit(:name, :university_start_year, :university_end_year, :projects, :category,
           :contact_info, :comments, :status, :candidate_cv)
       end
 
@@ -80,6 +78,7 @@ module V1
         if(post_params[:candidate_cv])
 
           # Process the CV file
+
           post_params.delete :candidate_cv
         end
 
