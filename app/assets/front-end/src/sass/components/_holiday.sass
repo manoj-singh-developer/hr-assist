@@ -84,5 +84,49 @@ input[type = "search"]
   border: none !important
 
 @media print
-  .main-view
+
+  .hide-print
     display: none
+    visibility: hidden
+    opacity: 0
+
+  .page-content
+    padding: 0 !important
+
+  nav, .c-navigation
+    display: none
+
+  .page
+    padding: 0
+    border: initial
+    border-radius: initial
+    width: initial
+    min-height: initial
+    box-shadow: initial
+    background: initial
+    page-break-after: auto
+    color: black
+    float: none !important
+    background: transparent none
+    
+    &:last-child
+      page-break-after: auto
+
+  html, body
+    width: auto
+    height: auto
+    margin: 0
+    padding: 0
+    background: white
+    min-height: auto
+    p
+      font-size: 14pt
+    
+  *, *:before, *:after
+    box-sizing: border-box
+    -moz-box-sizing: border-box    
+    -webkit-box-sizing: border-box
+  
+@page 
+  size: A4
+  margin: 7mm 16mm 27mm 16mm

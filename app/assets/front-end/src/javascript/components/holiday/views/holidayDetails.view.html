@@ -1,14 +1,21 @@
 <style>
     .cerere {
         max-width: 850px;
-        margin: 20px auto;
+        margin: auto;
     }
+
 </style>
 
-<section class="cerere">
+<section class="cerere page show-print">
 
-    <img ng-src="/assets/images/logo-assist.png" style="max-width: 15%;" />
+    <img ng-src="/assets/images/logo-assist.png" style="max-width: 15%;" class="hide-print" />
+    <md-button class="md-icon-button md-primary hide-print"
+                  label="View Holiday"
+                  aria-label="View Holiday"
+                  ng-click="holidayDetails.print();">
+                  <md-icon class="material-icons">print</md-icon>
 
+                </md-button>
     <h1 style="text-align: center; font-size: 26px; text-decoration: underline">Cerere pentru concediu de odihnă</h1>
     <p>Stimate Domnule Director,</p>
     <p>
@@ -37,7 +44,7 @@
         </span>.
         </span>
     </p>
-    <br/>
+
     <p style="text-align: left">Vă mulțumesc.</p>
 
     <table style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
@@ -58,19 +65,19 @@
                     </strong>
                 </p>
             </td>
-            <td style="padding-left:5px;">
-                <p >
+            <td style="padding-left:5px; vertical-align: baseline;">
+                <p>
                     <strong>
                         APROBAT,
                     </strong>
                 </p>
+                <p>Gheorghe DAVID</p>
             </td>
         </tr>
     </table>
 
-    <br>
     <h4><strong>Mențiuni</strong></h4>
-    <br>
+
     <p><strong>1.</strong> Task-urile din proiectele la care sunt implicat vor fi preluate de:</p>
     <table style="border: 1px solid #000; width:100%; border-collapse: collapse;">
         <thead style="border:1px solid #000;">
@@ -94,7 +101,7 @@
             </tr>
         </tbody>
     </table>
-    <br>
+
     <p>
         <strong>2.</strong> Am luat notă de cererea de concediu și confirm că avem la dispoziție toate elementele de acces, resursele și informațiile necesare derulării corespunzătoare a proiectelor în care colegul meu, solicitant al prezentei cereri, este implicat.
     </p>
@@ -116,4 +123,5 @@
             {{today | date: 'dd.MM.yyyy'}}
         </strong>
     </p>
+
 </section>

@@ -3,7 +3,6 @@
   'use strict';
 
 
-
   // hraHolidayDetails directive
   // ------------------------------------------------------------------------
   angular
@@ -19,7 +18,6 @@
       templateUrl: rootTemplatePath + 'holiday/views/holidayDetails.view.html'
     };
   }
-
 
 
   // holidayDetailsController controller
@@ -39,26 +37,30 @@
     var empArr = [];
     var holidayId, days, signingDay, startDate, endDate, holidayReplace;
     $scope.today = new Date();
-    vm.leaders=[];
+    vm.leaders = [];
+    vm.print = print;
     // public methods
     // ------------------------------------------------------------------------
     vm.getHolidays = getHolidays;
-    vm.getUsers  = getUsers;
+    vm.getUsers = getUsers;
 
 
     // public methods declaration
     // ------------------------------------------------------------------------
+    function print() {
+      window.print();
+    }
 
     function getUsers() {
-        $scope.holidayPaper = [];
-        $scope.holidayRep;
+      $scope.holidayPaper = [];
+      $scope.holidayRep;
 
       User.getAll()
         .then(function(data) {
           empArr = data;
-          $timeout(function () {
-            empArr.forEach(function (employee, index) {
-              if(employee.id === holidayId) {
+          $timeout(function() {
+            empArr.forEach(function(employee, index) {
+              if (employee.id === holidayId) {
 
                 var firstName = employee.first_name;
                 var lastName = employee.last_name;
@@ -84,7 +86,7 @@
             });
           }, 1000);
         })
-        .catch(function (error) {
+        .catch(function(error) {
           errorService.forceLogout(error);
           console.log(error);
         })
@@ -100,13 +102,13 @@
           signingDay = response.signing_day;
           holidayId = response.user_id;
           holidayReplace = response.employee_replacements;
-          vm.leaders = $.map(response.employee_replacements, (value, index)=> {
+          vm.leaders = $.map(response.employee_replacements, (value, index) => {
             if (value.team_leader) {
-            return [value.team_leader];
+              return [value.team_leader];
             }
           });
         })
-        .catch(function (error){
+        .catch(function(error) {
           errorService.forceLogout(error);
           $rootScope.showToast('Error on loading data! Please refresh!');
         })
