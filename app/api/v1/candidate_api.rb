@@ -13,7 +13,10 @@ module V1
 
       def postParams
 
+        clone_params = params.dup
+
         if(params[:candidate_cv])
+          puts params[:candidate_cv].inspect
           upload = ActionDispatch::Http::UploadedFile.new(
               tempfile: params[:candidate_cv][:tempfile],
               filename: params[:candidate_cv][:filename],
@@ -21,10 +24,10 @@ module V1
               headers:  params[:candidate_cv][:head],
             )
 
-          params[:candidate_cv] = upload
+          clone_params[:candidate_cv] = upload
         end
 
-        ActionController::Parameters.new(params).permit(:name, :university_start_year, :university_end_year, :projects, :category,
+        ActionController::Parameters.new(clone_params).permit(:name, :university_start_year, :university_end_year, :projects, :category,
           :contact_info, :comments, :status, :candidate_cv)
       end
 
@@ -65,7 +68,7 @@ module V1
         optional :projects,               allow_blank: false, type: String
         optional :category,               allow_blank: false, type: Integer
         optional :contact_info,           allow_blank: false, type: String
-        optional :candidate_cv,                                        :type => File
+        optional :candidate_cv,                               type: File
         optional :comments,               allow_blank: false, type: String
         optional :audio_files,                                type: [File]
         requires :status,                 allow_blank: false, type: Integer
@@ -73,16 +76,16 @@ module V1
       end
       post 'new' do
 
-        post_params = postParams
+        model_params = postParams
 
-        if(post_params[:candidate_cv])
+        if model_params[:candidate_cv]
+          cv_file = model_params[:candidate_cv]
+          model_params.delete :candidate_cv
+        end        
 
-          # Process the CV file
+        candidate = authorizeAndCreate(Candidate, model_params)
 
-          post_params.delete :candidate_cv
-        end
-
-        authorizeAndCreate(Candidate, post_params)
+        candidate.candidate_cv = CandidateCv.create!(cv: cv_file) if candidate && cv_file
       end
 
       desc "Update candidate"
