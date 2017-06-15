@@ -50,33 +50,67 @@
 
             <div layout-gt-xs="row">
 
-              <label>Start date</label>
+              <label>Start date*</label>
               <md-datepicker 
                 ng-model="projectForm.project.start_date" 
                 md-placeholder="Enter date"
                 ng-change="projectForm.checkDates()"
+                name="start"
                 md-open-on-focus
                 required>
               </md-datepicker>
 
 
 
-              <label>End date</label>
+              <label>End date*</label>
               <md-datepicker 
                 ng-model="projectForm.project.end_date"  
                 md-placeholder="Enter date"
                 ng-change="projectForm.checkDates()"
                 md-open-on-focus
+                ng-disabled=projectForm.onGoing
+                ng-required="!projectForm.onGoing"
+                name="end"
                 required>
               </md-datepicker>
 
             </div>
+            <!-- SELECT START/END DATE ERRORS MESSAGE-->
             <div ng-show="projectForm.validateDate" layout-gt-xs="row" layout-align="center center">
-              <span class="alert-error fade"
+              <div class="alert-error fade"
               role="alert">
                 End date must be greater than Start date!
-              </span>
+              </div>
             </div>
+            <div ng-messages="projectFormular['start'].$error" ng-if="projectFormular['start'].$touched" layout-gt-xs="row" layout-align="center center">
+              <div ng-message="required" class="alert-info fade" role="alert">
+                "Start date" are required!
+              </div>
+            </div>
+            <div ng-messages="projectFormular['end'].$error" ng-if="projectFormular['end'].$touched" layout-gt-xs="row" layout-align="center center">
+              <div ng-message="required" class="alert-info fade" role="alert">
+                "End date" are required!
+              </div>
+            </div>
+            <!-- /SELECT START/END DATE ERRORS MESSAGE-->
+
+
+            <!-- SELECT ONGOING PROJECT -->
+            <section layout-gt-xs="row">
+              <md-input-container class="md-block">
+                <md-checkbox name="onGoing" ng-model="projectForm.onGoing"
+                  aria-label="Ongoing project."
+                  ng-change="projectForm.checkOnGoing(); projectForm.checkDates();"
+                  ng-required="!projectForm.project.end_date">
+                  Ongoing project.
+                </md-checkbox>
+                <div ng-messages="prjForm.onGoing.$error" multiple md-auto-hide="false" ng-show="false">
+                  <div ng-message="required"></div>
+                </div>
+              </md-input-container>
+            </section>
+            <!-- SELECT ONGOING PROJECT -->
+
           </md-content>
         </md-tab>
 
