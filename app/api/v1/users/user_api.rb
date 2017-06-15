@@ -29,7 +29,7 @@ module V1
         end
 
         params :other do
-          optional :with, values: ['positions', 'languages', 'devices', 'educations', 'departments', 'projects', 'technologies'], type: Array[String]
+          optional :with, values: ['positions', 'user_languages', 'devices', 'educations', 'departments', 'projects', 'technologies'], type: Array[String]
         end
       end
 
