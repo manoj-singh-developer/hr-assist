@@ -23,15 +23,20 @@ module V1
 
           get ':user_id/languages' do
             user = find_user(params[:user_id])
-            { items: user.languages }
+            { items: user.user_languages }
           end
 
           put ':user_id/languages' do
             user = User.find(params[:user_id])
 
-            languages = Language.where(id: params[:language_ids]) - user.languages
-            user.languages << languages if languages.count > 0
-            { items: user.languages }
+            params[:languages].each do |language|
+
+              lang = Language.find(language.id)
+              user_language = UserLanguage.create(level: language['level'], language_id: lang.id, user_id: user.id)
+
+            end
+
+            { items: user.user_languages }
           end
 
           delete ':user_id/languages' do
