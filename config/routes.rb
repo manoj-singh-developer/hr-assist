@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   mount V1::HolidayAPI => '/api'
   mount V1::HolidayReplacementAPI => '/api'
   mount V1::ScheduleAPI => '/api'
+  mount V1::CandidateAPI => '/api'
 
   get '/show' , to: 'admin/authenticate#show'
   post '/show' , to: 'app_settings#create'
