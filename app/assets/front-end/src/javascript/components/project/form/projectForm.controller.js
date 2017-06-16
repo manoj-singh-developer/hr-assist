@@ -10,6 +10,7 @@
     let vm = this;
     vm.project = {};
     vm.validateDate = false;
+    vm.onGoing = false;
 
     vm.dateService = dateService;
     vm.add = add;
@@ -21,17 +22,11 @@
     function add() {
       vm.project.start_date = vm.project.start_date ? vm.dateService.format(vm.project.start_date) : null;
       vm.project.end_date = vm.project.end_date ? vm.dateService.format(vm.project.end_date) : null;
-      if (vm.project.id) {
-        Project.update(vm.project).then((data) => {
-          $rootScope.$emit('event:projectUpdate', data);
-          $mdDialog.cancel();
-        });
-      } else {
-        Project.save(vm.project).then((data) => {
-          $rootScope.$emit('event:projectAdd', data);
-          $mdDialog.cancel();
-        });
-      }
+
+      Project.save(vm.project).then((data) => {
+        $rootScope.$emit('event:projectAdd', data);
+        $mdDialog.cancel();
+      });
     }
 
     function closeButton() {
@@ -40,7 +35,7 @@
 
     function clearButton() {
       vm.project = {};
-      vm.onGoing = undefined;
+      vm.onGoing = null;
     }
 
     function checkOnGoing() {
@@ -53,7 +48,7 @@
         vm.validateDate = false;
       } else {
 
-        if (vm.project.start_date != undefined && vm.project.end_date != undefined && vm.project.start_date > vm.project.end_date) {
+        if (vm.project.start_date && vm.project.end_date && vm.project.start_date > vm.project.end_date) {
           vm.validateDate = true;
         } else {
           vm.validateDate = false;

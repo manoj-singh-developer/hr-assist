@@ -11,7 +11,7 @@
       class="form form-add-project"
       ng-submit="projectForm.add()"
       novalidate
-      name="projectFormular"
+      name="prjForm"
       >
 
       <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
@@ -24,7 +24,7 @@
                 <label>Name</label>
                 <input ng-model="projectForm.project.name" name="name" required>
                   
-                <div ng-messages="projectFormular.name.$error">
+                <div ng-messages="prjForm.name.$error">
                   <div ng-message="required">This field is required</div>
                 </div>
 
@@ -40,7 +40,7 @@
                   required>
                 </textarea>
 
-                <div ng-messages="projectFormular.description.$error">
+                <div ng-messages="prjForm.description.$error">
                   <div ng-message="required">This field is required</div>
                 </div>
 
@@ -50,10 +50,10 @@
 
             <div layout-gt-xs="row">
 
-              <label>Start date*</label>
+              <label class="required-input">Start date</label>
               <md-datepicker 
                 ng-model="projectForm.project.start_date" 
-                md-placeholder="Enter date"
+                md-placeholder="Pick start date"
                 ng-change="projectForm.checkDates()"
                 name="start"
                 md-open-on-focus
@@ -62,10 +62,10 @@
 
 
 
-              <label>End date*</label>
+              <label class="required-input">End date</label>
               <md-datepicker 
                 ng-model="projectForm.project.end_date"  
-                md-placeholder="Enter date"
+                md-placeholder="Pick end date"
                 ng-change="projectForm.checkDates()"
                 md-open-on-focus
                 ng-disabled=projectForm.onGoing
@@ -82,12 +82,12 @@
                 End date must be greater than Start date!
               </div>
             </div>
-            <div ng-messages="projectFormular['start'].$error" ng-if="projectFormular['start'].$touched" layout-gt-xs="row" layout-align="center center">
+            <div ng-messages="prjForm.start.$error" ng-if="prjForm.start.$touched" layout-gt-xs="row" layout-align="center center">
               <div ng-message="required" class="alert-info fade" role="alert">
                 "Start date" are required!
               </div>
             </div>
-            <div ng-messages="projectFormular['end'].$error" ng-if="projectFormular['end'].$touched" layout-gt-xs="row" layout-align="center center">
+            <div ng-messages="prjForm.end.$error" ng-if="prjForm.end.$touched" layout-gt-xs="row" layout-align="center center">
               <div ng-message="required" class="alert-info fade" role="alert">
                 "End date" are required!
               </div>
@@ -120,7 +120,7 @@
 
         <md-button class="md-raised md-primary" 
           ng-click="projectForm.add()"
-          ng-disabled="projectFormular.$invalid || projectForm.validateDate">
+          ng-disabled="prjForm.$invalid || projectForm.validateDate">
           Save
         </md-button>
 
