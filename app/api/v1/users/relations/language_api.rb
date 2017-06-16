@@ -28,7 +28,8 @@ module V1
               {
                 language_id: user_language.language_id,
                 long_name: user_language.language.long_name,
-                short_name: user_language.language.short_name
+                short_name: user_language.language.short_name,
+                level: user_language.level
               }
             end
             
