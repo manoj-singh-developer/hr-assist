@@ -55,6 +55,18 @@ module APIHelpers
     end
   end
 
+  def paginateItems items, relations = nil, exception = nil
+    if params[:page] && params[:per_page]
+      items = items.includes(relations).page(params[:page]).per(params[:per_page])
+      {
+          :items => items.as_json(include: relations, except: exception),
+          :paginate => url_paginate(items, params[:per_page])
+      }
+    else
+      { items:  items.includes(relations).as_json(include: relations, except: exception) }
+    end
+  end
+
   def authorizeAndCreate(model, postParams, &block)
     authorize! :create, model
     block.call if block_given?
