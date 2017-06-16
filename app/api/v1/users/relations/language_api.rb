@@ -23,15 +23,29 @@ module V1
 
           get ':user_id/languages' do
             user = find_user(params[:user_id])
-            { items: user.user_languages }
+
+            user_languages = user.user_languages.map do |user_language|
+              {
+                language_id: user_language.language_id,
+                long_name: user_language.language.long_name,
+                short_name: user_language.language.short_name,
+                level: user_language.level
+              }
+            end
+            
+            { items: user_languages }
           end
 
+          params do
+            requires :languages, allow_blank: false, type: [Hash]
+          end
+  
           put ':user_id/languages' do
             user = User.find(params[:user_id])
 
             params[:languages].each do |language|
 
-              lang = Language.find(language.id)
+              lang = Language.find(language['id'])
               user_language = UserLanguage.create(level: language['level'], language_id: lang.id, user_id: user.id)
 
             end
@@ -40,7 +54,7 @@ module V1
           end
 
           delete ':user_id/languages' do
-            delete_object(User, Language, params[:user_id], params[:language_ids])
+            delete_object(User, UserLanguage, params[:user_id], params[:language_ids])
           end
         end
       end

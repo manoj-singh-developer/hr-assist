@@ -13,19 +13,25 @@ module V1
 
       def postParams
 
-        if(params[:candidate_cv])
-          upload = ActionDispatch::Http::UploadedFile.new(
-              tempfile: params[:candidate_cv][:tempfile],
-              filename: params[:candidate_cv][:filename],
-              type:     params[:candidate_cv][:type],
-              headers:  params[:candidate_cv][:head],
-            )
+        clone_params = params.dup
 
-          params[:candidate_cv] = upload
+        clone_params[:candidate_cv] = convert_hashie_to_file(params[:candidate_cv]) if(params[:candidate_cv])
+        
+        clone_params[:audio_files].each_with_index do |audio_file, index|
+          clone_params[:audio_files][index] = convert_hashie_to_file(audio_file)
         end
 
-        ActionController::Parameters.new(params).permit(:name, :university_start_year, :university_end_year, :projects, :category,
-          :contact_info, :comments, :status, :candidate_cv)
+        ActionController::Parameters.new(clone_params).permit(:name, :university_start_year, :university_end_year, :projects, :category,
+          :contact_info, :comments, :status, :candidate_cv, audio_files: [])
+      end
+
+      def convert_hashie_to_file file
+        ActionDispatch::Http::UploadedFile.new(
+                tempfile: file[:tempfile],
+                filename: file[:filename],
+                type:     file[:type],
+                headers:  file[:head],
+        )
       end
 
       params :pagination do
@@ -46,7 +52,16 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Candidate
+
+        relations = ['candidate_cv', 'candidate_files']
+
+        items = Candidate.all.includes(relations).page(params[:page]).per(params[:per_page])
+        {
+            :items => items.as_json(include: relations),
+            :paginate => url_paginate(items, params[:per_page])
+        }
+
+        getPaginatedItemsFor Candidate, ['candidate_cv', 'candidate_files']
       end
 
       desc "Returns a candidate"
@@ -65,7 +80,7 @@ module V1
         optional :projects,               allow_blank: false, type: String
         optional :category,               allow_blank: false, type: Integer
         optional :contact_info,           allow_blank: false, type: String
-        optional :candidate_cv,                                        :type => File
+        optional :candidate_cv,                               type: File
         optional :comments,               allow_blank: false, type: String
         optional :audio_files,                                type: [File]
         requires :status,                 allow_blank: false, type: Integer
@@ -73,16 +88,25 @@ module V1
       end
       post 'new' do
 
-        post_params = postParams
+        model_params = postParams
 
-        if(post_params[:candidate_cv])
+        cv_file = model_params.delete(:candidate_cv) if model_params[:candidate_cv]
+        audio_files = model_params.delete(:audio_files) if model_params[:audio_files]
 
-          # Process the CV file
+        candidate = authorizeAndCreate(Candidate, model_params)
 
-          post_params.delete :candidate_cv
+        if candidate
+          candidate.candidate_cv = CandidateCv.create!(cv: cv_file) if cv_file
+          
+          audio_files.each do |audio_file|
+            candidate.candidate_files << CandidateFile.create!(file: audio_file)          
+          end if audio_files
+
         end
 
-        authorizeAndCreate(Candidate, post_params)
+        relations = ['candidate_cv', 'candidate_files']
+
+        Candidate.includes(relations).find(candidate.id).as_json(include: relations)
       end
 
       desc "Update candidate"
@@ -95,14 +119,29 @@ module V1
         optional :contact_info,           allow_blank: false, type: String
         optional :candidate_cv,                               type: File
         optional :comments,               allow_blank: false, type: String
-        optional :audio_files,            allow_blank: false, type: File
+        optional :audio_files,            allow_blank: false, type: [File]
         requires :status,                 allow_blank: false, type: Integer
       end
 
       put ':id' do
-        candidate = Candidate.find(params[:id])
+
         authorize! :update, Candidate
-        candidate.update(postParams)
+        
+        model_params = postParams
+
+        cv_file = model_params.delete(:candidate_cv) if model_params[:candidate_cv]
+        audio_files = model_params.delete(:audio_files) if model_params[:audio_files]
+
+        candidate = Candidate.find(params[:id])
+        candidate.update(model_params)
+
+        candidate.candidate_cv = CandidateCv.create!(cv: cv_file) if cv_file
+        
+        audio_files.each do |audio_file|
+          candidate.candidate_files << CandidateFile.create!(file: audio_file)          
+        end if audio_files
+
+
         success
       end
     end
