@@ -108,35 +108,24 @@
 
     function checkDates(index) {
 
-      for (let i = 0; i < vm.userEducationList.length; i++) {
-        if (vm.userEducationList[i].onGoing) {
+      vm.userEducationList.map((value, i) => {
+        if (value.onGoing) {
           vm.validateDate[i] = false;
         } else {
           startDate[i] = new Date(vm.userEducationList[i].start_date);
           endDate[i] = new Date(vm.userEducationList[i].end_date);
-          if (startDate[i] != undefined && endDate[i] != undefined && startDate[i] > endDate[i]) {
-            vm.validateDate[i] = true;
-          } else {
-            vm.validateDate[i] = false;
-          }
+          vm.validateDate[i] = startDate[i] && endDate[i] && startDate[i] > endDate[i] ? true : false;
         }
-      }
-      if (vm.validateDate.indexOf(true) !== -1) {
-        vm.validateDates = true;
-      } else {
-        vm.validateDates = false;
-      }
+      });
+
+      vm.validateDates = vm.validateDate.indexOf(true) !== -1 ? true : false;
     }
 
     function _initEducations() {
       vm.userEducationList = _.map(vm.userEducations, _.clone);
-      for (let i = 0; i < vm.userEducationList.length; i++) {
-        if (vm.userEducationList[i].end_date) {
-          vm.userEducationList[i].onGoing = false;
-        } else {
-          vm.userEducationList[i].onGoing = true;
-        }
-      }
+      vm.userEducationList.map((value, index) => {
+        vm.userEducationList[index].onGoing = value.end_date ? false : true;
+      });
     }
 
   }

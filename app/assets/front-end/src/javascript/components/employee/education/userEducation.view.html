@@ -96,10 +96,10 @@
           <label>School</label>
           <input
             ng-model="userEducation.userEducationList[$index].name"
-            name="name_{{$index}}"
+            name="name-{{$index}}"
             required>
 
-          <div ng-messages="addEduForm['name_'+$index].$error">
+          <div ng-messages="addEduForm['name-'+$index].$error">
             <div ng-message="required">This field is required</div>
           </div>
 
@@ -119,10 +119,10 @@
           <label>Field of Study</label>
           <input
             ng-model="userEducation.userEducationList[$index].description"
-            name="description_{{$index}}"
+            name="description-{{$index}}"
             required>
 
-           <div ng-messages="addEduForm['description_'+$index].$error">
+           <div ng-messages="addEduForm['description-'+$index].$error">
             <div ng-message="required">This field is required</div>
           </div>
         </md-input-container>
@@ -139,9 +139,9 @@
           <label>Diploma</label>
           <input
             ng-model="userEducation.userEducationList[$index].degree"
-            name="degree_{{$index}}"
+            name="degree-{{$index}}"
             required>
-            <div ng-messages="addEduForm['degree_'+$index].$error">
+            <div ng-messages="addEduForm['degree-'+$index].$error">
             <div ng-message="required">This field is required</div>
           </div>
         </md-input-container>
@@ -155,11 +155,11 @@
         <!-- SELECT START/END DATE -->
         <section layout-gt-xs="row" layout-align="start center">
           <div flex-gt-xs="50">
-            <label class="u-ml-5">From*</label>
+            <label class="u-ml-5 required-input">From</label>
             <md-datepicker
               ng-model="userEducation.userEducationList[$index].start_date"
-              md-placeholder="Start date"
-              name="from_{{$index}}"
+              md-placeholder="Pick start date"
+              name="from-{{$index}}"
               md-open-on-focus
               ng-change="userEducation.checkDates($index)"
               required>
@@ -167,15 +167,15 @@
           </div>
 
           <div flex-gt-xs="50">
-            <label class="u-ml-5">To*</label>
+            <label class="u-ml-5 required-input">To</label>
             <md-datepicker
               ng-model="userEducation.userEducationList[$index].end_date"
-              md-placeholder="End date"
-              name="to_{{$index}}"
+              md-placeholder="Pick end date"
+              name="to-{{$index}}"
               md-open-on-focus
               ng-change="userEducation.checkDates($index)"
-              ng-disabled=userEducation.userEducationList[$index].onGoing
-              ng-required=!userEducation.userEducationList[$index].onGoing>
+              ng-disabled=education.onGoing
+              ng-required=!education.onGoing>
             </md-datepicker>
           <div>
         </section>
@@ -188,12 +188,12 @@
               "To" date must be greater than "From" date!
           </span>
         </section>
-        <section ng-messages="addEduForm['from_'+$index].$error" ng-if="addEduForm['from_'+$index].$touched" layout-gt-xs="row" layout-align="center center">
+        <section ng-messages="addEduForm['from-'+$index].$error" ng-if="addEduForm['from-'+$index].$touched" layout-gt-xs="row" layout-align="center center">
           <span ng-message="required" class="alert-info fade" role="alert">
             "From" date are required!
           </span>
         </section>
-        <section ng-messages="addEduForm['to_'+$index].$error" ng-if="addEduForm['to_'+$index].$touched" layout-gt-xs="row" layout-align="center center">
+        <section ng-messages="addEduForm['to-'+$index].$error" ng-if="addEduForm['to-'+$index].$touched" layout-gt-xs="row" layout-align="center center">
           <span ng-message="required" class="alert-info fade" role="alert">
             "To" date are required!
           </span>
@@ -210,7 +210,7 @@
           <md-checkbox name="onGoing" ng-model="userEducation.userEducationList[$index].onGoing"
             aria-label="Ongoing study"
             ng-change="userEducation.checkOnGoing($index); userProjects.checkDates();"
-            ng-required="!userEducation.userEducationList[$index].end_date">
+            ng-required="!education.end_date">
             Ongoing study.
           </md-checkbox>
           <div ng-messages="prjForm.onGoing.$error" multiple md-auto-hide="false" ng-show="false">
