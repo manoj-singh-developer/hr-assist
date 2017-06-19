@@ -9,13 +9,15 @@
 <section class="cerere page show-print">
 
     <img ng-src="/assets/images/logo-assist.png" style="max-width: 15%;" class="hide-print" />
-    <md-button class="md-icon-button md-primary hide-print"
-                  label="View Holiday"
-                  aria-label="View Holiday"
-                  ng-click="holidayDetails.print();">
-                  <md-icon class="material-icons">print</md-icon>
-
-                </md-button>
+<div style="position: absolute;" class="hide-print">
+    <button class="md-button  md-primary md-no-ink"
+      label="View Holiday"
+      aria-label="View Holiday"
+      ng-click="holidayDetails.print();">
+      <md-icon class="material-icons">print</md-icon>
+      <span>Print vacation request</span>
+    </button>
+</div>        
     <h1 style="text-align: center; font-size: 26px; text-decoration: underline">Cerere pentru concediu de odihnă</h1>
     <p>Stimate Domnule Director,</p>
     <p>
