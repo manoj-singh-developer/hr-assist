@@ -34,6 +34,8 @@ module V1
             users = users.by_technologies(filters[:technologies]) if filters[:technologies]
             users = users.by_certifications(filters[:certifications]) if filters[:certifications]
             users = users.by_languages(filters[:languages]) if filters[:languages]
+
+            users
         end
         
         params :pagination do
