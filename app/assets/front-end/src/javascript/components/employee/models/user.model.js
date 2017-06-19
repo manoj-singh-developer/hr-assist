@@ -275,16 +275,16 @@
     };
 
     User.updateLanguages = (user, languages) => {
-      let languageIds = languages.map(language => language.id);
       url = apiUrl + '/users/:id/languages';
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
-      }).update({ id: user.id }, { language_ids: languageIds });
+      }).update({ id: user.id }, languages);
 
       promise = resource.$promise
         .then((data) => {
           alertService.success(model, 'updateLanguages');
           return data.items;
+          
         })
         .catch((error) => {
           errorService.forceLogout(error);
