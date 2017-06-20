@@ -1,4 +1,4 @@
-((_) => {
+(() => {
 
   'use strict';
 
@@ -7,7 +7,7 @@
     .controller('holidayDetailsController', holidayDetailsController);
 
 
-  function holidayDetailsController($rootScope, $stateParams, HolidayModel, $mdToast, User, $timeout, errorService, $window) {
+  function holidayDetailsController($rootScope, $stateParams, HolidayModel, User, $timeout, errorService, $window) {
 
     let vm = this;
     let ids = $stateParams.id;
