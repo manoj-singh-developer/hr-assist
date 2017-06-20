@@ -12,8 +12,7 @@ module V1
       include APIHelpers
 
       def postParams
-        ActionController::Parameters.new(params)
-          .permit(:name, :description,)
+        ActionController::Parameters.new(params).permit(:name, :description)
       end
 
       params :pagination do
@@ -29,7 +28,7 @@ module V1
 
     resource :departments do
 
-      desc "Return all departments"
+      desc "Get all departments"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -37,7 +36,7 @@ module V1
         getPaginatedItemsFor Department
       end
 
-      desc "Returns a department"
+      desc "Get department"
       params do
         requires :id, type: Integer , desc: "Department id"
       end
@@ -59,7 +58,6 @@ module V1
         optional :name, allow_blank: false, type: String
         optional :description, allow_blank: false, type: String
       end
-
       put ':id' do
         department = Department.find(params[:id])
         authorize! :update, Department

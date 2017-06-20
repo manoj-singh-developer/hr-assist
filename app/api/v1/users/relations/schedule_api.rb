@@ -21,16 +21,17 @@ module V1
             authorize_user!
           }
 
+          desc "Get user schedule"
           get ':user_id/schedule' do
             user = find_user(params[:user_id])
             user.schedule
           end
 
+          desc "Create user schedule"
           params do
             requires :name, type: String, allow_blank: false
             requires :timetable, type: String, allow_blank: false
           end
-
           post ':user_id/schedule' do
             user = find_user(params[:user_id])
             schedule = Schedule.create(name: params[:name], timetable: params[:timetable])
@@ -39,6 +40,7 @@ module V1
             user.schedule
           end
 
+          desc "Update user schedule"
           params do
             optional :name, type: String
             optional :timetable, type: String

@@ -27,7 +27,7 @@ module V1
 
     resource :activities do
 
-      desc "Return all activities"
+      desc "Get all activities"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -35,7 +35,7 @@ module V1
         getPaginatedItemsFor Activity
       end
 
-      desc "Returns an activity"
+      desc "Get activity"
       params do
         requires :id ,type: Integer , desc: "activity id"
       end
@@ -57,7 +57,6 @@ module V1
         optional :name, allow_blank: false, type: String
         optional :description, allow_blank: false, type: String
       end
-
       put ':id' do
         activity = Activity.find(params[:id])
         authorize! :update, Activity
@@ -65,7 +64,7 @@ module V1
         success
       end
 
-      desc "Delete an activity"
+      desc "Delete activity"
       delete ':id' do
         Activity.find(params[:id]).destroy
       end

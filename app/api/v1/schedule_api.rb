@@ -12,8 +12,7 @@ module V1
       include APIHelpers
 
       def postParams
-        ActionController::Parameters.new(params)
-          .permit(:name, :timetable, :user_id)
+        ActionController::Parameters.new(params).permit(:name, :timetable, :user_id)
       end
 
       params :pagination do
@@ -29,7 +28,7 @@ module V1
 
     resource :schedules do
 
-      desc "Return all schedules"
+      desc "Get all schedules"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -37,7 +36,7 @@ module V1
         getPaginatedItemsFor Schedule
       end
 
-      desc "Returns a schedule"
+      desc "Get schedule"
       params do
         requires :id, type: Integer , desc: "Schedule id"
       end
@@ -62,7 +61,6 @@ module V1
         optional :name, allow_blank: false, type: String
         optional :timetable, allow_blank: false, type: Integer
       end
-
       put ':id' do
         schedule = Schedule.find(params[:id])
         authorize! :update, Schedule

@@ -21,6 +21,7 @@ module V1
             authorize_user!
           }
 
+          desc "Get all user technologies"
           get ':user_id/technologies' do
             user = find_user(params[:user_id])
             { items:
@@ -35,10 +36,11 @@ module V1
             }
           end
 
+          desc "Create user technologies"
           params do
-            requires :names, type: Array[String]
-            requires :types, type: Array[Integer]
-            requires :levels, type: Array[Integer]
+            requires :names, type: Array[String], desc: "['first_technology_name', 'second_technology_name']"
+            requires :types, type: Array[Integer], desc: "[6,10]"
+            requires :levels, type: Array[Integer], desc: "[0,1]"
           end
           post ':user_id/technologies' do
             user = User.find(params[:user_id])
@@ -56,8 +58,9 @@ module V1
             { items: response }
           end
 
+          desc "Update user technologies"
           params do
-            requires :technologies, type: Array[Hash]
+            requires :technologies, type: Array[Hash], desc: "{ 'technologies': [{ 'id': 1, 'name': 'tech_name', 'level': 4, 'technology_type': 0 }] }"
           end
           put ':user_id/technologies' do
             user = User.find(params[:user_id])
@@ -79,8 +82,9 @@ module V1
             }
           end
 
+          desc "Delete user technologies"
           params do
-            requires :technology_ids, type: Array[Integer]
+            requires :technology_ids, type: Array[Integer], desc: "Technology ids"
           end
           delete ':user_id/technologies' do
             user = find_user(params[:user_id])

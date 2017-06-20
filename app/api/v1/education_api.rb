@@ -29,7 +29,7 @@ module V1
 
     resource :educations do
 
-      desc "Return all educations"
+      desc "Get all educations"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -37,7 +37,7 @@ module V1
         getPaginatedItemsFor Education
       end
 
-      desc "Returns an education"
+      desc "Get education"
       params do
         requires :id , type: Integer, desc: "Education ID"
       end
@@ -65,7 +65,6 @@ module V1
         optional :start_date, allow_blank: false, type: Date
         optional :end_date, allow_blank: false, type: Date
       end
-
       put ':id' do
         education = Education.find(params[:id])
         authorize! :update, Education
