@@ -12,9 +12,7 @@
       scope: {},
       require: 'hraCard',
       bindToController: {
-        'toggleForm': '=',
-        'querySearch': '=',
-        'settings': '='
+        'querySearch': '='
       },
       controller: 'userLanguagesCtrl',
       controllerAs: 'userLanguages',
