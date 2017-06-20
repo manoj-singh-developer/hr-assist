@@ -138,6 +138,11 @@ module V1
         holiday.update(postParams)
         success
       end
+
+      desc "Delete holiday"
+      delete ':id' do
+        Holiday.destroy(params[:id])
+      end
     end
   end
 end

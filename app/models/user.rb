@@ -17,22 +17,31 @@ class User < ApplicationRecord
   has_one :schedule
   has_many :uploads
   has_and_belongs_to_many :positions
-  has_and_belongs_to_many :languages
+  #has_and_belongs_to_many :languages
   has_and_belongs_to_many :devices
   has_and_belongs_to_many :educations
   has_and_belongs_to_many :certifications
   has_and_belongs_to_many :departments
   has_and_belongs_to_many :technologies
   has_and_belongs_to_many :roles
-  has_many :holidays
+  has_many :holidays, :dependent => :destroy
   has_many :holiday_replacements, through: :holidays
   has_many :replacers, through: :holiday_replacements
   has_many :replaced_users, through: :holiday_replacements, inverse_of: :replaced_user
   has_many :trainings
   has_many :user_projects
+  has_many :user_languages
   has_many :user_technologies
   has_many :technologies, through: :user_technologies
   has_many :projects, through: :user_projects
+
+  scope :by_year_and_month_birth, ->(date) { where("YEAR(birthday) = ? and MONTH(birthday) = ?", date.year, date.month) }
+  scope :by_company_start_date_until_present, ->(date) { where("YEAR(company_start_date) >= ? and MONTH(company_start_date) between 1 and ?", date.year, date.month) }
+  scope :by_university_year, ->(year) { joins(:educations).where("end_date IS NULL").where("YEAR(start_date) = ? and MONTH(birthday) < 9", year) }
+  scope :by_projects, ->(ids) { joins(:projects).where(projects: {id: ids} ) }
+  scope :by_technologies, ->(ids) { joins(:technologies).where(technologies: {id: ids} ) }
+  scope :by_certifications, ->(ids) { joins(:certifications).where(certifications: {id: ids} ) }
+  scope :by_languages, ->(ids) { joins(:user_languages).where(languages_users: {language_id: ids} ) }
 
   def ensure_authentication_token
     self.last_sign_in_at = Time.now
