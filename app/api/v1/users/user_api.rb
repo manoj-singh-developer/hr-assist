@@ -23,13 +23,24 @@ module V1
                     :other_email, :urgent_contact_name, :urgent_contact_phone, :car_plate, :company_start_date, :status, :email, :office_nr)
         end
 
+        def filtered_users filters
+
+            users = User.where(nil)
+          
+            users = users.by_year_and_month_birth(filters[:birthday].to_date) if filters[:birthday]
+            users = users.by_university_year(Time.now.year - filters[:university_year].to_i) if filters[:university_year]
+            users = users.by_company_start_date_until_present(filters[:start_date].to_date) if filters[:start_date]
+            users = users.by_projects(filters[:projects]) if filters[:projects]
+            users = users.by_technologies(filters[:technologies]) if filters[:technologies]
+            users = users.by_certifications(filters[:certifications]) if filters[:certifications]
+            users = users.by_languages(filters[:languages]) if filters[:languages]
+
+            users
+        end
+        
         params :pagination do
           optional :page, type: Integer
           optional :per_page, type: Integer
-        end
-
-        params :other do
-          optional :with, values: ['positions', 'user_languages', 'devices', 'educations', 'departments', 'projects', 'technologies'], type: Array[String]
         end
       end
 
@@ -40,22 +51,29 @@ module V1
         desc "Return all users"
         params do
           use :pagination # aliases: includes, use_scope
-          use :other
+          optional :with, values: ['positions', 'user_languages', 'devices', 'educations', 'departments', 'projects', 'technologies'], type: [String]
+          optional :filters, type: Hash
         end
         get do
 
           if current_user.is_employee
-              
+
               params[:with] = []
               exceptions = [
                 "address", "birthday", "car_plate", "city",
                 "company_start_date", "observations", "office_nr",
                 "phone", "picture", "schedule_id", "status", "uid",
                 "urgent_contact_name", "urgent_contact_phone", "zip_code",
-                "auth_token"]
+                "auth_token"
+              ]
           end
 
-          getPaginatedItemsFor User, params[:with] , defined?(exceptions) ? exceptions : []
+          if params[:filters]
+            paginateItems filtered_users(params[:filters]), params[:with] , defined?(exceptions) ? exceptions : []
+          else
+            getPaginatedItemsFor User, params[:with] , defined?(exceptions) ? exceptions : []
+          end
+
         end
 
         desc "Returns a user"
