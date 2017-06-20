@@ -58,6 +58,7 @@ class AccessPolicy
       can :manage, Upload
       can :manage, Project
       can :manage, User
+      can :manage, Candidate
       #can :view_project, Project
     end
 

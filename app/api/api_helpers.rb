@@ -55,11 +55,22 @@ module APIHelpers
     end
   end
 
+  def paginateItems items, relations = nil, exception = nil
+    if params[:page] && params[:per_page]
+      items = items.includes(relations).page(params[:page]).per(params[:per_page])
+      {
+          :items => items.as_json(include: relations, except: exception),
+          :paginate => url_paginate(items, params[:per_page])
+      }
+    else
+      { items:  items.includes(relations).as_json(include: relations, except: exception) }
+    end
+  end
+
   def authorizeAndCreate(model, postParams, &block)
     authorize! :create, model
     block.call if block_given?
     object = model.create!(postParams)
-    success
     return object
   end
 
@@ -92,11 +103,12 @@ module APIHelpers
     return user
   end
 
-  def delete_object(main_model, model, param, params)
-    main_object = main_model.find(param)
-    objects = model.where(id: params)
-    relation_object = model.to_s.underscore.downcase.pluralize.to_sym
-    main_object.send(relation_object).delete(objects)
+  def delete_object(model, relation, model_id, relation_ids)
+    result            = model.find(model_id)
+    relation_results  = relation.where(id: relation_ids)
+    relation_name     = relation.to_s.underscore.downcase.pluralize.to_sym
+
+    result.send(relation_name).delete(relation_results)
   end
 
   def project_with(objects, params)
