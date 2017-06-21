@@ -296,7 +296,7 @@
           url: 'https://europass.cedefop.europa.eu/rest/v1/document/to/pdf-cv',
           method: 'POST',
           data: pdfData,
-          responseType: 'arraybuffer',
+          responseType: 'arraybuffer'
         }).success(function(data, status, headers, config) {
 
           let ieEDGE = navigator.userAgent.match(/Edge/g);
