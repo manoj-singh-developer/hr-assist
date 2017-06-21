@@ -19,6 +19,7 @@
     let userImage = '';
     let defaultAuthRequest = AuthInterceptor.request;
     vm.AuthInterceptor = AuthInterceptor;
+    
 
     vm.today = new Date();
     vm.isAdmin = false;
@@ -289,8 +290,8 @@
       _getPdf(objectToGenerate);
 
       function _getPdf(pdfData) {
-        vm.AuthInterceptor.request = null; // AuthInterceptor set config headers to null
 
+        vm.AuthInterceptor.request = vm.AuthInterceptor.request != null ? null : defaultAuthRequest; // AuthInterceptor set config headers to null
         $http({
           url: 'https://europass.cedefop.europa.eu/rest/v1/document/to/pdf-cv',
           method: 'POST',
@@ -320,7 +321,8 @@
             a.click();
             URL.revokeObjectURL(file);
           }
-          vm.AuthInterceptor.request = defaultAuthRequest; // AuthInterceptor set request to default config header
+
+          vm.AuthInterceptor.request = vm.AuthInterceptor.request != null ? null : defaultAuthRequest; // AuthInterceptor set request to default config header
         });
       }
     }
