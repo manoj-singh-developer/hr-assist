@@ -78,7 +78,7 @@ module V1
       desc "Create new project"
       params do
         requires :name, allow_blank: false, type: String
-        requires :description, allow_blank: false, type: String
+        optional :description, allow_blank: true, type: String
         requires :start_date, allow_blank: false, type: Date
         optional :end_date, allow_blank: true, type: Date
         optional :deadline, type: Date
