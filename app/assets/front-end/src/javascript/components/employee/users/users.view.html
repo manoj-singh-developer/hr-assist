@@ -143,6 +143,7 @@
           <th md-column>Technologies</th>
           <th md-column>Projects</th>
           <!-- <th md-column>Last update</th> -->
+          <th md-column>Start date Assist</th>
           <th md-column>Actions</th>
         </tr>
       </thead>
@@ -201,7 +202,9 @@
           <!-- <td md-cell ng-hide="employee.candidate">
             {{employee.updatedAt | date: longDate}}
           </td> -->
-
+          <td md-cell>
+              {{employee.company_start_date | date: "dd-MM-yyyy"}}
+          </td>
           <td md-cell>
 
             <md-button
