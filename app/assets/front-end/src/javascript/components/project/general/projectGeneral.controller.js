@@ -16,7 +16,7 @@
 
     vm.save = save;
     vm.cancel = cancel;
-    vm.checkDates = checkDates;
+    // vm.checkDates = checkDates;
     vm.toggleForm = toggleForm;
 
     $rootScope.$on("event:projectLoaded", (event, data) => {
@@ -35,15 +35,16 @@
       toggleForm();
     }
 
-    function checkDates() {
-      let startDate = new Date(vm.project.start_date);
-      let endDate = new Date(vm.project.end_date);
-      if (startDate != undefined && endDate != undefined && startDate > endDate) {
-        vm.validateDate = true;
-      } else {
-        vm.validateDate = false;
-      }
-    }
+    // ~~~~~~~ checkDates was removed from view for now,
+    // function checkDates() {
+    //   let startDate = new Date(vm.project.start_date);
+    //   let endDate = new Date(vm.project.end_date);
+    //   if (startDate  && endDate && startDate > endDate) {
+    //     vm.validateDate = true;
+    //   } else {
+    //     vm.validateDate = false;
+    //   }
+    // }
 
     function toggleForm() {
       vm.showForm = !vm.showForm;
