@@ -12,8 +12,7 @@ module V1
       include APIHelpers
 
       def postParams
-        ActionController::Parameters.new(params)
-          .permit(:name, :label)
+        ActionController::Parameters.new(params).permit(:name, :label)
       end
 
       params :pagination do
@@ -29,7 +28,7 @@ module V1
 
     resource :industries do
 
-      desc "Return all industries"
+      desc "Get all industries"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -37,7 +36,7 @@ module V1
         getPaginatedItemsFor Industry
       end
 
-      desc "Returns a industry"
+      desc "Get industry"
       params do
         requires :id ,type: Integer , desc: "Industry id"
       end
@@ -45,12 +44,17 @@ module V1
         authorize! :read, Industry.find(params[:id])
       end
 
+      desc "Get all industry projects"
       get ':id/projects' do
         industry = Industry.find_by_id(params[:id])
         projects = industry.projects
         {items: projects}
       end
 
+      desc "Delete industry projects"
+      params do
+        requires :project_ids, type: [Integer], desc: "Project ids"
+      end
       delete ':id/projects' do
         delete_object(Industry, Project, params[:id], params[:project_ids])
       end
@@ -75,7 +79,6 @@ module V1
         optional :name, allow_blank: false, type: String
         optional :label, allow_blank: false, type: String
       end
-
       put ':id' do
         industry = Industry.find(params[:id])
         authorize! :update, Industry

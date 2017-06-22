@@ -21,13 +21,15 @@ module V1
             authorize_user!
           }
 
+          desc "Get all user educations"
           get ':user_id/educations' do
             user = find_user(params[:user_id])
             { items: user.educations }
           end
 
+          desc "Create user educations"
           params do
-            requires :educations, type: Array[Hash]
+            requires :educations, type: Array[Hash], desc: "{ 'educations': [{ 'name': 'ed_name', 'description': 'ed_description', ... }] }"
           end
           post ':user_id/educations' do
             user = find_user(params[:user_id])
@@ -38,8 +40,9 @@ module V1
             { items: user.educations }
           end
 
+          desc "Update user educations"
           params do
-            requires :educations, type: Array[Hash]
+            requires :educations, type: Array[Hash], desc: "{ 'educations': [{ 'id': 1, 'name': 'new_name', 'description': 'new_description', ... }] }"
           end
           put ':user_id/educations' do
             user = User.find(params[:user_id])
@@ -51,6 +54,10 @@ module V1
             { items: user.educations }
           end
 
+          desc "Delete user educations"
+          params do
+            requires :education_ids, type: [Integer], desc: "Education ids"
+          end
           delete ':user_id/educations' do
             delete_object(User, Education, params[:user_id], params[:education_ids])
           end

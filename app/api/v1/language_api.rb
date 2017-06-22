@@ -12,8 +12,7 @@ module V1
       include APIHelpers
 
       def postParams
-        ActionController::Parameters.new(params)
-          .permit(:long_name, :short_name)
+        ActionController::Parameters.new(params).permit(:long_name, :short_name)
       end
 
       params :pagination do
@@ -29,7 +28,7 @@ module V1
 
     resource :languages do
 
-      desc "Return all languages"
+      desc "Get all languages"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -37,7 +36,7 @@ module V1
         getPaginatedItemsFor Language
       end
 
-      desc "Returns a language"
+      desc "Get language"
       params do
         requires :id, type: Integer, desc: "Language ID"
       end
@@ -59,7 +58,6 @@ module V1
         optional :long_name, allow_blank: false, type: String
         optional :short_name, allow_blank: false, type: String
       end
-
       put ':id' do
         language = Language.find(params[:id])
         authorize! :update, Language
