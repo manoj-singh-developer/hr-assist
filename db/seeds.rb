@@ -135,6 +135,13 @@ User.populate 10 do |user|
     ut.technology_type = Faker::Number.between(0,1)
   end
 
+  UserLanguage.populate 1+Random.new.rand(2) do |language|
+    lang = Language.all[Random.new.rand(Technology.count)]
+    language.user_id = user.id
+    language.language_id = lang.id
+    language.level = Faker::Number.between(1,10)
+  end
+
   Upload.populate 1 do |upload|
     upload.file_name = Faker::Name.name
     upload.file_description = Faker::Lorem.sentence
@@ -189,9 +196,6 @@ users.each do |user|
 
   education = Education.all[Random.new.rand(Education.count)]
   user.educations << education
-
-  language = Language.all[Random.new.rand(Language.count)]
-  user.languages << language
 
   role = Role.all[Random.new.rand(Role.count)]
   user.roles << role

@@ -12,8 +12,7 @@ module V1
       include APIHelpers
 
       def postParams
-        ActionController::Parameters.new(params)
-          .permit(:name, :country_id)
+        ActionController::Parameters.new(params).permit(:name, :country_id)
       end
 
       params :pagination do
@@ -29,7 +28,7 @@ module V1
 
     resource :customers do
 
-      desc "Return all curstomers"
+      desc "Get all curstomers"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -37,7 +36,7 @@ module V1
         getPaginatedItemsFor Customer
       end
 
-      desc "Returns a customer"
+      desc "Get customer"
       params do
         requires :id ,type: Integer , desc: "Customer id"
       end
@@ -45,12 +44,17 @@ module V1
         authorize! :read, Customer.find(params[:id])
       end
 
+      desc "Get all customer projects"
       get ':id/projects' do
         customer = Customer.find_by_id(params[:id])
         projects = customer.projects
         {items: projects}
       end
 
+      desc "Delete customer projects"
+      params do
+        requires :project_ids, type: [Integer], desc: "Project ids"
+      end
       delete ':id/projects' do
         delete_object(Customer, Project, params[:id], params[:project_ids])
       end
@@ -74,7 +78,6 @@ module V1
       params do
         optional :name, allow_blank: false, type: String
       end
-
       put ':id' do
         customer = Customer.find(params[:id])
         authorize! :update, Customer

@@ -43,7 +43,7 @@ class DeployController < ApplicationController
 
         deploy
 
-        render plain: "Successfully deployed on from branch `#{@branch}` into directory `#{branches[@branch]}`"
+        render plain: "Successfully deployed from branch `#{@branch}` into directory `#{branches[@branch]['path']}`"
     end
 
     private

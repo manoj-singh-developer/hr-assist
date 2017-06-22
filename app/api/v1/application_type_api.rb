@@ -12,8 +12,7 @@ module V1
       include APIHelpers
 
       def postParams
-        ActionController::Parameters.new(params)
-          .permit(:name, :label)
+        ActionController::Parameters.new(params).permit(:name, :label)
       end
 
       params :pagination do
@@ -29,7 +28,7 @@ module V1
 
     resource :application_types do
 
-      desc "Return all application types"
+      desc "Get all application types"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -37,20 +36,25 @@ module V1
         getPaginatedItemsFor ApplicationType
       end
 
-      desc "Returns an application type"
+      desc "Get application type"
       params do
-        requires :id ,type: Integer , desc: "Application type id"
+        requires :id, type: Integer , desc: "Application type id"
       end
       get ':id' do
         authorize! :read, ApplicationType.find(params[:id])
       end
 
+      desc "Get all application type projects"
       get ':id/projects' do
         application_type = ApplicationType.find_by_id(params[:id])
         projects = application_type.projects
         {items: projects}
       end
 
+      desc "Delete application type projects"
+      params do
+        requires :project_ids, type: Array[Integer], desc: "Projects ids"
+      end
       delete ':id/projects' do
         delete_object(ApplicationType, Project, params[:id], params[:project_ids])
       end
@@ -75,7 +79,6 @@ module V1
         optional :name, allow_blank: false, type: String
         optional :label, allow_blank: false, type: String
       end
-
       put ':id' do
         application_type = ApplicationType.find(params[:id])
         authorize! :update, ApplicationType

@@ -47,7 +47,7 @@ module V1
 
     resource :holidays do
 
-      desc "Return all holidays"
+      desc "Get all holidays"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -70,7 +70,7 @@ module V1
         return response
       end
 
-      desc "Returns a holiday"
+      desc "Get holiday"
       params do
         requires :id, type: Integer , desc: "Holiday id"
       end
@@ -98,9 +98,9 @@ module V1
         requires :end_date, allow_blank: false, type: Date
         optional :signing_day, type: Date
         optional :days, type: Integer
-        requires :project_ids, allow_blank: false, type: Array[Integer], desc: "Test using postman [Swagger UI issue]"
-        optional :team_leader_ids, type: Array[Integer]
-        requires :replacer_ids, allow_blank: true, type: Array[Integer], desc: "Test using postman [Swagger UI issue]"
+        requires :project_ids, allow_blank: false, type: Array[Integer], desc: "Project ids"
+        optional :team_leader_ids, type: Array[Integer], desc: "Team leader ids (users)"
+        requires :replacer_ids, allow_blank: true, type: Array[Integer], desc: "Replacer ids (users)"
       end
       post 'new' do
         User.find(params[:user_id], params[:replacer_id], params[:team_leader_ids])
@@ -131,12 +131,16 @@ module V1
         optional :end_date, allow_blank: false, type: Date
         optional :signing_day, allow_blank: false, type: Date
       end
-
       put ':id' do
         holiday = Holiday.find(params[:id])
         authorize! :update, Holiday
         holiday.update(postParams)
         success
+      end
+
+      desc "Delete holiday"
+      delete ':id' do
+        Holiday.destroy(params[:id])
       end
     end
   end

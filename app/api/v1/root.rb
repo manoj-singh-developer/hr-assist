@@ -7,6 +7,7 @@ module V1
         mount V1::ActivityAPI
         mount V1::ApplicationTypeAPI
         # mount V1::CountryAPI
+        mount V1::CandidateAPI
         mount V1::CustomerAPI
         mount V1::DepartmentAPI
         mount V1::DeviceAPI
@@ -22,7 +23,16 @@ module V1
         mount V1::TrainingAPI
         mount V1::UploadAPI
         mount V1::Users::UserAPI
-        mount V1::Users::UserRelationsAPI
+        mount V1::Users::Relations::CertificationAPI
+        mount V1::Users::Relations::DeviceAPI
+        mount V1::Users::Relations::EducationAPI
+        mount V1::Users::Relations::HolidayAPI
+        mount V1::Users::Relations::LanguageAPI
+        mount V1::Users::Relations::PositionAPI
+        mount V1::Users::Relations::ProjectAPI
+        mount V1::Users::Relations::ScheduleAPI
+        mount V1::Users::Relations::TechnologyAPI
+        mount V1::Users::Relations::UploadAPI
 
         add_swagger_documentation(
             api_version: "v1",

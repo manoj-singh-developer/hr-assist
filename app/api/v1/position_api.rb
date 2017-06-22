@@ -12,8 +12,7 @@ module V1
       include APIHelpers
 
       def postParams
-        ActionController::Parameters.new(params)
-          .permit(:name, :job_detail)
+        ActionController::Parameters.new(params).permit(:name, :job_detail)
       end
 
       params :pagination do
@@ -29,7 +28,7 @@ module V1
 
     resource :positions do
 
-      desc "Return all positions"
+      desc "Get all positions"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -37,7 +36,7 @@ module V1
         getPaginatedItemsFor Position
       end
 
-      desc "Returns a project"
+      desc "Get project"
       params do
         requires :id , type: Integer, desc: "Position ID"
       end
@@ -59,7 +58,6 @@ module V1
         optional :name, allow_blank: false, type: String
         optional :job_detail, allow_blank: false, type: String
       end
-
       put ':id' do
         position = Position.find(params[:id])
         authorize! :update, Position

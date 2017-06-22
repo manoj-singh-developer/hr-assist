@@ -29,7 +29,7 @@ module V1
 
     resource :trainings do
 
-      desc "Return all trainings"
+      desc "Get all trainings"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -37,7 +37,7 @@ module V1
         getPaginatedItemsFor Training
       end
 
-      desc "Returns a training"
+      desc "Get training"
       params do
         requires :id , type: Integer , desc: "Training ID"
       end
@@ -68,7 +68,6 @@ module V1
         optional :start_date, allow_blank: false, type: Date
         optional :duration, type: Integer
       end
-
       put ':id' do
         training = Training.find(params[:id])
         authorize! :update, Training

@@ -96,12 +96,8 @@
 			    <label>Description</label>
 		      <textarea
 	          ng-model="prjGeneral.project.description"
-	          name="description"
-	          required>
+	          name="description">
 	        </textarea>
-					<div ng-messages="editProjectForm.description.$error">
-				    <div ng-message="required">This field is required</div>
-				  </div>
 
 			  </md-input-container>
 			</div>
@@ -125,8 +121,7 @@
 			    <md-datepicker
 			      ng-model="prjGeneral.project.end_date"
 			      md-placeholder="Enter date"
-			      ng-change="prjGeneral.checkDates()"
-			      required>
+			      ng-change="prjGeneral.checkDates()">
 			    </md-datepicker>
 				</div>
 
@@ -166,7 +161,7 @@
 		  <md-button
 		    class="md-raised md-primary"
 		    ng-click="prjGeneral.save()"
-		    ng-disabled="editProjectForm.$invalid || prjGeneral.validateDate">
+		    ng-disabled="editProjectForm.$invalid">
 		    Save
 		  </md-button>
 

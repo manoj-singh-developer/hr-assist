@@ -11,7 +11,7 @@
       class="form form-add-project"
       ng-submit="projectForm.add()"
       novalidate
-      name="projectFormular"
+      name="prjForm"
       >
 
       <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
@@ -24,7 +24,7 @@
                 <label>Name</label>
                 <input ng-model="projectForm.project.name" name="name" required>
                   
-                <div ng-messages="projectFormular.name.$error">
+                <div ng-messages="prjForm.name.$error">
                   <div ng-message="required">This field is required</div>
                 </div>
 
@@ -36,47 +36,73 @@
                 <label>Description</label>
                 <textarea 
                   ng-model="projectForm.project.description" 
-                  name="description"
-                  required>
+                  name="description">
                 </textarea>
-
-                <div ng-messages="projectFormular.description.$error">
-                  <div ng-message="required">This field is required</div>
-                </div>
-
               </md-input-container>
             </div>
 
 
             <div layout-gt-xs="row">
 
-              <label>Start date</label>
+              <label class="required-input">Start date</label>
               <md-datepicker 
                 ng-model="projectForm.project.start_date" 
-                md-placeholder="Enter date"
-                ng-change="projectForm.checkDates()"
+                md-placeholder="Pick start date"
+                name="start"
                 md-open-on-focus
                 required>
               </md-datepicker>
 
 
 
-              <label>End date</label>
+              <label class="required-input">End date</label>
               <md-datepicker 
                 ng-model="projectForm.project.end_date"  
-                md-placeholder="Enter date"
-                ng-change="projectForm.checkDates()"
+                md-placeholder="Pick end date"
                 md-open-on-focus
+                ng-disabled=projectForm.onGoing
+                ng-required="!projectForm.onGoing"
+                name="end"
                 required>
               </md-datepicker>
 
             </div>
+            <!-- SELECT START/END DATE ERRORS MESSAGE-->
             <div ng-show="projectForm.validateDate" layout-gt-xs="row" layout-align="center center">
-              <span class="alert-error fade"
+              <div class="alert-error fade"
               role="alert">
                 End date must be greater than Start date!
-              </span>
+              </div>
             </div>
+            <div ng-messages="prjForm.start.$error" ng-if="prjForm.start.$touched" layout-gt-xs="row" layout-align="center center">
+              <div ng-message="required" class="alert-info fade" role="alert">
+                "Start date" are required!
+              </div>
+            </div>
+            <div ng-messages="prjForm.end.$error" ng-if="prjForm.end.$touched" layout-gt-xs="row" layout-align="center center">
+              <div ng-message="required" class="alert-info fade" role="alert">
+                "End date" are required!
+              </div>
+            </div>
+            <!-- /SELECT START/END DATE ERRORS MESSAGE-->
+
+
+            <!-- SELECT ONGOING PROJECT -->
+            <section layout-gt-xs="row">
+              <md-input-container class="md-block">
+                <md-checkbox name="onGoing" ng-model="projectForm.onGoing"
+                  aria-label="Ongoing project."
+                  ng-change="projectForm.checkOnGoing(); projectForm.checkDates();"
+                  ng-required="!projectForm.project.end_date">
+                  Ongoing project.
+                </md-checkbox>
+                <div ng-messages="prjForm.onGoing.$error" multiple md-auto-hide="false" ng-show="false">
+                  <div ng-message="required"></div>
+                </div>
+              </md-input-container>
+            </section>
+            <!-- SELECT ONGOING PROJECT -->
+
           </md-content>
         </md-tab>
 
@@ -86,7 +112,7 @@
 
         <md-button class="md-raised md-primary" 
           ng-click="projectForm.add()"
-          ng-disabled="projectFormular.$invalid || projectForm.validateDate">
+          ng-disabled="prjForm.$invalid || projectForm.validateDate">
           Save
         </md-button>
 

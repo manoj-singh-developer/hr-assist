@@ -17,11 +17,11 @@ module APIHelpers
     success user: user, custom_token: custom_token
   end
 
-  def get_option key
+  def get_option(key)
     AppSetting::where(key: key).first[:value]
   end
 
-  def decrypt var
+  def decrypt(var)
     ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base).decrypt_and_verify(var) unless (var) == ""
   end
 
@@ -43,15 +43,28 @@ module APIHelpers
     )
   end
 
-  def getPaginatedItemsFor model, relations = nil, exception = nil
+  def getPaginatedItemsFor(model, relations = nil, exception = nil)
     if params[:page] && params[:per_page]
       items = model.all.includes(relations).page(params[:page]).per(params[:per_page])
       {
-          :items => items.as_json(include: relations, except: exception),
-          :paginate => url_paginate(items, params[:per_page])
+        :items => items.as_json(include: relations, except: exception),
+        :paginate => url_paginate(items, params[:per_page])
       }
     else
       { items:  model.all.includes(relations).as_json(include: relations, except: exception) }
+    end
+  end
+
+  def paginateItems(items, relations = nil, exception = nil)
+    return [] if items.nil?
+    if params[:page] && params[:per_page]
+      items = items.includes(relations).page(params[:page]).per(params[:per_page])
+      {
+        :items => items.as_json(include: relations, except: exception),
+        :paginate => url_paginate(items, params[:per_page])
+      }
+    else
+      { items:  items.includes(relations).as_json(include: relations, except: exception) }
     end
   end
 
@@ -59,7 +72,6 @@ module APIHelpers
     authorize! :create, model
     block.call if block_given?
     object = model.create!(postParams)
-    success
     return object
   end
 
@@ -92,11 +104,12 @@ module APIHelpers
     return user
   end
 
-  def delete_object(main_model, model, param, params)
-    main_object = main_model.find(param)
-    objects = model.where(id: params)
-    relation_object = model.to_s.underscore.downcase.pluralize.to_sym
-    main_object.send(relation_object).delete(objects)
+  def delete_object(model, relation, model_id, relation_ids)
+    result            = model.find(model_id)
+    relation_results  = relation.where(id: relation_ids)
+    relation_name     = relation.to_s.underscore.downcase.pluralize.to_sym
+
+    result.send(relation_name).delete(relation_results)
   end
 
   def project_with(objects, params)
