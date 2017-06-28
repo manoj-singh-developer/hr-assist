@@ -201,7 +201,8 @@
                   </md-chip-template>
                 </md-chips>
 
-              </div><!-- /SELECT TEAM LEADER -->
+              </div>
+              <!-- /SELECT TEAM LEADER -->
 
             </div>
           </div>
@@ -243,8 +244,6 @@
                       </span>
                     </md-item-template>
                   </md-autocomplete>
-                <!--NOTE: required AFECTEAZA AFISAREA LISTEI LA FOCUS
-                  md-require-match AFECTEAZA IN MOMENTUL STERGERII UNUI NOI PROIECT SI INLOCUITOR, CAMPURILE COMPLETATE ANTERIOR RETURNAND FALSE LA md-require-match.   -->
 
                   <div ng-messages="holidaysForm['autocompleteProject_'+$index].$error"
                     layout-gt-xs="row" layout-align="center center"
@@ -287,8 +286,6 @@
                   </md-item-template>
                 </md-autocomplete>
                 
-                <!--NOTE: required AFECTEAZA AFISAREA LISTEI LA FOCUS
-                md-require-match AFECTEAZA IN MOMENTUL STERGERII UNUI NOI PROIECT SI INLOCUITOR, CAMPURILE COMPLETATE ANTERIOR RETURNAND FALSE LA md-require-match.   -->
                 <div ng-messages="holidaysForm['autocompleteUser_'+$index].$error"
                   layout-gt-xs="row" layout-align="center center"
                   ng-if="holidaysForm['autocompleteUser_'+$index].$touched">
@@ -356,7 +353,8 @@
         Another vacation intersect with this interval !
       </span>
 
-    </md-content><!-- /FORM HOLIDAY -->
+    </md-content>
+    <!-- /FORM HOLIDAY -->
   </form>
 
 
