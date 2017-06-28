@@ -6,92 +6,48 @@
     .module('HRA')
     .controller('holidayDetailsController', holidayDetailsController);
 
-
-  function holidayDetailsController($rootScope, $stateParams, HolidayModel, User, $timeout, errorService, $window) {
+  function holidayDetailsController($stateParams, $window, HolidayModel, User) {
 
     let vm = this;
-    let ids = $stateParams.id;
-    let empArr = [];
-    let holidayId, days, signingDay, startDate, endDate, holidayReplace;
-
-    vm.viewLists = null;
-    vm.viewObject = null;
     vm.today = new Date();
-    vm.leaders = [];
-    vm.holidayPaper = [];
+    vm.holidayPaper = {};
     vm.print = print;
-    vm.getHolidays = getHolidays;
-    vm.getUsers = getUsers;
+
+    _getHolidays();
 
     function print() {
       $window.print();
     }
 
-    function getUsers() {
-
-      vm.holidayRep;
-
-      User.getAll()
-        .then(function(data) {
-          empArr = data;
-          $timeout(function() {
-            empArr.forEach(function(employee, index) {
-              if (employee.id === holidayId) {
-
-                let firstName = employee.first_name;
-                let lastName = employee.last_name;
-                let holidays = days;
-                let signing = signingDay;
-                let start = startDate;
-                let end = endDate;
-
-                let employeeObj = {
-                  firstName: firstName,
-                  lastName: lastName,
-                  holidays: holidays,
-                  signing: signing,
-                  startDate: start,
-                  endDate: end
-                };
-
-                let replaceObj = holidayReplace;
-
-                vm.holidayPaper.push(employeeObj);
-                vm.holidayRep = replaceObj;
-              }
-            });
-          }, 1000);
-        })
-        .catch(function(error) {
-          errorService.forceLogout(error);
-          console.log(error);
-        })
-    }
-
-    function getHolidays() {
-      HolidayModel.getHolidayById(ids)
-        .then(function(response) {
-
-          startDate = response.start_date;
-          endDate = response.end_date;
-          days = response.days;
-          signingDay = response.signing_day;
-          holidayId = response.user_id;
-          holidayReplace = response.employee_replacements;
-          vm.leaders = $.map(response.employee_replacements, (value, index) => {
+    function _getHolidays() {
+      HolidayModel.getHolidayById($stateParams.id)
+        .then((holiday) => {
+          let leaders = $.map(holiday.employee_replacements, (value, index) => {
             if (value.team_leader) {
               return [value.team_leader];
             }
           });
-        })
-        .catch(function(error) {
-          errorService.forceLogout(error);
-          $rootScope.showToast('Error on loading data! Please refresh!');
-        })
+
+          User.getAll()
+            .then((employeeData) => {
+              employeeData.forEach((employee, index) => {
+                if (employee.id === holiday.user_id) {
+                  vm.holidayPaper = {
+                    firstName: employee.first_name,
+                    lastName: employee.last_name,
+                    holidays: holiday.user_id,
+                    signing: holiday.signing_day,
+                    startDate: holiday.start_date,
+                    endDate: holiday.end_date,
+                    holidayRep: holiday.employee_replacements,
+                    leaders: leaders
+                  }
+                }
+              });
+            });
+        });
     }
 
-    vm.getUsers();
-    vm.getHolidays();
 
   }
 
