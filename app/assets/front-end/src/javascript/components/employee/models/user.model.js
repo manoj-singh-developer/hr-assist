@@ -563,7 +563,7 @@
     }
 
     //Could not get right response from server using $resource
-    // responseType: 'arraybuffer' can be the problem
+    // responseType: 'arraybuffer' can be the problem / and token
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // User.getCv = (data) => {

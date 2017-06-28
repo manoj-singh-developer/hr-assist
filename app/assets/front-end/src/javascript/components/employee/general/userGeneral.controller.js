@@ -8,7 +8,7 @@
 
   userGeneralCtrl
 
-  function userGeneralCtrl($rootScope, $scope, $stateParams, autocompleteService, Upload, User, Position, $state, dateService, $http, AuthInterceptor) {
+  function userGeneralCtrl($rootScope, $scope, $stateParams, $state, $http, autocompleteService, AuthInterceptor, dateService, Upload, User, Position) {
 
     let vm = this;
     let userCopy = {};
@@ -19,7 +19,7 @@
     let userImage = '';
     let defaultAuthRequest = AuthInterceptor.request;
     vm.AuthInterceptor = AuthInterceptor;
-    
+
 
     vm.today = new Date();
     vm.isAdmin = false;
@@ -292,6 +292,7 @@
       function _getPdf(pdfData) {
 
         vm.AuthInterceptor.request = vm.AuthInterceptor.request != null ? null : defaultAuthRequest; // AuthInterceptor set config headers to null
+        
         $http({
           url: 'https://europass.cedefop.europa.eu/rest/v1/document/to/pdf-cv',
           method: 'POST',
