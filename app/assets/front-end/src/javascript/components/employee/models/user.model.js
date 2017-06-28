@@ -6,10 +6,8 @@
     .module('HRA')
     .factory('User', User);
 
-  User
-    .$inject = ['$resource', 'apiUrl', 'alertService', '$stateParams', 'errorService'];
 
-  function User($resource, apiUrl, alertService, $stateParams, errorService) {
+  function User($resource, apiUrl, alertService, $stateParams, errorService, $httpParamSerializerJQLike) {
 
     function User() {}
 
@@ -284,7 +282,7 @@
         .then((data) => {
           alertService.success(model, 'updateLanguages');
           return data.items;
-          
+
         })
         .catch((error) => {
           errorService.forceLogout(error);
@@ -561,6 +559,29 @@
 
       return promise;
     }
+
+    User.filter = (data) => {
+      // debugger
+      let partOfUrl = '/users?with[]=user_languages&with[]=technologies&with[]=projects'
+      let urlsmeker = $httpParamSerializerJQLike(data);
+      url = apiUrl + partOfUrl + '&' + urlsmeker;
+      console.log(url);
+      resource = $resource(url, {}, {
+        'post': { method: 'POST' }
+      }).save(data);
+
+      promise = resource.$promise
+        .then((data) => {
+          //alertService.success(model, 'filter');
+          return data;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'filter');
+        });
+
+      return promise;
+    };
 
     //Could not get right response from server using $resource
     // responseType: 'arraybuffer' can be the problem

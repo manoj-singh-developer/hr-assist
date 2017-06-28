@@ -17,14 +17,24 @@
   </md-button>
 
 
+  <md-button
+    class="md-primary"
+    label="Reset all filters"
+    aria-label="Reset all filters"
+    ng-click="users.search()">
+    <md-icon class="material-icons">search</md-icon>
+    Filter users
+    <md-tooltip md-autohide="true">
+      Reset all filters
+    </md-tooltip>
+  </md-button>
+
 
   <section layout="row" layout-align="left center" class="md-padding">
     <p>Filter by projects:</p>
     <md-chips
-      ng-model="users.filters.projects"
+      ng-model="users.filterInput.projects"
       md-autocomplete-snap=""
-      md-on-remove="users.filterUsers(users.filterType.remove)"
-      md-on-add="users.filterUsers(users.filterType.add)"
       md-require-match=true>
       <md-autocomplete
         md-search-text="users.search.projects"
@@ -48,9 +58,7 @@
   <section layout="row" layout-align="left center" class="md-padding">
     <p>Filter by technologies: </p>
     <md-chips
-      ng-model="users.filters.technologies"
-      md-on-remove="users.filterUsers(users.filterType.remove)"
-      md-on-add="users.filterUsers(users.filterType.add)"
+      ng-model="users.filterInput.technologies"
       md-require-match=true>
       <md-autocomplete
         md-search-text="users.search.technologies"
@@ -74,10 +82,8 @@
   <section layout="row" layout-align="left center" class="md-padding">
     <p>Filter by languages:</p>
     <md-chips
-      ng-model="users.filters.languages"
+      ng-model="users.filterInput.languages"
       md-autocomplete-snap=""
-      md-on-remove="users.filterUsers(users.filterType.remove)"
-      md-on-add="users.filterUsers(users.filterType.add)"
       md-require-match=true>
       <md-autocomplete
         md-search-text="users.search.languages"
@@ -96,6 +102,35 @@
     </md-chips>
   </section>
 
+
+  <section layout="row" layout-align="left center" class="md-padding">
+    <label>Filter by start company date:</label>
+    <md-datepicker ng-model="users.filterInput.start_date"
+      md-placeholder="Start date"
+      md-open-on-focus
+      >
+    </md-datepicker>
+  </section>
+
+  
+  <section layout="row" layout-align="left center" class="md-padding">
+    <label>Filter by birthday:</label>
+    <md-datepicker ng-model="users.filterInput.birthday"
+      md-placeholder="Start date"
+      md-open-on-focus
+      >
+    </md-datepicker>
+  </section>
+
+  <section layout="row" layout-align="left center" class="md-padding">
+    <label>Filter by year of university: </label>
+    <input type="number" 
+      ng-model="users.filterInput.university_year"
+      md-placeholder="Start date"
+      md-open-on-focus
+      >
+    </input>
+  </section>
 
 <!-- 
   <section layout="row" layout-align="left center" class="md-padding">

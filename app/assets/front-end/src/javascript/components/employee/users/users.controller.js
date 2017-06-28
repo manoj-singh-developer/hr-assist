@@ -6,7 +6,7 @@
     .module('HRA')
     .controller('usersCtrl', usersCtrl);
 
-  function usersCtrl($scope, $rootScope, $mdDialog, autocompleteService, User, Technology, Project, AppType, $q, filterService, tableSettings) {
+  function usersCtrl($scope, $rootScope, $mdDialog, autocompleteService, User, Technology, Project, AppType, $q, tableSettings, dateService) {
 
     let vm = this;
     let querySearchItems;
@@ -17,7 +17,8 @@
     vm.selected = [];
     vm.users = [];
     vm.resources = {};
-    vm.filterType = filterService.getTypes();
+    vm.dateService = dateService;
+    // vm.filterType = filterService.getTypes();
     vm.tableSettings = tableSettings;
     vm.tableSettings.query = {
       order: 'last_name',
@@ -26,17 +27,26 @@
     };
 
     vm.showFilters = false;
-    vm.filters = {
-      technologies: [],
-      languages: [],
-      projects: []
-    };
+    // vm.filters = {
+    //   technologies: [],
+    //   languages: [],
+    //   projects: []
+    // };
+
     vm.search = {
       technologies: '',
       languages: '',
       projects: ''
     };
 
+    vm.filterInput = {
+      technologies: [],
+      languages: [],
+      projects: [],
+      start_date: undefined,
+      birthday: undefined,
+      university_year: undefined
+    };
     _getResources();
 
     vm.showForm = showForm;
@@ -45,9 +55,63 @@
     vm.multipleRemove = multipleRemove;
     vm.querySearch = querySearch;
     vm.toggleFilters = toggleFilters;
-    vm.filterUsers = filterUsers;
     vm.resetFilters = resetFilters;
     vm.saveExcelFile = saveExcelFile;
+    vm.search = search;
+
+    function search() {
+      let filterObj = {};
+      let technologies = [];
+      let languages = [];
+      let projects = [];
+
+      vm.filterInput.technologies.forEach((element, index) => {
+        // technologies.push({
+        //   technology_id: element.id,
+        //   technology_level: 3
+        // });
+        technologies.push(element.id);
+      });
+
+      vm.filterInput.languages.forEach((element, index) => {
+        // languages.push({
+        //   language_id: element.id,
+        //   level: 3
+        // });
+        languages.push(element.id);
+      });
+
+      vm.filterInput.projects.forEach((element, index) => {
+        projects.push(element.id);
+      });
+
+      filterObj = {
+        birthday: vm.filterInput.birthday ? vm.dateService.format(new Date(vm.filterInput.birthday)) : vm.filterInput.birthday,
+        university_year: vm.filterInput.university_year ? vm.dateService.format(new Date(vm.filterInput.university_year)) : vm.filterInput.university_year,
+        start_date: vm.filterInput.start_date ? vm.dateService.format(new Date(vm.filterInput.start_date)) : vm.filterInput.start_date,
+        projects: projects,
+        languages: languages,
+        technologies: technologies
+      };
+
+      for (var key in filterObj) {
+
+        if (!filterObj[key] || filterObj[key].length == 0) {
+          delete filterObj[key];
+        }
+      }
+
+      filterObj = {
+        filters: filterObj
+      }
+      User.filter(filterObj).then((data) => {
+        vm.users = data;
+        console.log(data);
+
+      });
+      console.log(JSON.stringify(filterObj));
+      console.log(filterObj);
+    }
 
     function showForm(device) {
       $mdDialog.show({
@@ -98,23 +162,14 @@
       vm.showFilters = !vm.showFilters;
     }
 
-    function filterUsers(filteringType) {
-      vm.users = filterService.filter(
-        vm.users,
-        vm.usersCopy,
-        vm.filters,
-        filteringType);
-      vm.tableSettings.total = vm.searchText && querySearchItems < vm.users.length ? querySearchItems : vm.users.length;
-
-      exportUsers = vm.users;
-      _generateXlsx();
-    }
-
     function resetFilters() {
-      angular.forEach(vm.filters, (item, key) => {
-        vm.filters[key] = [];
+      angular.forEach(vm.filterInput, (item, key) => {
+        if (typeof vm.filterInput[key] === 'object') {
+          vm.filterInput[key] = [];
+        } else {
+          vm.filterInput[key] = undefined;
+        }
       });
-      filterUsers();
     }
 
     function querySearch(query, list) {
@@ -243,3 +298,4 @@
   }
 
 })(_);
+
