@@ -56,26 +56,26 @@
     function save() {
       let saveCourseObj = {};
       let updateCourseObj = {};
-      saveCourseObj["certifications"] = [];
-      updateCourseObj["certifications"] = [];
+      saveCourseObj.certifications = [];
+      updateCourseObj.certifications = [];
 
       vm.userCertificationList.forEach((value, index) => {
         value.year = value.year ? vm.dateService.format(value.year) : null;
 
         if (index < vm.userCertifications.length) {
           if (JSON.stringify(vm.userCertifications[index]) !== JSON.stringify(value))
-            updateCourseObj["certifications"].push(value);
+            updateCourseObj.certifications.push(value);
         } else
-          saveCourseObj["certifications"].push(value);
+          saveCourseObj.certifications.push(value);
       });
 
-      if (updateCourseObj["certifications"].length)
+      if (updateCourseObj.certifications.length)
         User.updateCertifications(vm.user.id, updateCourseObj).then((data) => {
           vm.userCertifications = data;
           _initEducations();
         });
 
-      if (saveCourseObj["certifications"].length)
+      if (saveCourseObj.certifications.length)
         User.saveCertifications(vm.user.id, saveCourseObj).then((data) => {
           vm.userCertifications = data;
           _initEducations();
