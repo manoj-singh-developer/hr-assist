@@ -12,8 +12,7 @@ module V1
       include APIHelpers
 
       def postParams
-        ActionController::Parameters.new(params)
-          .permit(:name, :label)
+        ActionController::Parameters.new(params).permit(:name, :label)
       end
 
       params :pagination do
@@ -29,7 +28,7 @@ module V1
 
     resource :technologies do
 
-      desc "Return all technologies"
+      desc "Get all technologies"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -37,7 +36,7 @@ module V1
         getPaginatedItemsFor Technology
       end
 
-      desc "Returns a technology"
+      desc "Get technology"
       params do
         requires :id ,type: Integer , desc: "technology id"
       end
@@ -45,16 +44,22 @@ module V1
         authorize! :read, Technology.find(params[:id])
       end
 
+      desc "Get all technology projects"
       get ':id/projects' do
         technology = Technology.find_by_id(params[:id])
         projects = technology.projects
         projects
       end
 
+      desc "Delete technology projects"
+      params do
+        requires :project_ids, type: [Integer], desc: "Project ids"
+      end
       delete ':id/projects' do
         delete_object(Technology, Project, params[:id], params[:project_ids])
       end
 
+      desc "Get all technology users"
       get ':id/users' do
         technology = Technology.find(params[:id])
         technology.user_technologies.map do |user_tech|
@@ -65,6 +70,10 @@ module V1
         end
       end
 
+      desc "Delete technology users"
+      params do
+        requires :user_ids, type: [Integer], desc: "User ids"
+      end
       delete ':id/users' do
         delete_object(Technology, User, params[:id], params[:user_ids])
       end
@@ -74,7 +83,6 @@ module V1
         requires :name, allow_blank: false, type: String
         requires :label, allow_blank: false, type: String
       end
-
       post 'new' do
         if params[:items]
           params[:items].each do |x|
@@ -90,7 +98,6 @@ module V1
         optional :name, allow_blank: false, type: String
         optional :label, allow_blank: false, type: String
       end
-
       put ':id' do
         technology = Technology.find(params[:id])
         authorize! :update, Technology

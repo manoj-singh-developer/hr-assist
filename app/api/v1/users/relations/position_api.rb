@@ -21,11 +21,13 @@ module V1
             authorize_user!
           }
 
+          desc "Get all user positions"
           get ':user_id/position' do
             user = find_user(params[:user_id])
             user.positions.last ? user.positions.last : {}
           end
 
+          desc "Add position to user"
           params do
             requires :position_id, type: Integer
           end
@@ -37,6 +39,7 @@ module V1
             user.positions.last
           end
 
+          desc "Delete user position"
           params do
             requires :position_id, type: Integer
           end

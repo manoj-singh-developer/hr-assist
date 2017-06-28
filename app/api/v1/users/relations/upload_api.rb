@@ -21,11 +21,16 @@ module V1
             authorize_user!
           }
 
+          desc "Get all user uploads"
           get ':user_id/uploads' do
             user = find_user(params[:user_id])
             { items: user.uploads }
           end
 
+          get "Add uploads to user"
+          params  do
+            requires :upload_ids, type: [Integer], desc: "Upload ids"
+          end
           put ':user_id/uploads' do
             user = find_user(params[:user_id])
             uploads = Upload.where(id: params[:upload_ids]) - user.uploads
@@ -33,6 +38,7 @@ module V1
             { items: user.uploads }
           end
 
+          desc "Delete user uploads"
           delete ':user_id/uploads' do
             delete_object(User, Upload, params[:user_id], params[:upload_ids])
           end

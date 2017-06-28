@@ -21,6 +21,7 @@ module V1
             authorize_user!
           }
 
+          desc "Get all user projects"
           get ':user_id/projects' do
             user = find_user(params[:user_id])
             { items:
@@ -35,6 +36,7 @@ module V1
             }
           end
 
+          desc "Get all technologies for user project"
           get ':user_id/projects/:project_id/technologies' do
             User.find(params[:user_id])
             Project.find(params[:project_id])
@@ -42,6 +44,7 @@ module V1
             user_project ? {items: user_project.technologies} : []
           end
 
+          desc "Get technology by id for user project"
           get ':user_id/projects/:project_id/technologies/:technology_id' do
             User.find(params[:user_id])
             Project.find(params[:project_id])
@@ -50,12 +53,12 @@ module V1
             user_project ? user_project.technologies.find(params[:technology_id]) : []
           end
 
+          desc "Create user project with technologies"
           params do
             optional :start_date, type: Date
             optional :end_date, type: Date
-            optional :technology_ids, type: Array[Integer]
+            optional :technology_ids, type: Array[Integer], desc: "Technology ids"
           end
-
           put ':user_id/projects/:project_id' do
             user = find_user(params[:user_id])
             user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
@@ -78,14 +81,16 @@ module V1
               }
           end
 
+          desc "Delete user project"
           delete ':user_id/projects/:project_id' do
             user = User.find(params[:user_id])
             user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
             user_project.destroy
           end
 
+          desc "Delete technologies from user project"
           params do
-            optional :technology_ids, type: Array[Integer]
+            optional :technology_ids, type: Array[Integer], desc: "Technology ids"
           end
           delete ':user_id/projects/:project_id/technologies' do
             user = User.find(params[:user_id])
