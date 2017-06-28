@@ -8,7 +8,7 @@
 
   userGeneralCtrl
 
-  function userGeneralCtrl($rootScope, $scope, $stateParams, autocompleteService, Upload, User, Position, $state, dateService, $http) {
+  function userGeneralCtrl($rootScope, $scope, $stateParams, $state, $http, autocompleteService, AuthInterceptor, dateService, Upload, User, Position) {
 
     let vm = this;
     let userCopy = {};
@@ -17,6 +17,9 @@
     let technologiesString = '';
     let education = [];
     let userImage = '';
+    let defaultAuthRequest = AuthInterceptor.request;
+    vm.AuthInterceptor = AuthInterceptor;
+
 
     vm.today = new Date();
     vm.isAdmin = false;
@@ -288,10 +291,12 @@
 
       function _getPdf(pdfData) {
 
+        vm.AuthInterceptor.request = vm.AuthInterceptor.request != null ? null : defaultAuthRequest; // AuthInterceptor set config headers to null
+        
         $http({
           url: 'https://europass.cedefop.europa.eu/rest/v1/document/to/pdf-cv',
           method: 'POST',
-          data: pdfData, // json data string
+          data: pdfData,
           responseType: 'arraybuffer'
         }).success(function(data, status, headers, config) {
 
@@ -300,7 +305,7 @@
           let oldIE = navigator.userAgent.match(/MSIE/g);
           let name = 'CV_' + vm.user.first_name + '_' + vm.user.last_name;
           let blob = new window.Blob([data], { type: 'application/pdf' });
-          // debugger
+
           if (ie || oldIE || ieEDGE) {
             let fileName = name + '.pdf';
             window.navigator.msSaveBlob(blob, fileName);
@@ -318,8 +323,8 @@
             URL.revokeObjectURL(file);
           }
 
+          vm.AuthInterceptor.request = vm.AuthInterceptor.request != null ? null : defaultAuthRequest; // AuthInterceptor set request to default config header
         });
-
       }
     }
 
