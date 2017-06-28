@@ -3,6 +3,7 @@
 
 
 
+
   <!-- TITLE -->
   <md-toolbar
     class="md-table-toolbar md-default"
@@ -38,6 +39,16 @@
           {{users.addTitle}}
         </md-button>
 
+        <md-button
+          ng-click="users.saveExcelFile()"
+          class="md-primary">
+          <md-icon class="material-icons">file_download</md-icon>
+          <md-tooltip md-autohide="true">
+            Export Excel
+          </md-tooltip>
+          Export Excel
+        </md-button>
+
       <!-- TODO Employee export CV -->
         <!-- <md-button
           class="md-primary"
@@ -66,19 +77,17 @@
         md-selected-item="users.selectedItem"
         md-search-text-change="users.querySearch(users.searchText, users.users)"
         md-search-text="users.searchText"
-        md-selected-item-change="users.selectedItemChange(item)"
+        md-selected-item-change="users.querySearch(users.searchText, users.users)"
         md-items="item in users.querySearch(users.searchText, users.users)"
-        md-item-text="item.first_name + ' ' +  item.last_name"
-        md-min-length="1"
+        md-item-text="item.last_name + ' ' +  item.first_name"
+        md-min-length="0"
+        md-dropdown-position="bottom"
         placeholder="Search">
 
         <md-item-template>
           <span class="item-metadata">
-            {{item.first_name}} {{item.last_name}}
+            {{item.last_name}} {{item.first_name}}
         </md-item-template>
-        <md-not-found>
-          No employee matching <strong>{{users.searchText}}</strong> were found.
-        </md-not-found>
       </md-autocomplete>
     </form>
   </md-content><!-- /AUTOCOMPLETE SEARCH -->
@@ -127,13 +136,14 @@
         md-order="users.tableSettings.query.order">
         <tr md-row>
         <th md-column>Nr.</th>
-          <th md-column md-order-by="first_name">First Name</th>
           <th md-column md-order-by="last_name">Last Name</th>
+          <th md-column md-order-by="first_name">First Name</th>
           <th md-column>Email/Phone</th>
           <th md-column>Languages</th>
           <th md-column>Technologies</th>
           <th md-column>Projects</th>
           <!-- <th md-column>Last update</th> -->
+          <th md-column>Start date Assist</th>
           <th md-column>Actions</th>
         </tr>
       </thead>
@@ -146,16 +156,18 @@
           ng-repeat="employee in users.users 
           | filter: users.searchText 
           | orderBy: users.tableSettings.query.order 
-          | limitTo: users.tableSettings.query.limit : (users.tableSettings.query.page - 1) * users.tableSettings.query.limit track by $index">
+          | limitTo: users.tableSettings.query.limit : (users.tableSettings.query.page - 1) * users.tableSettings.query.limit track by $index"
+          ui-sref="employeesParent.details({id: employee.id})">
           <td md-cell>
             {{$index + 1}}
-          </td>
-          <td md-cell>
-            <p>{{employee.first_name}}</p>
           </td>
 
           <td md-cell>
             <p>{{employee.last_name}}</p>
+          </td>
+          
+          <td md-cell>
+            <p>{{employee.first_name}}</p>
           </td>
 
           <td md-cell>
@@ -190,7 +202,9 @@
           <!-- <td md-cell ng-hide="employee.candidate">
             {{employee.updatedAt | date: longDate}}
           </td> -->
-
+          <td md-cell>
+              {{employee.company_start_date | date: "dd-MM-yyyy"}}
+          </td>
           <td md-cell>
 
             <md-button

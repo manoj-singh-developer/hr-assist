@@ -8,14 +8,22 @@
 
   function usersCtrl($scope, $rootScope, $mdDialog, autocompleteService, User, Technology, Project, AppType, $q, filterService, tableSettings) {
 
-    var vm = this;
+    let vm = this;
+    let querySearchItems;
+    let excelData = [];
+    let exportUsers = [];
+
     vm.ids = [];
     vm.selected = [];
     vm.users = [];
     vm.resources = {};
     vm.filterType = filterService.getTypes();
     vm.tableSettings = tableSettings;
-    vm.tableSettings.query.order = 'last_name';
+    vm.tableSettings.query = {
+      order: 'last_name',
+      limit: 10,
+      page: 1
+    };
 
     vm.showFilters = false;
     vm.filters = {
@@ -39,6 +47,7 @@
     vm.toggleFilters = toggleFilters;
     vm.filterUsers = filterUsers;
     vm.resetFilters = resetFilters;
+    vm.saveExcelFile = saveExcelFile;
 
     function showForm(device) {
       $mdDialog.show({
@@ -95,21 +104,39 @@
         vm.usersCopy,
         vm.filters,
         filteringType);
-      vm.tableSettings.total = vm.users.length;
+      vm.tableSettings.total = vm.searchText && querySearchItems < vm.users.length ? querySearchItems : vm.users.length;
+
+      exportUsers = vm.users;
+      _generateXlsx();
     }
 
     function resetFilters() {
-      angular.forEach(vm.filters, (item, key) => { vm.filters[key] = []; });
+      angular.forEach(vm.filters, (item, key) => {
+        vm.filters[key] = [];
+      });
       filterUsers();
     }
 
     function querySearch(query, list) {
       if (query != "" && query != " ") {
         vm.tableSettings.total = autocompleteService.querySearch(query, list).length;
+        querySearchItems = autocompleteService.querySearch(query, list).length;
       } else {
         vm.tableSettings.total = list.length;
       }
+      exportUsers = autocompleteService.querySearch(query, list);
+      _generateXlsx();
+
       return autocompleteService.querySearch(query, list);
+    }
+
+    function saveExcelFile() {
+
+      var opts = [{
+        sheetid: 'Employee Raport',
+        headers: false
+      }];
+      var res = alasql('SELECT INTO XLSX("Employee Raport.xlsx",?) FROM ? ORDER BY firstName', [opts, [excelData]]);
     }
 
     function _updateTablePagination(data) {
@@ -136,8 +163,10 @@
         vm.users = vm.resources.users;
         vm.usersCopy = angular.copy(vm.resources.users); //[1]
         vm.tableSettings.total = vm.resources.users.length;
-
         _buildAutocompleteLists();
+
+        exportUsers = vm.users;
+        _generateXlsx();
       });
     }
 
@@ -146,7 +175,69 @@
       autocompleteService.buildList(vm.resources.projects, ['name']);
       autocompleteService.buildList(vm.resources.technologies, ['name']);
       autocompleteService.buildList(vm.resources.languages, ['long_name']);
-      autocompleteService.buildList(vm.resources.users, ['first_name', 'last_name']);
+      autocompleteService.buildList(vm.resources.users, ['last_name', 'first_name']);
+    }
+
+    function _generateXlsx() {
+      excelData = [];
+
+      let tableHeader = {
+        lastName: 'Last Name',
+        firstName: 'First Name',
+        email: 'Email',
+        phone: 'Phone',
+        languages: 'Languages',
+        technologies: 'Technologies',
+        projects: 'Projects',
+        startDate: 'Start date Assist'
+      };
+
+      if (exportUsers.length) {
+        for (let i = 0; i < exportUsers.length; i++) {
+          let languages = [];
+          let technologies = [];
+          let projects = [];
+
+          if (exportUsers[i].languages) {
+            for (let j = 0; j < exportUsers[i].languages.length; j++) languages.push(exportUsers[i].languages[j].long_name);
+          }
+
+          if (exportUsers[i].technologies) {
+            for (let j = 0; j < exportUsers[i].technologies.length; j++) technologies.push(exportUsers[i].technologies[j].name);
+          }
+
+          if (exportUsers[i].projects) {
+            for (let j = 0; j < exportUsers[i].projects.length; j++) projects.push(exportUsers[i].projects[j].name);
+          }
+
+          excelData.push({
+            lastName: exportUsers[i].last_name,
+            firstName: exportUsers[i].first_name,
+            email: exportUsers[i].email,
+            phone: exportUsers[i].phone ? exportUsers[i].phone.toString() : '',
+            languages: languages.join(', '),
+            technologies: technologies.join(', '),
+            projects: projects.join(', '),
+            startDate: exportUsers[i].company_start_date ? exportUsers[i].company_start_date : ''
+          });
+        }
+
+        Array.prototype.sortOn = function(key) {
+          this.sort(function(a, b) {
+            if (a[key] < b[key]) {
+              return -1;
+            } else if (a[key] > b[key]) {
+              return 1;
+            }
+            return 0;
+          });
+        };
+
+        excelData.sortOn('lastName');
+        excelData.unshift(tableHeader);
+
+        return excelData;
+      }
     }
 
   }
