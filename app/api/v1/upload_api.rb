@@ -29,7 +29,7 @@ module V1
 
     resource :uploads do
 
-      desc "Return all uploads"
+      desc "Get all uploads"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -37,7 +37,7 @@ module V1
         getPaginatedItemsFor Upload
       end
 
-      desc "Returns a upload"
+      desc "Get upload"
       params do
         requires :id, type: Integer , desc: "Upload id"
       end
@@ -64,7 +64,6 @@ module V1
         optional :file_description, allow_blank: false, type: String
         optional :path, allow_blank: false, type: String
       end
-
       put ':id' do
         upload = Upload.find(params[:id])
         authorize! :update, Upload

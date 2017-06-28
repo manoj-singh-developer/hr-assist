@@ -12,11 +12,12 @@
 
   function hraEmployeeCourse() {
     return {
-      restrict: 'EA',
+      restrict: 'A',
       scope: {},
+      require: 'hraCard',
       controller: 'employeeCourseController',
       controllerAs: 'employeeCourse',
-      templateUrl: rootTemplatePath + '/employee/views/employeeCourses.view.html'
+      templateUrl: rootTemplatePath + '/employee/courses/employeeCourses.view.html'
     };
   }
 
