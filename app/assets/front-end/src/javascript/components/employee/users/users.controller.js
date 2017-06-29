@@ -6,58 +6,58 @@
     .module('HRA')
     .controller('usersCtrl', usersCtrl);
 
-  function usersCtrl($scope, $rootScope, $mdDialog, autocompleteService, User, Technology, Project, AppType, $q, tableSettings, dateService) {
+  function usersCtrl($mdDialog, $rootScope, $scope, $q, AppType, autocompleteService, dateService, Project, User, Technology, tableSettings) {
 
     let vm = this;
-    let querySearchItems;
     let excelData = [];
     let exportUsers = [];
 
-    vm.ids = [];
-    vm.selected = [];
+    vm.showFilters = false;
+    vm.technologiesLvl = [];
+    vm.selectedTechnologies = [];
+    vm.selectedLanguages = [];
+    vm.languagesLvl = [];
     vm.users = [];
     vm.resources = {};
+    vm.usersCopy = {};
     vm.dateService = dateService;
-    // vm.filterType = filterService.getTypes();
     vm.tableSettings = tableSettings;
     vm.tableSettings.query = {
       order: 'last_name',
       limit: 10,
       page: 1
     };
-
-    vm.showFilters = false;
-    // vm.filters = {
-    //   technologies: [],
-    //   languages: [],
-    //   projects: []
-    // };
-
-    vm.search = {
-      technologies: '',
-      languages: '',
-      projects: ''
-    };
-
-    vm.filterInput = {
+    vm.filters = {
       technologies: [],
+      // technologies: [{}], // FOR TECHNOLOGIES WITH LEVEL
       languages: [],
+      // languages: [{}], // FOR LANGUAGES WITH LEVEL
       projects: [],
       start_date: undefined,
       birthday: undefined,
       university_year: undefined
     };
+
     _getResources();
 
     vm.showForm = showForm;
     vm.showFormJson = showFormJson;
     vm.remove = remove;
-    vm.multipleRemove = multipleRemove;
     vm.querySearch = querySearch;
     vm.toggleFilters = toggleFilters;
     vm.resetFilters = resetFilters;
     vm.saveExcelFile = saveExcelFile;
     vm.search = search;
+    vm.addNewTechnology = addNewTechnology;
+    vm.addNewLanguages = addNewLanguages;
+
+    function addNewTechnology() {
+      vm.filters.technologies.push({});
+    }
+
+    function addNewLanguages() {
+      vm.filters.languages.push({});
+    }
 
     function search() {
       let filterObj = {};
@@ -65,37 +65,64 @@
       let languages = [];
       let projects = [];
 
-      vm.filterInput.technologies.forEach((element, index) => {
-        // technologies.push({
-        //   technology_id: element.id,
-        //   technology_level: 3
-        // });
+      // FOR TECHNOLOGIES AND LEVEL WHITHOUT LEVEL
+      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      vm.filters.technologies.forEach((element, index) => {
         technologies.push(element.id);
       });
 
-      vm.filterInput.languages.forEach((element, index) => {
-        // languages.push({
-        //   language_id: element.id,
-        //   level: 3
-        // });
+      vm.filters.languages.forEach((element, index) => {
         languages.push(element.id);
       });
+      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      // FOR TECHNOLOGIES AND LEVEL WHITHOUT LEVEL
 
-      vm.filterInput.projects.forEach((element, index) => {
+      // FOR TECHNOLOGIES WITH LEVEL
+      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      // let technologiesIdArr = _getItemId(vm.selectedTechnologies);
+      // let technologieslvlArr =  _getItemValues(vm.technologiesLvl);
+
+      // for (let i = 0; i < vm.selectedTechnologies.length; i++) {
+      //   technologies.push({
+      //     technology_id: technologiesIdArr[i],
+      //     technology_level: technologieslvlArr[i] ? technologieslvlArr[i] : 1
+      //   });
+      // }
+      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      //END FOR TECHNOLOGIES WITH LEVEL
+
+
+      // FOR LANGUAGES WITH LEVEL
+      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      // let languagesIdArr = _getItemId(vm.selectedLanguages);
+      // let languagesLvlArr = _getItemValues(vm.languagesLvl);
+
+      // for (let i = 0; i < vm.selectedLanguages.length; i++) {
+      //   languages.push({
+      //     language_id: languagesIdArr[i],
+      //     level: languagesLvlArr[i] ? languagesLvlArr[i] : 1
+      //   });
+      // }
+
+      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      //END FOR LANGUAGES WITH LEVEL
+
+
+      vm.filters.projects.forEach((element, index) => {
         projects.push(element.id);
       });
 
       filterObj = {
-        birthday: vm.filterInput.birthday ? vm.dateService.format(new Date(vm.filterInput.birthday)) : vm.filterInput.birthday,
-        university_year: vm.filterInput.university_year ? vm.dateService.format(new Date(vm.filterInput.university_year)) : vm.filterInput.university_year,
-        start_date: vm.filterInput.start_date ? vm.dateService.format(new Date(vm.filterInput.start_date)) : vm.filterInput.start_date,
+        birthday: vm.filters.birthday ? vm.dateService.format(new Date(vm.filters.birthday)) : vm.filters.birthday,
+        university_year: vm.filters.university_year,
+        start_date: vm.filters.start_date ? vm.dateService.format(new Date(vm.filters.start_date)) : vm.filters.start_date,
         projects: projects,
         languages: languages,
         technologies: technologies
       };
 
-      for (var key in filterObj) {
 
+      for (let key in filterObj) {
         if (!filterObj[key] || filterObj[key].length == 0) {
           delete filterObj[key];
         }
@@ -104,13 +131,12 @@
       filterObj = {
         filters: filterObj
       }
+
       User.filter(filterObj).then((data) => {
         vm.users = data;
-        console.log(data);
-
+        _generateXlsx();
+        _updateTablePagination(vm.users);
       });
-      console.log(JSON.stringify(filterObj));
-      console.log(filterObj);
     }
 
     function showForm(device) {
@@ -156,28 +182,28 @@
       });
     }
 
-    function multipleRemove() {}
-
     function toggleFilters() {
       vm.showFilters = !vm.showFilters;
     }
 
     function resetFilters() {
-      angular.forEach(vm.filterInput, (item, key) => {
-        if (typeof vm.filterInput[key] === 'object') {
-          vm.filterInput[key] = [];
+      angular.forEach(vm.filters, (item, key) => {
+        if (typeof vm.filters[key] === 'object') {
+          vm.filters[key] = [];
         } else {
-          vm.filterInput[key] = undefined;
+          vm.filters[key] = undefined;
         }
       });
+      vm.users = vm.usersCopy;
+      _updateTablePagination(vm.users);
+
     }
 
     function querySearch(query, list) {
       if (query != "" && query != " ") {
-        vm.tableSettings.total = autocompleteService.querySearch(query, list).length;
-        querySearchItems = autocompleteService.querySearch(query, list).length;
+        _updateTablePagination(autocompleteService.querySearch(query, list));
       } else {
-        vm.tableSettings.total = list.length;
+        _updateTablePagination(list);
       }
       exportUsers = autocompleteService.querySearch(query, list);
       _generateXlsx();
@@ -195,7 +221,7 @@
     }
 
     function _updateTablePagination(data) {
-      vm.tableSettings.total = data.length;
+      vm.tableSettings.total = data ? data.length : 0;
     }
 
     function _getResources() {
@@ -216,11 +242,9 @@
 
         //will use this for filters
         vm.users = vm.resources.users;
-        vm.usersCopy = angular.copy(vm.resources.users); //[1]
-        vm.tableSettings.total = vm.resources.users.length;
+        vm.usersCopy = angular.copy(vm.resources.users);
+        _updateTablePagination(vm.resources.users);
         _buildAutocompleteLists();
-
-        exportUsers = vm.users;
         _generateXlsx();
       });
     }
@@ -230,10 +254,11 @@
       autocompleteService.buildList(vm.resources.projects, ['name']);
       autocompleteService.buildList(vm.resources.technologies, ['name']);
       autocompleteService.buildList(vm.resources.languages, ['long_name']);
-      autocompleteService.buildList(vm.resources.users, ['last_name', 'first_name']);
+      autocompleteService.buildList(vm.usersCopy, ['last_name', 'first_name']);
     }
 
     function _generateXlsx() {
+      exportUsers = vm.users;
       excelData = [];
 
       let tableHeader = {
@@ -247,7 +272,7 @@
         startDate: 'Start date Assist'
       };
 
-      if (exportUsers.length) {
+      if (exportUsers) {
         for (let i = 0; i < exportUsers.length; i++) {
           let languages = [];
           let technologies = [];
@@ -295,7 +320,17 @@
       }
     }
 
+    function _getItemId(itemsArray) {
+      return $.map(itemsArray, (value, index) => {
+        return value.id;
+      });
+    }
+
+    function _getItemValues(itemsArray) {
+      return $.map(itemsArray, (value, index) => {
+        return eval(value);
+      });
+    }
   }
 
 })(_);
-

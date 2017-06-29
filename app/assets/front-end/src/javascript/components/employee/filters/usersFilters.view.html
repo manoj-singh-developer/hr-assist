@@ -33,7 +33,7 @@
   <section layout="row" layout-align="left center" class="md-padding">
     <p>Filter by projects:</p>
     <md-chips
-      ng-model="users.filterInput.projects"
+      ng-model="users.filters.projects"
       md-autocomplete-snap=""
       md-require-match=true>
       <md-autocomplete
@@ -58,7 +58,7 @@
   <section layout="row" layout-align="left center" class="md-padding">
     <p>Filter by technologies: </p>
     <md-chips
-      ng-model="users.filterInput.technologies"
+      ng-model="users.filters.technologies"
       md-require-match=true>
       <md-autocomplete
         md-search-text="users.search.technologies"
@@ -76,13 +76,11 @@
       </md-chip-template>
     </md-chips>
   </section>
-
-
-
+  
   <section layout="row" layout-align="left center" class="md-padding">
     <p>Filter by languages:</p>
     <md-chips
-      ng-model="users.filterInput.languages"
+      ng-model="users.filters.languages"
       md-autocomplete-snap=""
       md-require-match=true>
       <md-autocomplete
@@ -101,11 +99,131 @@
       </md-chip-template>
     </md-chips>
   </section>
+  
+  <!-- FOR TECHNOLOGIES WITH LEVEL -->
+  <!-- <section layout="row" layout-align="left center" class="md-padding">
+    <p>Filter by technologies: </p>
+    <div ng-repeat="technology in users.filters.technologies track by $index">
+      
+      <md-autocomplete
+        md-selected-item="users.selectedTechnologies[$index]"
+        md-search-text-change="users.searchTextChange(userLanguages.searchText[$index])"
+        md-selected-item-change="userLanguages.addInQueue(item)"
+        md-search-text="users.search.technologies[$index]"
+        md-items="item in users.querySearch(users.filter.technologies[$index], users.resources.technologies)"
+        md-item-text="item.name"
+        placeholder="Technology">
+        <span md-highlight-text="users.filter.technologies[$index]">
+          {{item.name}}
+        </span>
+      </md-autocomplete> -->
+      
+      <!--TYPE SELECT-->
+      <!-- <div class="md-padding" flex-gt-xs="100">
+        <md-input-container>
+          <label>Skill type</label>
+          <md-select class="u-no-margin"
+            aria-label="Language level"
+            ng-model="users.technologiesLvl[$index]"
+            required>
+            <md-optgroup label="Language level">
+              <md-option value="1">
+                <span>Elementary</span>
+              </md-option>
+              <md-option value="2">
+                <span>Limited</span>
+              </md-option>
+              <md-option value="3">
+                <span>Professional</span>
+              </md-option>
+              <md-option value="4">
+                <span>Full professional</span>
+              </md-option>
+              <md-option value="5">
+                <span>Native or bilingual</span>
+              </md-option>
+            </md-optgroup>
+          </md-select>
+        </md-input-container>
+      </div> -->
+      <!-- TYPE SELECT -->
+
+    <!-- </div>      
+    <section class="md-padding">
+        <md-button
+          md-no-ink
+          class="md-primary small-text"
+          ng-click="users.addNewTechnology()">
+          Add New Technology
+        </md-button>
+      </section>
+  </section> -->
+  <!-- /. FOR TECHNOLOGIES WITH LEVEL -->
+
+
+  <!-- FOR LANGUAGES WITH LEVEL -->
+  <!-- <section layout="row" layout-align="left center" class="md-padding">
+    <p>Filter by languages:</p>
+    <div ng-repeat="language in users.filters.languages track by $index">
+      <md-autocomplete
+        md-selected-item="users.selectedLanguages[$index]"
+        md-search-text-change="users.searchTextChange(userLanguages.searchText[$index])"
+        md-selected-item-change="userLanguages.addInQueue(item)"
+        md-search-text="users.search.languages[$index]"
+        md-items="item in users.querySearch(users.search.languages[$index], users.resources.languages)"
+        md-item-text="item.long_name"
+        placeholder="Languages">
+
+        <span md-highlight-text="users.selectedLanguages[$index]">
+          {{item.long_name}}
+        </span>
+      </md-autocomplete> -->
+      <!--TYPE SELECT-->
+      <!-- <div class="md-padding" flex-gt-xs="100">
+        <md-input-container>
+          <label>Language level</label>
+          <md-select class="u-no-margin"
+            aria-label="Language level"
+            ng-model="users.languagesLvl[$index]"
+            required>
+            <md-optgroup label="Language level">
+              <md-option value="1">
+                <span>Elementary</span>
+              </md-option>
+              <md-option value="2">
+                <span>Limited</span>
+              </md-option>
+              <md-option value="3">
+                <span>Professional</span>
+              </md-option>
+              <md-option value="4">
+                <span>Full professional</span>
+              </md-option>
+              <md-option value="5">
+                <span>Native or bilingual</span>
+              </md-option>
+            </md-optgroup>
+          </md-select>
+        </md-input-container>
+      </div> -->
+      <!-- TYPE SELECT -->
+    <!-- </div>
+    <section class="md-padding">
+        <md-button
+          md-no-ink
+          class="md-primary small-text"
+          ng-click="users.addNewLanguages()">
+          Add New Language
+        </md-button>
+      </section>
+    </section>
+  </section> -->
+  <!--/. FOR LANGUAGES WITH LEVEL -->
 
 
   <section layout="row" layout-align="left center" class="md-padding">
     <label>Filter by start company date:</label>
-    <md-datepicker ng-model="users.filterInput.start_date"
+    <md-datepicker ng-model="users.filters.start_date"
       md-placeholder="Start date"
       md-open-on-focus
       >
@@ -115,8 +233,9 @@
   
   <section layout="row" layout-align="left center" class="md-padding">
     <label>Filter by birthday:</label>
-    <md-datepicker ng-model="users.filterInput.birthday"
+    <md-datepicker ng-model="users.filters.birthday"
       md-placeholder="Start date"
+      md-current-view="year"
       md-open-on-focus
       >
     </md-datepicker>
@@ -125,9 +244,11 @@
   <section layout="row" layout-align="left center" class="md-padding">
     <label>Filter by year of university: </label>
     <input type="number" 
-      ng-model="users.filterInput.university_year"
+      ng-model="users.filters.university_year"
       md-placeholder="Start date"
       md-open-on-focus
+      min="1"
+      max="4" 
       >
     </input>
   </section>

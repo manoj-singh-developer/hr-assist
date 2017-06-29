@@ -123,16 +123,9 @@
         <!-- SELECT PERIOD -->
         <section class="u-mb-20 u-mt-20"
           layout="row"
-          layout-align="center">
-
-          <md-datepicker ng-model="userHoliday.signingDate"
-            md-placeholder="Signing date"
-            md-open-on-focus
-            ng-change="userHoliday.checkDates()"
-            md-date-filter="userHoliday.getWorkingDay"
-            required>
-          </md-datepicker>
-
+          layout-align="start center">
+          
+          <label class="u-ml-5 required-input">Start date</label>
           <md-datepicker ng-model="userHoliday.from"
             md-placeholder="Start date"
             md-open-on-focus
@@ -140,7 +133,7 @@
             md-date-filter="userHoliday.getWorkingDay"
             required>
           </md-datepicker>
-
+          <label class="u-ml-5 required-input">End date</label>
           <md-datepicker ng-model="userHoliday.to"
             md-placeholder="End date"
             md-open-on-focus
@@ -149,6 +142,18 @@
             required>
           </md-datepicker>
 
+        </section>
+        <section class="u-mb-20 u-mt-20"
+          layout="row"
+          layout-align="start center">
+          <label class="u-ml-5 required-input">Signing Date</label>
+          <md-datepicker ng-model="userHoliday.signingDate"
+            md-placeholder="Signing date"
+            md-open-on-focus
+            ng-change="userHoliday.checkDates()"
+            md-date-filter="userHoliday.getWorkingDay"
+            required>
+            </md-datepicker>
         </section>
         <!-- /SELECT PERIOD -->
         <section ng-show="userHoliday.validateDate" layout-gt-xs="row" layout-align="center center">
@@ -196,7 +201,8 @@
                   </md-chip-template>
                 </md-chips>
 
-              </div><!-- /SELECT TEAM LEADER -->
+              </div>
+              <!-- /SELECT TEAM LEADER -->
 
             </div>
           </div>
@@ -229,23 +235,23 @@
                     md-min-length="0"
                     placeholder="Select an project"
                     md-input-name="autocompleteProject_{{$index}}"
-                    md-dropdown-position="bottom">
+                    md-dropdown-position="bottom"
+                    required
+                     md-require-match>
                     <md-item-template>
                       <span class="item-metadata">
                         {{project.name}}
                       </span>
                     </md-item-template>
                   </md-autocomplete>
-                <!--NOTE: required AFECTEAZA AFISAREA LISTEI LA FOCUS
-                  md-require-match AFECTEAZA IN MOMENTUL STERGERII UNUI NOI PROIECT SI INLOCUITOR, CAMPURILE COMPLETATE ANTERIOR RETURNAND FALSE LA md-require-match.   -->
 
-                  <!-- <div ng-messages="holidaysForm['autocompleteProject_'+$index].$error"
+                  <div ng-messages="holidaysForm['autocompleteProject_'+$index].$error"
                     layout-gt-xs="row" layout-align="center center"
                     ng-if="holidaysForm['autocompleteProject_'+$index].$touched">
-                    <span ng-message="md-require-match" class="alert-error fade" role="alert">
+                    <span ng-message="md-require-match" class="alert-info fade" role="alert">
                       You must select an option!
                     </span>
-                  </div> -->
+                  </div>
 
               </div>
               <!-- /SELECT REPLACEMENT PROJECT -->
@@ -270,7 +276,9 @@
                   md-min-length="0"
                   placeholder="Select an employee"
                   md-input-name="autocompleteUser_{{$index}}"
-                  md-dropdown-position="bottom">
+                  md-dropdown-position="bottom"
+                  required
+                  md-require-match>
                   <md-item-template>
                     <span class="item-metadata" md-highlight-text="userHoliday.searchUser[$index]">
                       {{user.first_name}} {{user.last_name}}
@@ -278,15 +286,13 @@
                   </md-item-template>
                 </md-autocomplete>
                 
-                <!--NOTE: required AFECTEAZA AFISAREA LISTEI LA FOCUS
-                md-require-match AFECTEAZA IN MOMENTUL STERGERII UNUI NOI PROIECT SI INLOCUITOR, CAMPURILE COMPLETATE ANTERIOR RETURNAND FALSE LA md-require-match.   -->
-                <!-- <div ng-messages="holidaysForm['autocompleteUser_'+$index].$error"
+                <div ng-messages="holidaysForm['autocompleteUser_'+$index].$error"
                   layout-gt-xs="row" layout-align="center center"
                   ng-if="holidaysForm['autocompleteUser_'+$index].$touched">
-                  <span ng-message="md-require-match" class="alert-error fade" role="alert">
+                  <span ng-message="md-require-match" class="alert-info fade" role="alert">
                     You must select an option!
                   </span>
-                </div> -->
+                </div>
 
               </div>
               <!-- /SELECT REPLACEMENT EMPLOYEE -->
@@ -336,7 +342,7 @@
       <!-- /CARD NOTES -->
 
       <span ng-show="userHoliday.errMsg"
-        class="alert alert-error fade holiday-error"
+        class="alert alert-info fade holiday-error"
         role="alert">
         Your vacation request with this interval exists !
       </span>
@@ -347,7 +353,8 @@
         Another vacation intersect with this interval !
       </span>
 
-    </md-content><!-- /FORM HOLIDAY -->
+    </md-content>
+    <!-- /FORM HOLIDAY -->
   </form>
 
 

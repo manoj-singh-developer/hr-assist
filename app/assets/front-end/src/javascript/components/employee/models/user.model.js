@@ -561,30 +561,100 @@
     }
 
     User.filter = (data) => {
-      // debugger
-      let partOfUrl = '/users?with[]=user_languages&with[]=technologies&with[]=projects'
-      let urlsmeker = $httpParamSerializerJQLike(data);
-      url = apiUrl + partOfUrl + '&' + urlsmeker;
-      console.log(url);
+      let filterUrl = '/users?with[]=user_languages&with[]=technologies&with[]=projects';
+      let decodedObjUrl = decodeURIComponent($httpParamSerializerJQLike(data).replace(/\+/g, " "));
+      url = apiUrl + filterUrl + '&' + decodedObjUrl;
       resource = $resource(url, {}, {
-        'post': { method: 'POST' }
-      }).save(data);
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
 
       promise = resource.$promise
         .then((data) => {
-          //alertService.success(model, 'filter');
-          return data;
+          return data.items;
         })
         .catch((error) => {
           errorService.forceLogout(error);
           alertService.error(model, 'filter');
         });
+      return promise;
+    };
+
+    User.getCertifications = () => {
+
+      let userId = $stateParams.id;
+      url = apiUrl + '/users/' + userId + '/certifications';
+      resource = $resource(url).get();
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getUserTechnologies');
+        });
 
       return promise;
     };
 
+    User.saveCertifications = (id, certifications) => {
+
+      url = apiUrl + '/users/:id/certifications';
+      resource = $resource(url, {}, {
+        'post': {
+          method: 'POST'
+        }
+      }).save({ id: id }, certifications);
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'saveCertifications')
+        });
+
+      return promise;
+    };
+
+    User.updateCertifications = (id, certifications) => {
+
+      url = apiUrl + '/users/:id/certifications';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: id }, certifications);
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'updateCertifications')
+        });
+
+      return promise;
+    };
+
+    User.removeCertifications = (id, certification) => {
+      let data = {};
+      data["certification_ids"] = certification.id;
+      url = apiUrl + '/users/:id/certifications';
+      resource = $resource(url, data).delete({ id: id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'removeCertifications');
+          return data;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'removeCertifications');
+        });
+
+      return promise;
+    }
+
     //Could not get right response from server using $resource
-    // responseType: 'arraybuffer' can be the problem
+    // responseType: 'arraybuffer' can be the problem / and token
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // User.getCv = (data) => {
