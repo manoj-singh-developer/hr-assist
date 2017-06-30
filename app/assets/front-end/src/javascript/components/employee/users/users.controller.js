@@ -38,6 +38,38 @@
       university_year: undefined
     };
 
+    vm.technologiesText = [{
+      title: "Junior",
+      level: 1
+    }, {
+      title: "Junior",
+      level: 2
+    }, {
+      title: "Junior-Mid",
+      level: 3
+    }, {
+      title: "Junior-Mid",
+      level: 4
+    }, {
+      title: "Mid",
+      level: 5
+    }, {
+      title: "Mid",
+      level: 6
+    }, {
+      title: "Mid-Senior",
+      level: 7
+    }, {
+      title: "Mid-Senior",
+      level: 8
+    }, {
+      title: "Senior",
+      level: 9
+    }, {
+      title: "Senior",
+      level: 10
+    }]
+
     _getResources();
 
     vm.showForm = showForm;

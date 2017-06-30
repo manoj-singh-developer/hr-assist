@@ -117,30 +117,18 @@
           {{item.name}}
         </span>
       </md-autocomplete> -->
-      
+
       <!--TYPE SELECT-->
       <!-- <div class="md-padding" flex-gt-xs="100">
         <md-input-container>
-          <label>Skill type</label>
+          <label>Technologies level</label>
           <md-select class="u-no-margin"
-            aria-label="Language level"
+            aria-label="Technologies level"
             ng-model="users.technologiesLvl[$index]"
             required>
-            <md-optgroup label="Language level">
-              <md-option value="1">
-                <span>Elementary</span>
-              </md-option>
-              <md-option value="2">
-                <span>Limited</span>
-              </md-option>
-              <md-option value="3">
-                <span>Professional</span>
-              </md-option>
-              <md-option value="4">
-                <span>Full professional</span>
-              </md-option>
-              <md-option value="5">
-                <span>Native or bilingual</span>
+            <md-optgroup label="Technologies level" >
+              <md-option value="{{technology.level}}" ng-repeat="technology in users.technologiesText">
+                <span>{{technology.title}}</span>
               </md-option>
             </md-optgroup>
           </md-select>
