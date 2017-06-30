@@ -138,13 +138,19 @@
 
     <!-- </div>      
     <section class="md-padding">
-        <md-button
-          md-no-ink
-          class="md-primary small-text"
-          ng-click="users.addNewTechnology()">
-          Add New Technology
-        </md-button>
-      </section>
+      <md-button
+        md-no-ink
+        class="md-primary small-text"
+        label="Reset all filters"
+        aria-label="Reset all filters"
+        ng-click="users.addNewTechnology()">
+        <md-icon class="material-icons">add_circle_outline</md-icon>
+        Add Technology
+        <md-tooltip md-autohide="true">
+          Add Technology
+        </md-tooltip>
+      </md-button>
+    </section>
   </section> -->
   <!-- /. FOR TECHNOLOGIES WITH LEVEL -->
 

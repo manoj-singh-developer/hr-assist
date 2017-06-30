@@ -219,7 +219,7 @@
 
     function resetFilters() {
       angular.forEach(vm.filters, (item, key) => {
-        if (typeof vm.filters[key] === 'object') {
+        if (typeof vm.filters[key] === 'object' && vm.filters[key] instanceof Array) {
           vm.filters[key] = [];
         } else {
           vm.filters[key] = undefined;
