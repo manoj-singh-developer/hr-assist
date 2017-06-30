@@ -69,16 +69,17 @@
   <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
 
   <!-- AUTOCOMPLETE SEARCH -->
-  <md-content class="md-padding">
+  <md-content class="md-padding"
+  ng-show="!users.showFilters">
     <form ng-submit="$event.preventDefault()">
       <md-autocomplete
         ng-disabled="users.isDisabled"
         ng-model="users.searchText"
         md-selected-item="users.selectedItem"
-        md-search-text-change="users.querySearch(users.searchText, users.users)"
+        md-search-text-change="users.querySearch(users.searchText, users.usersCopy)"
         md-search-text="users.searchText"
-        md-selected-item-change="users.querySearch(users.searchText, users.users)"
-        md-items="item in users.querySearch(users.searchText, users.users)"
+        md-selected-item-change="users.querySearch(users.searchText, users.usersCopy)"
+        md-items="item in users.querySearch(users.searchText, users.usersCopy)"
         md-item-text="item.last_name + ' ' +  item.first_name"
         md-min-length="0"
         md-dropdown-position="bottom"

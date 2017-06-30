@@ -6,10 +6,8 @@
     .module('HRA')
     .factory('User', User);
 
-  User
-    .$inject = ['$resource', 'apiUrl', 'alertService', '$stateParams', 'errorService'];
 
-  function User($resource, apiUrl, alertService, $stateParams, errorService) {
+  function User($resource, apiUrl, alertService, $stateParams, errorService, $httpParamSerializerJQLike) {
 
     function User() {}
 
@@ -562,6 +560,28 @@
       return promise;
     }
 
+    User.filter = (data) => {
+      let filterUrl = '/users?with[]=user_languages&with[]=technologies&with[]=projects';
+      let decodedObjUrl = decodeURIComponent($httpParamSerializerJQLike(data).replace(/\+/g, " "));
+      url = apiUrl + filterUrl + '&' + decodedObjUrl;
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
+
+      promise = resource.$promise
+        .then((data) => {
+          return data.items;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'filter');
+        });
+      return promise;
+    };
+
     User.getCertifications = () => {
 
       let userId = $stateParams.id;
@@ -622,16 +642,17 @@
 
       promise = resource.$promise
         .then((data) => {
-          alertService.success(model, 'remove');
+          alertService.success(model, 'removeCertifications');
           return data;
         })
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'remove');
+          alertService.error(model, 'removeCertifications');
         });
 
       return promise;
-    };
+    }
+
     //Could not get right response from server using $resource
     // responseType: 'arraybuffer' can be the problem / and token
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
