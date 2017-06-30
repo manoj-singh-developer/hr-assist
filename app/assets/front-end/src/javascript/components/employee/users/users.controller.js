@@ -37,7 +37,6 @@
       birthday: undefined,
       university_year: undefined
     };
-
     vm.technologiesText = [{
       title: "Junior",
       level: 1
@@ -220,7 +219,7 @@
 
     function resetFilters() {
       angular.forEach(vm.filters, (item, key) => {
-        if (typeof vm.filters[key] === 'object') {
+        if (typeof vm.filters[key] === 'object' && vm.filters[key] instanceof Array) {
           vm.filters[key] = [];
         } else {
           vm.filters[key] = undefined;
@@ -233,6 +232,7 @@
 
     function querySearch(query, list) {
       if (query != "" && query != " ") {
+        vm.firstNameFilter = vm.searchText.substr(0, vm.searchText.indexOf(' '));
         _updateTablePagination(autocompleteService.querySearch(query, list));
       } else {
         _updateTablePagination(list);
