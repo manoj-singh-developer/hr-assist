@@ -9,7 +9,7 @@
 
   userHolidayCtrl
 
-  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, dateService, $timeout, tableSettings) {
+  function userHolidayCtrl($filter, $mdDialog, $rootScope, $stateParams, $timeout, autocompleteService, dateService, User, tableSettings) {
 
     let vm = this;
     let days;
@@ -38,6 +38,7 @@
     vm.checkDates = checkDates;
     vm.addEmptyReplacement = addEmptyReplacement;
     vm.removeEmptyReplacement = removeEmptyReplacement;
+    vm.removeHoliday = removeHoliday;
     vm.toggleForm = toggleForm;
     vm.getWorkingDay = getWorkingDay;
     vm.addLeaders = addLeaders;
@@ -213,6 +214,27 @@
       vm.leader = ' ';
     }
 
+    function removeHoliday(holiday, event) {
+      holiday.start_date = $filter('date')(holiday.start_date, "d MMM, y");
+      holiday.end_date = $filter('date')(holiday.end_date, "d MMM, y");
+
+      let confirm = $mdDialog.confirm()
+        .title('Are you sure you want to delete the holiday between ' + holiday.start_date + ' and ' + holiday.end_date + ' ?')
+        .targetEvent(event)
+        .ok('Yes')
+        .cancel('No');
+
+      $mdDialog.show(confirm).then(() => {
+        User.removeHoliday(holiday).then(() => {
+          for (let i = 0; i < vm.userHolidays.length; i++) {
+            if (vm.userHolidays[i].holiday_id == holiday.holiday_id) {
+              vm.userHolidays.splice(i, 1);
+            }
+          }
+        });
+      });
+    }
+
     function _getUserHolidays() {
       User.getHolidays($stateParams.id)
         .then((data) => {
@@ -222,6 +244,7 @@
           console.log(error)
         });
     }
+
 
     function _addHoliday(objToSave) {
       User.addHolidays(objToSave)

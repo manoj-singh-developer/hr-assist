@@ -653,6 +653,28 @@
       return promise;
     }
 
+    User.removeHoliday = (holiday) => {
+      
+      let data = {
+        user_id: $stateParams.id,
+        holiday_ids: holiday.holiday_id
+      };
+      url = apiUrl + '/users/:id/holidays';
+      resource = $resource(url, data).delete({ id: data.user_id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'removeDevices');
+          return data;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'removeDevices')
+        });
+
+      return promise;
+    };
+
     //Could not get right response from server using $resource
     // responseType: 'arraybuffer' can be the problem / and token
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
