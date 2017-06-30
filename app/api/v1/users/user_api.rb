@@ -51,7 +51,7 @@ module V1
         desc "Return all users"
         params do
           use :pagination # aliases: includes, use_scope
-          optional :with, values: ['positions', 'user_languages', 'devices', 'educations', 'departments', 'projects', 'technologies'], type: [String]
+          optional :with, values: ['positions', 'user_languages', 'devices', 'educations', 'departments', 'projects', 'technologies', 'certifications'], type: [String]
           optional :filters, type: Hash
         end
         get do
