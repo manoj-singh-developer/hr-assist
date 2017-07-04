@@ -227,7 +227,7 @@
       $mdDialog.show(confirm).then(() => {
         User.removeHoliday(holiday).then(() => {
           for (let i = 0; i < vm.userHolidays.length; i++) {
-            if (vm.userHolidays[i].holiday_id == holiday.holiday_id) {
+            if (vm.userHolidays[i].holiday_id === holiday.holiday_id) {
               vm.userHolidays.splice(i, 1);
             }
           }
@@ -266,8 +266,8 @@
       let iWeekday1 = dDate1.getDay();
       let iWeekday2 = dDate2.getDay();
 
-      iWeekday1 = (iWeekday1 == 0) ? 7 : iWeekday1;
-      iWeekday2 = (iWeekday2 == 0) ? 7 : iWeekday2;
+      iWeekday1 = (iWeekday1 === 0) ? 7 : iWeekday1;
+      iWeekday2 = (iWeekday2 === 0) ? 7 : iWeekday2;
 
       if ((iWeekday1 > 5) && (iWeekday2 > 5)) iAdjust = 1;
 
