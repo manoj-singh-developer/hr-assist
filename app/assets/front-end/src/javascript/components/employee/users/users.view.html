@@ -155,7 +155,7 @@
           md-select="employee"
           md-on-select="logItem"
           ng-repeat="employee in users.users 
-          | filter: users.searchText 
+          | filter: (users.firstNameFilter || users.searchText)
           | orderBy: users.tableSettings.query.order 
           | limitTo: users.tableSettings.query.limit : (users.tableSettings.query.page - 1) * users.tableSettings.query.limit track by $index"
           ui-sref="employeesParent.details({id: employee.id})">

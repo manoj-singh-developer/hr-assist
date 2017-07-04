@@ -6,11 +6,12 @@
     .module('HRA')
     .controller('usersCtrl', usersCtrl);
 
-  function usersCtrl($mdDialog, $rootScope, $scope, $q, AppType, autocompleteService, dateService, Project, User, Technology, tableSettings) {
+  function usersCtrl($mdDialog, $rootScope, $q, AppType, autocompleteService, dateService, Project, User, Technology, tableSettings) {
 
     let vm = this;
     let excelData = [];
     let exportUsers = [];
+    let querySearchItems = [];
 
     vm.showFilters = false;
     vm.technologiesLvl = [];
@@ -37,7 +38,6 @@
       birthday: undefined,
       university_year: undefined
     };
-
     vm.technologiesText = [{
       title: "Junior",
       level: 1
@@ -220,26 +220,29 @@
 
     function resetFilters() {
       angular.forEach(vm.filters, (item, key) => {
-        if (typeof vm.filters[key] === 'object') {
+        if (typeof vm.filters[key] === 'object' && vm.filters[key] instanceof Array) {
           vm.filters[key] = [];
         } else {
           vm.filters[key] = undefined;
         }
       });
       vm.users = vm.usersCopy;
+      exportUsers = vm.usersCopy;
+      _generateXlsx();
       _updateTablePagination(vm.users);
 
     }
 
     function querySearch(query, list) {
       if (query != "" && query != " ") {
+        vm.firstNameFilter = vm.searchText.substr(0, vm.searchText.indexOf(' '));
+        querySearchItems = autocompleteService.querySearch(query, list);
         _updateTablePagination(autocompleteService.querySearch(query, list));
       } else {
         _updateTablePagination(list);
+        vm.firstNameFilter = '';
       }
-      exportUsers = autocompleteService.querySearch(query, list);
       _generateXlsx();
-
       return autocompleteService.querySearch(query, list);
     }
 
@@ -290,7 +293,7 @@
     }
 
     function _generateXlsx() {
-      exportUsers = vm.users;
+      // exportUsers = vm.users;
       excelData = [];
 
       let tableHeader = {
@@ -303,6 +306,12 @@
         projects: 'Projects',
         startDate: 'Start date Assist'
       };
+
+      if (vm.searchText) {
+        exportUsers = querySearchItems;
+      } else {
+        exportUsers = vm.users;
+      }
 
       if (exportUsers) {
         for (let i = 0; i < exportUsers.length; i++) {
