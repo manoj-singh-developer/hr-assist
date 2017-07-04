@@ -6,9 +6,10 @@
     .module('HRA')
     .controller('projectsCtrl', projectsCtrl);
 
-  function projectsCtrl($scope, $stateParams, $q, $rootScope, $mdDialog, $filter, tableSettings, autocompleteService, filterService, Project, Technology, Customer, Industry, AppType) {
+  function projectsCtrl($mdDialog, $rootScope, $q, AppType, autocompleteService, Customer, filterService, Industry, Project, tableSettings, Technology) {
 
     var vm = this;
+    let querySearchItemsLength;
     let querySearchItems;
     vm.showFilters = false;
     vm.tableSettings = tableSettings;
@@ -47,6 +48,7 @@
 
     $rootScope.$on('event:projectAdd', (event, data) => {
       vm.projects = vm.projects.concat(data);
+      autocompleteService.buildList(vm.projects, ['name']);
     });
 
 
@@ -91,7 +93,8 @@
         vm.projectsCopy,
         vm.filters,
         filteringType);
-      vm.tableSettings.total = vm.searchProject && querySearchItems < vm.projects.length ? querySearchItems : vm.projects.length;
+      vm.tableSettings.total = vm.searchProject && querySearchItemsLength < vm.projects.length ? querySearchItemsLength : vm.projects.length;
+      _generateCSV();
     }
 
     function resetFilters() {
@@ -103,10 +106,12 @@
     function querySearch(query, list) {
       if (query != "" && query != " ") {
         vm.tableSettings.total = autocompleteService.querySearch(query, list).length;
-        querySearchItems = autocompleteService.querySearch(query, list).length;
+        querySearchItemsLength = autocompleteService.querySearch(query, list).length;
+        querySearchItems = autocompleteService.querySearch(query, list);
       } else {
         vm.tableSettings.total = list.length;
       }
+      _generateCSV();
       return autocompleteService.querySearch(query, list);
 
     }
@@ -151,38 +156,45 @@
 
     function _generateCSV() {
       vm.csvData = [];
+      let csvObject = [];
 
-      for (let i = 0; i < vm.projects.length; i++) {
+      if (vm.searchProject) {
+        csvObject = querySearchItems;
+      } else {
+        csvObject = vm.projects;
+      }
+
+      for (let i = 0; i < csvObject.length; i++) {
         let appType = [];
         let industries = [];
         let customers = [];
         let technologies = [];
         let employees = [];
 
-        if (vm.projects[i].application_types) {
-          for (let j = 0; j < vm.projects[i].application_types.length; j++) appType.push(vm.projects[i].application_types[j].name);
+        if (csvObject[i].application_types) {
+          for (let j = 0; j < csvObject[i].application_types.length; j++) appType.push(csvObject[i].application_types[j].name);
         }
 
-        if (vm.projects[i].industries) {
-          for (let j = 0; j < vm.projects[i].industries.length; j++) industries.push(vm.projects[i].industries[j].name);
+        if (csvObject[i].industries) {
+          for (let j = 0; j < csvObject[i].industries.length; j++) industries.push(csvObject[i].industries[j].name);
         }
 
-        if (vm.projects[i].customers) {
-          for (let j = 0; j < vm.projects[i].customers.length; j++) customers.push(vm.projects[i].customers[j].name);
+        if (csvObject[i].customers) {
+          for (let j = 0; j < csvObject[i].customers.length; j++) customers.push(csvObject[i].customers[j].name);
         }
 
-        if (vm.projects[i].technologies) {
-          for (let j = 0; j < vm.projects[i].technologies.length; j++) technologies.push(vm.projects[i].technologies[j].name);
+        if (csvObject[i].technologies) {
+          for (let j = 0; j < csvObject[i].technologies.length; j++) technologies.push(csvObject[i].technologies[j].name);
         }
 
-        if (vm.projects[i].users) {
-          for (let j = 0; j < vm.projects[i].users.length; j++) employees.push(vm.projects[i].users[j].first_name + " " + vm.projects[i].users[j].last_name);
+        if (csvObject[i].users) {
+          for (let j = 0; j < csvObject[i].users.length; j++) employees.push(csvObject[i].users[j].first_name + " " + csvObject[i].users[j].last_name);
         }
 
         vm.csvData.push({
-          name: vm.projects[i].name,
-          startDate: vm.projects[i].start_date,
-          endDate: vm.projects[i].end_date,
+          name: csvObject[i].name,
+          startDate: csvObject[i].start_date,
+          endDate: csvObject[i].end_date,
           applicationTypes: appType.join(),
           industries: industries.join(),
           customers: customers.join(),
