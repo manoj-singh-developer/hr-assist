@@ -182,7 +182,7 @@
                 'Label': 'JOB APPLIED FOR'
               },
               'Description': {
-                'Label': ' This field must be created (Description of job applied)'
+                'Label': ''
               }
             },
             'WorkExperience': [{
@@ -196,7 +196,7 @@
               'Position': {
                 'Label': vm.position.name
               },
-              'Activities': 'This field must be created (Activities at this job)',
+              'Activities': '',
               'Employer': {
                 'Name': 'Assist Software',
                 'ContactInfo': {
@@ -222,62 +222,9 @@
                     'Code': 'RO',
                     'Label': 'Romana'
                   }
-                }],
-                'ForeignLanguage': [{
-                  'Description': {
-                    'Code': 'en',
-                    'Label': 'English'
-                  },
-                  'ProficiencyLevel': {
-                    'Listening': 'C1 (Hardcoded Value)',
-                    'Reading': 'C2 (Hardcoded Value)',
-                    'SpokenInteraction': 'B2 (Hardcoded Value)',
-                    'SpokenProduction': 'C1 (Hardcoded Value)',
-                    'Writing': 'C2 (Hardcoded Value)'
-                  },
-                  'Certificate': [{
-                    'Title': 'This field must be created (Language Certificate)'
-                  }]
-                }, {
-                  'Description': {
-                    'Code': 'fr',
-                    'Label': 'French'
-                  },
-                  'ProficiencyLevel': {
-                    'Listening': 'A2 (Hardcoded Value)',
-                    'Reading': 'A2 (Hardcoded Value)',
-                    'SpokenInteraction': 'A2 (Hardcoded Value)',
-                    'SpokenProduction': 'A2 (Hardcoded Value)',
-                    'Writing': 'A2 (Hardcoded Value)'
-                  },
-                  'Certificate': [{
-                    'Title': 'This field must be created (Language Certificate)'
-                  }]
                 }]
-              },
-              'Communication': {
-                'Description': 'This field must be created (Communication slills, short description how we achieve this skill)'
-              },
-              'Organisational': {
-                'Description': '- This field must be created <br />(Organisational skills) <br />- (how we achieve this skill)'
-              },
-              'Computer': {
-                'Description': '- competent with most Microsoft Office programmes (This field must be created) <br />- experience with HTML (Hardcoded Value)'
-              },
-              'Driving': {
-                'Description': ['A', 'B', '(Hardcoded Value)']
-              },
-              'Other': {
-                'Description': 'Good Skills in ' + technologiesString + '.'
-              }
-            },
-            'Achievement': [{
-              'Title': {
-                'Code': 'publications',
-                'Label': 'Publications'
-              },
-              'Description': 'ă-Ă-â-Â-î-Î-ș-Ș-ț-Ț TEST Diacritice How to do Observations: Borrowing techniques from the Social Sciences to help Participants do Observations in Simulation Exercisesâ€™ Coyote EU/CoE Partnership Publication, (2002) (Hardcoded Value).'
-            }]
+              }              
+            }
           }
         }
       }
@@ -378,10 +325,6 @@
         edObj.Period.To.Year = new Date(vm.education[i].end_date).getFullYear();
         edObj.Title = vm.education[i].degree;
         edObj.Organisation.Name = vm.education[i].name;
-        edObj.Organisation.ContactInfo.Address.Contact.Municipality = 'Suceava (missing field at education)';
-        edObj.Organisation.ContactInfo.Address.Contact.Country.Code = 'RO (field at education)';
-        edObj.Organisation.ContactInfo.Address.Contact.Country.Label = 'Romania (missing field at education)';
-
         education.push(edObj);
       }
 

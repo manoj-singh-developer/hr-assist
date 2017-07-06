@@ -35,7 +35,7 @@
                   vm.holidayPaper = {
                     firstName: employee.first_name,
                     lastName: employee.last_name,
-                    holidays: holiday.user_id,
+                    holidays: holiday.days,
                     signing: holiday.signing_day,
                     startDate: holiday.start_date,
                     endDate: holiday.end_date,

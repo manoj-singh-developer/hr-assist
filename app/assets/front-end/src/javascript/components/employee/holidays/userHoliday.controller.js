@@ -9,7 +9,7 @@
 
   userHolidayCtrl
 
-  function userHolidayCtrl($rootScope, $stateParams, User, autocompleteService, dateService, $timeout, tableSettings) {
+  function userHolidayCtrl($filter, $mdDialog, $rootScope, $stateParams, $timeout, autocompleteService, dateService, User, tableSettings) {
 
     let vm = this;
     let days;
@@ -19,6 +19,7 @@
     vm.teamLeaders = [];
     vm.searchProj = [];
     vm.searchUser = [];
+    vm.isAdmin = false;
 
     vm.tableSettings = tableSettings;
     vm.tableSettings.query.limit = 5;
@@ -38,6 +39,7 @@
     vm.checkDates = checkDates;
     vm.addEmptyReplacement = addEmptyReplacement;
     vm.removeEmptyReplacement = removeEmptyReplacement;
+    vm.removeHoliday = removeHoliday;
     vm.toggleForm = toggleForm;
     vm.getWorkingDay = getWorkingDay;
     vm.addLeaders = addLeaders;
@@ -51,6 +53,8 @@
       autocompleteService.buildList(vm.projects, ['name']);
       autocompleteService.buildList(vm.users, ['first_name', 'last_name']);
     });
+
+    _checkRole();
 
     function queryUserSearch(query) {
       let empArr = autocompleteService.querySearch(query, vm.users);
@@ -213,6 +217,27 @@
       vm.leader = ' ';
     }
 
+    function removeHoliday(holiday, event) {
+      holiday.start_date = $filter('date')(holiday.start_date, "d MMM, y");
+      holiday.end_date = $filter('date')(holiday.end_date, "d MMM, y");
+
+      let confirm = $mdDialog.confirm()
+        .title('Are you sure you want to delete the holiday between ' + holiday.start_date + ' and ' + holiday.end_date + ' ?')
+        .targetEvent(event)
+        .ok('Yes')
+        .cancel('No');
+
+      $mdDialog.show(confirm).then(() => {
+        User.removeHoliday(holiday).then(() => {
+          for (let i = 0; i < vm.userHolidays.length; i++) {
+            if (vm.userHolidays[i].holiday_id === holiday.holiday_id) {
+              vm.userHolidays.splice(i, 1);
+            }
+          }
+        });
+      });
+    }
+
     function _getUserHolidays() {
       User.getHolidays($stateParams.id)
         .then((data) => {
@@ -222,6 +247,7 @@
           console.log(error)
         });
     }
+
 
     function _addHoliday(objToSave) {
       User.addHolidays(objToSave)
@@ -243,8 +269,8 @@
       let iWeekday1 = dDate1.getDay();
       let iWeekday2 = dDate2.getDay();
 
-      iWeekday1 = (iWeekday1 == 0) ? 7 : iWeekday1;
-      iWeekday2 = (iWeekday2 == 0) ? 7 : iWeekday2;
+      iWeekday1 = (iWeekday1 === 0) ? 7 : iWeekday1;
+      iWeekday2 = (iWeekday2 === 0) ? 7 : iWeekday2;
 
       if ((iWeekday1 > 5) && (iWeekday2 > 5)) iAdjust = 1;
 
@@ -264,6 +290,10 @@
 
       return days = (iDateDiff + 1);
 
+    }
+
+    function _checkRole() {
+      vm.isAdmin = $rootScope.isAdmin ? true : false;
     }
 
   }
