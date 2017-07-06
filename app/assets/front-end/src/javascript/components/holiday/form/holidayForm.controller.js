@@ -306,7 +306,7 @@
               vm.empList = data;
 
               updateUser();
-              return autocompleteService.buildList(vm.empList, ['first_name', 'last_name']);
+              return autocompleteService.buildList(vm.empList, ['last_name', 'first_name']);
             },
             function(data) {
               $rootScope.showToast('Holiday update failed!');
