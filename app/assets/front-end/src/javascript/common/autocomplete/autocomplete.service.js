@@ -39,7 +39,7 @@
             if (index !== 0 && item[attributes[index]]) {
               item.autoCompleteVal = item.autoCompleteVal + ' ' + item[attributes[index]].toLowerCase();
             } else {
-              item.autoCompleteVal = item[attributes[index]].toLowerCase();
+              item.autoCompleteVal = item[attributes[0]].toLowerCase();
             }
           }
           return item;
@@ -51,7 +51,7 @@
       var lowercaseQuery = angular.lowercase(query);
 
       return function filterFn(item) {
-        return (item.autoCompleteVal.includes(lowercaseQuery));
+        return (item.autoCompleteVal ? item.autoCompleteVal.includes(lowercaseQuery) : '');
       };
     }
 

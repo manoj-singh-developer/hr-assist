@@ -51,7 +51,7 @@
       vm.tableSettings.total = vm.userHolidays.length;
 
       autocompleteService.buildList(vm.projects, ['name']);
-      autocompleteService.buildList(vm.users, ['first_name', 'last_name']);
+      autocompleteService.buildList(vm.users, ['last_name', 'first_name']);
     });
 
     _checkRole();
