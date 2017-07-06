@@ -1,0 +1,110 @@
+<section class="requiest-vacation page show-print">
+
+    <img ng-src="/assets/images/logo-assist.png" class="hide-print" />
+    <div class="hide-print absolute-block">
+        <button class="md-button  md-primary md-no-ink"
+          label="View Holiday"
+          aria-label="View Holiday"
+          ng-click="holidayDetails.print()">
+          <md-icon class="material-icons">print</md-icon>
+          <span>Print vacation request</span>
+        </button>
+    </div>        
+    <h1 class="vacation-heading">Cerere pentru concediu de odihnă</h1>
+    <p>Stimate Domnule Director,</p>
+    <p>
+        Subsemnatul
+        <strong>{{holidayDetails.holidayPaper.lastName}} {{holidayDetails.holidayPaper.firstName}}</strong>,
+        angajat al firmei SC ASSIST Software SRL, vă rog să-mi aprobaţi
+        <strong>{{holidayDetails.holidayPaper.holidays}}</strong>
+
+        <span ng-if="holidayDetails.holidayPaper.holidays === 1">zi</span>
+        <span ng-if="holidayDetails.holidayPaper.holidays > 1">zile</span>
+        din concediul de odihnă
+
+        <span ng-if="holidayDetails.holidayPaper.holidays === 1">aferentă</span>
+        <span ng-if="holidayDetails.holidayPaper.holidays > 1">aferente</span> anului
+
+        <span ng-if="holidayDetails.holidayPaper.signing">{{holidayDetails.holidayPaper.signing | date: 'yyyy'}}</span>
+        <span ng-if="!holidayDetails.holidayPaper.signing">{{today | date: 'yyyy'}}</span>
+
+        <span ng-if="holidayDetails.holidayPaper.holidays > 1">în intervalul
+            <span>
+                <strong>{{holidayDetails.holidayPaper.startDate | date: 'dd.MM.yyyy'}} - {{holidayDetails.holidayPaper.endDate | date: 'dd.MM.yyyy'}}</strong>
+            </span>.
+        </span>
+        <span ng-if="holidayDetails.holidayPaper.holidays === 1">în data de <span>
+            <strong>{{holidayDetails.holidayPaper.startDate | date: 'dd.MM.yyyy'}}</strong>
+        </span>.
+        </span>
+    </p>
+
+    <p>Vă mulțumesc.</p>
+
+    <table>
+        <tr>
+            <td class="right-border">
+                <p>Cu considerație,</p>
+                    <strong>{{holidayDetails.holidayPaper.lastName}} {{holidayDetails.holidayPaper.firstName}}</strong>
+                </p>
+                <p>Semnătura,</p>
+                <p>
+                    Data:
+                    <strong ng-if="holidayDetails.holidayPaper.signing">
+                        {{holidayDetails.holidayPaper.signing | date: 'dd.MM.yyyy'}}
+                    </strong>
+                    <strong ng-if="!holidayDetails.holidayPaper.signing">
+                        {{today | date: 'dd.MM.yyyy'}}
+                    </strong>
+                </p>
+            </td>
+            <td class="last-collumn">
+                <p><strong>APROBAT,</strong></p>
+                <p>Gheorghe DAVID</p>
+            </td>
+        </tr>
+    </table>
+
+    <h4><strong>Mențiuni</strong></h4>
+
+    <p><strong>1.</strong> Task-urile din proiectele la care sunt implicat vor fi preluate de:</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Proiect</th>
+                <th>Înlocuitor</th>
+                <th>Semnătura înlocuitorului</th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="replace in holidayDetails.holidayPaper.holidayRep">
+            <tr class="text--center">
+                <td>{{replace.project_name}}</td>
+                <td>{{replace.replacer_name}}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        <strong>2.</strong> Am luat notă de cererea de concediu și confirm că avem la dispoziție toate elementele de acces, resursele și informațiile necesare derulării corespunzătoare a proiectelor în care colegul meu, solicitant al prezentei cereri, este implicat.
+    </p>
+    <p>
+        Team leader<span ng-if="holidayDetails.holidayPaper.leaders.length > 1">s</span>,
+        <br />
+        <strong ng-repeat="leader in holidayDetails.holidayPaper.leaders track by $index">
+            {{leader}}<span ng-show="({{$index}} != holidayDetails.holidayPaper.leaders.length-1)">,</span>
+        </strong>
+    </p>
+
+    <p>Semnătura:</p>
+    <p>
+        Data:
+        <strong ng-if="holidayDetails.holidayPaper.signing">
+            {{holidayDetails.holidayPaper.signing | date: 'dd.MM.yyyy'}}
+        </strong>
+        <strong ng-if="!holidayDetails.holidayPaper.signing">
+            {{today | date: 'dd.MM.yyyy'}}
+        </strong>
+    </p>
+
+</section>

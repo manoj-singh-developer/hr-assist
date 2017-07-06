@@ -29,12 +29,23 @@
       </p>
     </md-card-title-text>
       <!-- @!TODO: De adaugat info despre proiecte la CV -->
+      
+    <button class="md-primary md-button" type="button" 
+      ng-click="userGeneral.generateCv()" aria-label="Generate CV">
+      <md-icon class="material-icons ng-scope" role="img" aria-label="Generate CV">picture_as_pdf</md-icon>
+      <span class="ng-scope">
+        Generate CV
+      </span><div class="md-ripple-container"></div>
+    </button>
 
-    <md-button
-      ng-if="userGeneral.isAdmin";
-      ng-click="userGeneral.generateCv();">
-      Generate CV
-    </md-button>
+    <button class="md-primary md-button" type="button" 
+      ng-click="userGeneral.generateCv('doc')" aria-label="Generate CV"
+      ng-if="userGeneral.isAdmin">
+      <md-icon class="material-icons ng-scope" role="img" aria-label="Generate CV">file_download</md-icon>
+      <span class="ng-scope">
+        Generate CV DOC
+      </span><div class="md-ripple-container"></div>
+    </button>
 
   </md-card-title>
   <!-- /CARD TITLE -->

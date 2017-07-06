@@ -47,6 +47,7 @@
       promises.push(User.getSchedule($stateParams.id));
       promises.push(User.getTechnologies($stateParams.id));
       promises.push(User.getEducations($stateParams.id));
+      promises.push(User.getCertifications());
 
       $q.all(promises).then((data) => {
         vm.resources.user = data[0];
@@ -59,6 +60,7 @@
         vm.resources.schedule = data[7];
         vm.resources.userTechnologies = data[8];
         vm.resources.educations = data[9];
+        vm.resources.certifications = data[10];
         $rootScope.$emit("event:userResourcesLoaded", vm.resources);
 
       });

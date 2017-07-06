@@ -8,21 +8,23 @@
 
   userGeneralCtrl
 
-  function userGeneralCtrl($rootScope, $scope, $stateParams, autocompleteService, Upload, User, Position, $state, dateService, $http) {
+  function userGeneralCtrl($rootScope, $scope, $stateParams, $state, $http, autocompleteService, AuthInterceptor, dateService, Upload, User, Position) {
 
     let vm = this;
     let userCopy = {};
     let positionCopy = {};
     let scheduleCopy = {};
-    let technologiesString = '';
     let education = [];
     let userImage = '';
+    let defaultAuthRequest = AuthInterceptor.request;
+    vm.AuthInterceptor = AuthInterceptor;
 
     vm.today = new Date();
     vm.isAdmin = false;
     vm.user = {};
     vm.position = {};
     vm.schedule = {};
+    vm.certifications = [];
     vm.dateService = dateService;
     vm.contractType = [
       'Full-time',
@@ -50,10 +52,10 @@
       vm.user = resources.user;
       vm.education = resources.educations;
       vm.technologies = resources.userTechnologies;
+      vm.certifications = resources.certifications;
 
       saveCopy();
       _getUserPosition();
-      _getTechnologiesArr();
       _getEducation();
       _getBase64ImageUrl(_getGravatar(vm.user.email, 100));
 
@@ -111,7 +113,7 @@
       $state.reload();
     }
 
-    function generateCv() {
+    function generateCv(typeOfDoc) {
 
       let objectToGenerate = {
         'SkillsPassport': {
@@ -179,7 +181,7 @@
                 'Label': 'JOB APPLIED FOR'
               },
               'Description': {
-                'Label': ' This field must be created (Description of job applied)'
+                'Label': ' '
               }
             },
             'WorkExperience': [{
@@ -193,7 +195,7 @@
               'Position': {
                 'Label': vm.position.name
               },
-              'Activities': 'This field must be created (Activities at this job)',
+              'Activities': '',
               'Employer': {
                 'Name': 'Assist Software',
                 'ContactInfo': {
@@ -226,54 +228,45 @@
                     'Label': 'English'
                   },
                   'ProficiencyLevel': {
-                    'Listening': 'C1 (Hardcoded Value)',
-                    'Reading': 'C2 (Hardcoded Value)',
-                    'SpokenInteraction': 'B2 (Hardcoded Value)',
-                    'SpokenProduction': 'C1 (Hardcoded Value)',
-                    'Writing': 'C2 (Hardcoded Value)'
+                    'Listening': '',
+                    'Reading': '',
+                    'SpokenInteraction': '',
+                    'SpokenProduction': '',
+                    'Writing': ''
                   },
                   'Certificate': [{
-                    'Title': 'This field must be created (Language Certificate)'
-                  }]
-                }, {
-                  'Description': {
-                    'Code': 'fr',
-                    'Label': 'French'
-                  },
-                  'ProficiencyLevel': {
-                    'Listening': 'A2 (Hardcoded Value)',
-                    'Reading': 'A2 (Hardcoded Value)',
-                    'SpokenInteraction': 'A2 (Hardcoded Value)',
-                    'SpokenProduction': 'A2 (Hardcoded Value)',
-                    'Writing': 'A2 (Hardcoded Value)'
-                  },
-                  'Certificate': [{
-                    'Title': 'This field must be created (Language Certificate)'
+                    'Title': ''
                   }]
                 }]
               },
+              'JobRelated': {
+                'Description': '- ' + _getNameOfItems(vm.technologies)
+              },
               'Communication': {
-                'Description': 'This field must be created (Communication slills, short description how we achieve this skill)'
+                'Description': ''
               },
               'Organisational': {
-                'Description': '- This field must be created <br />(Organisational skills) <br />- (how we achieve this skill)'
+                'Description': ''
               },
               'Computer': {
-                'Description': '- competent with most Microsoft Office programmes (This field must be created) <br />- experience with HTML (Hardcoded Value)'
+                'Description': ''
               },
               'Driving': {
-                'Description': ['A', 'B', '(Hardcoded Value)']
+                'Description': ['']
               },
-              'Other': {
-                'Description': 'Good Skills in ' + technologiesString + '.'
-              }
             },
             'Achievement': [{
               'Title': {
                 'Code': 'publications',
                 'Label': 'Publications'
               },
-              'Description': 'ă-Ă-â-Â-î-Î-ș-Ș-ț-Ț TEST Diacritice How to do Observations: Borrowing techniques from the Social Sciences to help Participants do Observations in Simulation Exercisesâ€™ Coyote EU/CoE Partnership Publication, (2002) (Hardcoded Value).'
+              'Description': ''
+            }, {
+              'Title': {
+                'Code': 'certifications',
+                'Label': 'Certifications'
+              },
+              'Description': '- ' + _getNameOfItems(vm.certifications)
             }]
           }
         }
@@ -284,43 +277,14 @@
       // http://interop.europass.cedefop.europa.eu/web-services/rest-api-reference/common/examples/files-in/cv-in.json
       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-      _getPdf(objectToGenerate);
+      // GENERATE CV;
 
-      function _getPdf(pdfData) {
-
-        $http({
-          url: 'https://europass.cedefop.europa.eu/rest/v1/document/to/pdf-cv',
-          method: 'POST',
-          data: pdfData, // json data string
-          responseType: 'arraybuffer'
-        }).success(function(data, status, headers, config) {
-
-          let ieEDGE = navigator.userAgent.match(/Edge/g);
-          let ie = navigator.userAgent.match(/.NET/g); // IE 11+
-          let oldIE = navigator.userAgent.match(/MSIE/g);
-          let name = 'CV_' + vm.user.first_name + '_' + vm.user.last_name;
-          let blob = new window.Blob([data], { type: 'application/pdf' });
-          // debugger
-          if (ie || oldIE || ieEDGE) {
-            let fileName = name + '.pdf';
-            window.navigator.msSaveBlob(blob, fileName);
-          } else {
-            let file = new Blob([data], {
-              type: 'application/pdf'
-            });
-            let fileURL = URL.createObjectURL(file);
-            let a = document.createElement('a');
-            a.href = fileURL;
-            a.target = '_blank';
-            a.download = name + '.pdf';
-            document.body.appendChild(a);
-            a.click();
-            URL.revokeObjectURL(file);
-          }
-
-        });
-
+      if (typeOfDoc === 'doc') {
+        _getAsDoc(objectToGenerate);
+      } else {
+        _getAsPdf(objectToGenerate);
       }
+
     }
 
     function _getPositions() {
@@ -348,12 +312,62 @@
 
     // FOR CV GENERATOR FUNCTIONS
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    function _getAsPdf(data) {
+      let url = 'https://europass.cedefop.europa.eu/rest/v1/document/to/pdf-cv';
+      let type = 'application/pdf';
+      let extension = '.pdf';
+      _getCv(data, url, type, extension);
+    }
 
-    function _getTechnologiesArr() {
-      let technologiesArr = $.map(vm.technologies, (elem, index) => {
-        return [elem.name];
+    function _getAsDoc(data) {
+      let url = 'https://europass.cedefop.europa.eu/rest/v1/document/to/word';
+      let type = 'application/msword';
+      let extension = '.doc';
+      _getCv(data, url, type, extension);
+    }
+
+    function _getCv(data, url, type, extension) {
+
+      vm.AuthInterceptor.request = vm.AuthInterceptor.request != null ? null : defaultAuthRequest; // AuthInterceptor set config headers to null
+      $http({
+        url: url,
+        method: 'POST',
+        data: data,
+        responseType: 'arraybuffer'
+      }).success(function(data, status, headers, config) {
+
+        let ieEDGE = navigator.userAgent.match(/Edge/g);
+        let ie = navigator.userAgent.match(/.NET/g); // IE 11+
+        let oldIE = navigator.userAgent.match(/MSIE/g);
+        let name = 'CV_' + vm.user.first_name + '_' + vm.user.last_name;
+        let blob = new window.Blob([data], { type: type });
+
+        if (ie || oldIE || ieEDGE) {
+          let fileName = name + '.pdf';
+          window.navigator.msSaveBlob(blob, fileName);
+        } else {
+          let file = new Blob([data], {
+            type: type
+          });
+          let fileURL = URL.createObjectURL(file);
+          let a = document.createElement('a');
+          a.href = fileURL;
+          a.target = '_blank';
+          a.download = name + extension;
+          document.body.appendChild(a);
+          a.click();
+          URL.revokeObjectURL(file);
+        }
+
+        vm.AuthInterceptor.request = vm.AuthInterceptor.request != null ? null : defaultAuthRequest; // AuthInterceptor set request to default config header
       });
-      technologiesString = technologiesArr.join(', ');
+    }
+
+    function _getNameOfItems(items) {
+      let itemsString = $.map(items, (elem, index) => {
+        return elem.name;
+      });
+      return itemsString.join('\n - ');
     }
 
     function _getEducation() {
@@ -365,18 +379,11 @@
         edObj.Organisation = {};
         edObj.Organisation.ContactInfo = {};
         edObj.Organisation.ContactInfo.Address = {};
-        edObj.Organisation.ContactInfo.Address.Contact = {};
-        edObj.Organisation.ContactInfo.Address.Contact.Country = {};
-
 
         edObj.Period.From.Year = new Date(vm.education[i].start_date).getFullYear();
         edObj.Period.To.Year = new Date(vm.education[i].end_date).getFullYear();
         edObj.Title = vm.education[i].degree;
         edObj.Organisation.Name = vm.education[i].name;
-        edObj.Organisation.ContactInfo.Address.Contact.Municipality = 'Suceava (missing field at education)';
-        edObj.Organisation.ContactInfo.Address.Contact.Country.Code = 'RO (field at education)';
-        edObj.Organisation.ContactInfo.Address.Contact.Country.Label = 'Romania (missing field at education)';
-
         education.push(edObj);
       }
 

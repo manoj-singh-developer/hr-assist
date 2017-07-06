@@ -69,16 +69,17 @@
   <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
 
   <!-- AUTOCOMPLETE SEARCH -->
-  <md-content class="md-padding">
+  <md-content class="md-padding"
+  ng-show="!users.showFilters">
     <form ng-submit="$event.preventDefault()">
       <md-autocomplete
         ng-disabled="users.isDisabled"
         ng-model="users.searchText"
         md-selected-item="users.selectedItem"
-        md-search-text-change="users.querySearch(users.searchText, users.users)"
+        md-search-text-change="users.querySearch(users.searchText, users.usersCopy)"
         md-search-text="users.searchText"
-        md-selected-item-change="users.querySearch(users.searchText, users.users)"
-        md-items="item in users.querySearch(users.searchText, users.users)"
+        md-selected-item-change="users.querySearch(users.searchText, users.usersCopy)"
+        md-items="item in users.querySearch(users.searchText, users.usersCopy)"
         md-item-text="item.last_name + ' ' +  item.first_name"
         md-min-length="0"
         md-dropdown-position="bottom"
@@ -143,6 +144,7 @@
           <th md-column>Technologies</th>
           <th md-column>Projects</th>
           <!-- <th md-column>Last update</th> -->
+          <th md-column>Start date Assist</th>
           <th md-column>Actions</th>
         </tr>
       </thead>
@@ -153,7 +155,7 @@
           md-select="employee"
           md-on-select="logItem"
           ng-repeat="employee in users.users 
-          | filter: users.searchText 
+          | filter: (users.firstNameFilter || users.searchText)
           | orderBy: users.tableSettings.query.order 
           | limitTo: users.tableSettings.query.limit : (users.tableSettings.query.page - 1) * users.tableSettings.query.limit track by $index"
           ui-sref="employeesParent.details({id: employee.id})">
@@ -201,7 +203,9 @@
           <!-- <td md-cell ng-hide="employee.candidate">
             {{employee.updatedAt | date: longDate}}
           </td> -->
-
+          <td md-cell>
+              {{employee.company_start_date | date: "dd-MM-yyyy"}}
+          </td>
           <td md-cell>
 
             <md-button

@@ -37,7 +37,7 @@ class User < ApplicationRecord
 
   scope :by_year_and_month_birth, ->(date) { where("YEAR(birthday) = ? and MONTH(birthday) = ?", date.year, date.month) }
   scope :by_company_start_date_until_present, ->(date) { where("YEAR(company_start_date) >= ? and MONTH(company_start_date) between 1 and ?", date.year, date.month) }
-  scope :by_university_year, ->(year) { joins(:educations).where("end_date IS NULL").where("YEAR(start_date) = ? and MONTH(birthday) < 9", year) }
+  scope :by_university_year, ->(year) { joins(:educations).where("end_date IS NULL").where("YEAR(start_date) = ? and MONTH(start_date) < 9", year) }
   scope :by_projects, ->(ids) { joins(:projects).where(projects: {id: ids} ) }
   scope :by_technologies, ->(ids) { joins(:technologies).where(technologies: {id: ids} ) }
   scope :by_certifications, ->(ids) { joins(:certifications).where(certifications: {id: ids} ) }
