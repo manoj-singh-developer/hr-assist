@@ -96,7 +96,8 @@
                   class="md-icon-button md-warn"
                   label="Delete holiday"
                   aria-label="Delete holiday"
-                  ng-click="userHoliday.removeHoliday(holiday)">
+                  ng-click="userHoliday.removeHoliday(holiday)"
+                  ng-if="userHoliday.isAdmin">
                   <md-icon class="material-icons">delete</md-icon>
                   <md-tooltip md-autohide="true">
                     Delete holiday

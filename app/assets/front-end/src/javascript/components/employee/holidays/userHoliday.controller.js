@@ -19,6 +19,7 @@
     vm.teamLeaders = [];
     vm.searchProj = [];
     vm.searchUser = [];
+    vm.isAdmin = false;
 
     vm.tableSettings = tableSettings;
     vm.tableSettings.query.limit = 5;
@@ -52,6 +53,8 @@
       autocompleteService.buildList(vm.projects, ['name']);
       autocompleteService.buildList(vm.users, ['first_name', 'last_name']);
     });
+
+    _checkRole();
 
     function queryUserSearch(query) {
       let empArr = autocompleteService.querySearch(query, vm.users);
@@ -287,6 +290,10 @@
 
       return days = (iDateDiff + 1);
 
+    }
+
+    function _checkRole() {
+      vm.isAdmin = $rootScope.isAdmin ? true : false;
     }
 
   }
