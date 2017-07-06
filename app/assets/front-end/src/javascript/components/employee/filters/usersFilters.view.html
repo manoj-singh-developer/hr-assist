@@ -215,26 +215,40 @@
   <!--/. FOR LANGUAGES WITH LEVEL -->
 
 
+  <!-- FILTER BY START COMPANY DAY-->
   <section layout="row" layout-align="left center" class="md-padding">
     <label>Filter by start company date:</label>
     <md-datepicker ng-model="users.filters.start_date"
       md-placeholder="Start date"
-      md-open-on-focus
-      >
+      md-open-on-focus>
     </md-datepicker>
   </section>
+  <!-- /FILTER BY START COMPANY DAY-->
 
-  
+
+  <!-- FILTER BY MONTH -->  
   <section layout="row" layout-align="left center" class="md-padding">
     <label>Filter by birthday:</label>
-    <md-datepicker ng-model="users.filters.birthday"
-      md-placeholder="Start date"
-      md-current-view="year"
-      md-open-on-focus
-      >
-    </md-datepicker>
+    <md-input-container md-no-float>
+      <md-select
+        aria-label="month"
+        ng-model="users.selectedMonth"
+        placeholder="Pick a Month"
+        md-selected-text="users.selectedMonthDate(users.selectedMonth)">
+        <md-optgroup label="Months">
+          <md-option
+            value="{{month}}"
+            ng-repeat="month in users.monthsList">
+            {{month}}
+          </md-option>
+        </md-optgroup>
+      </md-select>
+    </md-input-container>
   </section>
+  <!-- FILTER BY MONTH -->
 
+
+  <!-- FILTER BY UNIVERSITY YEAR -->
   <section layout="row" layout-align="left center" class="md-padding">
     <label>Filter by year of university: </label>
     <input type="number" 
@@ -242,37 +256,9 @@
       md-placeholder="Start date"
       md-open-on-focus
       min="1"
-      max="4" 
-      >
+      max="4">
     </input>
   </section>
-
-<!-- 
-  <section layout="row" layout-align="left center" class="md-padding">
-    <p>Filter by application Types: </p>
-    <md-chips
-      ng-model="users.filters.application_types"
-      md-autocomplete-snap=""
-      md-on-remove="users.filterUsers(users.filterType.remove)"
-      md-on-add="users.filterUsers(users.filterType.add)"
-      md-require-match=true>
-      <md-autocomplete
-        md-search-text="users.search.application_types"
-        md-items="item in users.querySearch(users.search.application_types, users.application_types)"
-        md-item-text="item.name"
-        placeholder="application Type">
-        <span md-highlight-text="users.search.application_types">
-          {{item.name}}
-        </span>
-      </md-autocomplete>
-      <md-chip-template>
-        <span>
-          <em>({{$chip.name}})</em>
-        </span>
-      </md-chip-template>
-    </md-chips>
-  </section> -->
-
-
+  <!-- FILTER BY UNIVERSITY YEAR -->
 
 </md-content>
