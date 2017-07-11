@@ -51,7 +51,27 @@ module APIHelpers
         :paginate => url_paginate(items, params[:per_page])
       }
     else
-      { items:  model.all.includes(relations).as_json(include: relations, except: exception) }
+      if relations.include?("languages")
+        response_final = []
+        response = {languages: []}
+        model.all.each do |user|
+          user.user_languages.each do |user_language|
+            language = Language.find(user_language.language_id)
+            response[:languages] << {
+                language_id: language.id,
+                long_name: language.long_name,
+                short_name: language.short_name,
+                level: user_language.level
+            }
+          end
+          response_final << user.as_json(include: relations, except: exception).merge(response)
+          response[:languages] = [] if response[:languages].count == user.user_languages.count
+        end
+        {items: response_final}
+      else
+        {items:  model.all.includes(relations).as_json(include: relations, except: exception)}
+      end
+
     end
   end
 
