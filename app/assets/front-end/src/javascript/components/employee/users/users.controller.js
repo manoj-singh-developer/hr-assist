@@ -13,12 +13,14 @@
     let exportUsers = [];
     let querySearchItems = [];
 
+    vm.selectedMonth;
     vm.showFilters = false;
     vm.technologiesLvl = [];
     vm.selectedTechnologies = [];
     vm.selectedLanguages = [];
     vm.languagesLvl = [];
     vm.users = [];
+    vm.monthSelection = [];
     vm.resources = {};
     vm.usersCopy = {};
     vm.dateService = dateService;
@@ -35,7 +37,6 @@
       // languages: [{}], // FOR LANGUAGES WITH LEVEL
       projects: [],
       start_date: undefined,
-      birthday: undefined,
       university_year: undefined
     };
     vm.technologiesText = [{
@@ -68,8 +69,8 @@
     }, {
       title: "Senior",
       level: 10
-    }]
-
+    }];
+    vm.monthsList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     _getResources();
 
     vm.showForm = showForm;
@@ -82,6 +83,7 @@
     vm.search = search;
     vm.addNewTechnology = addNewTechnology;
     vm.addNewLanguages = addNewLanguages;
+    vm.selectedMonthDate = selectedMonthDate;
 
     function addNewTechnology() {
       vm.filters.technologies.push({});
@@ -145,7 +147,6 @@
       });
 
       filterObj = {
-        birthday: vm.filters.birthday ? vm.dateService.format(new Date(vm.filters.birthday)) : vm.filters.birthday,
         university_year: vm.filters.university_year,
         start_date: vm.filters.start_date ? vm.dateService.format(new Date(vm.filters.start_date)) : vm.filters.start_date,
         projects: projects,
@@ -164,11 +165,15 @@
         filters: filterObj
       }
 
-      User.filter(filterObj).then((data) => {
-        vm.users = data;
-        _generateXlsx();
-        _updateTablePagination(vm.users);
-      });
+      if (vm.selectedMonth) {
+        _filterByMonth();
+      } else {
+        User.filter(filterObj).then((data) => {
+          vm.users = data;
+          _generateXlsx();
+          _updateTablePagination(vm.users);
+        });
+      }
     }
 
     function showForm(device) {
@@ -223,9 +228,10 @@
         if (typeof vm.filters[key] === 'object' && vm.filters[key] instanceof Array) {
           vm.filters[key] = [];
         } else {
-          vm.filters[key] = undefined;
+          vm.filters[key] = null;
         }
       });
+      vm.selectedMonth = null;
       vm.users = vm.usersCopy;
       exportUsers = vm.usersCopy;
       _generateXlsx();
@@ -248,11 +254,21 @@
 
     function saveExcelFile() {
 
-      var opts = [{
+      let opts = [{
         sheetid: 'Employee Raport',
         headers: false
       }];
-      var res = alasql('SELECT INTO XLSX("Employee Raport.xlsx",?) FROM ? ORDER BY firstName', [opts, [excelData]]);
+      let res = alasql('SELECT INTO XLSX("Employee Raport.xlsx",?) FROM ? ORDER BY firstName', [opts, [excelData]]);
+    }
+
+    function selectedMonthDate(data) {
+      vm.indexMonth = vm.monthsList.indexOf(data);
+      if (data) {
+        vm.monthSelection[vm.indexMonth] = data;
+        return vm.selectedMonth;
+      } else {
+        return "Pick a month";
+      }
     }
 
     function _updateTablePagination(data) {
@@ -293,7 +309,6 @@
     }
 
     function _generateXlsx() {
-      // exportUsers = vm.users;
       excelData = [];
 
       let tableHeader = {
@@ -371,6 +386,21 @@
       return $.map(itemsArray, (value, index) => {
         return eval(value);
       });
+    }
+
+    function _filterByMonth() {
+      vm.users = vm.usersCopy;
+      let filtredUsers = [];
+      let birthday;
+
+      vm.users.map(function(user) {
+        birthday = new Date(user.birthday);
+        if (user.birthday && vm.monthSelection[vm.indexMonth] === vm.monthsList[birthday.getMonth()])
+          filtredUsers.push(user);
+      });
+
+      vm.users = filtredUsers;
+      _updateTablePagination(vm.users);
     }
   }
 

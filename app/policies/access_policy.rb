@@ -65,6 +65,7 @@ class AccessPolicy
     role :employee do
       can :read, User
       can :update, User
+      can :read, Holiday
     end
   end
 end
