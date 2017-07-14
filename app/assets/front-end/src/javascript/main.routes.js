@@ -477,9 +477,9 @@ const rootTemplatePath = './views/components/';
 
   // Permission for EMPLOYEES ONLY
   seeLimited
-    .$inject = ['tokenService', '$rootScope', 'transitionProperties'];
+    .$inject = ['$rootScope', 'tokenService'];
 
-  function seeLimited(tokenService, $rootScope, transitionProperties) {
+  function seeLimited($rootScope, tokenService) {
     var token = tokenService.getToken('user_token');
     var decodeToken = tokenService.decodeToken(token);
 
