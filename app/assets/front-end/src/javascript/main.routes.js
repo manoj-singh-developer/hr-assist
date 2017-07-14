@@ -35,8 +35,8 @@ const rootTemplatePath = './views/components/';
           cssClassNames: 'view-landing'
         },
         resolve: {
-          controller: function ($location, tokenService) {
-            if(localStorage.auth_token &&
+          controller: function($location, tokenService) {
+            if (localStorage.auth_token &&
               window.location.href === 'http://localhost:8000/#/' ||
               window.location.href === 'http://localhost:8000' ||
               window.location.href === 'https://hr.assist.ro/' ||
@@ -44,7 +44,7 @@ const rootTemplatePath = './views/components/';
 
               var tokenToDecode = localStorage.getItem('user_token');
               var decodeToken = tokenService.decodeToken(tokenToDecode);
-              var userId  = decodeToken.user_id;
+              var userId = decodeToken.user_id;
 
               $location.path("employees/" + userId);
             }
@@ -100,37 +100,13 @@ const rootTemplatePath = './views/components/';
           cssClassNames: 'view-user-details'
         }
       })
-      .state('employeesParent.cv', {
-        url: '/:id/cv',
-        template: '<hra-employee-cv></hra-employee-cv>',
-        data: {
-          permissions: {
-            only: ['ADMIN', 'EMPLOYEE'],
-            except: ['isAnonymous'],
-            redirectTo: 'login'
-          },
-          cssClassNames: 'view-employee-cv'
-        }
-      })
-      .state('employeesParent.holiday', {
-        url: '/:id/holiday/:holidayIndex',
-        template: '<hra-employee-holiday-preview></hra-employee-holiday-preview>',
-        data: {
-          permissions: {
-            only: ['ADMIN', 'EMPLOYEE'],
-            except: ['isAnonymous'],
-            redirectTo: 'login'
-          },
-          cssClassNames: 'view-employee-holidays'
-        }
-      })
       // @HOLIDAYS
       .state('holidayParent', {
         url: '/holidays',
-        templateUrl: rootTemplatePath + 'holiday/views/holidayParent.view.html',
+        template: '<section ui-view></section>',
         data: {
           permissions: {
-            only: ['ADMIN'],
+            only: ['ADMIN', 'EMPLOYEE'],
             except: ['isAnonymous'],
             redirectTo: 'login'
           }
@@ -153,7 +129,7 @@ const rootTemplatePath = './views/components/';
         template: '<hra-holiday-details></hra-holiday-details>',
         data: {
           permissions: {
-            only: ['ADMIN'],
+            only: ['ADMIN', 'EMPLOYEE'],
             except: ['isAnonymous'],
             redirectTo: 'login'
           },
@@ -452,7 +428,7 @@ const rootTemplatePath = './views/components/';
   function setRoles(PermPermissionStore, PermRoleStore) {
 
     PermRoleStore.defineManyRoles({
-      'EMPLOYEE': ['seeOwnProfileOnly'],
+      'EMPLOYEE': ['seeLimited'],
       'ADMIN': ['seeEverything']
     });
 
@@ -463,7 +439,7 @@ const rootTemplatePath = './views/components/';
       .definePermission('isAnonymous', isAnonymous);
 
     PermPermissionStore
-      .definePermission('seeOwnProfileOnly', seeOwnProfileOnly);
+      .definePermission('seeLimited', seeLimited);
 
     PermPermissionStore
       .definePermission('seeEverything', seeEverything);
@@ -500,36 +476,17 @@ const rootTemplatePath = './views/components/';
 
 
   // Permission for EMPLOYEES ONLY
-  seeOwnProfileOnly
+  seeLimited
     .$inject = ['tokenService', '$rootScope', 'transitionProperties'];
 
-  function seeOwnProfileOnly(tokenService, $rootScope, transitionProperties) {
+  function seeLimited(tokenService, $rootScope, transitionProperties) {
     var token = tokenService.getToken('user_token');
     var decodeToken = tokenService.decodeToken(token);
 
-    var userIdApi = ''; // user id that comes from api
-    var userIdTransition = ''; // user id from state params
-    var isHisProfie = null;
-    var isEmployee = null;
-
-    if (decodeToken) {
-      userIdApi = parseInt(decodeToken.user_id);
-      userIdTransition = parseInt(transitionProperties.toParams.id);
-
-      // [ userIdApi ] and [ userIdTransition ] should be the same
-      // in order to PREVENT an Employee
-      // to access other Employee profile
-      // ONLY ADMIN can access all profiles
-      isHisProfie = (userIdApi === userIdTransition);
-      isEmployee = (decodeToken.role_id === 2);
-
-      if (isHisProfie && isEmployee) {
-        toggleMenuClassesFor('EMPLOYEE');
-        $rootScope.isAdmin = false;
-        return true;
-      } else {
-        return false;
-      }
+    if (decodeToken && decodeToken.role_id === 2) {
+      toggleMenuClassesFor('EMPLOYEE');
+      $rootScope.isAdmin = false;
+      return true;
     } else {
       return false;
     }

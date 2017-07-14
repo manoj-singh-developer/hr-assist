@@ -42,7 +42,6 @@
     vm.removeHoliday = removeHoliday;
     vm.toggleForm = toggleForm;
     vm.getWorkingDay = getWorkingDay;
-    vm.addLeaders = addLeaders;
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.projects = data.projects;
@@ -212,10 +211,6 @@
       var day = date.getDay();
       return !(day === 0 || day === 6);
     };
-
-    function addLeaders() {
-      vm.leader = ' ';
-    }
 
     function removeHoliday(holiday, event) {
       holiday.start_date = $filter('date')(holiday.start_date, "d MMM, y");

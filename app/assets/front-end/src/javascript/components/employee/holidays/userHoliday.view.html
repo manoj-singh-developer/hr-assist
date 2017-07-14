@@ -184,19 +184,20 @@
             <div layout="column" layout-align="start start" layout-fill>
 
               <!-- SELECT TEAM LEADER -->
-              <div class="md-block u-mb-20" layout-fill>
+              <div class="md-block u-mb-20" layout-fill
+              ng-init="minLength = 0">
 
                 <md-chips
                   ng-model="userHoliday.teamLeaders"
                   md-on-remove
-                  md-on-add="userHoliday.addLeaders()"
+                  md-on-add="minLength=1"
                   md-require-match
                   md-input-name="autocompleteLeader">
                   <md-autocomplete
                     md-search-text="userHoliday.leader"
                     md-items="user in userHoliday.querySearch(userHoliday.leader, userHoliday.users)"
                     md-item-text="user.first_name+' '+user.last_name"
-                    md-min-length="0"
+                    md-min-length="minLength"
                     md-dropdown-position="bottom"
                     placeholder="Select team leader">
                     <md-item-template>
