@@ -85,11 +85,12 @@ module V1
       end
       post 'new' do
         if params[:items]
-          params[:items].each do |x|
-            authorizeAndCreate(Technology, {name: x[:name] , label: x[:label]})
+          params[:items].each do |value|
+            authorizeAndCreate(Technology, { name: value[:name] , label: value[:label], creator_id: current_user.id })
           end
         else
-          authorizeAndCreate(Technology, postParams)
+          tech_params = { name: postParams[:name] , label: postParams[:label], creator_id: current_user.id }
+          authorizeAndCreate(Technology, tech_params)
         end
       end
 
