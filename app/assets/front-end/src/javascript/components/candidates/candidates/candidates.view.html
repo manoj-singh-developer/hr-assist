@@ -14,17 +14,6 @@
       <div class="md-title">
 
         <span >Candidates</span>
-
-        <!-- <md-button
-          class="md-primary"
-          label="Toggle filters"
-          aria-label="Toggle filters"
-          ng-click="candidates.toggleFilters()">
-          <md-icon class="material-icons">filter_list</md-icon>
-          <md-tooltip md-autohide="true">
-            Toggle filters
-          </md-tooltip>
-        </md-button> -->
       </div>
 
       <div flex="" class="flex"></div>
@@ -34,56 +23,60 @@
         <md-button
           ng-click="candidates.showForm()"
           class="md-primary">
-          <!-- <md-icon class="material-icons">file_download</md-icon> -->
+          <md-icon class="material-icons">group_add</md-icon>
           <md-tooltip md-autohide="true">
             ADD CANDIDATE
           </md-tooltip>
           ADD CANDIDATE
         </md-button>
-
-      <!-- TODO Employee export CV -->
-        <!-- <md-button
-          class="md-primary"
-          ng-csv="candidates.getArray()"
-          csv-header="candidates.getHeader()"
-          filename="Raportcandidates.csv">
-          Export in CSV
-        </md-button> -->
+        
+        <md-button
+          ng-click="candidates.saveExcelFile()"
+          class="md-primary">
+          <md-icon class="material-icons">file_download</md-icon>
+          <md-tooltip md-autohide="true">
+            Export Excel
+          </md-tooltip>
+          Export Excel
+        </md-button>
 
       </div>
 
     </div>
-  </md-toolbar><!-- /TITLE -->
+  </md-toolbar>
+  <!-- /TITLE -->
 
 
 
 
   <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
 
+
   <!-- AUTOCOMPLETE SEARCH -->
   <md-content class="md-padding"
-  ng-show="!candidates.showFilters">
+    ng-show="!candidates.showFilters">
     <form ng-submit="$event.preventDefault()">
       <md-autocomplete
         ng-disabled="candidates.isDisabled"
         ng-model="candidates.searchText"
         md-selected-item="candidates.selectedItem"
-        md-search-text-change="candidates.querySearch(candidates.searchText, candidates.usersCopy)"
+        md-search-text-change="candidates.querySearch(candidates.searchText, candidates.candidateCopy)"
         md-search-text="candidates.searchText"
-        md-selected-item-change="candidates.querySearch(candidates.searchText, candidates.usersCopy)"
-        md-items="item in candidates.querySearch(candidates.searchText, candidates.usersCopy)"
-        md-item-text="item.last_name + ' ' +  item.first_name"
+        md-selected-item-change="candidates.querySearch(candidates.searchText, candidates.candidateCopy)"
+        md-items="item in candidates.querySearch(candidates.searchText, candidates.candidateCopy)"
+        md-item-text="item.name"
         md-min-length="0"
         md-dropdown-position="bottom"
         placeholder="Search">
 
         <md-item-template>
           <span class="item-metadata">
-            {{item.last_name}} {{item.first_name}}
+            {{item.name}}
         </md-item-template>
       </md-autocomplete>
     </form>
-  </md-content><!-- /AUTOCOMPLETE SEARCH -->
+  </md-content>
+  <!-- /AUTOCOMPLETE SEARCH -->
 
 
 
@@ -97,23 +90,16 @@
         {{candidates.tableSettings.selected.length}} {{candidates.tableSettings.selected.length > 1 ? 'employees' : 'employee'}} selected
       </span>
     </div>
-  </md-toolbar><!-- /SELECTED ROWS -->
+  </md-toolbar>
+  <!-- /SELECTED ROWS -->
 
-
-
-
-  <!-- ALL FILTERS -->
-  
-
- <!--  <hra-users-filters></hra-users-filters> -->
-<!-- / ALL FILTERS -->
 
   <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
 
 
 
 
-  <!-- TABLE EMPLOYEES -->
+  <!-- TABLE CANDIDATES -->
   <md-table-container>
     <table
       class="c-table--actions c-table--big table-employees"
@@ -128,10 +114,11 @@
         md-head
         md-order="candidates.tableSettings.query.order">
         <tr md-row>
-        <th md-column>Nr.</th>
+        <th md-column>No.</th>
           <th md-column md-order-by="name">Name</th>
           <th md-column>Email/Phone</th>
           <th md-column>Technologies</th>
+          <th md-column>Type of technology</th>
           <th md-column>Projects</th>
           <th md-column>Comments</th>
           <th md-column>Actions</th>
@@ -146,27 +133,14 @@
           ng-repeat="candidate in candidates.candidate 
           | filter: (candidates.firstNameFilter || candidates.searchText)
           | orderBy: candidates.tableSettings.query.order 
-          | limitTo: candidates.tableSettings.query.limit : (candidates.tableSettings.query.page - 1) * candidates.tableSettings.query.limit track by $index"
-          ui-sref="employeesParent.details({id: candidate.id})">
+          | limitTo: candidates.tableSettings.query.limit : (candidates.tableSettings.query.page - 1) * candidates.tableSettings.query.limit track by $index">
+          <td md-cell>{{$index + 1}}</td>
+          <td md-cell>{{candidate.name}}</td>
+          <td md-cell>{{candidate.contact_info}}</td>
+          <td md-cell>{{candidate.technology}}</td>
           <td md-cell>
-            {{$index + 1}}
-          </td>
-
-          <td md-cell>
-            <p>{{candidate.name}}</p>
-          </td>
-
-
-          <td md-cell>
-            <p>{{candidate.contact_info}}</p>
-          </td>
-
-          <td md-cell>
-            <ul class="c-list" ng-if="candidate.languages">
-              <li ng-repeat="language in candidate.languages">
-                {{$index + 1}}. {{language.long_name}}
-              </li>
-            </ul>
+            <p ng-if="candidate.category===0">Front End</p>
+            <p ng-if="candidate.category!=0">Back End</p>
           </td>
 
           <td md-cell ng-hide="candidate.candidate">
@@ -176,66 +150,38 @@
             </ul>
           </td>
 
-          <td md-cell>
-              {{candidate.comments }}
-          </td>
-          <td md-cell>
+          <td md-cell>{{candidate.comments}}</td>
 
-            <md-button
-              ng-hide="candidates.candidate"
-              class="md-icon-button md-primary"
-              label="View candidate details"
-              aria-label="View candidate details"
-              ui-sref="employeesParent.details({id: candidate.id})">
-              <md-icon class="material-icons">visibility</md-icon>
-              <md-tooltip md-autohide="true">
-                View candidate details
-              </md-tooltip>
-            </md-button>
-
+          <td md-cell>
             <md-button
               ng-show="candidates.candidate"
               class="md-icon-button md-primary"
-              label="View candidate details"
-              aria-label="View candidate details"
-              ui-sref="candidateParent.details({id: candidate.id})">
-              <md-icon class="material-icons">visibility</md-icon>
+              label="Update candidate"
+              aria-label="Update candidate"
+              ng-click="candidates.showForm(candidate)">
+              <md-icon class="material-icons">create</md-icon>
               <md-tooltip md-autohide="true">
-                View candidate details
+                Update candidate
               </md-tooltip>
             </md-button>
-
-            <!-- <md-button
-              ng-show="candidates.candidate"
-              class="md-icon-button md-primary"
-              label="Conver to candidate"
-              aria-label="Conver to candidate"
-              ng-click="candidates.sendToEmployee(candidate, $index)">
-              <md-icon class="material-icons">send</md-icon>
-              <md-tooltip md-autohide="true">
-                Convert to candidate
-              </md-tooltip>
-            </md-button> -->
-
-            <!-- <md-button
+            
+            <md-button
               class="md-icon-button md-warn"
-              label="{{candidates.candidate ? 'Remove candidate' : 'Remove candidate'}}"
-              aria-label="{{candidates.candidate ? 'Remove candidate' : 'Remove candidate'}}"
-              ng-click="candidates.remove( candidate, $event, $index)">
+              label="Remove candidate"
+              aria-label="Remove candidate"
+              ng-click="candidates.remove(candidate, $event)">
               <md-icon class="material-icons">delete</md-icon>
               <md-tooltip md-autohide="true">
-                <span ng-show="!candidates.candidate">Remove candidate</span>
-                <span ng-show="candidates.candidate">Remove candidate</span>
+                Remove candidate
               </md-tooltip>
-            </md-button> -->
-
+            </md-button>
           </td>
-
         </tr>
       </tbody>
 
     </table>
-  </md-table-container><!-- /TABLE EMPLOYEES -->
+  </md-table-container>
+  <!-- /TABLE CANDIDATES -->
 
 
 
@@ -247,68 +193,6 @@
   <!-- /TABLE PAGINATION -->
 
 
-
-
-  <!-- TEMPLATES -->
-  <script type="text/ng-template" id="employeeForm.tmpl.html">
-    <hra-employee-form
-      md-whiteframe='6'
-      employees=empoloyeeM.employees
-      employee=empoloyeeM.employee
-      employee-index="empoloyeeM.employeeIndex"
-      form-title="empoloyeeM.formTitle"
-      candidate = empoloyeeM.candidate
-      aria-label="Form">
-    </hra-employee-form>
-  </script>
-
-
-
-
-  <script type="text/ng-template" id="employeeJsonForm.tmpl.html">
-    <section layout="column">
-
-      <md-toolbar class="md-table-toolbar">
-        <div class="md-toolbar-tools ">
-          Add employees from JSON
-        </div>
-      </md-toolbar>
-
-      <section class="md-padding">
-
-        <form name="employeejsonform" class="form md-inline-form">
-          <textarea class="save-from-json" ng-model="empoloyeeJsonM.json" placeholder="Paste json here">
-          </textarea>
-        </form>
-
-        <!-- Actions buttons -->
-        <div layout="row" layout-align="center center">
-
-          <md-button
-            class="md-raised md-primary"
-            ng-click="empoloyeeJsonM.saveFromJson(empoloyeeJsonM.json)">
-            Save
-          </md-button>
-
-          <md-button
-            class="md-raised md-primary"
-            ng-click="empoloyeeJsonM.clearFields()">
-            Clear
-          </md-button>
-
-          <md-button
-            class="md-raised"
-            ng-click="empoloyeeJsonM.closeDialog()">
-            Close
-          </md-button>
-
-        </div><!-- /Actions buttons -->
-
-      </section>
-
-    </section>
-  </script>
-  <!-- /TEMPLATES -->
 
 </section>
 

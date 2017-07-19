@@ -7,7 +7,7 @@
     .factory('Candidate', Candidate);
 
 
-  function Candidate($resource, apiUrl, alertService, $stateParams, errorService, $httpParamSerializerJQLike) {
+  function Candidate($resource, apiUrl, alertService, errorService, Upload) {
 
     function Candidate() {}
 
@@ -16,59 +16,6 @@
     let resource = null;
     let model = 'User';
 
-
-    Candidate.save = (data) => {
-      url = apiUrl + '/users/new';
-      resource = $resource(url, {}, {
-        'post': {
-          method: 'POST'
-        }
-      }).save(data);
-
-      promise = resource.$promise
-        .then((data) => {
-          alertService.success(model, 'save');
-          return data;
-        }).catch((error) => {
-          errorService.forceLogout(error);
-          alertService.error(model, 'save')
-        });
-
-      return promise;
-    };
-
-    Candidate.update = (data) => {
-      url = apiUrl + '/users/:id';
-      resource = $resource(url, {}, {
-        'update': { method: 'PUT' }
-      }).update({ id: data.id }, data);
-
-      promise = resource.$promise
-        .then((data) => {
-          alertService.success(model, 'update');
-          return data;
-        })
-        .catch((error) => {
-          errorService.forceLogout(error);
-          alertService.error(model, 'update')
-        });
-
-      return promise;
-    };
-
-    Candidate.getById = (id) => {
-      url = apiUrl + '/users/:id';
-      resource = $resource(url).get({ id: id });
-
-      promise = resource.$promise
-        .then(data => data)
-        .catch((error) => {
-          alertService.error(model, 'getById');
-          errorService.forceLogout(error);
-          errorService.notUserFound(error);
-        });
-      return promise;
-    };
 
     Candidate.getAll = () => {
       url = apiUrl + '/candidates';
@@ -84,24 +31,43 @@
         .catch((error) => {
           alertService.error(model, 'getAll');
           errorService.forceLogout(error);
-          errorService.notUserFound(error);
         });
 
       return promise;
     };
 
-    Candidate.remove = (id) => {
-      url = apiUrl + '/users/:id';
-      resource = $resource(url).delete({ id: id });
+    Candidate.save = (data) => {
+      url = apiUrl + '/candidates/new';
+
+      promise = Upload.upload({
+        url: url,
+        data: data
+      });
+      promise.then((response) => {
+        return response.data;
+        alertService.success(model, 'save');
+      }, (error) => {
+        errorService.forceLogout(error);
+        alertService.error(model, 'save')
+        console.log('Error status: ' + error.status);
+      });
+      return promise;
+    };
+
+    Candidate.update = (data) => {
+      url = apiUrl + '/candidates/:id';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update({ id: data.id }, data);
 
       promise = resource.$promise
         .then((data) => {
-          alertService.success(model, 'remove');
+          alertService.success(model, 'update');
           return data;
         })
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'remove')
+          alertService.error(model, 'update')
         });
 
       return promise;

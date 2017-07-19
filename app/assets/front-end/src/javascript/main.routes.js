@@ -271,7 +271,7 @@ const rootTemplatePath = './views/components/';
       // @CANDIDATES
       .state('candidateParent', {
         url: '/candidate',
-        template: '<section ui-view></section>',
+        template: '<section ui-view md-whiteframe="6"></section>',
         data: {
           permissions: {
             only: ['ADMIN'],
