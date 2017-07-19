@@ -43,15 +43,52 @@ module APIHelpers
     )
   end
 
+  def getCustomObject(special ,model , relations, exception , response_final = [], response = {})
+    model.all.each do |user|
+      special.each do |relation|
+        response[relation] = []
+        if relation == "languages"
+          user.user_languages.each do |user_language|
+            language = Language.find(user_language.language_id)
+            response["languages"] << {
+                language_id: language.id,
+                long_name: language.long_name,
+                level: user_language.level
+            }
+          end
+        else
+          user.user_technologies.each do |user_technology|
+            technology = Technology.find(user_technology.technology_id)
+            response["technologies"] << {
+                technology_id: technology.id,
+                name: technology.name,
+                level: user_technology.level
+            }
+          end
+        end
+      end
+      response_final << user.as_json(include: relations, except: exception).merge(response)
+      response["languages"] = [] if response["languages"] && response["languages"].count == user.user_languages.count
+      response["technologies"] = [] if response["technologies"] && response["technologies"].count == user.user_technologies.count
+    end
+    {items: response_final}
+
+  end
+
   def getPaginatedItemsFor(model, relations = nil, exception = nil)
+    special_relations = relations & ["languages","technologies"]
     if params[:page] && params[:per_page]
       items = model.all.includes(relations).page(params[:page]).per(params[:per_page])
       {
-        :items => items.as_json(include: relations, except: exception),
-        :paginate => url_paginate(items, params[:per_page])
+          :items => items.as_json(include: relations, except: exception),
+          :paginate => url_paginate(items, params[:per_page])
       }
     else
-      { items:  model.all.includes(relations).as_json(include: relations, except: exception) }
+      if special_relations
+        getCustomObject(special_relations,model, relations, exception)
+      else
+        {items:  model.all.includes(relations).as_json(include: relations, except: exception)}
+      end
     end
   end
 
@@ -60,31 +97,10 @@ module APIHelpers
     if params[:page] && params[:per_page]
       items = items.includes(relations).page(params[:page]).per(params[:per_page])
       {
-        :items => items.as_json(include: relations, except: exception),
-        :paginate => url_paginate(items, params[:per_page])
+          :items => items.as_json(include: relations, except: exception),
+          :paginate => url_paginate(items, params[:per_page])
       }
     else
-      if relations && relations.include?("languages")
-        response_final = []
-        response = {languages: []}
-        model.all.each do |user|
-          user.user_languages.each do |user_language|
-            language = Language.find(user_language.language_id)
-            response[:languages] << {
-                language_id: language.id,
-                long_name: language.long_name,
-                short_name: language.short_name,
-                level: user_language.level
-            }
-          end
-          response_final << user.as_json(include: relations, except: exception).merge(response)
-          response[:languages] = [] if response[:languages].count == user.user_languages.count
-        end
-        {items: response_final}
-      else
-        {items:  model.all.includes(relations).as_json(include: relations, except: exception)}
-      end
-
       { items:  model.all.includes(relations).as_json(include: relations, except: exception) }
     end
   end
