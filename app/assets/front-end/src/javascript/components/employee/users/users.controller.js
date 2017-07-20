@@ -13,6 +13,8 @@
     let exportUsers = [];
     let querySearchItems = [];
 
+    vm.getLanguageLvlTxt = getLanguageLvlTxt;
+    vm.getTechnologyLvlTxt = getTechnologyLvlTxt;
     vm.selectedMonth;
     vm.showFilters = false;
     vm.technologiesLvl = [];
@@ -70,6 +72,7 @@
       title: "Senior",
       level: 10
     }];
+
     vm.monthsList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     _getResources();
 
@@ -167,6 +170,7 @@
 
       if (vm.selectedMonth) {
         _filterByMonth();
+        _generateXlsx();
       } else {
         User.filter(filterObj).then((data) => {
           vm.users = data;
@@ -202,7 +206,7 @@
     }
 
     function remove(employee, event) {
-      var confirm = $mdDialog.confirm()
+      let confirm = $mdDialog.confirm()
         .title('Would you like to delete ' + employee.first_name + " " + employee.last_name + ' employee?')
         .targetEvent(event)
         .ok('Yes')
@@ -271,6 +275,65 @@
       }
     }
 
+    function getLanguageLvlTxt(data) {
+      switch (data) {
+        case 1:
+          return "Elementary proficiency";
+          break;
+        case 2:
+          return "Limited working proficiency";
+          break;
+        case 3:
+          return "Professional working proficiency";
+          break;
+        case 4:
+          return "Full professional proficiency";
+          break;
+        case 5:
+          return "Native or bilingual proficiency";
+          break;
+        default:
+          return "Not selected";
+      }
+    }
+
+    function getTechnologyLvlTxt(data) {
+      switch (data) {
+        case 1:
+          return "Junior";
+          break;
+        case 2:
+          return "Junior";
+          break;
+        case 3:
+          return "Junior-Mid";
+          break;
+        case 4:
+          return "Junior-Mid";
+          break;
+        case 5:
+          return "Mid";
+          break;
+        case 6:
+          return "Mid";
+          break;
+        case 7:
+          return "Mid-Senior";
+          break;
+        case 8:
+          return "Mid-Senior";
+          break;
+        case 9:
+          return "Senior";
+          break;
+        case 10:
+          return "Senior";
+          break;
+        default:
+          return "Not selected";
+      }
+    }
+
     function _updateTablePagination(data) {
       vm.tableSettings.total = data ? data.length : 0;
     }
@@ -316,9 +379,10 @@
         firstName: 'First Name',
         email: 'Email',
         phone: 'Phone',
-        languages: 'Languages',
-        technologies: 'Technologies',
+        languages: 'Languages & level',
+        technologies: 'Technologies & level',
         projects: 'Projects',
+        certifications: 'Certifications',
         startDate: 'Start date Assist'
       };
 
@@ -333,17 +397,30 @@
           let languages = [];
           let technologies = [];
           let projects = [];
+          let certifications = [];
 
           if (exportUsers[i].languages) {
-            for (let j = 0; j < exportUsers[i].languages.length; j++) languages.push(exportUsers[i].languages[j].long_name);
+            angular.forEach(exportUsers[i].languages, (value, index) => {
+              languages.push(value.long_name + ': ' + vm.getLanguageLvlTxt(value.level));
+            });
           }
 
           if (exportUsers[i].technologies) {
-            for (let j = 0; j < exportUsers[i].technologies.length; j++) technologies.push(exportUsers[i].technologies[j].name);
+            angular.forEach(exportUsers[i].technologies, (value, index) => {
+              technologies.push(value.name + ': ' + vm.getLanguageLvlTxt(value.level));
+            });
           }
 
           if (exportUsers[i].projects) {
-            for (let j = 0; j < exportUsers[i].projects.length; j++) projects.push(exportUsers[i].projects[j].name);
+            angular.forEach(exportUsers[i].projects, (value, index) => {
+              projects.push(value.name);
+            });
+          }
+
+          if (exportUsers[i].certifications) {
+            angular.forEach(exportUsers[i].certifications, (value, index) => {
+              certifications.push(value.name);
+            });
           }
 
           excelData.push({
@@ -354,6 +431,7 @@
             languages: languages.join(', '),
             technologies: technologies.join(', '),
             projects: projects.join(', '),
+            certifications: certifications,
             startDate: exportUsers[i].company_start_date ? exportUsers[i].company_start_date : ''
           });
         }
