@@ -36,11 +36,7 @@ const rootTemplatePath = './views/components/';
         },
         resolve: {
           controller: function($location, tokenService) {
-            if (localStorage.auth_token &&
-              window.location.href === 'http://localhost:8000/#/' ||
-              window.location.href === 'http://localhost:8000' ||
-              window.location.href === 'https://hr.assist.ro/' ||
-              window.location.href === 'https://hr.assist.ro/#/') {
+            if (localStorage.auth_token) {
 
               var tokenToDecode = localStorage.getItem('user_token');
               var decodeToken = tokenService.decodeToken(tokenToDecode);
@@ -477,16 +473,37 @@ const rootTemplatePath = './views/components/';
 
   // Permission for EMPLOYEES ONLY
   seeLimited
-    .$inject = ['$rootScope', 'tokenService'];
+    .$inject = ['$rootScope', 'tokenService', 'transitionProperties'];
 
-  function seeLimited($rootScope, tokenService) {
+  function seeLimited($rootScope, tokenService, transitionProperties) {
     var token = tokenService.getToken('user_token');
     var decodeToken = tokenService.decodeToken(token);
+    var userIdApi = ''; // user id that comes from api
+    var userIdTransition = ''; // user id from state params
+    var hasAccses = null;
+    var isEmployee = null;
+    var permittedState = null;
 
-    if (decodeToken && decodeToken.role_id === 2) {
-      toggleMenuClassesFor('EMPLOYEE');
-      $rootScope.isAdmin = false;
-      return true;
+    if (decodeToken) {
+      userIdApi = parseInt(decodeToken.user_id);
+      userIdTransition = parseInt(transitionProperties.toParams.id);
+      permittedState = (transitionProperties.toState.name == 'holidayParent.details');
+      // [ userIdApi ] and [ userIdTransition ] should be the same
+      // in order to PREVENT an Employee
+      // to access other Employee profile
+      // ONLY ADMIN can access all profiles
+      // permittedState returns true if user try to go on holidays page
+      hasAccses = (userIdApi === userIdTransition || permittedState);
+      isEmployee = (decodeToken.role_id === 2);
+
+      if (hasAccses && isEmployee) {
+        toggleMenuClassesFor('EMPLOYEE');
+        $rootScope.isAdmin = false;
+        return true;
+      } else {
+        return false;
+      }
+
     } else {
       return false;
     }

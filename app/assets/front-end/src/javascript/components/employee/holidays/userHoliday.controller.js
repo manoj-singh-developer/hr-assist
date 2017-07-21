@@ -42,7 +42,9 @@
     vm.removeHoliday = removeHoliday;
     vm.toggleForm = toggleForm;
     vm.getWorkingDay = getWorkingDay;
-
+    vm.minLength = 0;
+    vm.changeMinLength = changeMinLength;
+    
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.projects = data.projects;
       vm.users = data.users;
@@ -54,6 +56,10 @@
     });
 
     _checkRole();
+
+    function changeMinLength() {
+      vm.minLength = 1;
+    };
 
     function queryUserSearch(query) {
       let empArr = autocompleteService.querySearch(query, vm.users);
