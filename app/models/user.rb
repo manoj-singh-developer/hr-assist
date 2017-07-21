@@ -61,6 +61,34 @@ class User < ApplicationRecord
     "#{self.first_name} #{self.last_name}"
   end
 
+  def get_user_languages
+    user_language = UserLanguage.where(user_id: self.id)
+    result = []
+    user_language.each do |lang|
+      partial_result = {}
+      language = Language.find(lang.language_id)
+      partial_result[:language_id] = language.id
+      partial_result[:long_name] = language.long_name
+      partial_result[:level] = lang.level
+      result << partial_result
+    end
+    result
+  end
+
+  def get_user_technologies
+    user_technology = UserTechnology.where(user_id: self.id)
+    result = []
+    user_technology.each do |tech|
+      partial_result = {}
+      technology = Technology.find(tech.technology_id)
+      partial_result[:technology_id] = technology.id
+      partial_result[:name] = technology.name
+      partial_result[:level] = tech.level
+      result << partial_result
+    end
+    result
+  end
+
   private
 
   def generate_access_token
