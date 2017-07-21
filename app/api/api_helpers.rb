@@ -46,7 +46,7 @@ module APIHelpers
   def getCustomObject(special, model, relations, exception, *params)
     response = {}
     response_final = []
-    items = model.all.includes(relations).page(params[0]).per(params[1]) if params
+    items = model.all.includes(relations).page(params[0]).per(params[1]) if params.any?
     model = items if items
     model.all.each do |user|
       special.each do |relation|
@@ -61,7 +61,6 @@ module APIHelpers
       response["languages"] = [] if response["languages"] && response["languages"].count == user.user_languages.count
       response["technologies"] = [] if response["technologies"] && response["technologies"].count == user.user_technologies.count
     end
-
       return {items: response_final,
               paginate: url_paginate(items, params[1])
             } if items
