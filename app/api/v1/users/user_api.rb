@@ -26,7 +26,8 @@ module V1
         def filtered_users filters
 
             users = User.where(nil)
-            users = users.by_year_and_month_birth(filters[:birthday].to_date) if filters[:birthday]
+
+            users = users.by_month_birth(filters[:birthday].to_date) if filters[:birthday]
             users = users.by_university_year(Time.now.year - filters[:university_year].to_i) if filters[:university_year]
             users = users.by_company_start_date_until_present(filters[:start_date].to_date) if filters[:start_date]
             users = users.by_projects(filters[:projects]) if filters[:projects]
