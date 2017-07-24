@@ -26,14 +26,13 @@ module V1
         def filtered_users filters
 
             users = User.where(nil)
-          
             users = users.by_year_and_month_birth(filters[:birthday].to_date) if filters[:birthday]
             users = users.by_university_year(Time.now.year - filters[:university_year].to_i) if filters[:university_year]
             users = users.by_company_start_date_until_present(filters[:start_date].to_date) if filters[:start_date]
             users = users.by_projects(filters[:projects]) if filters[:projects]
-            users = users.by_technologies(filters[:technologies]) if filters[:technologies]
             users = users.by_certifications(filters[:certifications]) if filters[:certifications]
-            users = users.by_languages(filters[:languages]) if filters[:languages]
+            users = users.by_technology_id_and_level(filters[:technologies].values.map(&:technology_id).zip(filters[:technologies].values.map(&:technology_level))) if filters[:technologies]
+            users = users.by_language_id_and_level(filters[:languages].values.map(&:language_id).zip(filters[:languages].values.map(&:language_level))) if filters[:languages]
 
             users
         end

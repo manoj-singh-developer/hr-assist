@@ -14,6 +14,26 @@ class User < ApplicationRecord
     self.uid = Devise::LDAP::Adapter.get_ldap_param(self.email,"uidNumber").first
   end
 
+  def self.union_scope(pair_ids,table)
+    result = []
+    pair_ids.each do |ids|
+      if ids[1].nil?
+        ids[1] = "'%'"
+      end
+      if table == "technologies"
+        ActiveRecord::Base.connection.execute("SELECT users.id FROM users INNER JOIN user_technologies ON user_technologies.user_id = users.id where user_technologies.technology_id = #{ids[0]} AND user_technologies.level LIKE #{ids[1]}").each do |query|
+          result << query
+        end
+      elsif table == "languages"
+        ActiveRecord::Base.connection.execute("SELECT users.id FROM users INNER JOIN languages_users ON languages_users.user_id = users.id where languages_users.language_id = #{ids[0]} AND languages_users.level LIKE #{ids[1]}").each do |query|
+          result << query
+        end
+      end
+    end
+    User.where(id: result.flatten)
+  end
+
+
   has_one :schedule
   has_many :uploads
   has_and_belongs_to_many :positions
@@ -40,9 +60,9 @@ class User < ApplicationRecord
   scope :by_company_start_date_until_present, ->(date) { where("YEAR(company_start_date) >= ? and MONTH(company_start_date) between 1 and ?", date.year, date.month) }
   scope :by_university_year, ->(year) { joins(:educations).where("end_date IS NULL").where("YEAR(start_date) = ? and MONTH(start_date) < 9", year) }
   scope :by_projects, ->(ids) { joins(:projects).where(projects: {id: ids} ) }
-  scope :by_technologies, ->(ids) { joins(:technologies).where(technologies: {id: ids} ) }
   scope :by_certifications, ->(ids) { joins(:certifications).where(certifications: {id: ids} ) }
-  scope :by_languages, ->(ids) { joins(:user_languages).where(languages_users: {language_id: ids} ) }
+  scope :by_technology_id_and_level, ->(ids) {union_scope(ids,"technologies")}
+  scope :by_language_id_and_level, ->(ids) {union_scope(ids,"languages")}
 
   def ensure_authentication_token
     self.last_sign_in_at = Time.now
