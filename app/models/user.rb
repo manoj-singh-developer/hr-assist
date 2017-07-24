@@ -17,9 +17,7 @@ class User < ApplicationRecord
   def self.union_scope(pair_ids,table)
     result = []
     pair_ids.each do |ids|
-      if ids[1].nil?
-        ids[1] = "'%'"
-      end
+      ids[1]  ||= "'%'"
       if table == "technologies"
         ActiveRecord::Base.connection.execute("SELECT users.id FROM users INNER JOIN user_technologies ON user_technologies.user_id = users.id where user_technologies.technology_id = #{ids[0]} AND user_technologies.level LIKE #{ids[1]}").each do |query|
           result << query
@@ -37,7 +35,6 @@ class User < ApplicationRecord
   has_one :schedule
   has_many :uploads
   has_and_belongs_to_many :positions
-  #has_and_belongs_to_many :languages
   has_and_belongs_to_many :devices
   has_and_belongs_to_many :educations
   has_and_belongs_to_many :certifications
@@ -56,11 +53,11 @@ class User < ApplicationRecord
   has_many :technologies, through: :user_technologies
   has_many :projects, through: :user_projects
 
-  scope :by_year_and_month_birth, ->(date) { where("YEAR(birthday) = ? and MONTH(birthday) = ?", date.year, date.month) }
+  scope :by_month_birth, ->(date) { where("MONTH(birthday) = ?", date.month) }
   scope :by_company_start_date_until_present, ->(date) { where("YEAR(company_start_date) >= ? and MONTH(company_start_date) between 1 and ?", date.year, date.month) }
   scope :by_university_year, ->(year) { joins(:educations).where("end_date IS NULL").where("YEAR(start_date) = ? and MONTH(start_date) < 9", year) }
   scope :by_projects, ->(ids) { joins(:projects).where(projects: {id: ids} ) }
-  scope :by_certifications, ->(ids) { joins(:certifications).where(certifications: {id: ids} ) }
+  scope :by_certifications, ->(certification_name) { joins(:certifications).where(certifications: {name: certification_name})  }
   scope :by_technology_id_and_level, ->(ids) {union_scope(ids,"technologies")}
   scope :by_language_id_and_level, ->(ids) {union_scope(ids,"languages")}
 
