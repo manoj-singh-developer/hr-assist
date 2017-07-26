@@ -43,6 +43,7 @@
     "moment": "2.17.1"
   },
   "devDependencies": {
-    "alasql": "^0.4.0"
+    "alasql": "^0.4.0",
+    "angular-md5": "^0.1.10"
   }
 }

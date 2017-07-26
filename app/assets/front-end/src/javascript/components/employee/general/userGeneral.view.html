@@ -8,15 +8,8 @@
   <!-- CARD TITLE -->
   <md-card-title layout="row" layout-align="top center">
 
-<!--     <div class="c-profile-progress">
-      <span class="c-profile-progress__info">
-        {{userGeneral.progress}}% completed
-      </span>
-      <span class="c-profile-progress__bar" style="width: {{userGeneral.progress}}%"></span>
-    </div> -->
-
     <span
-      class="userLogout noPrint"
+      class="userLogout"
       ng-click="userGeneral.userLogOut()"
       ng-if="!userGeneral.isAdmin">
       Logout
@@ -28,7 +21,6 @@
         <!-- <strong>Last Update at: {{userGeneral.user.updatedAt | date: 'longDate'}}</strong> -->
       </p>
     </md-card-title-text>
-      <!-- @!TODO: De adaugat info despre proiecte la CV -->
       
     <button class="md-primary md-button" type="button" 
       ng-click="userGeneral.generateCv()" aria-label="Generate CV">
@@ -59,7 +51,8 @@
     <p>
       <strong>NOTE: </strong>Complete here with your general personal/work information.
     </p>
-  </md-content> <!-- CARD NOTES -->
+  </md-content>
+  <!-- CARD NOTES -->
 
 
 
@@ -78,15 +71,6 @@
         gravatar-src="userGeneral.user.email" gravatar-size="100"
         class="md-card-image cv-picture">
     </div>
-
-    <!--<div class="c-card-profile__picture"-->
-      <!--flex="20"-->
-      <!--ng-if="!userGeneral.user.picture"-->
-      <!--layout-align="top center">-->
-      <!--<img-->
-        <!--src="http://www.85percent.co.uk/wp-content/uploads/2015/08/default-placeholder-1024x1024-570x321.png"-->
-        <!--class="md-card-image">-->
-     <!--</div>-->
 
      <div flex="80" class="c-card-profile__general-info">
 
@@ -196,55 +180,20 @@
      </div>
 
     </section>
-  </md-content><!-- /PREVIEW -->
+  </md-content>
+  <!-- /PREVIEW -->
 
 
 
 
 
-  <!-- EDIT -->
   <form novalidate
     name="generalInfoForm"
     ng-submit="$event.preventDefault()">
+    <!-- EDIT -->
     <md-content
       class="md-padding"
       ng-show="userGeneral.settings.showForm">
-
-      <!--<div layout-gt-xs="row">-->
-        <!--<md-input-container md-no-float class="md-block u-mb-20">-->
-          <!--<md-button-->
-            <!--class="md-raised u-no-margin"-->
-            <!--ng-model="userGeneral.picture"-->
-            <!--ngf-select="userGeneral.upload($file)"-->
-            <!--ngf-pattern="'image/*'"-->
-            <!--ngf-accept="'image/*'"-->
-            <!--ngf-max-size="1MB"-->
-            <!--&gt;-->
-            <!--Upload profile picture-->
-            <!--&lt;!&ndash; @!TODO: de aratat si in modul edit poza daca asceasta exista &ndash;&gt;-->
-         <!--</md-button>-->
-        <!--</md-input-container>-->
-      <!--</div>-->
-
-      <!--<div ng-show="userGeneral.showSuccessMsg"-->
-        <!--class="alert-success fade"-->
-        <!--role="alert">-->
-        <!--Your picture has been successfully uploaded.-->
-      <!--</div>-->
-
-      <!--<div ng-show="userGeneral.showErrMsg"-->
-        <!--class="alert-error fade"-->
-        <!--role="alert">-->
-        <!--A problem occurred while uploading the prohile picture.-->
-      <!--</div>-->
-
-       <!--<div ng-show="userGeneral.showToLargeImage"-->
-        <!--class="alert-error fade"-->
-        <!--role="alert">-->
-        <!--Image size is too big. The size limit is 1MB.-->
-      <!--</div>-->
-
-
 
       <!-- PERSONAL INFO -->
       <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
@@ -267,7 +216,8 @@
           </div>
 
         </md-input-container>
-      </div><!-- /First Name -->
+      </div>
+      <!-- /First Name -->
 
       <!-- Middle Name -->
       <div layout-gt-xs="row">
@@ -287,7 +237,8 @@
           </div>
 
         </md-input-container>
-      </div><!-- /Middle Name -->
+      </div>
+      <!-- /Middle Name -->
 
       <!-- Last Name -->
       <div layout-gt-xs="row">
@@ -307,11 +258,11 @@
           </div>
 
         </md-input-container>
-      </div><!-- Last Name -->
+      </div>
+      <!-- Last Name -->
 
       <!-- BIRTHDAY -->
       <div layout-gt-xs="row" layout-align="start center" class="u-ml-10 u-mr-10">
-
         <label class="u-mr-20">Birthday</label>
         <md-datepicker
           ng-model="userGeneral.user.birthday"
@@ -320,9 +271,8 @@
           md-max-date="userGeneral.today"
           md-current-view="year">
         </md-datepicker>
-
-
-      </div><!-- /BIRTHDAY -->
+      </div>
+      <!-- /BIRTHDAY -->
 
 
 
@@ -406,7 +356,8 @@
 
         </md-input-container>
 
-      </div><!-- /PHONE AND EMAIL -->
+      </div>
+      <!-- /PHONE AND EMAIL -->
 
       <!-- CAR LICENSE -->
       <div layout-gt-xs="row">
@@ -422,7 +373,8 @@
             <div ng-message="pattern">Please enter a valid Car license plate</div>
           </div>
         </md-input-container>
-      </div><!-- CAR LICENSE -->
+      </div>
+      <!-- CAR LICENSE -->
 
 
 
@@ -445,7 +397,9 @@
           md-current-view="year">
         </md-datepicker>
 
-      </div><!-- STARTED WORKING ON -->
+      </div>
+      <!-- /STARTED WORKING ON -->
+
 
       <!-- ASSIST POSITION -->
       <div layout-gt-xs="row" layout-align="start center" ng-hide="userGeneral.candidate">
@@ -468,7 +422,9 @@
           </md-select>
         </md-input-container>
 
-      </div><!-- ASSIST POSITION -->
+      </div>
+      <!-- /ASSIST POSITION -->
+
 
       <!-- ASSIST POSITION -->
       <div layout-gt-xs="row" layout-align="start center" ng-show="userGeneral.candidate">
@@ -490,26 +446,8 @@
           </md-select>
         </md-input-container>
 
-      </div><!-- ASSIST POSITION -->
-
-      <!-- ASSIST EMAIL -->
-      <!-- <div layout-gt-xs="row">
-        <md-input-container md-no-float class="md-block" flex-gt-xs="">
-
-          <label>ASSIST Email</label>
-
-          <input
-            ng-model="userGeneral.user.email"
-            name="emailAssist"
-            type="email"
-            readonly>
-
-          <div ng-messages="generalInfoForm.email.$error">
-            <div ng-message="email">Please insert a valid email</div>
-          </div>
-
-        </md-input-container>
-      </div> --><!-- /ASSIST EMAIL -->
+      </div>
+      <!-- /ASSIST POSITION -->
 
       <!-- OFFICE AND CONTRACT -->
       <div layout-gt-xs="row"
@@ -530,17 +468,8 @@
             <div ng-message="pattern">Please enter a valid Number Office</div>
           </div>
         </md-input-container>
-
-        <!-- <md-input-container md-no-float class="md-block" flex-gt-xs="50">
-          <label>Schedule type</label>
-          <input
-            type="text"
-            name="schedule"
-            ng-model="userGeneral.schedule.name"
-            readonly/>
-        </md-input-container> -->
-
-      </div><!-- /OFFICE AND CONTRACT -->
+      </div>
+      <!-- /OFFICE AND CONTRACT -->
 
 
 
@@ -577,9 +506,11 @@
           </div>
         </md-input-container>
 
-      </div><!-- /Urgent Contact -->
+      </div>
+      <!-- /Urgent Contact -->
 
-    </md-content><!-- /EDIT -->
+    </md-content>
+    <!-- /EDIT -->
 
 
 
@@ -591,7 +522,7 @@
       layout-align="start"
       ng-show="!userGeneral.settings.showForm">
       <md-button
-        class="c-card-profile__btn no-margin noPrint"
+        class="c-card-profile__btn no-margin"
         ng-click="userGeneral.toggleForm(); userGeneral.saveCopy()">
         Add/Edit general information
       </md-button>
@@ -623,5 +554,6 @@
 
 
 
-</md-card><!-- CARD GENERAL INFO -->
+</md-card>
+<!-- CARD GENERAL INFO -->
 

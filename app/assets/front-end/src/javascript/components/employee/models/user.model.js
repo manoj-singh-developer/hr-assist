@@ -7,7 +7,7 @@
     .factory('User', User);
 
 
-  function User($resource, apiUrl, alertService, $stateParams, errorService, $httpParamSerializerJQLike) {
+  function User($resource, apiUrl, alertService, $stateParams, errorService, $httpParamSerializerJQLike, $http) {
 
     function User() {}
 
@@ -144,7 +144,6 @@
 
 
     User.getPosition = (user) => {
-      // TODO:  Something is wrong with this one in api
       url = apiUrl + '/users/:id/position';
       resource = $resource(url, {}, {
         'get': {
@@ -654,7 +653,7 @@
     }
 
     User.removeHoliday = (holiday) => {
-      
+
       let data = {
         user_id: $stateParams.id,
         holiday_ids: holiday.holiday_id
@@ -675,30 +674,24 @@
       return promise;
     };
 
-    //Could not get right response from server using $resource
-    // responseType: 'arraybuffer' can be the problem / and token
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    User.getCv = (data, url) => {
+      url = url || 'https://europass.cedefop.europa.eu/rest/v1/document/to/pdf-cv';
 
-    // User.getCv = (data) => {
-    //   url = 'https://europass.cedefop.europa.eu/rest/v1/document/to/pdf-cv';
-    //   resource = $resource(url, {}, {
-    //     'post': {
-    //       method: 'POST',
-    //       responseType: 'arraybuffer'
-    //     }
-    //   }).save(data);
+      return $http({
+          url: url,
+          method: 'POST',
+          data: data,
+          responseType: 'arraybuffer'
+        }).then((data) => {
+          alertService.success(model, 'getCv');
 
-    //   promise = resource.$promise
-    //     .then((data) => {
-    //       alertService.success(model, 'getCv');
-    //       return data;
-    //     })
-    //     .catch((error) => {
-    //       errorService.forceLogout(error);
-    //       alertService.error(model, 'getCv');
-    //     });
-    //   return promise;
-    // };
+          return data;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getCv');
+        });
+    };
 
     return User;
 
