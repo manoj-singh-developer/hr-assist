@@ -78,7 +78,7 @@ class User < ApplicationRecord
     "#{self.first_name} #{self.last_name}"
   end
 
-  def get_user_languages
+  def get_languages
     user_language = UserLanguage.where(user_id: self.id)
     result = []
     user_language.each do |lang|
@@ -92,7 +92,7 @@ class User < ApplicationRecord
     result
   end
 
-  def get_user_technologies
+  def get_technologies
     user_technology = UserTechnology.where(user_id: self.id)
     result = []
     user_technology.each do |tech|

@@ -48,18 +48,18 @@ module APIHelpers
     response_final = []
     items = model.all.includes(relations).page(params[0]).per(params[1]) if params.any?
     model = items if items
-    model.all.each do |user|
+    model.all.each do |m|
       special.each do |relation|
         response[relation] = []
         if relation == "languages"
-          response["languages"] = user.get_user_languages
+          response["languages"] = m.get_languages
         elsif relation == "technologies"
-          response["technologies"] = user.get_user_technologies
-          end
+          response["technologies"] = m.get_technologies
+        end
       end
-      response_final << user.as_json(include: relations, except: exception).merge(response)
-      response["languages"] = [] if response["languages"] && response["languages"].count == user.user_languages.count
-      response["technologies"] = [] if response["technologies"] && response["technologies"].count == user.user_technologies.count
+      response_final << m.as_json(include: relations, except: exception).merge(response)
+      response["languages"] = [] if response["languages"] && response["languages"].count == m.send("#{model.name.downcase}_languages").count
+      response["technologies"] = [] if response["technologies"] && response["technologies"].count == m.send("#{model.name.downcase}_technologies").count
     end
       return {items: response_final,
               paginate: url_paginate(items, params[1])
@@ -76,8 +76,8 @@ module APIHelpers
         getCustomObject(special_relations,model,relations,exception,params[:page],params[:per_page])
       end
     else
-      if special_relations && model == User
-        getCustomObject(special_relations,model, relations, exception)
+      if special_relations && (model == User || model == Candidate)
+        getCustomObject(special_relations, model, relations, exception)
       else
         {items:  model.all.includes(relations).as_json(include: relations, except: exception)}
       end
@@ -111,11 +111,11 @@ module APIHelpers
   def url_paginate(collection, per_page)
     @@per_page = per_page
     {
-      :first => url_for(1),
-      :previous => url_for(collection.prev_page),
-      :self => url_for(collection.current_page),
-      :next => url_for(collection.next_page),
-      :last => url_for(collection.total_pages)
+        :first => url_for(1),
+        :previous => url_for(collection.prev_page),
+        :self => url_for(collection.current_page),
+        :next => url_for(collection.next_page),
+        :last => url_for(collection.total_pages)
     }
   end
 
@@ -156,27 +156,27 @@ module APIHelpers
 
   def get_holiday(holiday)
     response = {
-      holiday_id: holiday.id,
-      days: holiday.days,
-      start_date: holiday.start_date,
-      end_date: holiday.end_date,
-      signing_day: holiday.signing_day,
-      employee_replacements:
-       holiday.holiday_replacements.map do |holiday_replacement|
-          partial_response = {
-            project_name: holiday_replacement.project.name
-          }
-          partial_response.merge!({
-            team_leader: holiday_replacement.team_leader.name
-          }) if holiday_replacement.team_leader
+        holiday_id: holiday.id,
+        days: holiday.days,
+        start_date: holiday.start_date,
+        end_date: holiday.end_date,
+        signing_day: holiday.signing_day,
+        employee_replacements:
+            holiday.holiday_replacements.map do |holiday_replacement|
+              partial_response = {
+                  project_name: holiday_replacement.project.name
+              }
+              partial_response.merge!({
+                                          team_leader: holiday_replacement.team_leader.name
+                                      }) if holiday_replacement.team_leader
 
-          partial_response.merge!({
-            replacer_id: holiday_replacement.replacer_id,
-            replacer_name: holiday_replacement.replacer.name
-          }) if holiday_replacement.replacer
+              partial_response.merge!({
+                                          replacer_id: holiday_replacement.replacer_id,
+                                          replacer_name: holiday_replacement.replacer.name
+                                      }) if holiday_replacement.replacer
 
-          partial_response
-        end
+              partial_response
+            end
     }
   end
 
