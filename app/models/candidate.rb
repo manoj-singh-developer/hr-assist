@@ -6,9 +6,9 @@ class Candidate < ApplicationRecord
     has_many :technologies, through: :candidate_technologies
 
     def get_technologies
-        candidate_technology = CandidateTechnology.where(candidate_id: self.id)
+        candidate_technologies = CandidateTechnology.where(candidate_id: self.id)
         result = []
-        candidate_technology.each do |tech|
+        candidate_technologies.each do |tech|
             partial_result = {}
             technology = Technology.find(tech.technology_id)
             partial_result[:technology_id] = technology.id
