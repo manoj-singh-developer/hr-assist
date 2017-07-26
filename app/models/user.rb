@@ -56,8 +56,8 @@ class User < ApplicationRecord
   scope :by_month_birth, ->(date) { where("MONTH(birthday) = ?", date.month) }
   scope :by_company_start_date_until_present, ->(date) { where("company_start_date BETWEEN ? AND ?" , date , Time.now.strftime("%Y-%m-%d"))}
   scope :by_university_year, ->(year) { joins(:educations).where("ROUND(DATEDIFF('#{Time.now.strftime("%Y-%m-%d")}',start_date)/365) = ? AND end_date > '#{Time.now.strftime("%Y-%m-%d")}'", year)}
-  scope :by_projects, ->(ids) { joins(:projects).where(projects: {id: ids} ) }
-  scope :by_certifications, ->(certification_name) { joins(:certifications).where("certifications.name LIKE ?", "%#{certification_name}%")  }
+  scope :by_projects, ->(ids) { joins(:projects).where(projects: {id: ids} ).uniq }
+  scope :by_certifications, ->(certification_name) { joins(:certifications).where("certifications.name LIKE ?", "%#{certification_name}%").uniq  }
   scope :by_technology_id_and_level, ->(ids) {union_scope(ids,"technologies")}
   scope :by_language_id_and_level, ->(ids) {union_scope(ids,"languages")}
 
