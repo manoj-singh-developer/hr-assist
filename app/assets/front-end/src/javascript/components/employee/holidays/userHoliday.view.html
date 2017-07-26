@@ -185,18 +185,18 @@
 
               <!-- SELECT TEAM LEADER -->
               <div class="md-block u-mb-20" layout-fill>
-
+              
                 <md-chips
                   ng-model="userHoliday.teamLeaders"
                   md-on-remove
-                  md-on-add="userHoliday.addLeaders()"
+                  md-on-add="userHoliday.changeMinLength()"
                   md-require-match
                   md-input-name="autocompleteLeader">
                   <md-autocomplete
                     md-search-text="userHoliday.leader"
                     md-items="user in userHoliday.querySearch(userHoliday.leader, userHoliday.users)"
                     md-item-text="user.first_name+' '+user.last_name"
-                    md-min-length="0"
+                    md-min-length="userHoliday.minLength"
                     md-dropdown-position="bottom"
                     placeholder="Select team leader">
                     <md-item-template>
