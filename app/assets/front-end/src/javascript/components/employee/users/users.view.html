@@ -140,10 +140,10 @@
           <th md-column md-order-by="last_name">Last Name</th>
           <th md-column md-order-by="first_name">First Name</th>
           <th md-column>Email/Phone</th>
-          <th md-column>Languages</th>
-          <th md-column>Technologies</th>
+          <th md-column>Languages & level</th>
+          <th md-column>Technologies & level</th>
           <th md-column>Projects</th>
-          <!-- <th md-column>Last update</th> -->
+          <th md-column>Certifications and courses</th>
           <th md-column>Start date Assist</th>
           <th md-column>Actions</th>
         </tr>
@@ -179,7 +179,10 @@
           <td md-cell>
             <ul class="c-list" ng-if="employee.languages">
               <li ng-repeat="language in employee.languages">
-                {{$index + 1}}. {{language.long_name}}
+                {{$index + 1}}. {{language.long_name}}: 
+                <span ng-if="language.level">
+                  {{users.getLanguageLvlTxt(language.level)}}
+                </span>
               </li>
             </ul>
           </td>
@@ -187,7 +190,10 @@
           <td md-cell>
             <ul class="c-list" ng-if="employee.technologies">
               <li ng-repeat="technologies in employee.technologies">
-                {{$index + 1}}. {{technologies.name}}
+                {{$index + 1}}. {{technologies.name}}:
+                <span ng-if="technologies.level">
+                  {{users.getTechnologyLvlTxt(technologies.level)}}
+                </span>
               </li>
             </ul>
           </td>
@@ -200,12 +206,18 @@
             </ul>
           </td>
 
-          <!-- <td md-cell ng-hide="employee.candidate">
-            {{employee.updatedAt | date: longDate}}
-          </td> -->
+           <td md-cell>
+           <ul class="c-list" ng-if="employee.certifications">
+              <li ng-repeat="certification in employee.certifications">
+                {{$index + 1}}. {{certification.name}}
+              </li>
+            </ul>
+          </td>
+          
           <td md-cell>
               {{employee.company_start_date | date: "dd-MM-yyyy"}}
           </td>
+          
           <td md-cell>
 
             <md-button
