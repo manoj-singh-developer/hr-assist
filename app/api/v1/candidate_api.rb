@@ -17,20 +17,22 @@ module V1
 
         clone_params[:candidate_cv] = convert_hashie_to_file(params[:candidate_cv]) if(params[:candidate_cv])
 
-        clone_params[:audio_files].each_with_index do |audio_file, index|
-          clone_params[:audio_files][index] = convert_hashie_to_file(audio_file)
-        end if params[:audio_files]
+        if params[:audio_files]
+          clone_params[:audio_files].each_with_index do |audio_file, index|
+            clone_params[:audio_files][index] = convert_hashie_to_file(audio_file)
+          end
+        end
 
         ActionController::Parameters.new(clone_params).permit(:name, :university_start_year, :university_end_year, :projects, :category,
-          :contact_info, :comments, :status, :candidate_cv, :technologies, audio_files: [])
+                                                              :contact_info, :comments, :status, :candidate_cv, :technologies, audio_files: [])
       end
 
       def convert_hashie_to_file file
         ActionDispatch::Http::UploadedFile.new(
-                tempfile: file[:tempfile],
-                filename: file[:filename],
-                type:     file[:type],
-                headers:  file[:head],
+          tempfile: file[:tempfile],
+          filename: file[:filename],
+          type:     file[:type],
+          headers:  file[:head],
         )
       end
 
@@ -52,14 +54,6 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        relations = ['candidate_cv', 'candidate_files', 'technologies']
-
-        # items = Candidate.all.includes(relations).page(params[:page]).per(params[:per_page])
-        # {
-        #     :items => items.as_json(include: relations),
-        #     :paginate => url_paginate(items, params[:per_page])
-        # }
-
         getPaginatedItemsFor Candidate, ['candidate_cv', 'candidate_files', 'technologies']
       end
 
@@ -103,10 +97,11 @@ module V1
         if candidate
           candidate.candidate_cv = CandidateCv.create!(cv: cv_file) if cv_file
 
-          audio_files.each do |audio_file|
-            candidate.candidate_files << CandidateFile.create!(file: audio_file)
-          end if audio_files
-
+          if audio_files
+            audio_files.each do |audio_file|
+              candidate.candidate_files << CandidateFile.create!(file: audio_file)
+            end
+          end
         end
 
         relations = ['candidate_cv', 'candidate_files', 'technologies']
@@ -132,7 +127,7 @@ module V1
       put ':id' do
 
         authorize! :update, Candidate
-        
+
         model_params = postParams
 
         cv_file = model_params.delete(:candidate_cv) if model_params[:candidate_cv]
@@ -142,9 +137,9 @@ module V1
         candidate.update(model_params)
 
         candidate.candidate_cv = CandidateCv.create!(cv: cv_file) if cv_file
-        
+
         audio_files.each do |audio_file|
-          candidate.candidate_files << CandidateFile.create!(file: audio_file)          
+          candidate.candidate_files << CandidateFile.create!(file: audio_file)
         end if audio_files
 
 

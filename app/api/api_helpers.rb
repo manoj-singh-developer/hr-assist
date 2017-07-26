@@ -32,10 +32,10 @@ module APIHelpers
     ldap = Net::LDAP.new(:host => get_option("ldap_host"),
                          :port => get_option("ldap_port"),
                          :auth => {
-                            :method => :simple,
-                            :username => get_option("ldap_account"),
-                            :password => decrypt(get_option("ldap_password"))
-                              })
+                           :method => :simple,
+                           :username => get_option("ldap_account"),
+                           :password => decrypt(get_option("ldap_password"))
+                         })
     ldap.bind_as(
       :base => get_option("ldap_basedn"),
       :filter => "(mail=#{email})",
@@ -61,11 +61,11 @@ module APIHelpers
       response["languages"] = [] if response["languages"] && response["languages"].count == m.send("#{model.name.downcase}_languages").count
       response["technologies"] = [] if response["technologies"] && response["technologies"].count == m.send("#{model.name.downcase}_technologies").count
     end
-      return {items: response_final,
-              paginate: url_paginate(items, params[1])
-            } if items
+    return {items: response_final,
+            paginate: url_paginate(items, params[1])
+    } if items
 
-      {items: response_final}
+    {items: response_final}
 
   end
 
@@ -111,11 +111,11 @@ module APIHelpers
   def url_paginate(collection, per_page)
     @@per_page = per_page
     {
-        :first => url_for(1),
-        :previous => url_for(collection.prev_page),
-        :self => url_for(collection.current_page),
-        :next => url_for(collection.next_page),
-        :last => url_for(collection.total_pages)
+      :first => url_for(1),
+      :previous => url_for(collection.prev_page),
+      :self => url_for(collection.current_page),
+      :next => url_for(collection.next_page),
+      :last => url_for(collection.total_pages)
     }
   end
 
@@ -156,27 +156,27 @@ module APIHelpers
 
   def get_holiday(holiday)
     response = {
-        holiday_id: holiday.id,
-        days: holiday.days,
-        start_date: holiday.start_date,
-        end_date: holiday.end_date,
-        signing_day: holiday.signing_day,
-        employee_replacements:
-            holiday.holiday_replacements.map do |holiday_replacement|
-              partial_response = {
-                  project_name: holiday_replacement.project.name
-              }
-              partial_response.merge!({
-                                          team_leader: holiday_replacement.team_leader.name
-                                      }) if holiday_replacement.team_leader
+      holiday_id: holiday.id,
+      days: holiday.days,
+      start_date: holiday.start_date,
+      end_date: holiday.end_date,
+      signing_day: holiday.signing_day,
+      employee_replacements:
+        holiday.holiday_replacements.map do |holiday_replacement|
+          partial_response = {
+            project_name: holiday_replacement.project.name
+          }
+          partial_response.merge!({
+                                    team_leader: holiday_replacement.team_leader.name
+                                  }) if holiday_replacement.team_leader
 
-              partial_response.merge!({
-                                          replacer_id: holiday_replacement.replacer_id,
-                                          replacer_name: holiday_replacement.replacer.name
-                                      }) if holiday_replacement.replacer
+          partial_response.merge!({
+                                    replacer_id: holiday_replacement.replacer_id,
+                                    replacer_name: holiday_replacement.replacer.name
+                                  }) if holiday_replacement.replacer
 
-              partial_response
-            end
+          partial_response
+        end
     }
   end
 
