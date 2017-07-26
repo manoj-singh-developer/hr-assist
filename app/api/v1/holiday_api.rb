@@ -79,10 +79,12 @@ module V1
         response = []
         holiday = Holiday.find(params[:id])
 
-        if holiday.user_id != current_user.id
-          return error message: :not_the_author
+        unless current_user.is_admin
+          if holiday.user_id != current_user.id
+           return error message: :not_the_author
+         end
         end
-
+        
         holiday_replacements = holiday.holiday_replacements
         response = {
           holiday_id: holiday.id,
