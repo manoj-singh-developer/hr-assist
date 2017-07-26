@@ -561,7 +561,7 @@
     }
 
     User.filter = (data) => {
-      let filterUrl = '/users?with[]=languages&with[]=technologies&with[]=projects';
+      let filterUrl = '/users?with[]=languages&with[]=technologies&with[]=projects&with[]=certifications';
       let decodedObjUrl = decodeURIComponent($httpParamSerializerJQLike(data).replace(/\+/g, " "));
       url = apiUrl + filterUrl + '&' + decodedObjUrl;
       resource = $resource(url, {}, {

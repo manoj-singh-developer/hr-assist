@@ -12,19 +12,21 @@
     let excelData = [];
     let exportUsers = [];
     let querySearchItems = [];
+    let filterObj = {};
 
-    vm.getLanguageLvlTxt = getLanguageLvlTxt;
-    vm.getTechnologyLvlTxt = getTechnologyLvlTxt;
-    vm.selectedMonth;
+    let technologies = [];
+    let languages = [];
+    let projects = [];
+
     vm.showFilters = false;
-    vm.technologiesLvl = [];
     vm.selectedTechnologies = [];
     vm.selectedLanguages = [];
-    vm.languagesLvl = [];
     vm.users = [];
     vm.monthSelection = [];
     vm.resources = {};
     vm.usersCopy = {};
+    vm.getLanguageLvlTxt = getLanguageLvlTxt;
+    vm.getTechnologyLvlTxt = getTechnologyLvlTxt;
     vm.dateService = dateService;
     vm.tableSettings = tableSettings;
     vm.tableSettings.query = {
@@ -34,9 +36,7 @@
     };
     vm.filters = {
       technologies: [],
-      // technologies: [{}], // FOR TECHNOLOGIES WITH LEVEL
       languages: [],
-      // languages: [{}], // FOR LANGUAGES WITH LEVEL
       projects: [],
       start_date: undefined,
       university_year: undefined
@@ -74,10 +74,9 @@
     }];
 
     vm.monthsList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
     _getResources();
 
-    vm.showForm = showForm;
-    vm.showFormJson = showFormJson;
     vm.remove = remove;
     vm.querySearch = querySearch;
     vm.toggleFilters = toggleFilters;
@@ -93,116 +92,41 @@
     }
 
     function addNewLanguages() {
-      vm.filters.languages.push({});
+      if (!vm.filters.languages) {
+        vm.filters.languages.push({});
+      } else {
+        vm.filters.languages.push({});
+      }
     }
 
     function search() {
-      let filterObj = {};
-      let technologies = [];
-      let languages = [];
-      let projects = [];
 
-      // FOR TECHNOLOGIES AND LEVEL WHITHOUT LEVEL
-      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      vm.filters.technologies.forEach((element, index) => {
-        technologies.push(element.id);
-      });
+      _createTechArray();
+      _createLangArray();
+      _createFilterObj();
 
-      vm.filters.languages.forEach((element, index) => {
-        languages.push(element.id);
-      });
-      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      // FOR TECHNOLOGIES AND LEVEL WHITHOUT LEVEL
-
-      // FOR TECHNOLOGIES WITH LEVEL
-      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      // let technologiesIdArr = _getItemId(vm.selectedTechnologies);
-      // let technologieslvlArr =  _getItemValues(vm.technologiesLvl);
-
-      // for (let i = 0; i < vm.selectedTechnologies.length; i++) {
-      //   technologies.push({
-      //     technology_id: technologiesIdArr[i],
-      //     technology_level: technologieslvlArr[i] ? technologieslvlArr[i] : 1
-      //   });
-      // }
-      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      //END FOR TECHNOLOGIES WITH LEVEL
-
-
-      // FOR LANGUAGES WITH LEVEL
-      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      // let languagesIdArr = _getItemId(vm.selectedLanguages);
-      // let languagesLvlArr = _getItemValues(vm.languagesLvl);
-
-      // for (let i = 0; i < vm.selectedLanguages.length; i++) {
-      //   languages.push({
-      //     language_id: languagesIdArr[i],
-      //     level: languagesLvlArr[i] ? languagesLvlArr[i] : 1
-      //   });
-      // }
-
-      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      //END FOR LANGUAGES WITH LEVEL
-
-
-      vm.filters.projects.forEach((element, index) => {
-        projects.push(element.id);
-      });
-
-      filterObj = {
-        university_year: vm.filters.university_year,
-        start_date: vm.filters.start_date ? vm.dateService.format(new Date(vm.filters.start_date)) : vm.filters.start_date,
-        projects: projects,
-        languages: languages,
-        technologies: technologies
-      };
-
-
-      for (let key in filterObj) {
-        if (!filterObj[key] || filterObj[key].length == 0) {
-          delete filterObj[key];
-        }
-      }
-
-      filterObj = {
-        filters: filterObj
-      }
-
-      if (vm.selectedMonth) {
-        _filterByMonth();
-        _generateXlsx();
-      } else {
+      if (!angular.equals(filterObj, {})) {
         User.filter(filterObj).then((data) => {
           vm.users = data;
           _generateXlsx();
           _updateTablePagination(vm.users);
+          technologies = [];
+          languages = [];
+          projects = [];
         });
       }
+
     }
 
-    function showForm(device) {
-      $mdDialog.show({
-        templateUrl: rootTemplatePath + '/device/form/deviceForm.view.html',
-        controller: 'deviceFormCtrl',
-        controllerAs: 'deviceForm',
-        clickOutsideToClose: true,
-        data: {
-          device: angular.copy(device),
-        }
-      });
-    }
-
-    function showFormJson(event) {
-      event.stopPropagation();
-
-      $mdDialog.show({
-        parent: angular.element(document.body),
-        templateUrl: rootTemplatePath + '/device/formJson/deviceFormJson.view.html',
-        controller: 'deviceFormJsonCtrl',
-        controllerAs: 'deviceFormJson',
-        targetEvent: event,
-        clickOutsideToClose: true,
-      });
+    function selectedMonthDate(data) {
+      if (data) {
+        let indexOfMonth = vm.monthsList.indexOf(data);
+        vm.birthday = new Date();
+        vm.birthday.setMonth(indexOfMonth);
+        return data;
+      } else {
+        return "Pick a month";
+      }
     }
 
     function remove(employee, event) {
@@ -235,12 +159,19 @@
           vm.filters[key] = null;
         }
       });
+
+      technologies = [];
+      languages = [];
+      projects = [];
+      vm.selectedTechnologies = [];
+      vm.selectedLanguages = [];
       vm.selectedMonth = null;
+      filterObj = {};
+      vm.birthday = null;
       vm.users = vm.usersCopy;
       exportUsers = vm.usersCopy;
       _generateXlsx();
       _updateTablePagination(vm.users);
-
     }
 
     function querySearch(query, list) {
@@ -263,16 +194,6 @@
         headers: false
       }];
       let res = alasql('SELECT INTO XLSX("Employee Raport.xlsx",?) FROM ? ORDER BY firstName', [opts, [excelData]]);
-    }
-
-    function selectedMonthDate(data) {
-      vm.indexMonth = vm.monthsList.indexOf(data);
-      if (data) {
-        vm.monthSelection[vm.indexMonth] = data;
-        return vm.selectedMonth;
-      } else {
-        return "Pick a month";
-      }
     }
 
     function getLanguageLvlTxt(data) {
@@ -354,7 +275,6 @@
         vm.resources.users = data[2];
         vm.resources.languages = data[3];
 
-        //will use this for filters
         vm.users = vm.resources.users;
         vm.usersCopy = angular.copy(vm.resources.users);
         _updateTablePagination(vm.resources.users);
@@ -452,34 +372,72 @@
 
         return excelData;
       }
+
     }
 
-    function _getItemId(itemsArray) {
-      return $.map(itemsArray, (value, index) => {
-        return value.id;
+    function _createTechArray() {
+      if (vm.selectedTechnologies) {
+        vm.selectedTechnologies.forEach(function(element, index) {
+          technologies.push({
+            technology_id: element.id,
+            technology_level: element.level ? element.level : null
+          });
+        });
+        _deleteEmptyPropInArrayOfObj(technologies);
+      }
+    }
+
+    function _createLangArray() {
+      if (vm.selectedLanguages) {
+        vm.selectedLanguages.forEach(function(element, index) {
+          languages.push({
+            language_id: element.id,
+            language_level: element.level ? element.level : null
+          });
+        });
+        _deleteEmptyPropInArrayOfObj(languages);
+      }
+    }
+
+    function _createFilterObj() {
+      if (vm.filters.projects) {
+        vm.filters.projects.forEach((element, index) => {
+          projects.push(element.id);
+        });
+      }
+
+      filterObj = {
+        birthday: vm.birthday ? vm.dateService.format(vm.birthday) : null,
+        university_year: vm.filters.university_year ? parseInt(vm.filters.university_year) : null,
+        start_date: vm.filters.start_date ? vm.dateService.format(new Date(vm.filters.start_date)) : vm.filters.start_date,
+        projects: projects,
+        languages: languages,
+        technologies: technologies,
+        certifications: vm.filters.certifications
+      };
+      for (let key in filterObj) {
+        if (!filterObj[key] || filterObj[key].length == 0) {
+          delete filterObj[key];
+        }
+      }
+      if (!angular.equals(filterObj, {})) {
+        filterObj = {
+          filters: filterObj
+        }
+      }
+    }
+
+    function _deleteEmptyPropInArrayOfObj(array) {
+      array.forEach(function(element, index) {
+
+        for (let key in element) {
+          if (!element[key] || element[key].length == 0) {
+            delete element[key];
+          }
+        }
       });
     }
 
-    function _getItemValues(itemsArray) {
-      return $.map(itemsArray, (value, index) => {
-        return eval(value);
-      });
-    }
-
-    function _filterByMonth() {
-      vm.users = vm.usersCopy;
-      let filtredUsers = [];
-      let birthday;
-
-      vm.users.map(function(user) {
-        birthday = new Date(user.birthday);
-        if (user.birthday && vm.monthSelection[vm.indexMonth] === vm.monthsList[birthday.getMonth()])
-          filtredUsers.push(user);
-      });
-
-      vm.users = filtredUsers;
-      _updateTablePagination(vm.users);
-    }
   }
 
 })(_);
