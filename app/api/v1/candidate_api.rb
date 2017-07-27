@@ -63,6 +63,7 @@ module V1
       end
       get ':id' do
         authorize! :read, Candidate.find(params[:id])
+        getPaginatedItemsFor Candidate.where(id: params[:id]), ['candidate_cv', 'candidate_files', 'technologies']
       end
 
       desc "Create new candidate"
