@@ -32,10 +32,10 @@ module APIHelpers
     ldap = Net::LDAP.new(:host => get_option("ldap_host"),
                          :port => get_option("ldap_port"),
                          :auth => {
-                            :method => :simple,
-                            :username => get_option("ldap_account"),
-                            :password => decrypt(get_option("ldap_password"))
-                              })
+                           :method => :simple,
+                           :username => get_option("ldap_account"),
+                           :password => decrypt(get_option("ldap_password"))
+                         })
     ldap.bind_as(
       :base => get_option("ldap_basedn"),
       :filter => "(mail=#{email})",
@@ -43,30 +43,63 @@ module APIHelpers
     )
   end
 
+  def getCustomObject(special, model, relations, exception, *params)
+    response = {}
+    response_final = []
+    items = model.all.includes(relations).page(params[0]).per(params[1]) if params.any?
+    model = items if items
+    model.all.each do |m|
+      special.each do |relation|
+        response[relation] = []
+        if relation == "languages"
+          response["languages"] = m.get_languages
+        elsif relation == "technologies"
+          response["technologies"] = m.get_technologies
+        end
+      end
+      response_final << m.as_json(include: relations, except: exception).merge(response)
+      response["languages"] = [] if response["languages"] && response["languages"].count == m.send("#{model.name.downcase}_languages").count
+      response["technologies"] = [] if response["technologies"] && response["technologies"].count == m.send("#{model.name.downcase}_technologies").count
+    end
+    return {items: response_final,
+            paginate: url_paginate(items, params[1])
+    } if items
+
+    {items: response_final}
+
+  end
+
   def getPaginatedItemsFor(model, relations = nil, exception = nil)
+    special_relations = relations & ["languages","technologies"]
     if params[:page] && params[:per_page]
-      items = model.all.includes(relations).page(params[:page]).per(params[:per_page])
-      {
-        :items => items.as_json(include: relations, except: exception),
-        :paginate => url_paginate(items, params[:per_page])
-      }
+      if special_relations && model == User
+        getCustomObject(special_relations,model,relations,exception,params[:page],params[:per_page])
+      end
     else
-      { items:  model.all.includes(relations).as_json(include: relations, except: exception) }
+      if special_relations && (model == User || model == Candidate || model.name == "Candidate")
+        getCustomObject(special_relations, model, relations, exception)
+      else
+        {items:  model.all.includes(relations).as_json(include: relations, except: exception)}
+      end
     end
   end
 
   def paginateItems(items, relations = nil, exception = nil)
     return [] if items.nil?
+    special_relations = relations & ["languages","technologies"]
     if params[:page] && params[:per_page]
-      items = items.includes(relations).page(params[:page]).per(params[:per_page])
-      {
-        :items => items.as_json(include: relations, except: exception),
-        :paginate => url_paginate(items, params[:per_page])
-      }
+      if special_relations && items.first.class == User
+        getCustomObject(special_relations,items,relations,exception,params[:page],params[:per_page])
+      end
     else
-      { items:  items.includes(relations).as_json(include: relations, except: exception) }
+      if special_relations && (items.first.class == User || items.first.class == Candidate)
+        getCustomObject(special_relations,items, relations, exception)
+      else
+        {items:  items.all.includes(relations).as_json(include: relations, except: exception)}
+      end
     end
   end
+
 
   def authorizeAndCreate(model, postParams, &block)
     authorize! :create, model
@@ -129,18 +162,18 @@ module APIHelpers
       end_date: holiday.end_date,
       signing_day: holiday.signing_day,
       employee_replacements:
-       holiday.holiday_replacements.map do |holiday_replacement|
+        holiday.holiday_replacements.map do |holiday_replacement|
           partial_response = {
             project_name: holiday_replacement.project.name
           }
           partial_response.merge!({
-            team_leader: holiday_replacement.team_leader.name
-          }) if holiday_replacement.team_leader
+                                    team_leader: holiday_replacement.team_leader.name
+                                  }) if holiday_replacement.team_leader
 
           partial_response.merge!({
-            replacer_id: holiday_replacement.replacer_id,
-            replacer_name: holiday_replacement.replacer.name
-          }) if holiday_replacement.replacer
+                                    replacer_id: holiday_replacement.replacer_id,
+                                    replacer_name: holiday_replacement.replacer.name
+                                  }) if holiday_replacement.replacer
 
           partial_response
         end
