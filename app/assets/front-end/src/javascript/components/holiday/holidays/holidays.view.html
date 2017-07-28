@@ -30,14 +30,15 @@
         <md-button
           md-no-ink
           class="md-primary"
-          ng-click="holidays.showFormDialog($event, {})">
+          ng-click="holidays.showFormDialog($event)">
           Add Holiday
         </md-button>
       </div>
 
     </div>
 
-  </md-toolbar><!-- /TITLE -->
+  </md-toolbar>
+  <!-- /TITLE -->
 
 
 
@@ -50,12 +51,12 @@
       <md-autocomplete
         ng-disabled = "holidays.isDisabled"
         md-selected-item="holidays.selectedItem"
-        md-search-text-change="holidays.searchTextChange(holidays.searchText)"
+        md-search-text-change="holidays.querySearch(holidays.searchText, holidays.users)"
         md-search-text="holidays.searchText"
-        md-selected-item-change="holidays.selectedItemChange(item)"
-        md-items="item in holidays.querySearch(holidays.searchText)"
-        md-item-text="item.first_name+' '+item.last_name"
-        md-min-length="1"
+        md-selected-item-change="holidays.querySearch(holidays.searchText, holidays.users)"
+        md-items="item in holidays.querySearch(holidays.searchText, holidays.users)"
+        md-item-text="item.first_name +' '+ item.last_name"
+        md-min-length="0"
         placeholder="Search for an employee">
 
         <md-item-template>
@@ -67,21 +68,8 @@
         </md-not-found>
       </md-autocomplete>
     </form>
-  </md-content><!-- /AUTOCOMPLETE SEARCH -->
-
-
-   <!-- SELECTED ROWS -->
-  <md-toolbar
-    class="md-table-toolbar alternate"
-    ng-show="holidays.table.options.rowSelection && holidays.table.selected.length">
-    <div class="md-toolbar-tools">
-      <span>
-        {{holidays.table.selected.length}} {{holidays.table.selected.length > 1 ? 'holidays' : 'holiday'}} selected
-      </span>
-    </div>
-  </md-toolbar> <!-- SELECTED ROWS -->
-
-
+  </md-content>
+  <!-- /AUTOCOMPLETE SEARCH -->
 
 
   <!-- ALL FILTERS -->
@@ -158,8 +146,7 @@
             ng-model="holidays.selectedMonth"
             placeholder="Pick a Month"
             md-selected-text="holidays.selectedMonthDate(holidays.selectedMonth)"
-            ng-disabled="holidays.disabledMonth"
-            required>
+            ng-disabled="holidays.disabledMonth">
 
             <md-optgroup label="Months">
               <md-option
@@ -173,7 +160,7 @@
 
         <md-button
           class="md-primary"
-          ng-click="holidays.searchFilter()"
+          ng-click="holidays.searchMonthFilter()"
           ng-disabled="searchFilter.$invalid || holidays.disabledMonth">
           Search by Month
         </md-button>
@@ -183,7 +170,8 @@
 
 
 
-  </md-content><!-- /ALL FILTERS -->
+  </md-content>
+  <!-- /ALL FILTERS -->
 
   <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
 
@@ -195,23 +183,22 @@
     <table
       class="c-table--actions"
       md-table
-      md-row-select="holidays.table.options.rowSelection"
-      multiple="{{holidays.table.options.multiSelect}}"
-      ng-model="holidays.table.selected"
+      md-row-select="holidays.tableSettings.options.rowSelection"
+      multiple="{{holidays.tableSettings.options.multiSelect}}"
+      ng-model="holidays.tableSettings.selected"
       md-progress="promise">
 
       <thead
-        ng-if="!holidays.table.options.decapitate"
+        ng-if="!holidays.tableSettings.options.decapitate"
         md-head
-        md-order="holidays.table.query.order">
+        md-order="holidays.tableSettings.query.order">
         <tr md-row>
-        <th md-column ></th>
+        <th md-column >No.</th>
           <th md-column md-order-by="employee">Employee</th>
           <th md-column md-order-by="startDate">Start Date</th>
           <th md-column md-order-by="endDate">End Date</th>
           <th md-column md-order-by="days">No. of days</th>
           <th md-column md-order-by="signing_day">Signing Date</th>
-          <!--<th md-column>Nr. of days</th>-->
           <th md-column>Actions</th>
         </tr>
       </thead>
@@ -222,7 +209,7 @@
           md-select="holiday"
           md-on-select="logItem"
           md-auto-select="holidays.options.autoSelect"
-          ng-repeat="holiday in holidays.holidays | filter:holidays.searchText | orderBy: holidays.table.query.order | limitTo: holidays.table.query.limit : (holidays.table.query.page - 1) * holidays.table.query.limit track by $index">
+          ng-repeat="holiday in holidays.holidays | filter:holidays.searchText | orderBy: holidays.tableSettings.query.order | limitTo: holidays.tableSettings.query.limit : (holidays.tableSettings.query.page - 1) * holidays.tableSettings.query.limit track by $index">
           <td md-cell>
             {{$index + 1}}
           </td>
@@ -244,8 +231,6 @@
 
           <td md-cell>{{holiday.signing_day | date: 'd MMM, y'}}</td>
 
-          <!--<td md-cell>{{ holiday.days }}</td>-->
-
           <td md-cell>
             <md-button
               class="md-icon-button md-primary"
@@ -257,106 +242,21 @@
                 View Holiday
               </md-tooltip>
             </md-button>
-
-            <!--<md-button
-              class="md-icon-button md-primary"
-              label="Edit holiday"
-              aria-label="Edit holiday"
-              ng-click="holidays.showFormDialog($event, holiday, $index)">
-              <md-icon class="material-icons">create</md-icon>
-              <md-tooltip md-autohide="true">
-                Edit holiday
-              </md-tooltip>
-            </md-button>-->
-
-            <!--<md-button-->
-              <!--class="md-icon-button md-primary md-warn"-->
-              <!--label="Remove holiday"-->
-              <!--aria-label="Remove holiday"-->
-              <!--ng-click="holidays.deleteConfirm($event, holiday, holiday.id)">-->
-              <!--<md-icon class="material-icons">delete</md-icon>-->
-              <!--<md-tooltip md-autohide="true">-->
-                <!--Remove holiday-->
-              <!--</md-tooltip>-->
-            <!--</md-button>-->
-
           </td>
 
         </tr>
       </tbody>
 
     </table>
-  </md-table-container><!-- /TABLE HOLIDAYS -->
+  </md-table-container>
+  <!-- /TABLE HOLIDAYS -->
 
+  
 
   <!-- TABLE PAGINATION -->
-  <md-table-pagination
-    md-limit="holidays.table.query.limit"
-    md-limit-options="holidays.table.limitOptions"
-    md-page="holidays.table.query.page"
-    md-total="{{holidays.holidays.length}}"
-    md-page-select="holidays.table.options.pageSelect"
-    md-boundary-links="holidays.table.options.boundaryLinks">
-  </md-table-pagination><!-- TABLE PAGINATION -->
-
-
-
-
-  <!-- TEMPLATES -->
-  <script type="text/ng-template" id="holidayForm.tmpl.html">
-    <hra-holiday-form
-      md-whiteframe = '6'
-      holiday = "holidayM.holiday"
-      holidayIndex = "holidayM.holidayIndex"
-      form-title = "holidayM.formTitle">
-    </hra-holiday-form>
-  </script>
-
-  <script type="text/ng-template" id="holidayJsonForm.tmpl.html">
-    <section layout="column">
-
-      <md-toolbar class="md-table-toolbar">
-        <div class="md-toolbar-tools ">
-          Add holiday from JSON
-        </div>
-      </md-toolbar>
-
-      <section class="md-padding">
-
-        <form name="holidayjsonform" class="form md-inline-form">
-          <textarea class="save-from-json" ng-model="holidayJsonM.json" placeholder="Paste json here">
-          </textarea>
-        </form>
-
-        <!-- Actions buttons -->
-        <div layout="row" layout-align="center center">
-
-          <md-button
-            class="md-raised md-primary"
-            ng-click="holidayJsonM.saveFromJson(holidayJsonM.json)">
-            Save
-          </md-button>
-
-          <md-button
-            class="md-raised md-primary"
-            ng-click="holidayJsonM.clearFields()">
-            Clear
-          </md-button>
-
-          <md-button
-            class="md-raised"
-            ng-click="holidayJsonM.closeDialog()">
-            Close
-          </md-button>
-
-        </div><!-- /Actions buttons -->
-
-      </section>
-
-    </section>
-  </script>
-  <!-- /TEMPLATES -->
-
+  <hra-table-pagination settings="holidays.tableSettings">
+  <hra-table-pagination>
+  <!-- /TABLE PAGINATION -->
 
 
 
