@@ -23,8 +23,8 @@ module V1
           end
         end
 
-        ActionController::Parameters.new(clone_params).permit(:name, :university_start_year, :university_end_year, :projects, :category,
-                                                              :contact_info, :comments, :status, :candidate_cv, :technologies, audio_files: [])
+         ActionController::Parameters.new(clone_params).permit(:name, :university_start_year, :university_end_year, :projects, :category,
+                                                               :contact_info, :comments, :status, :candidate_cv, audio_files: [])
       end
 
       def convert_hashie_to_file file
@@ -139,12 +139,22 @@ module V1
 
         candidate.candidate_cv = CandidateCv.create!(cv: cv_file) if cv_file
 
-        audio_files.each do |audio_file|
-          candidate.candidate_files << CandidateFile.create!(file: audio_file)
-        end if audio_files
+        if audio_files
+         audio_files.each do |audio_file|
+            candidate.candidate_files << CandidateFile.create!(file: audio_file)
+          end
+        end
 
 
         success
+      end
+
+      desc "Delete candidate"
+      params do
+        requires :id, type: Integer , desc: "Candidate id"
+      end
+      delete ':id' do
+        Candidate.find(params[:id]).destroy
       end
     end
   end
