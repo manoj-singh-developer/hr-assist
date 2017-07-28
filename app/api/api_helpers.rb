@@ -76,7 +76,7 @@ module APIHelpers
         getCustomObject(special_relations,model,relations,exception,params[:page],params[:per_page])
       end
     else
-      if special_relations && (model == User || model == Candidate)
+      if special_relations && (model == User || model == Candidate || model.name == "Candidate")
         getCustomObject(special_relations, model, relations, exception)
       else
         {items:  model.all.includes(relations).as_json(include: relations, except: exception)}
