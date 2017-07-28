@@ -16,21 +16,23 @@ module V1
         clone_params = params.dup
 
         clone_params[:candidate_cv] = convert_hashie_to_file(params[:candidate_cv]) if(params[:candidate_cv])
-        
-        clone_params[:audio_files].each_with_index do |audio_file, index|
-          clone_params[:audio_files][index] = convert_hashie_to_file(audio_file)
+
+        if params[:audio_files]
+          clone_params[:audio_files].each_with_index do |audio_file, index|
+            clone_params[:audio_files][index] = convert_hashie_to_file(audio_file)
+          end
         end
 
-        ActionController::Parameters.new(clone_params).permit(:name, :university_start_year, :university_end_year, :projects, :category,
-          :contact_info, :comments, :status, :candidate_cv, audio_files: [])
+         ActionController::Parameters.new(clone_params).permit(:name, :university_start_year, :university_end_year, :projects, :category,
+                                                               :contact_info, :comments, :status, :candidate_cv, audio_files: [])
       end
 
       def convert_hashie_to_file file
         ActionDispatch::Http::UploadedFile.new(
-                tempfile: file[:tempfile],
-                filename: file[:filename],
-                type:     file[:type],
-                headers:  file[:head],
+          tempfile: file[:tempfile],
+          filename: file[:filename],
+          type:     file[:type],
+          headers:  file[:head],
         )
       end
 
@@ -52,16 +54,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-
-        relations = ['candidate_cv', 'candidate_files']
-
-        items = Candidate.all.includes(relations).page(params[:page]).per(params[:per_page])
-        {
-            :items => items.as_json(include: relations),
-            :paginate => url_paginate(items, params[:per_page])
-        }
-
-        getPaginatedItemsFor Candidate, ['candidate_cv', 'candidate_files']
+        getPaginatedItemsFor Candidate, ['candidate_cv', 'candidate_files', 'technologies']
       end
 
       desc "Returns a candidate"
@@ -70,11 +63,13 @@ module V1
       end
       get ':id' do
         authorize! :read, Candidate.find(params[:id])
+        getPaginatedItemsFor Candidate.where(id: params[:id]), ['candidate_cv', 'candidate_files', 'technologies']
       end
 
       desc "Create new candidate"
       params do
         requires :name,                   allow_blank: false, type: String
+        optional :technologies,           allow_blank: false, type: Array[Hash]
         optional :university_start_year,  allow_blank: false, type: Date
         optional :university_end_year,    allow_blank: false, type: Date
         optional :projects,               allow_blank: false, type: String
@@ -87,24 +82,30 @@ module V1
 
       end
       post 'new' do
-
         model_params = postParams
-
         cv_file = model_params.delete(:candidate_cv) if model_params[:candidate_cv]
         audio_files = model_params.delete(:audio_files) if model_params[:audio_files]
 
         candidate = authorizeAndCreate(Candidate, model_params)
 
-        if candidate
-          candidate.candidate_cv = CandidateCv.create!(cv: cv_file) if cv_file
-          
-          audio_files.each do |audio_file|
-            candidate.candidate_files << CandidateFile.create!(file: audio_file)          
-          end if audio_files
-
+        if params[:technologies]
+          params[:technologies].each do |tech|
+            technology = Technology.find_or_create_by(name: tech[:technology_name])
+            CandidateTechnology.create(level: tech[:technology_level], technology_id: technology.id, candidate_id: candidate.id)
+          end
         end
 
-        relations = ['candidate_cv', 'candidate_files']
+        if candidate
+          candidate.candidate_cv = CandidateCv.create!(cv: cv_file) if cv_file
+
+          if audio_files
+            audio_files.each do |audio_file|
+              candidate.candidate_files << CandidateFile.create!(file: audio_file)
+            end
+          end
+        end
+
+        relations = ['candidate_cv', 'candidate_files', 'technologies']
 
         Candidate.includes(relations).find(candidate.id).as_json(include: relations)
       end
@@ -112,6 +113,7 @@ module V1
       desc "Update candidate"
       params do
         requires :name,                   allow_blank: false, type: String
+        optional :technologies,           allow_blank: false, type: Array[Hash]
         optional :university_start_year,  allow_blank: false, type: Date
         optional :university_end_year,    allow_blank: false, type: Date
         optional :projects,               allow_blank: false, type: String
@@ -126,7 +128,7 @@ module V1
       put ':id' do
 
         authorize! :update, Candidate
-        
+
         model_params = postParams
 
         cv_file = model_params.delete(:candidate_cv) if model_params[:candidate_cv]
@@ -136,13 +138,23 @@ module V1
         candidate.update(model_params)
 
         candidate.candidate_cv = CandidateCv.create!(cv: cv_file) if cv_file
-        
-        audio_files.each do |audio_file|
-          candidate.candidate_files << CandidateFile.create!(file: audio_file)          
-        end if audio_files
+
+        if audio_files
+         audio_files.each do |audio_file|
+            candidate.candidate_files << CandidateFile.create!(file: audio_file)
+          end
+        end
 
 
         success
+      end
+
+      desc "Delete candidate"
+      params do
+        requires :id, type: Integer , desc: "Candidate id"
+      end
+      delete ':id' do
+        Candidate.find(params[:id]).destroy
       end
     end
   end
