@@ -134,19 +134,18 @@ module V1
         cv_file = model_params.delete(:candidate_cv) if model_params[:candidate_cv]
         audio_files = model_params.delete(:audio_files) if model_params[:audio_files]
 
-        candidate = Candidate.find(params[:id])
+        candidate = Candidate.where(id: params[:id])
         candidate.update(model_params)
 
-        candidate.candidate_cv = CandidateCv.create!(cv: cv_file) if cv_file
+        candidate.first.candidate_cv = CandidateCv.create!(cv: cv_file) if cv_file
 
         if audio_files
          audio_files.each do |audio_file|
-            candidate.candidate_files << CandidateFile.create!(file: audio_file)
+            candidate.first.candidate_files << CandidateFile.create!(file: audio_file)
           end
         end
 
-
-        success
+        getPaginatedItemsFor candidate, ['candidate_cv', 'candidate_files', 'technologies']
       end
 
       desc "Delete candidate"
