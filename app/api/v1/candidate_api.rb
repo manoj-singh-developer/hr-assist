@@ -69,7 +69,7 @@ module V1
       desc "Create new candidate"
       params do
         requires :name,                   allow_blank: false, type: String
-        optional :technologies,           allow_blank: false, type: Array[Hash]
+        optional :technologies,           allow_blank: false, type: Array::Hash
         optional :university_start_year,  allow_blank: false, type: Date
         optional :university_end_year,    allow_blank: false, type: Date
         optional :projects,               allow_blank: false, type: String
@@ -87,11 +87,10 @@ module V1
         audio_files = model_params.delete(:audio_files) if model_params[:audio_files]
 
         candidate = authorizeAndCreate(Candidate, model_params)
-
         if params[:technologies]
           params[:technologies].each do |tech|
-            technology = Technology.find_or_create_by(name: tech[:technology_name])
-            CandidateTechnology.create(level: tech[:technology_level], technology_id: technology.id, candidate_id: candidate.id)
+            technology = Technology.find_or_create_by(name: tech[1][:technology_name])
+            CandidateTechnology.create(level: tech[1][:technology_level], technology_id: technology.id, candidate_id: candidate.id)
           end
         end
 
@@ -113,7 +112,7 @@ module V1
       desc "Update candidate"
       params do
         requires :name,                   allow_blank: false, type: String
-        optional :technologies,           allow_blank: false, type: Array[Hash]
+        optional :technologies,           allow_blank: false, type: Array::Hash
         optional :university_start_year,  allow_blank: false, type: Date
         optional :university_end_year,    allow_blank: false, type: Date
         optional :projects,               allow_blank: false, type: String
@@ -147,6 +146,23 @@ module V1
 
         getPaginatedItemsFor candidate, ['candidate_cv', 'candidate_files', 'technologies']
       end
+
+      desc "Delete candidate technologies"
+      params do
+        requires :technology_ids, type: [Integer], desc: "Technology ids"
+      end
+      delete ':id/technologies' do
+        delete_object(Candidate, Technology, params[:id], params[:technology_ids])
+      end
+
+      desc "Delete candidate audio files"
+      params do
+        requires :file_ids, type: [Integer], desc: "File ids"
+      end
+      delete ':id/files' do
+        delete_object(Candidate, CandidateFile, params[:id], params[:file_ids])
+      end
+
 
       desc "Delete candidate"
       params do
