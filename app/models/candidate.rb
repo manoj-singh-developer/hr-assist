@@ -1,7 +1,7 @@
 class Candidate < ApplicationRecord
-    has_one :candidate_cv, :class_name => "CandidateCv"
-    has_many :candidate_files
-    has_many :candidate_technologies
+    has_one :candidate_cv, :class_name => "CandidateCv", :dependent => :delete
+    has_many :candidate_files, :dependent => :delete_all
+    has_many :candidate_technologies, :dependent => :delete_all
     has_many :technologies, through: :candidate_technologies
 
     def get_technologies
