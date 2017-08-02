@@ -126,14 +126,12 @@ module V1
 
         authorize! :update, Candidate
 
-
         candidate = Candidate.find(params[:id])
         if params[:technologies]
           params[:technologies].each do |technology|
-            c_technology = candidate.technologies.find(technology[1].technology_id)
-            c_technology.update(name: technology[1].technology_name)
-            candidate_technology = CandidateTechnology.find_by_candidate_id_and_technology_id(candidate.id,technology[1].technology_id)
-            candidate_technology.update(level: technology[1].technology_level)
+            candidate.update(name: technology[1].technology_name) if technology[1][:technology_name]
+            candidate_technology = CandidateTechnology.find_or_create_by!(candidate_id: candidate.id, technology_id: technology[1].technology_id)
+            candidate_technology.update(level: technology[1].technology_level) if technology[1][:technology_level]
           end
         end
         model_params = postParams
@@ -143,7 +141,7 @@ module V1
 
         candidate.update(model_params)
 
-
+        candidate = Candidate.where(id: params[:id])
         candidate.first.candidate_cv = CandidateCv.create!(cv: cv_file) if cv_file
 
         if audio_files
