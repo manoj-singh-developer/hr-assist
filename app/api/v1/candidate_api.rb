@@ -102,11 +102,10 @@ module V1
               candidate.candidate_files << CandidateFile.create!(file: audio_file)
             end
           end
+
+          getPaginatedItemsFor Candidate.where(id: params[:id]), ['candidate_cv', 'candidate_files', 'technologies']
         end
 
-        relations = ['candidate_cv', 'candidate_files', 'technologies']
-
-        Candidate.includes(relations).find(candidate.id).as_json(include: relations)
       end
 
       desc "Update candidate"
@@ -128,13 +127,23 @@ module V1
 
         authorize! :update, Candidate
 
+
+        candidate = Candidate.find(params[:id])
+        if params[:technologies]
+          params[:technologies].each do |technology|
+            c_technology = candidate.technologies.find(technology[1].technology_id)
+            c_technology.update(name: technology[1].technology_name)
+            candidate_technology = CandidateTechnology.find_by_candidate_id_and_technology_id(candidate.id,technology[1].technology_id)
+            candidate_technology.update(level: technology[1].technology_level)
+          end
+        end
         model_params = postParams
 
         cv_file = model_params.delete(:candidate_cv) if model_params[:candidate_cv]
         audio_files = model_params.delete(:audio_files) if model_params[:audio_files]
 
-        candidate = Candidate.where(id: params[:id])
         candidate.update(model_params)
+
 
         candidate.first.candidate_cv = CandidateCv.create!(cv: cv_file) if cv_file
 
@@ -144,7 +153,7 @@ module V1
           end
         end
 
-        getPaginatedItemsFor candidate, ['candidate_cv', 'candidate_files', 'technologies']
+        getPaginatedItemsFor Candidate.where(id: params[:id]), ['candidate_cv', 'candidate_files', 'technologies']
       end
 
       desc "Delete candidate technologies"
@@ -162,7 +171,6 @@ module V1
       delete ':id/files' do
         delete_object(Candidate, CandidateFile, params[:id], params[:file_ids])
       end
-
 
       desc "Delete candidate"
       params do
