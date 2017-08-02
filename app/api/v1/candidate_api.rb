@@ -129,8 +129,9 @@ module V1
         candidate = Candidate.find(params[:id])
         if params[:technologies]
           params[:technologies].each do |technology|
-            candidate.update(name: technology[1].technology_name) if technology[1][:technology_name]
-            candidate_technology = CandidateTechnology.find_or_create_by!(candidate_id: candidate.id, technology_id: technology[1].technology_id)
+            Technology.create(name: technology[1].technology_name) if Technology.where(name: technology[1][:technology_name]).empty?
+            technology_id = Technology.find_by_name(technology[1][:technology_name]).id
+            candidate_technology = CandidateTechnology.find_or_create_by!(candidate_id: candidate.id, technology_id: technology_id) if candidate.id
             candidate_technology.update(level: technology[1].technology_level) if technology[1][:technology_level]
           end
         end
