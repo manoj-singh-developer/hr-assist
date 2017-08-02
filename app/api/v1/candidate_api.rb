@@ -93,7 +93,6 @@ module V1
             CandidateTechnology.create(level: tech[1][:technology_level], technology_id: technology.id, candidate_id: candidate.id)
           end
         end
-
         if candidate
           candidate.candidate_cv = CandidateCv.create!(cv: cv_file) if cv_file
 
@@ -103,7 +102,7 @@ module V1
             end
           end
 
-          getPaginatedItemsFor Candidate.where(id: params[:id]), ['candidate_cv', 'candidate_files', 'technologies']
+          getPaginatedItemsFor Candidate.where(id: candidate.id), ['candidate_cv', 'candidate_files', 'technologies']
         end
 
       end
