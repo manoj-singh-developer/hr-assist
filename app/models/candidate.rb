@@ -4,6 +4,10 @@ class Candidate < ApplicationRecord
     has_many :candidate_technologies, :dependent => :delete_all
     has_many :technologies, through: :candidate_technologies
 
+    scope :by_category, ->(ids) { where(category: ids) }
+    scope :by_technology, ->(ids) { joins(:candidate_technologies).where(candidate_technologies: {technology_id: ids}).uniq}
+    scope :by_status, ->(ids) { where(status: ids)}
+
     def get_technologies
         candidate_technologies = CandidateTechnology.where(candidate_id: self.id)
         result = []

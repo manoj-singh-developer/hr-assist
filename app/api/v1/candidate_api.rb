@@ -37,6 +37,17 @@ module V1
         )
       end
 
+      def filtered_candidates(filters)
+
+        candidates = Candidate.where(nil)
+
+        candidates = candidates.by_category(filters[:category]) if filters[:category]
+        candidates = candidates.by_technology(filters[:technology_id]) if filters[:technology_id]
+        candidates = candidates.by_status(filters[:status]) if filters[:status]
+
+        candidates
+      end
+
       params :pagination do
         optional :page, type: Integer
         optional :per_page, type: Integer
@@ -55,7 +66,11 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Candidate, ['candidate_cv', 'candidate_files', 'technologies']
+        if params[:filters]
+          paginateItems filtered_candidates(params[:filters]), ["technologies"]
+        else
+          getPaginatedItemsFor Candidate, ['candidate_cv', 'candidate_files', 'technologies']
+        end
       end
 
       desc "Returns a candidate"
