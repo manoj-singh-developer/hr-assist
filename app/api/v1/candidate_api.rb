@@ -24,7 +24,7 @@ module V1
         end
 
          ActionController::Parameters.new(clone_params).permit(:name, :university_start_year, :university_end_year, :projects, :category,
-                                                               :contact_info, :comments, :status, :candidate_cv, audio_files: [])
+                                                               :contact_info, :comments, :status, :candidate_cv, :cnp, audio_files: [])
       end
 
       def convert_hashie_to_file file
@@ -95,7 +95,7 @@ module V1
         optional :comments,               allow_blank: false, type: String
         optional :audio_files,                                type: [File]
         requires :status,                 allow_blank: false, type: Integer
-
+        optional :cnp,                    allow_blank: false, type: String
       end
       post 'new' do
         model_params = postParams
@@ -135,6 +135,7 @@ module V1
         optional :comments,               allow_blank: false, type: String
         optional :audio_files,            allow_blank: false, type: [File]
         requires :status,                 allow_blank: false, type: Integer
+        optional :cnp,                    allow_blank: false, type: String
       end
 
       put ':id' do

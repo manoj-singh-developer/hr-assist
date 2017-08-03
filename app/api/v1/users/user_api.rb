@@ -162,6 +162,7 @@ module V1
         optional :zip_code, type: String
         optional :office_nr, type: String
         optional :urgent_contact_phone, type: String
+        optional :cnp, type: String
       end
 
       put "me" do
