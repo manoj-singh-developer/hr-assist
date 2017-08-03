@@ -48,7 +48,7 @@
     });
 
     function querySearch(query, list) {
-      if (query != "" && query != " ") {
+      if (query) {
         _updateTablePagination(autocompleteService.querySearch(query, vm.holidays));
       } else {
         _updateTablePagination(vm.holidays);

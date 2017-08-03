@@ -175,7 +175,7 @@
     }
 
     function querySearch(query, list) {
-      if (query != "" && query != " ") {
+      if (query) {
         vm.firstNameFilter = vm.searchText.substr(0, vm.searchText.indexOf(' '));
         querySearchItems = autocompleteService.querySearch(query, list);
         _updateTablePagination(autocompleteService.querySearch(query, list));
