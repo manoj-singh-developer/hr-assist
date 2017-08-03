@@ -122,7 +122,7 @@
     }
 
     function querySearch(query, list) {
-      if (query != "" && query != " ") {
+      if (query) {
         _updateTablePagination(autocompleteService.querySearch(query, list));
         querySearchItems = autocompleteService.querySearch(query, list);
         _generateXlsx();
