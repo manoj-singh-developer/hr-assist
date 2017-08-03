@@ -39,7 +39,7 @@ module V1
 
       def filtered_candidates(filters)
 
-        candidates = Candidate.where(nil)
+        candidates = Candidate.all
 
         candidates = candidates.by_category(filters[:category]) if filters[:category]
         candidates = candidates.by_technology(filters[:technology_id]) if filters[:technology_id]
@@ -67,9 +67,9 @@ module V1
       end
       get do
         if params[:filters]
-          paginateItems filtered_candidates(params[:filters]), ["technologies"]
+          paginateItems(filtered_candidates(params[:filters]), ["technologies"])
         else
-          getPaginatedItemsFor Candidate, ['candidate_cv', 'candidate_files', 'technologies']
+          getPaginatedItemsFor(Candidate, ['candidate_cv', 'candidate_files', 'technologies'])
         end
       end
 
