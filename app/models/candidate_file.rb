@@ -12,11 +12,11 @@ class CandidateFile < ApplicationRecord
 
   def serializable_hash(options = {})  
     result = super(options)
-    result[:cv_url] = cv_url
+    result[:file_url] = file_url
     result
   end
 
-  def cv_url
+  def file_url
     self.file.url
   end
 end
