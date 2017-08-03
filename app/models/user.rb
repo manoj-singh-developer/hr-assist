@@ -33,6 +33,7 @@ class User < ApplicationRecord
 
 
   has_one :schedule
+  has_one :work_info
   has_many :uploads
   has_and_belongs_to_many :positions
   has_and_belongs_to_many :devices
