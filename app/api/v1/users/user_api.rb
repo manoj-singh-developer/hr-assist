@@ -20,7 +20,7 @@ module V1
         def postParams
           ActionController::Parameters.new(params)
             .permit(:first_name, :middle_name, :last_name, :address, :city, :zip_code, :birthday, :phone, :picture, :observations,
-                    :other_email, :urgent_contact_name, :urgent_contact_phone, :car_plate, :company_start_date, :status, :email, :office_nr)
+                    :other_email, :urgent_contact_name, :urgent_contact_phone, :car_plate, :company_start_date, :status, :email, :office_nr, :cnp)
         end
 
         def filtered_users filters
@@ -51,7 +51,7 @@ module V1
         desc "Return all users"
         params do
           use :pagination # aliases: includes, use_scope
-          optional :with, values: ['positions', 'languages', 'devices', 'educations', 'departments', 'projects', 'technologies', 'certifications'], type: [String]
+          optional :with, values: ['positions', 'languages', 'devices', 'educations', 'departments', 'projects', 'technologies', 'certifications', 'work_info'], type: [String]
           optional :filters, type: Hash
         end
         get do
@@ -91,6 +91,7 @@ module V1
 
         desc "Update user by id"
         params do
+          optional :cnp, type: String
           optional :first_name, type: String
           optional :middle_name, type: String
           optional :last_name, type: String
@@ -161,6 +162,7 @@ module V1
         optional :zip_code, type: String
         optional :office_nr, type: String
         optional :urgent_contact_phone, type: String
+        optional :cnp, type: String
       end
 
       put "me" do
