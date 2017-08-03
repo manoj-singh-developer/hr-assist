@@ -14,6 +14,17 @@
       <div class="md-title">
 
         <span >Candidates</span>
+
+        <md-button
+          class="md-primary"
+          label="Toggle filters"
+          aria-label="Toggle filters"
+          ng-click="candidates.toggleFilters()">
+          <md-icon class="material-icons">filter_list</md-icon>
+          <md-tooltip md-autohide="true">
+            Toggle filters
+          </md-tooltip>
+        </md-button>
       </div>
 
       <div flex="" class="flex"></div>
@@ -60,10 +71,10 @@
         ng-disabled="candidates.isDisabled"
         ng-model="candidates.searchText"
         md-selected-item="candidates.selectedItem"
-        md-search-text-change="candidates.querySearch(candidates.searchText, candidates.candidateCopy)"
+        md-search-text-change="candidates.querySearch(candidates.searchText, candidates.candidate)"
         md-search-text="candidates.searchText"
-        md-selected-item-change="candidates.querySearch(candidates.searchText, candidates.candidateCopy)"
-        md-items="item in candidates.querySearch(candidates.searchText, candidates.candidateCopy)"
+        md-selected-item-change="candidates.querySearch(candidates.searchText, candidates.candidate)"
+        md-items="item in candidates.querySearch(candidates.searchText, candidates.candidate)"
         md-item-text="item.name"
         md-min-length="0"
         md-dropdown-position="bottom"
@@ -94,9 +105,14 @@
   <!-- /SELECTED ROWS -->
 
 
+
+
+  <!-- ALL FILTERS -->
+  <hra-candidates-filters></hra-candidates-filters>
+  <!-- / ALL FILTERS -->
+
+
   <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
-
-
 
 
   <!-- TABLE CANDIDATES -->
@@ -137,13 +153,23 @@
           <td md-cell>{{$index + 1}}</td>
           <td md-cell>{{candidate.name}}</td>
           <td md-cell>{{candidate.contact_info}}</td>
-          <td md-cell>{{candidate.technology}}</td>
+          <td md-cell>
+            <ul class="c-list" ng-if="candidate.technologies">
+              <li ng-repeat="technology in candidate.technologies">
+                {{$index + 1}}. {{technology.name}}: 
+                <span ng-if="technology.level">
+                  {{candidates.getTechnologyLvlTxt(technology.level)}}
+                </span>
+              </li>
+            </ul>
+          </td>
+          <!-- <td md-cell>{{candidate.technology}}</td> -->
           <td md-cell>
             <p ng-if="candidate.category===0">Front End</p>
             <p ng-if="candidate.category!=0">Back End</p>
           </td>
 
-          <td md-cell ng-hide="candidate.candidate">
+          <td md-cell>
             <ul class="c-list" ng-if="candidate.projects">
                {{candidate.projects}}
 
@@ -182,7 +208,6 @@
     </table>
   </md-table-container>
   <!-- /TABLE CANDIDATES -->
-
 
 
 

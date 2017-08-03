@@ -15,6 +15,7 @@
 
       <md-content class="md-padding">
       
+        <!-- NAME INPUT -->
         <div layout-gt-xs="row">
           <md-input-container md-no-float class="md-block" flex-gt-xs="">
 
@@ -27,6 +28,7 @@
 
           </md-input-container>
         </div>
+        <!-- /NAME INPUT -->
 
 
         <!-- SELECT START/END DATE -->
@@ -68,20 +70,43 @@
 
 
         <!-- TECHNOLOGY SECTION-->
+        <md-list layout="row" layout-wrap>
+
+          <md-list-item class="md-2-line c-filters__label">
+             <div class="md-list-item-text" layout="column">
+               <h4>Add/Remove technology:</h4>
+             </div>
+           </md-list-item>
+              
+          <md-list-item
+            class="md-2-line"
+            ng-repeat="technology in candidateForm.candidateTechnologies track by $index">
+            <div class="md-list-item-text" layout="column">
+              <p class="c-filters__item"
+                ng-click="candidateForm.removeFromQueue(technology)" >
+                 {{$index + 1}} {{technology.name}}
+                <span class="material-icons c-filters__icon">close</span>
+              </p>
+            </div>
+          </md-list-item>
+
+        </md-list>
+
         <section
           layout-gt-xs="row"
           layout-align="center center"
-          ng-repeat="language in candidateForm.technologiesToAdd track by $index">
+          ng-repeat="technology in  candidateForm.technologiesToAdd track by $index">
 
           <div flex="100">
             <label>Technology</label> 
             <!-- TECHNOLOGY SELECT-->
             <md-autocomplete
+              ng-model="candidateForm.searchTechnology[$index]"
               md-selected-item="candidateForm.selectedItem[$index]"
-              md-search-text-change="candidateForm.searchTextChange(candidateForm.searchText[$index])"
-              md-search-text="candidateForm.searchText[$index]"
+              md-search-text-change="candidateForm.searchTextChange(candidateForm.searchTechnology[$index])"
+              md-search-text="candidateForm.searchTechnology[$index]"
               md-selected-item-change="candidateForm.addInQueue(item)"
-              md-items="item in candidateForm.querySearch(candidateForm.searchText[$index], candidateForm.technologies)"
+              md-items="item in candidateForm.querySearch(candidateForm.searchTechnology[$index], candidateForm.technologies)"
               md-min-length="0"
               md-item-text="item.name"
               placeholder="Search"
@@ -109,7 +134,9 @@
                 <md-slider flex
                   md-discrete
                   ng-model="candidateForm.selectedTechnologyLevel[$index]"
+                  ng-disabled="!candidateForm.searchTechnology[$index]"
                   class="md-primary"
+                  value='1'
                   step="1"
                   min="1"
                   max="10"
@@ -173,21 +200,59 @@
 
 
         <!-- UPLOADED FILES -->
-        <div layout-gt-xs="row" ng-if="candidateForm.candidate.candidate_files" class="md-padding">
-          <label>Uploaded files:</label><i class="material-icons">movie_filter</i>
-          <div layout-gt-xs="row" ng-repeat="file in candidateForm.candidate.candidate_files">
-            <a ng-href="http://192.168.200.115:3000{{file.cv_url}}" target="_blank"><span>{{file.file_file_name}}</span></a>
-          </div>
+        <div layout-gt-xs="row" ng-if="candidateForm.candidateFiles.length">
+
+          <md-list layout="row" layout-wrap>
+
+            <md-list-item class=" c-filters__label">
+               <div class="md-list-item-text" layout="column">
+                 <label>Uploaded files</label>
+               </div>
+             </md-list-item>
+                
+            <md-list-item
+              
+              ng-repeat="file in candidateForm.candidateFiles track by $index">
+              <div class="md-list-item-text" layout="column">
+                <p class="c-filters__item">
+                   {{$index + 1}} {{file.file_file_name | limitTo: 25}}{{file.file_file_name.length > 25 ? "..." : ''}}
+                  <md-button
+                    class="md-icon-button md-warn"
+                    label="Delete candidate file"
+                    aria-label="Delete candidate file"
+                    ng-click="candidateForm.removeFromQueueFile(file)"">
+                    <md-icon class="material-icons">close</md-icon>
+                    <md-tooltip md-autohide="true">
+                      Delete candidate file
+                    </md-tooltip>
+                  </md-button>
+                  <a ng-href="http://192.168.200.115:3000{{file.file_url}}" target="_blank">
+                    <md-button
+                      class="md-icon-button md-primary"
+                      label="View candidate file"
+                      aria-label="View candidate file">
+                      <md-icon class="material-icons">visibility</md-icon>
+                      <md-tooltip md-autohide="true">
+                        View candidate file
+                      </md-tooltip>
+                    </md-button>
+                  </a>
+                </p>
+              </div>
+            </md-list-item>
+
+          </md-list>
+
         </div>
         <!-- /UPLOADED FILES -->
 
 
-        <!-- UPLOAD -->
+        <!-- UPLOAD FILES-->
         <div layout-gt-xs="row">
-          <label>Upload mp4 files:</label>
-            <input type="file" ngf-select ng-model="file[0]" name="file"  class="md-raised md-primary"><br/>
+          <label>Upload mp4/mp3 files:</label>
+            <input type="file" ngf-select ng-model="files[0]" name="file" multiple accept="video/mp4, audio/mp3"><br/>
         </div>
-         <!-- /UPLOAD -->
+         <!-- /UPLOAD FILES-->
 
 
         <!-- COMMENTS -->
@@ -201,40 +266,56 @@
         <!-- /COMMENTS -->
 
 
-        <!-- UPLOADED FILES -->
-        <div layout-gt-xs="row" ng-if="candidateForm.candidate.candidate_cv" class="md-padding">
-          <label>Uploaded CV:</label>
-          <div layout-gt-xs="row">
-            <a ng-href="http://192.168.200.115:3000{{candidateForm.candidate.candidate_cv.cv_url}}" target="_blank" download='candidateForm.candidate.candidate_cv.file_file_name'><span>{{candidateForm.candidate.candidate_cv.cv_file_name}}</span></a>
-          </div>
+        <!-- UPLOADED CV -->
+        <div layout-gt-xs="row" ng-if="candidateForm.candidate.candidate_cv">
+          <md-list layout="row" layout-wrap>
+        
+            <md-list-item class=" c-filters__label">
+               <div class="md-list-item-text" layout="column">
+                 <label>Uploaded CV:</label>
+               </div>
+             </md-list-item>
+
+            <md-list-item>
+              <div class="md-list-item-text" layout="column">
+                <p class="c-filters__item">
+                  <span>{{candidateForm.candidate.candidate_cv.cv_file_name | limitTo: 35}}
+                  {{candidateForm.candidate.candidate_cv.cv_file_name.length > 35? "..." : ''}}
+                  </span>
+                
+                  <a ng-href="http://192.168.200.115:3000{{candidateForm.candidate.candidate_cv.cv_url}}" target="_blank" download='candidateForm.candidate.candidate_cv.file_file_name'>
+                    <md-button
+                      ng-click="users.saveExcelFile()"
+                      class="md-primary"
+                      label="Download CV"
+                      aria-label="Download CV">
+                      <md-icon class="material-icons">file_download</md-icon>
+                      <md-tooltip md-autohide="true">
+                        Download CV
+                      </md-tooltip>
+                      Download
+                    </md-button>
+                  </a>
+                </p>
+              </div>
+            </md-list-item>
+
+          </md-list>
         </div>
-        <!-- /UPLOADED FILES -->
+        <!-- /UPLOADED CV -->
 
-
-        <!-- UPLOAD -->
+        <!-- UPLOAD CV-->
         <div layout-gt-xs="row">
           <label>Upload CV (pdf/word):</label>
-            <input type="file" ngf-select ng-model="file[1]" name="file" class="md-raised md-primary">
+            <input type="file" ngf-select ng-model="files[1]" name="file">
         </div>
-        <!-- /UPLOAD -->
-
-
-        <!-- DISPONIBILITY -->
-        <div layout-gt-xs="row">
-          <md-input-container md-no-float class="md-block" flex-gt-xs="">
-
-            <label>Disponibility</label>
-            <input ng-model="candidateForm.candidate.disponibility" name="disponibility">
-
-          </md-input-container>
-        </div>
-        <!-- /DISPONIBILITY -->
+        <!-- /UPLOAD CV-->
 
 
         <!--STATUS-->
         <div flex-gt-xs="100">
           <md-input-container>
-            <label>Status</label>
+            <label>Candidate status</label>
             <md-select class="u-no-margin"
               aria-label="Candidate status"
               ng-model="candidateForm.candidate.status">
@@ -255,7 +336,7 @@
       <div layout="row" layout-align="center center">
 
         <md-button class="md-raised md-primary" 
-          ng-click="candidateForm.save(file)"
+          ng-click="candidateForm.save(files)"
           ng-disabled="candForm.$invalid || candidateForm.validateDate">
           Save
         </md-button>

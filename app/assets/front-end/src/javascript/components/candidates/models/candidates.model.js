@@ -14,7 +14,7 @@
     let url = '';
     let promise = null;
     let resource = null;
-    let model = 'User';
+    let model = 'Candidate';
 
 
     Candidate.getAll = () => {
@@ -38,14 +38,14 @@
 
     Candidate.save = (data) => {
       url = apiUrl + '/candidates/new';
-
       promise = Upload.upload({
         url: url,
         data: data
       });
-      promise.then((response) => {
-        return response.data;
+
+      promise.then((data) => {
         alertService.success(model, 'save');
+        return data;
       }, (error) => {
         errorService.forceLogout(error);
         alertService.error(model, 'save')
@@ -55,12 +55,14 @@
     };
 
     Candidate.update = (data) => {
-      url = apiUrl + '/candidates/:id';
-      resource = $resource(url, {}, {
-        'update': { method: 'PUT' }
-      }).update({ id: data.id }, data);
+      url = apiUrl + '/candidates/' + data.id;
+      resource = Upload.upload({
+        url: url,
+        data: data,
+        method: 'PUT'
+      });
 
-      promise = resource.$promise
+      promise = resource
         .then((data) => {
           alertService.success(model, 'update');
           return data;
@@ -68,6 +70,61 @@
         .catch((error) => {
           errorService.forceLogout(error);
           alertService.error(model, 'update')
+        });
+
+      return promise;
+    };
+
+    Candidate.remove = (data) => {
+      url = apiUrl + '/candidates/:id';
+      resource = $resource(url).delete({ id: data.id });
+
+      promise = resource.$promise
+        .then(() => {
+          alertService.success(model, 'remove');
+
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'remove')
+        });
+
+      return promise;
+    };
+
+    Candidate.removeTechnologies = (candidate, technologies) => {
+      let data = {};
+      data["technology_ids[]"] = technologies;
+      url = apiUrl + '/candidates/:id/technologies';
+      resource = $resource(url, data).delete({ id: candidate.id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'removeTechnologies');
+          return data;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'removeTechnologies')
+        });
+
+      return promise;
+    };
+
+    Candidate.removeFiles = (candidate, files) => {
+      let data = {};
+      data["file_ids[]"] = files;
+      url = apiUrl + '/candidates/:id/files';
+      resource = $resource(url, data).delete({ id: candidate.id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'removeFiles');
+          return data;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'removeFiles')
         });
 
       return promise;
