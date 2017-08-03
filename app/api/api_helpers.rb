@@ -76,6 +76,7 @@ module APIHelpers
         getCustomObject(special_relations,model,relations,exception,params[:page],params[:per_page])
       end
     else
+      #TODO Refactor next condition
       if special_relations && (model == User || model == Candidate || model.name == "Candidate")
         getCustomObject(special_relations, model, relations, exception)
       else
