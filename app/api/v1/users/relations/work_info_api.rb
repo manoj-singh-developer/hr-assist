@@ -53,7 +53,7 @@ module V1
           put ':user_id/info' do
             user = User.find(params[:user_id])
 
-            params[:info].map do |key,value|
+            params[:info].each do |key,value|
               user.work_info.update(key.to_sym => value)
             end
 
