@@ -115,12 +115,11 @@ module V1
           authorize! :update, User
           user.update(postParams)
           if params[:work_info]
-            params[:work_info].map do |key,value|
+            params[:work_info].each do |key,value|
               user.work_info.update(key.to_sym => value)
             end
           end
-          success
-          user.as_json(include: {work_info: { except: [:id,:user_id]}})
+          user.as_json(include: { work_info: { except: [:id, :user_id] } })
         end
       end
 
