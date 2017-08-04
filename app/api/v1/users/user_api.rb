@@ -86,7 +86,7 @@ module V1
           if(current_user.is_employee && current_user.id != user.id )
             return error({message: "Cannot access another user"})
           end
-          user.as_json(include: {work_info: { except: [:id,:user_id]}})
+          user.as_json(include: { work_info: { except: [:id, :user_id] } })
         end
 
         desc "Update user by id"
