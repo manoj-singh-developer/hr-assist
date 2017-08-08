@@ -243,7 +243,7 @@ const rootTemplatePath = './views/components/';
       // @CANDIDATES
       .state('candidateParent', {
         url: '/candidate',
-        templateUrl: rootTemplatePath + 'employee/views/employeesParent.view.html',
+        template: '<section ui-view md-whiteframe="6"></section>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -254,7 +254,7 @@ const rootTemplatePath = './views/components/';
       })
       .state('candidateParent.list', {
         url: '/list',
-        template: '<hra-employees md-whiteframe="6" candidate=true></hra-employees>',
+        template: '<hra-candidates md-whiteframe="6"></hra-candidates>',
         data: {
           permissions: {
             only: ['ADMIN'],
@@ -264,30 +264,30 @@ const rootTemplatePath = './views/components/';
           cssClassNames: 'view-candidates'
         }
       })
-      .state('candidateParent.details', {
-        url: '/:id',
-        template: '<hra-employee-details candidate=true></hra-employee-details>',
-        data: {
-          permissions: {
-            only: ['ADMIN'],
-            except: ['isAnonymous'],
-            redirectTo: 'login'
-          },
-          cssClassNames: 'view-candidate-details'
-        }
-      })
-      .state('candidateParent.cv', {
-        url: '/:id/cv',
-        template: '<hra-employee-cv candidate=true></hra-employee-cv>',
-        data: {
-          permissions: {
-            only: ['ADMIN'],
-            except: ['isAnonymous'],
-            redirectTo: 'login'
-          },
-          cssClassNames: 'view-candidate-cv'
-        }
-      })
+      // .state('candidateParent.details', {
+      //   url: '/:id',
+      //   template: '<hra-candidates-details candidate=true></hra-candidates-details>',
+      //   data: {
+      //     permissions: {
+      //       only: ['ADMIN'],
+      //       except: ['isAnonymous'],
+      //       redirectTo: 'login'
+      //     },
+      //     cssClassNames: 'view-candidate-details'
+      //   }
+      // })
+      // .state('candidateParent.cv', {
+      //   url: '/:id/cv',
+      //   template: '<hra-candidates-cv ></hra-candidates-cv>',
+      //   data: {
+      //     permissions: {
+      //       only: ['ADMIN'],
+      //       except: ['isAnonymous'],
+      //       redirectTo: 'login'
+      //     },
+      //     cssClassNames: 'view-candidate-cv'
+      //   }
+      // })
       // EXTRA
       .state('extraParent', {
         url: '/extra',
