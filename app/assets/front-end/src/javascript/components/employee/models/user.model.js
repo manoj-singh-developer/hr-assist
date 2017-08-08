@@ -496,10 +496,6 @@
       return promise;
     };
 
-    User.removeHolidays = () => {
-
-    };
-
     User.getTechnologies = () => {
 
       let userId = $stateParams.id;
