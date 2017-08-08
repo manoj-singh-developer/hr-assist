@@ -121,8 +121,7 @@
         class="md-padding divider-bold u-no-padding u-mt-20 u-mb-20">
       </md-divider>
 
-      <p class="c-card-profile__info c-card-profile__email u-clearfix"
-        ng-hide="userGeneral.candidate">
+      <p class="c-card-profile__info c-card-profile__email u-clearfix">
         <strong>Start date at Company: </strong>
         <span class="u-float-right">
           {{ userGeneral.user.company_start_date | date: 'MMMM yyyy' }}
@@ -143,16 +142,14 @@
         </span>
       </p>
 
-      <p class="c-card-profile__info u-clearfix"
-        ng-hide="userGeneral.candidate">
+      <p class="c-card-profile__info u-clearfix">
         <strong>Office: </strong>
         <span class="u-float-right">
           {{ userGeneral.user.office_nr }}
         </span>
       </p>
 
-      <p class="c-card-profile__info u-clearfix"
-        ng-hide="userGeneral.candidate">
+      <p class="c-card-profile__info u-clearfix">
         <strong>Contract type: </strong>
         <span class="u-float-right">
           {{ userGeneral.schedule.name }}
@@ -274,8 +271,25 @@
       </div>
       <!-- /BIRTHDAY -->
 
+      <!-- PERSONAL IDENTIFICATION NUMBER -->
+      <div layout-gt-xs="row">
 
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+          <label>Personal Identification number</label>
+          <input
+            type="text"
+            ng-model="userGeneral.user.cnp"
+            placeholder="CNP"
+            name="cnp"
+            ng-pattern="/^\d{1}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])(0[1-9]|[1-4]\d| 5[0-2]|99)\d{4}$/">
 
+          <div ng-messages="generalInfoForm.cnp.$error">
+            <div ng-message="pattern">Please enter a valid CNP</div>
+          </div>
+        </md-input-container>
+
+      </div>
+      <!-- /PERSONAL IDENTIFICATION NUMBER -->
 
       <!-- CONTACT INFO -->
       <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
@@ -384,7 +398,7 @@
       <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
 
       <!-- STARTED WORKING ON -->
-      <div layout-gt-xs="row" layout-align="start center" ng-hide="userGeneral.candidate">
+      <div layout-gt-xs="row" layout-align="start center">
         <label flex-gt-xs="35" class="md-padding">
           <strong>Start date at Company</strong>
         </label>
@@ -402,7 +416,7 @@
 
 
       <!-- ASSIST POSITION -->
-      <div layout-gt-xs="row" layout-align="start center" ng-hide="userGeneral.candidate">
+      <div layout-gt-xs="row" layout-align="start center">
 
         <label flex-gt-xs="35" class="md-padding">
           <strong>Position</strong>
@@ -425,34 +439,12 @@
       </div>
       <!-- /ASSIST POSITION -->
 
-
-      <!-- ASSIST POSITION -->
-      <div layout-gt-xs="row" layout-align="start center" ng-show="userGeneral.candidate">
-
-        <label flex-gt-xs="35" class="md-padding u-mb-20">
-          <strong>Position</strong>
-        </label>
-
-        <md-input-container md-no-float class="md-block" flex-gt-xs="30">
-          <md-select
-            aria-label ="Position"
-            ng-model="userGeneral.user.assistPositionTitle"
-            md-selected-text="userGeneral.getSelectedText(userGeneral.user.assistPositionTitle, position=1)">
-              <md-option
-               ng-value="position"
-               ng-repeat="position in userGeneral.candidatesPositionTitle">
-                 {{position}}
-              </md-option>
-          </md-select>
-        </md-input-container>
-
       </div>
       <!-- /ASSIST POSITION -->
 
       <!-- OFFICE AND CONTRACT -->
       <div layout-gt-xs="row"
-        layout-align="start center"
-        ng-hide="userGeneral.candidate">
+        layout-align="start center">
         <label flex-gt-xs="35" class="md-padding u-mb-20">
           <strong>Office Nr.</strong>
         </label>
@@ -471,10 +463,68 @@
       </div>
       <!-- /OFFICE AND CONTRACT -->
 
+      
+      <!-- SSH KEY -->
+      <div layout-gt-xs="row"
+        layout-align="start center">
+        <label flex-gt-xs="35" class="md-padding u-mb-20">
+          <strong>Public SSH key</strong>
+        </label>
+        <md-input-container md-no-float class="md-block" flex-gt-xs="65">
+          <label></label> <!-- required for accessibility to not show console warning -->
+          <textarea
+            class="show-scroll-right"
+            rows="1"
+            type="text"
+            name="office"
+            ng-model="userGeneral.user.work_info.ssh_public_key">
+          </textarea>
+        </md-input-container>
+      </div>
+      <!-- /SSH KEY -->
 
+      
+      <!-- USERNAME OF ACCOUNTS -->
+      <div layout-gt-xs="row">
+
+        <!-- BITBUCKET USERNAME -->
+        <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+          <label>Bitbucket Username</label>
+          <input
+            type="text"
+            name="urgentContactName"
+            ng-model="userGeneral.user.work_info.bitbucket"/>
+
+          <div ng-messages="generalInfoForm.urgentContactName.$error">
+            <div ng-message="required">This field is required</div>
+            <div ng-message="pattern">Please enter a valid name</div>
+          </div>
+        </md-input-container>
+        <!-- BITBUCKET USERNAME -->
+
+        
+        <!-- GITHUB USERNAME -->
+        <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+         <label>Github Username</label>
+          <input
+            type="text"
+            name="urgentContactPhone"
+            ng-model="userGeneral.user.work_info.github"/>
+
+            <div ng-messages="generalInfoForm.urgentContactPhone.$error">
+              <div ng-message="required">This field is required</div>
+              <div ng-message="pattern">Please enter a valid phone number</div>
+          </div>
+        </md-input-container>
+        <!-- /GITHUB USERNAME -->
+
+      </div>
+      <!-- /USERNAME OF ACCOUNTS -->
 
 
       <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
+
+
       <!-- Urgent Contact -->
       <div layout-gt-xs="row">
 
