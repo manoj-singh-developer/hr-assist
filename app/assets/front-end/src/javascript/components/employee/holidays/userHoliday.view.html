@@ -5,6 +5,11 @@
   <md-card-title>
     <md-card-title-text>
       <span class="md-headline">Holidays</span>
+      <span ng-if="userHoliday.totalDays">
+      <i class="material-icons">star</i>
+        <i>{{userHoliday.totalDays}}</i> {{userHoliday.totalDays>1?"days":'day'}} taken
+      </span>
+      
     </md-card-title-text>
   </md-card-title>
   <!-- /CARD TITLE -->
