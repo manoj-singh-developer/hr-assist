@@ -271,8 +271,25 @@
       </div>
       <!-- /BIRTHDAY -->
 
+      <!-- PERSONAL IDENTIFICATION NUMBER -->
+      <div layout-gt-xs="row">
 
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+          <label>Personal Identification number</label>
+          <input
+            type="text"
+            ng-model="userGeneral.user.cnp"
+            placeholder="CNP"
+            name="cnp"
+            ng-pattern="/^\d{1}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])(0[1-9]|[1-4]\d| 5[0-2]|99)\d{4}$/">
 
+          <div ng-messages="generalInfoForm.cnp.$error">
+            <div ng-message="pattern">Please enter a valid CNP</div>
+          </div>
+        </md-input-container>
+
+      </div>
+      <!-- /PERSONAL IDENTIFICATION NUMBER -->
 
       <!-- CONTACT INFO -->
       <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
@@ -456,6 +473,8 @@
         <md-input-container md-no-float class="md-block" flex-gt-xs="65">
           <label></label> <!-- required for accessibility to not show console warning -->
           <textarea
+            class="show-scroll-right"
+            rows="1"
             type="text"
             name="office"
             ng-model="userGeneral.user.work_info.ssh_public_key">
