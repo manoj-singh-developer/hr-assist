@@ -23,7 +23,7 @@ module V1
 
           desc "Get all user holidays"
           get ':user_id/holidays' do
-            user = find_user(params[:user_id])
+            user = User.find(params[:user_id])
             holidays = user.holidays
             holidays.map do |holiday|
               get_holiday(holiday)
@@ -32,7 +32,7 @@ module V1
 
           desc "Get user holiday by id"
           get ':user_id/holidays/:holiday_id' do
-            user = find_user(params[:user_id])
+            user = User.find(params[:user_id])
             holiday = user.holidays.find(params[:holiday_id])
             get_holiday(holiday)
           end
@@ -48,8 +48,7 @@ module V1
             optional :team_leader_ids, type: Array[Integer], desc: "Team leader ids (users)"
           end
           post ':user_id/holidays' do
-            User.find(params[:replacer_ids], params[:team_leader_ids])
-            user = find_user(params[:user_id])
+            User.find(params[:replacer_ids], params[:team_leader_ids], params[:user_id])
 
             holiday = Holiday.create(days: params[:days], start_date: params[:start_date], end_date: params[:end_date], signing_day: params[:signing_day], user_id: params[:user_id])
             params[:project_ids].zip(params[:replacer_ids], params[:team_leader_ids]).each do |project_id, replacer_id, team_leader_id|

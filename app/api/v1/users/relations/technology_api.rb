@@ -23,7 +23,7 @@ module V1
 
           desc "Get all user technologies"
           get ':user_id/technologies' do
-            user = find_user(params[:user_id])
+            user = User.find(params[:user_id])
             { items:
             user.user_technologies.map do |user_technology|
               {
@@ -87,11 +87,9 @@ module V1
             requires :technology_ids, type: Array[Integer], desc: "Technology ids"
           end
           delete ':user_id/technologies' do
-            user = find_user(params[:user_id])
+            User.find(params[:user_id])
             user_technologies = UserTechnology.where(technology_id: params[:technology_ids], user_id: params[:user_id])
-            user_technologies.each do |user_technology|
-              user_technology.delete
-            end
+            user_technologies.delete_all
           end
         end
       end

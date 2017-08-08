@@ -23,7 +23,7 @@ module V1
 
           desc "Get user schedule"
           get ':user_id/schedule' do
-            user = find_user(params[:user_id])
+            user = User.find(params[:user_id])
             user.schedule
           end
 
@@ -33,7 +33,7 @@ module V1
             requires :timetable, type: String, allow_blank: false
           end
           post ':user_id/schedule' do
-            user = find_user(params[:user_id])
+            user = User.find(params[:user_id])
             schedule = Schedule.create(name: params[:name], timetable: params[:timetable])
             user.schedule.destroy if user.schedule
             user.schedule = schedule
@@ -46,7 +46,7 @@ module V1
             optional :timetable, type: String
           end
           put ':user_id/schedule/:schedule_id' do
-            user = find_user(params[:user_id])
+            user = User.find(params[:user_id])
             schedule = Schedule.find(params[:schedule_id])
             if user.schedule == schedule
               schedule.update(user_schedule_params)

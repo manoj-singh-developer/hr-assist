@@ -11,7 +11,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params)
           .permit(:file_name, :file_description, :path, :user_id)
       end
@@ -34,7 +34,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Upload
+        get_paginated_items_for Upload
       end
 
       desc "Get upload"
@@ -42,7 +42,7 @@ module V1
         requires :id, type: Integer , desc: "Upload id"
       end
       get ':id' do
-        authorize! :read, Upload.find(params[:id])
+        authorize!(:read, Upload.find(params[:id]))
       end
 
       desc "Create new upload"
@@ -53,8 +53,8 @@ module V1
         requires :user_id, allow_blank: false, type: Integer
       end
       post 'new' do
-        authorizeAndCreate Upload postParams do
-            User.find(postParams[:user_id])
+        authorize_and_create(Upload, post_params) do
+          User.find(post_params[:user_id])
         end
       end
 
@@ -67,7 +67,7 @@ module V1
       put ':id' do
         upload = Upload.find(params[:id])
         authorize! :update, Upload
-        upload.update(postParams)
+        upload.update(post_params)
         success
       end
     end

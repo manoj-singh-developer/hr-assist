@@ -11,7 +11,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params).permit(:name, :description)
       end
 
@@ -33,7 +33,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Department
+        get_paginated_items_for Department
       end
 
       desc "Get department"
@@ -50,7 +50,7 @@ module V1
         requires :description, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate(Department, postParams)
+        authorize_and_create(Department, post_params)
       end
 
       desc "Update department"
@@ -60,8 +60,8 @@ module V1
       end
       put ':id' do
         department = Department.find(params[:id])
-        authorize! :update, Department
-        department.update(postParams)
+        authorize!(:update, Department)
+        department.update(post_params)
         success
       end
 

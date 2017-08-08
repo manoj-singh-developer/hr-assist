@@ -11,7 +11,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params)
           .permit(:name, :degree, :description, :start_date, :end_date)
       end
@@ -34,7 +34,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Education
+        get_paginated_items_for Education
       end
 
       desc "Get education"
@@ -42,7 +42,7 @@ module V1
         requires :id , type: Integer, desc: "Education ID"
       end
       get ':id' do
-        authorize! :read, Education.find(params[:id])
+        authorize!(:read, Education.find(params[:id]))
       end
 
       desc "Create new education"
@@ -54,7 +54,7 @@ module V1
         optional :end_date, allow_blank: false, type: Date
       end
       post 'new' do
-        authorizeAndCreate(Education, postParams)
+        authorize_and_create(Education, post_params)
       end
 
       desc "Update education"
@@ -67,8 +67,8 @@ module V1
       end
       put ':id' do
         education = Education.find(params[:id])
-        authorize! :update, Education
-        education.update(postParams)
+        authorize!(:update, Education)
+        education.update(post_params)
         success
       end
 
