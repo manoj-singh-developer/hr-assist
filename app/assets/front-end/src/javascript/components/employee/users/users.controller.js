@@ -327,7 +327,7 @@
 
           if (exportUsers[i].technologies) {
             angular.forEach(exportUsers[i].technologies, (value, index) => {
-              technologies.push(value.name + ': ' + vm.getLanguageLvlTxt(value.level));
+              technologies.push(value.name + ': ' + vm.getTechnologyLvlTxt(value.level));
             });
           }
 

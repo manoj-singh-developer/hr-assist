@@ -37,7 +37,7 @@ module V1
 
             users
         end
-        
+
         params :pagination do
           optional :page, type: Integer
           optional :per_page, type: Integer
@@ -86,7 +86,7 @@ module V1
           if(current_user.is_employee && current_user.id != user.id )
             return error({message: "Cannot access another user"})
           end
-          user
+          user.as_json(include: { work_info: { except: [:id, :user_id] } })
         end
 
         desc "Update user by id"
@@ -115,8 +115,13 @@ module V1
           user = User.find(params[:id])
           authorize! :update, User
           user.update(postParams)
-          success
-          return user
+          if params[:work_info]
+            user.work_info ||= WorkInfo.create(user_id: user.id)
+            params[:work_info].each do |key,value|
+              user.work_info.update(key.to_sym => value)
+            end
+          end
+          user.as_json(include: { work_info: { except: [:id, :user_id] } })
         end
       end
 
