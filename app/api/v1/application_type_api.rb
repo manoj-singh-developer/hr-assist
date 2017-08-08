@@ -11,7 +11,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params).permit(:name, :label)
       end
 
@@ -33,7 +33,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor ApplicationType
+        get_paginated_items_for ApplicationType
       end
 
       desc "Get application type"
@@ -41,12 +41,12 @@ module V1
         requires :id, type: Integer , desc: "Application type id"
       end
       get ':id' do
-        authorize! :read, ApplicationType.find(params[:id])
+        authorize!(:read, ApplicationType.find(params[:id]))
       end
 
       desc "Get all application type projects"
       get ':id/projects' do
-        application_type = ApplicationType.find_by_id(params[:id])
+        application_type = ApplicationType.find(params[:id])
         projects = application_type.projects
         {items: projects}
       end
@@ -67,10 +67,10 @@ module V1
       post 'new' do
         if params[:items]
           params[:items].each do |x|
-            authorizeAndCreate(ApplicationType, {name: x[:name] , label: x[:label]})
+            authorize_and_create(ApplicationType, {name: x[:name] , label: x[:label]})
           end
         else
-          authorizeAndCreate(ApplicationType, postParams)
+          authorize_and_create(ApplicationType, post_params)
         end
       end
 
@@ -81,8 +81,8 @@ module V1
       end
       put ':id' do
         application_type = ApplicationType.find(params[:id])
-        authorize! :update, ApplicationType
-        application_type.update(postParams)
+        authorize!(:update, ApplicationType)
+        application_type.update(post_params)
         success
       end
 

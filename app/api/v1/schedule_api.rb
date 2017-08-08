@@ -11,7 +11,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params).permit(:name, :timetable, :user_id)
       end
 
@@ -33,7 +33,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Schedule
+        get_paginated_items_for Schedule
       end
 
       desc "Get schedule"
@@ -41,7 +41,7 @@ module V1
         requires :id, type: Integer , desc: "Schedule id"
       end
       get ':id' do
-        authorize! :read, Schedule.find(params[:id])
+        authorize!(:read, Schedule.find(params[:id]))
       end
 
       desc "Create new schedule"
@@ -51,8 +51,8 @@ module V1
         requires :user_id, allow_blank: false, type: Integer
       end
       post 'new' do
-        authorizeAndCreate(Schedule, postParams) do
-            User.find(postParams[:user_id])
+        authorize_and_create(Schedule, post_params) do
+            User.find(post_params[:user_id])
         end
       end
 
@@ -63,8 +63,8 @@ module V1
       end
       put ':id' do
         schedule = Schedule.find(params[:id])
-        authorize! :update, Schedule
-        schedule.update(postParams)
+        authorize!(:update, Schedule)
+        schedule.update(post_params)
         success
       end
     end

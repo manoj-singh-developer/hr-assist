@@ -11,7 +11,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params).permit(:name, :label)
       end
 
@@ -33,7 +33,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Industry
+        get_paginated_items_for Industry
       end
 
       desc "Get industry"
@@ -41,12 +41,12 @@ module V1
         requires :id ,type: Integer , desc: "Industry id"
       end
       get ':id' do
-        authorize! :read, Industry.find(params[:id])
+        authorize!(:read, Industry.find(params[:id]))
       end
 
       desc "Get all industry projects"
       get ':id/projects' do
-        industry = Industry.find_by_id(params[:id])
+        industry = Industry.find(params[:id])
         projects = industry.projects
         {items: projects}
       end
@@ -67,10 +67,10 @@ module V1
       post 'new' do
         if params[:items]
           params[:items].each do |x|
-            authorizeAndCreate(Industry, {name: x[:name] , label: x[:label]})
+            authorize_and_create(Industry, {name: x[:name] , label: x[:label]})
           end
         else
-          authorizeAndCreate(Industry, postParams)
+          authorize_and_create(Industry, post_params)
         end
       end
 
@@ -81,8 +81,8 @@ module V1
       end
       put ':id' do
         industry = Industry.find(params[:id])
-        authorize! :update, Industry
-        industry.update(postParams)
+        authorize!(:update, Industry)
+        industry.update(post_params)
         success
       end
 

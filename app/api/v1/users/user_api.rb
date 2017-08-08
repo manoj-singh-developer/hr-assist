@@ -17,7 +17,7 @@ module V1
           "This user didn't fill in #{field} field"
         end
 
-        def postParams
+        def post_params
           ActionController::Parameters.new(params)
             .permit(:first_name, :middle_name, :last_name, :address, :city, :zip_code, :birthday, :phone, :picture, :observations,
                     :other_email, :urgent_contact_name, :urgent_contact_phone, :car_plate, :company_start_date, :status, :email, :office_nr, :cnp)
@@ -69,9 +69,9 @@ module V1
           end
 
           if params[:filters]
-            paginateItems filtered_users(params[:filters]), params[:with] , defined?(exceptions) ? exceptions : []
+            paginate_items filtered_users(params[:filters]), params[:with] , defined?(exceptions) ? exceptions : []
           else
-            getPaginatedItemsFor User, params[:with] , defined?(exceptions) ? exceptions : []
+            get_paginated_items_for User, params[:with] , defined?(exceptions) ? exceptions : []
           end
 
         end
@@ -82,7 +82,7 @@ module V1
         end
         get ':id' do
           authorize! :read, User
-          user = find_user(params[:id])
+          user = User.find(params[:id])
           if(current_user.is_employee && current_user.id != user.id )
             return error({message: "Cannot access another user"})
           end
@@ -114,7 +114,7 @@ module V1
         put ':id' do
           user = User.find(params[:id])
           authorize! :update, User
-          user.update(postParams)
+          user.update(post_params)
           if params[:work_info]
             user.work_info ||= WorkInfo.create(user_id: user.id)
             params[:work_info].each do |key,value|
@@ -172,7 +172,7 @@ module V1
 
       put "me" do
         authenticate!
-        current_user.update(postParams)
+        current_user.update(post_params)
         success
         return current_user
       end

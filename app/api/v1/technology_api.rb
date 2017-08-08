@@ -11,7 +11,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params).permit(:name, :label)
       end
 
@@ -33,7 +33,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Technology
+        get_paginated_items_for Technology
       end
 
       desc "Get technology"
@@ -41,12 +41,12 @@ module V1
         requires :id ,type: Integer , desc: "technology id"
       end
       get ':id' do
-        authorize! :read, Technology.find(params[:id])
+        authorize!(:read, Technology.find(params[:id]))
       end
 
       desc "Get all technology projects"
       get ':id/projects' do
-        technology = Technology.find_by_id(params[:id])
+        technology = Technology.find(params[:id])
         projects = technology.projects
         projects
       end
@@ -63,7 +63,7 @@ module V1
       get ':id/users' do
         technology = Technology.find(params[:id])
         technology.user_technologies.map do |user_tech|
-          result = {
+          {
             user: user_tech.user,
             technology_level: user_tech.level
           }
@@ -86,11 +86,11 @@ module V1
       post 'new' do
         if params[:items]
           params[:items].each do |value|
-            authorizeAndCreate(Technology, { name: value[:name] , label: value[:label], creator_id: current_user.id })
+            authorize_and_create(Technology, { name: value[:name], label: value[:label], creator_id: current_user.id })
           end
         else
-          tech_params = { name: postParams[:name] , label: postParams[:label], creator_id: current_user.id }
-          authorizeAndCreate(Technology, tech_params)
+          tech_params = { name: post_params[:name], label: post_params[:label], creator_id: current_user.id }
+          authorize_and_create(Technology, tech_params)
         end
       end
 
@@ -101,8 +101,8 @@ module V1
       end
       put ':id' do
         technology = Technology.find(params[:id])
-        authorize! :update, Technology
-        technology.update(postParams)
+        authorize!(:update, Technology)
+        technology.update(post_params)
         success
       end
 

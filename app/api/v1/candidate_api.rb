@@ -11,11 +11,11 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
 
         clone_params = params.dup
 
-        clone_params[:candidate_cv] = convert_hashie_to_file(params[:candidate_cv]) if(params[:candidate_cv])
+        clone_params[:candidate_cv] = convert_hashie_to_file(params[:candidate_cv]) if params[:candidate_cv]
 
         if params[:audio_files]
           clone_params[:audio_files].each_with_index do |audio_file, index|
@@ -67,9 +67,9 @@ module V1
       end
       get do
         if params[:filters]
-          paginateItems(filtered_candidates(params[:filters]), ["technologies"])
+          paginate_items(filtered_candidates(params[:filters]), ["technologies"])
         else
-          getPaginatedItemsFor(Candidate, ['candidate_cv', 'candidate_files', 'technologies'])
+          get_paginated_items_for(Candidate, ['candidate_cv', 'candidate_files', 'technologies'])
         end
       end
 
@@ -78,8 +78,8 @@ module V1
         requires :id, type: Integer , desc: "Candidate id"
       end
       get ':id' do
-        authorize! :read, Candidate.find(params[:id])
-        getPaginatedItemsFor Candidate.where(id: params[:id]), ['candidate_cv', 'candidate_files', 'technologies']
+        authorize!(:read, Candidate.find(params[:id]))
+        get_paginated_items_for(Candidate.where(id: params[:id]), ['candidate_cv', 'candidate_files', 'technologies'])
       end
 
       desc "Create new candidate"
@@ -98,11 +98,11 @@ module V1
         optional :cnp,                    allow_blank: false, type: String
       end
       post 'new' do
-        model_params = postParams
+        model_params = post_params
         cv_file = model_params.delete(:candidate_cv) if model_params[:candidate_cv]
         audio_files = model_params.delete(:audio_files) if model_params[:audio_files]
 
-        candidate = authorizeAndCreate(Candidate, model_params)
+        candidate = authorize_and_create(Candidate, model_params)
         if params[:technologies]
           params[:technologies].each do |tech|
             technology = Technology.find_or_create_by(name: tech[1][:technology_name])
@@ -117,7 +117,7 @@ module V1
             end
           end
 
-          getPaginatedItemsFor Candidate.where(id: candidate.id), ['candidate_cv', 'candidate_files', 'technologies']
+          get_paginated_items_for(Candidate.where(id: candidate.id), ['candidate_cv', 'candidate_files', 'technologies'])
         end
 
       end
@@ -140,7 +140,7 @@ module V1
 
       put ':id' do
 
-        authorize! :update, Candidate
+        authorize!(:update, Candidate)
 
         candidate = Candidate.find(params[:id])
         if params[:technologies]
@@ -151,7 +151,7 @@ module V1
             candidate_technology.update(level: technology[1].technology_level) if technology[1][:technology_level]
           end
         end
-        model_params = postParams
+        model_params = post_params
 
         cv_file = model_params.delete(:candidate_cv) if model_params[:candidate_cv]
         audio_files = model_params.delete(:audio_files) if model_params[:audio_files]
@@ -167,7 +167,7 @@ module V1
           end
         end
 
-        getPaginatedItemsFor Candidate.where(id: params[:id]), ['candidate_cv', 'candidate_files', 'technologies']
+        get_paginated_items_for(Candidate.where(id: params[:id]), ['candidate_cv', 'candidate_files', 'technologies'])
       end
 
       desc "Delete candidate technologies"
