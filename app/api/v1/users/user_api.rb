@@ -115,6 +115,7 @@ module V1
           authorize! :update, User
           user.update(postParams)
           if params[:work_info]
+            user.work_info ||= WorkInfo.create(user_id: user.id)
             params[:work_info].each do |key,value|
               user.work_info.update(key.to_sym => value)
             end
