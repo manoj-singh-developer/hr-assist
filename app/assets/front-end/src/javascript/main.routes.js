@@ -384,6 +384,30 @@ const rootTemplatePath = './views/components/';
           cssClassNames: 'view-app-types'
         }
       })
+      // @INTERNS
+      .state('internsParent', {
+        url: '/interns',
+        template: '<section ui-view md-whiteframe="6"></section>',
+        data: {
+          permissions: {
+            only: ['ADMIN'],
+            except: ['isAnonymous'],
+            redirectTo: 'login'
+          }
+        }
+      })
+      .state('internsParent.list', {
+        url: '/list',
+        template: '<hra-interns md-whiteframe="6"></hra-interns>',
+        data: {
+          permissions: {
+            only: ['ADMIN'],
+            except: ['isAnonymous'],
+            redirectTo: 'login'
+          },
+          cssClassNames: 'view-app-types'
+        }
+      })
       // @LOGIN
       .state('login', {
         url: '/login',

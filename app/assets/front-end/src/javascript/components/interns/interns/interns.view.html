@@ -1,0 +1,176 @@
+<section layout="column">
+
+
+
+
+
+  <!-- TITLE -->
+  <md-toolbar
+    class="md-table-toolbar md-default"
+    layout="row"
+    layout-align="space-between center">
+    <div class="md-toolbar-tools">
+
+      <div class="md-title">
+        <span >Interns</span>
+      </div>
+
+      <div flex="" class="flex"></div>
+
+    </div>
+  </md-toolbar>
+  <!-- /TITLE -->
+
+
+
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+
+  <!-- AUTOCOMPLETE SEARCH -->
+  <md-content class="md-padding"
+    ng-show="!interns.showFilters">
+    <form ng-submit="$event.preventDefault()">
+      <md-autocomplete
+        ng-disabled="interns.isDisabled"
+        ng-model="interns.searchText"
+        md-selected-item="interns.selectedItem"
+        md-search-text-change="interns.querySearch(interns.searchText, interns.candidate)"
+        md-search-text="interns.searchText"
+        md-selected-item-change="interns.querySearch(interns.searchText, interns.candidate)"
+        md-items="item in interns.querySearch(interns.searchText, interns.interns)"
+        md-item-text="item.name"
+        md-min-length="0"
+        md-dropdown-position="bottom"
+        placeholder="Search">
+
+        <md-item-template>
+          <span class="item-metadata">
+            {{item.name}}
+        </md-item-template>
+      </md-autocomplete>
+    </form>
+  </md-content>
+  <!-- /AUTOCOMPLETE SEARCH -->
+
+
+
+
+  <!-- SELECTED ROWS -->
+  <md-toolbar
+    class="md-table-toolbar alternate"
+    ng-show="interns.tableSettings.options.rowSelection && interns.tableSettings.selected.length">
+    <div class="md-toolbar-tools">
+      <span>
+        {{interns.tableSettings.selected.length}} {{interns.tableSettings.selected.length > 1 ? 'employees' : 'employee'}} selected
+      </span>
+    </div>
+  </md-toolbar>
+  <!-- /SELECTED ROWS -->
+
+
+
+
+  <!-- ALL FILTERS -->
+  <hra-interns-filters></hra-interns-filters>
+  <!-- / ALL FILTERS -->
+
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+
+  <!-- TABLE interns -->
+  <md-table-container>
+    <table
+      class="c-table--actions c-table--big table-employees"
+      md-table
+      md-row-select="interns.tableSettings.options.rowSelection"
+      multiple="{{interns.tableSettings.options.multiSelect}}"
+      ng-model="interns.tableSettings.selected"
+      md-progress="promise">
+
+      <thead
+        ng-if="!interns.tableSettings.options.decapitate"
+        md-head
+        md-order="interns.tableSettings.query.order">
+        <tr md-row>
+        <th md-column>No.</th>
+          <th md-column md-order-by="name">Name</th>
+          <th md-column>Email/Phone</th>
+          <th md-column>Technologies</th>
+          <th md-column>Type of technology</th>
+          <th md-column>Projects</th>
+          <th md-column>Comments</th>
+          <th md-column>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody md-body>
+        <tr
+          md-row
+          md-select="interns"
+          md-on-select="logItem"
+          ng-repeat="intern in interns.interns 
+          | filter: (interns.firstNameFilter || interns.searchText) 
+          | orderBy: interns.tableSettings.query.order 
+          | limitTo: interns.tableSettings.query.limit : (interns.tableSettings.query.page - 1) * interns.tableSettings.query.limit track by $index">
+          <td md-cell>{{$index + 1}}</td>
+          <td md-cell>{{intern.name}}</td>
+          <td md-cell>{{intern.contact_info}}</td>
+          <td md-cell>
+            <ul class="c-list" ng-if="intern.technologies">
+              <li ng-repeat="technology in intern.technologies">
+                {{$index + 1}}. {{technology.name}}: 
+                <span ng-if="technology.level">
+                  {{interns.getTechnologyLvlTxt(technology.level)}}
+                </span>
+              </li>
+            </ul>
+          </td>
+
+          <td md-cell>
+            <p ng-if="intern.category===0">Front End</p>
+            <p ng-if="intern.category!=0">Back End</p>
+          </td>
+
+          <td md-cell>
+            <ul class="c-list" ng-if="intern.projects">
+               {{intern.projects}}
+
+            </ul>
+          </td>
+
+          <td md-cell>{{intern.comments}}</td>
+
+          <td md-cell>
+            <md-button
+              class="md-icon-button md-warn"
+              label="Remove intern"
+              aria-label="Remove intern"
+              ng-click="interns.remove(intern, $event)">
+              <md-icon class="material-icons">delete</md-icon>
+              <md-tooltip md-autohide="true">
+                Remove intern
+              </md-tooltip>
+            </md-button>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </md-table-container>
+  <!-- /TABLE INTERNS -->
+
+
+
+
+   <!-- TABLE PAGINATION -->
+  <hra-table-pagination settings="interns.tableSettings">
+  <hra-table-pagination>
+  <!-- /TABLE PAGINATION -->
+
+
+
+</section>
+
+
