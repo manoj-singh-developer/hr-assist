@@ -23,7 +23,7 @@ module V1
 
           desc "Get all user uploads"
           get ':user_id/uploads' do
-            user = find_user(params[:user_id])
+            user = User.find(params[:user_id])
             { items: user.uploads }
           end
 
@@ -32,7 +32,7 @@ module V1
             requires :upload_ids, type: [Integer], desc: "Upload ids"
           end
           put ':user_id/uploads' do
-            user = find_user(params[:user_id])
+            user = User.find(params[:user_id])
             uploads = Upload.where(id: params[:upload_ids]) - user.uploads
             user.uploads << uploads if uploads.count > 0
             { items: user.uploads }

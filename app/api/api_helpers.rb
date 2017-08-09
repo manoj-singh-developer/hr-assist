@@ -14,7 +14,7 @@ module APIHelpers
     data = {:user_id => user.id, :role_id => user.roles.first.id , :token => user.auth_token}
     custom_token = JWT.encode(data, Rails.application.secrets.secret_key_base)
 
-    success user: user, custom_token: custom_token
+    success(user: user, custom_token: custom_token)
   end
 
   def get_option(key)
@@ -28,7 +28,6 @@ module APIHelpers
   def ldap_login
     email = params[:email]
     password = params[:password]
-    env = Rails.env
     ldap = Net::LDAP.new(:host => get_option("ldap_host"),
                          :port => get_option("ldap_port"),
                          :auth => {
@@ -43,7 +42,7 @@ module APIHelpers
     )
   end
 
-  def getCustomObject(special, model, relations, exception, *params)
+  def get_custom_object(special, model, relations, exception, *params)
     response = {}
     response_final = []
     items = model.all.includes(relations).page(params[0]).per(params[1]) if params.any?
@@ -61,40 +60,43 @@ module APIHelpers
       response["languages"] = [] if response["languages"] && response["languages"].count == m.send("#{model.name.downcase}_languages").count
       response["technologies"] = [] if response["technologies"] && response["technologies"].count == m.send("#{model.name.downcase}_technologies").count
     end
-    return {items: response_final,
-            paginate: url_paginate(items, params[1])
-    } if items
+
+    if items
+      {items: response_final,
+       paginate: url_paginate(items, params[1])
+      }
+    end
 
     {items: response_final}
 
   end
 
-  def getPaginatedItemsFor(model, relations = nil, exception = nil)
+  def get_paginated_items_for(model, relations = nil, exception = nil)
     special_relations = relations & ["languages","technologies"]
     if params[:page] && params[:per_page]
       if special_relations && model == User
-        getCustomObject(special_relations,model,relations,exception,params[:page],params[:per_page])
+        get_custom_object(special_relations,model,relations,exception,params[:page],params[:per_page])
       end
     else
       #TODO Refactor next condition
       if special_relations && (model == User || model == Candidate || model.name == "Candidate")
-        getCustomObject(special_relations, model, relations, exception)
+        get_custom_object(special_relations, model, relations, exception)
       else
         {items:  model.all.includes(relations).as_json(include: relations, except: exception)}
       end
     end
   end
 
-  def paginateItems(items, relations = nil, exception = nil)
+  def paginate_items(items, relations = nil, exception = nil)
     return [] if items.nil?
     special_relations = relations & ["languages","technologies"]
     if params[:page] && params[:per_page]
       if special_relations && items.first.class == User
-        getCustomObject(special_relations,items,relations,exception,params[:page],params[:per_page])
+        get_custom_object(special_relations,items,relations,exception,params[:page],params[:per_page])
       end
     else
       if special_relations && (items.first.class == User || items.first.class == Candidate)
-        getCustomObject(special_relations,items, relations, exception)
+        get_custom_object(special_relations,items, relations, exception)
       else
         {items:  items.all.includes(relations).as_json(include: relations, except: exception)}
       end
@@ -102,11 +104,11 @@ module APIHelpers
   end
 
 
-  def authorizeAndCreate(model, postParams, &block)
-    authorize! :create, model
+  def authorize_and_create(model, post_params, &block)
+    authorize!(:create, model)
     block.call if block_given?
-    object = model.create!(postParams)
-    return object
+    object = model.create!(post_params)
+    object
   end
 
   def url_paginate(collection, per_page)
@@ -121,7 +123,7 @@ module APIHelpers
   end
 
   def url_for(page)
-    return nil if !page
+    return nil unless page
 
     url = request.base_url + request.path + "/?page=#{page}"
     url += "&per_page=#{@@per_page}" if @@per_page
@@ -135,7 +137,7 @@ module APIHelpers
 
     return "Aready existing" if user.send(objects.to_sym).include?(object)
     user.send(objects.to_sym) << object
-    return user
+    user
   end
 
   def delete_object(model, relation, model_id, relation_ids)
@@ -151,12 +153,8 @@ module APIHelpers
     project.send(objects.to_sym)
   end
 
-  def find_user(id)
-    user = User.find(id)
-  end
-
   def get_holiday(holiday)
-    response = {
+    {
       holiday_id: holiday.id,
       days: holiday.days,
       start_date: holiday.start_date,

@@ -12,7 +12,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params).permit(:name, :description, :total)
       end
 
@@ -33,7 +33,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Device
+        get_paginated_items_for Device
       end
 
       desc "Get device"
@@ -41,12 +41,12 @@ module V1
         requires :id , type: Integer , desc: "Device ID"
       end
       get ':id' do
-        authorize! :read, Device.find(params[:id])
+        authorize!(:read, Device.find(params[:id]))
       end
 
       desc "Get all device users"
       get ':id/users' do
-        device = Device.find_by_id(params[:id])
+        device = Device.find(params[:id])
         {items: device.users}
       end
 
@@ -59,10 +59,10 @@ module V1
       post 'new' do
         if params[:items]
           params[:items].each do |x|
-            authorizeAndCreate(Device, {name: x[:name] , description: x[:description], total: x[:total]})
+            authorize_and_create(Device, {name: x[:name] , description: x[:description], total: x[:total]})
           end
         else
-          authorizeAndCreate(Device, postParams)
+          authorize_and_create(Device, post_params)
         end
       end
 
@@ -74,8 +74,8 @@ module V1
       end
       put ':id' do
         device = Device.find(params[:id])
-        authorize! :update, Device
-        device.update(postParams)
+        authorize!(:update, Device)
+        device.update(post_params)
         success
       end
 

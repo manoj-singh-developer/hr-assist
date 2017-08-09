@@ -11,7 +11,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params)
           .permit(:long_name, :short_name)
       end
@@ -34,7 +34,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Country
+        get_paginated_items_for Country
       end
 
       desc "Returns a country"
@@ -51,7 +51,7 @@ module V1
         requires :short_name, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate(Country, postParams)
+        authorize_and_create(Country, post_params)
       end
 
       desc "Update country"
@@ -62,8 +62,8 @@ module V1
 
       put ':id' do
         country = Country.find(params[:id])
-        authorize! :update, Country
-        country.update(postParams)
+        authorize!(:update, Country)
+        country.update(post_params)
         success
       end
     end

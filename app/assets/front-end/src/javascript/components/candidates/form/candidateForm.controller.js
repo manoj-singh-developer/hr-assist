@@ -33,7 +33,6 @@
     vm.dateService = dateService;
     vm.save = save;
     vm.closeButton = closeButton;
-    vm.clearButton = clearButton;
     vm.checkDates = checkDates;
     vm.addNewTechnology = addNewTechnology;
     vm.querySearch = querySearch;
@@ -70,11 +69,6 @@
 
     function closeButton() {
       $mdDialog.cancel();
-    }
-
-    function clearButton() {
-      vm.candidate = {};
-      vm.technologiesToAdd = [{}];
     }
 
     function checkDates() {
@@ -131,11 +125,11 @@
             filesToRemove = [];
           });
 
-        } else {
+        } 
           Candidate.update(dataObj).then((resource) => {
             _sendEventNotify('candidateEdited', resource.data.items);
           });
-        }
+        
 
       } else if (dataObj) {
         Candidate.save(dataObj).then((resource) => {
@@ -194,12 +188,13 @@
         category: vm.candidate.category,
         audio_files: interview
       };
-
+      
       for (let key in dataObj) {
         if (!dataObj[key] || dataObj[key].length == 0) {
           delete dataObj[key];
         }
       }
+      
       return dataObj;
     }
 

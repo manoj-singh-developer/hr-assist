@@ -11,7 +11,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params).permit(:name, :description)
       end
 
@@ -32,7 +32,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Activity
+        get_paginated_items_for Activity
       end
 
       desc "Get activity"
@@ -40,7 +40,7 @@ module V1
         requires :id ,type: Integer , desc: "activity id"
       end
       get ':id' do
-        authorize! :read, Activity.find(params[:id])
+        authorize!(:read, Activity.find(params[:id]))
       end
 
       desc "Create new activity"
@@ -49,7 +49,7 @@ module V1
         requires :description, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate(Activity, postParams)
+        authorize_and_create(Activity, post_params)
       end
 
       desc "Update activity"
@@ -59,8 +59,8 @@ module V1
       end
       put ':id' do
         activity = Activity.find(params[:id])
-        authorize! :update, Activity
-        activity.update(postParams)
+        authorize!(:update, Activity)
+        activity.update(post_params)
         success
       end
 
