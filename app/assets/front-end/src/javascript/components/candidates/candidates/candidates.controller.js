@@ -190,7 +190,7 @@
       if (exportCandidates) {
         angular.forEach(exportCandidates, function(value, key) {
           let technologies = [];
-
+          
           if (value.technologies) {
             angular.forEach(value.technologies, (technology, index) => {
               technologies.push(technology.name + ': ' + getTechnologyLvlTxt(technology.level));
