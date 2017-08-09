@@ -152,12 +152,15 @@
       promises.push(Candidate.getAll());
       $q.all(promises).then((data) => {
         vm.resources.candidates = data[0];
-        vm.resources.candidates.forEach((element, index) => {
-          // status greater than 5 respresent status of intership or employee
-          if (element.status < 5) {
-            vm.candidates.push(element);
-          }
-        });
+
+        if (vm.resources.candidates) {
+          vm.resources.candidates.forEach((element, index) => {
+            // status greater than 5 respresent status of intership or employee
+            if (element.status < 5) {
+              vm.candidates.push(element);
+            }
+          });
+        }
 
         _updateTablePagination(vm.candidates);
         _buildAutocompleteLists();

@@ -17,6 +17,18 @@
 
       <div flex="" class="flex"></div>
 
+      <div layout="row" layout-align="right">
+        <md-button
+          ng-click="interns.saveExcelFile()"
+          class="md-primary">
+          <md-icon class="material-icons">file_download</md-icon>
+          <md-tooltip md-autohide="true">
+            Export Excel
+          </md-tooltip>
+          Export Excel
+        </md-button>
+
+      </div>
     </div>
   </md-toolbar>
   <!-- /TITLE -->
@@ -35,9 +47,9 @@
         ng-disabled="interns.isDisabled"
         ng-model="interns.searchText"
         md-selected-item="interns.selectedItem"
-        md-search-text-change="interns.querySearch(interns.searchText, interns.candidate)"
+        md-search-text-change="interns.querySearch(interns.searchText, interns.interns)"
         md-search-text="interns.searchText"
-        md-selected-item-change="interns.querySearch(interns.searchText, interns.candidate)"
+        md-selected-item-change="interns.querySearch(interns.searchText, interns.interns)"
         md-items="item in interns.querySearch(interns.searchText, interns.interns)"
         md-item-text="item.name"
         md-min-length="0"
@@ -130,7 +142,7 @@
 
           <td md-cell>
             <p ng-if="intern.category===0">Front End</p>
-            <p ng-if="intern.category!=0">Back End</p>
+            <p ng-if="intern.category===1">Back End</p>
           </td>
 
           <td md-cell>
@@ -143,7 +155,7 @@
           <td md-cell>{{intern.comments}}</td>
 
           <td md-cell>
-            <md-button
+            <!-- <md-button
               class="md-icon-button md-warn"
               label="Remove intern"
               aria-label="Remove intern"
@@ -152,7 +164,7 @@
               <md-tooltip md-autohide="true">
                 Remove intern
               </md-tooltip>
-            </md-button>
+            </md-button> -->
           </td>
         </tr>
       </tbody>

@@ -34,7 +34,7 @@
         <!-- SELECT START/END DATE -->
         <section layout-gt-xs="row" layout-align="start center">
           <div flex-gt-xs="50">
-            <label>University start year</label>
+            <label class="u-ml-15">University start year</label>
             <md-datepicker
               ng-model="candidateForm.candidate.university_start_year"
               md-placeholder="Pick start year"
@@ -46,7 +46,7 @@
           </div>
 
           <div flex-gt-xs="50">
-            <label>University end year</label>
+            <label class="u-ml-15">University end year</label>
             <md-datepicker
               ng-model="candidateForm.candidate.university_end_year"
               md-placeholder="Pick end year"
@@ -74,7 +74,7 @@
 
           <md-list-item class="md-2-line c-filters__label" ng-if="candidateForm.candidateTechnologies.length">
              <div class="md-list-item-text" layout="column">
-               <h4>Remove technology</h4>
+               <label class="u-ml-5">Remove technology</label>
              </div>
            </md-list-item>
               
@@ -98,9 +98,9 @@
           ng-repeat="technology in  candidateForm.technologiesToAdd track by $index">
 
           <div flex="100">
-            <label>Technology</label> 
+            <label class="u-ml-5">Technology</label> 
             <!-- TECHNOLOGY SELECT-->
-            <md-autocomplete
+            <md-autocomplete class="u-mt-5"
               ng-model="candidateForm.searchTechnology[$index]"
               md-selected-item="candidateForm.selectedItem[$index]"
               md-search-text-change="candidateForm.searchTextChange(candidateForm.searchTechnology[$index])"
@@ -176,11 +176,12 @@
 
         <!-- CATEGORY -->
         <div layout-gt-xs="row">
-          <label>Category</label>
+
+          <label class="u-ml-5">Category</label>
         </div>
         <div layout-gt-xs="row">
           <md-radio-group ng-model="candidateForm.candidate.category">
-            <md-radio-button value="0" class="md-primary">Front End</md-radio-button>
+            <md-radio-button value="0" class="md-primary  u-mr-5">Front End</md-radio-button>
             <md-radio-button value="1" class="md-primary">Back End</md-radio-button>
           </md-radio-group>
         </div>
@@ -204,18 +205,17 @@
 
           <md-list layout="row" layout-wrap>
 
-            <md-list-item class=" c-filters__label">
+            <md-list-item flex-gt-xs="100">
                <div class="md-list-item-text" layout="column">
-                 <label>Uploaded files</label>
+                 <label class="u-ml-5">Uploaded files</label>
                </div>
              </md-list-item>
                 
             <md-list-item
-              
               ng-repeat="file in candidateForm.candidateFiles track by $index">
               <div class="md-list-item-text" layout="column">
                 <p class="c-filters__item">
-                   {{$index + 1}} {{file.file_file_name | limitTo: 25}}{{file.file_file_name.length > 25 ? "..." : ''}}
+                   {{$index + 1}}. {{file.file_file_name | limitTo: 25}}{{file.file_file_name.length > 25 ? "..." : ''}}
                   <md-button
                     class="md-icon-button md-warn"
                     label="Delete candidate file"
@@ -249,7 +249,9 @@
 
         <!-- UPLOAD FILES-->
         <div layout-gt-xs="row">
-          <label class="u-mr-20">Upload mp4/mp3 files</label>
+
+          <label class="u-mr-20 u-ml-5">Upload mp4/mp3 files</label>
+
             <input type="file" ngf-select ng-model="files[0]" name="file" multiple accept="video/mp4, audio/mp3"><br/>
         </div>
          <!-- /UPLOAD FILES-->
@@ -270,9 +272,9 @@
         <div layout-gt-xs="row" ng-if="candidateForm.candidate.candidate_cv">
           <md-list layout="row" layout-wrap>
         
-            <md-list-item class=" c-filters__label">
+            <md-list-item>
                <div class="md-list-item-text" layout="column">
-                 <label>Uploaded CV:</label>
+                 <label class="u-ml-5 u-mr-20">Uploaded CV</label>
                </div>
              </md-list-item>
 
@@ -306,15 +308,16 @@
 
         <!-- UPLOAD CV-->
         <div layout-gt-xs="row">
-          <label class="u-mr-20">Upload CV (pdf/word)</label>
-            <input type="file" ngf-select ng-model="files[1]" name="file">
+          <label class="u-mr-20 u-ml-5">Upload CV (pdf/word)</label>
+          <input type="file" ngf-select ng-model="files[1]" name="file">
         </div>
         <!-- /UPLOAD CV-->
 
 
         <!--STATUS-->
         <div flex-gt-xs="100">
-          <label>Candidate status</label>
+
+          <label class="u-ml-5">Candidate status</label>
           <md-input-container md-no-float>
             <label></label> <!-- required for accessibility to not show console warning -->
             <md-select class="u-no-margin"
@@ -327,6 +330,7 @@
               </md-optgroup>
             </md-select>
           </md-input-container>
+          
         </div>
         <!-- /STATUS -->
 
