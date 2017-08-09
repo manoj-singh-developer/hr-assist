@@ -32,15 +32,18 @@
     _getResources();
 
     $rootScope.$on('event:candidateAdd', (event, data) => {
-      vm.candidate = vm.candidate.concat(data);
-      autocompleteService.buildList(vm.candidate, ['name']);
+      vm.candidates = vm.candidates.concat(data);
+      autocompleteService.buildList(vm.candidates, ['name']);
     });
 
     $rootScope.$on('event:candidateEdited', (event, data) => {
-      let editedCandidate = _.findWhere(vm.candidate, { id: data[0].id });
-      vm.candidate = _.without(vm.candidate, editedCandidate);
-      vm.candidate = vm.candidate.concat(data);
-      autocompleteService.buildList(vm.candidate, ['name']);
+      let editedCandidate = _.findWhere(vm.candidates, { id: data[0].id });
+      vm.candidates = _.without(vm.candidates, editedCandidate);
+      // status greater than 5 respresent status of intership or employee
+      if (data[0].status < 5) {
+        vm.candidates = vm.candidates.concat(data);
+      }
+      autocompleteService.buildList(vm.candidates, ['name']);
     });
 
     $rootScope.$on('event:candidateTechRemoved', (event, data) => {
@@ -101,7 +104,7 @@
     }
 
     function remove(candidate, event) {
-      var confirm = $mdDialog.confirm()
+      let confirm = $mdDialog.confirm()
         .title('Would you like to delete ' + candidate.name + ' candidate?')
         .targetEvent(event)
         .ok('Yes')
@@ -109,9 +112,9 @@
 
       $mdDialog.show(confirm).then(() => {
         Candidate.remove(candidate).then(() => {
-          let toRemove = _.findWhere(vm.candidate, { id: candidate.id });
-          vm.candidate = _.without(vm.candidate, toRemove);
-          _updateTablePagination(vm.candidate);
+          let toRemove = _.findWhere(vm.candidates, { id: candidate.id });
+          vm.candidates = _.without(vm.candidates, toRemove);
+          _updateTablePagination(vm.candidates);
           _generateXlsx();
         });
       });
@@ -144,19 +147,26 @@
 
     function _getResources() {
       let promises = [];
+      vm.candidates = [];
+
       promises.push(Candidate.getAll());
       $q.all(promises).then((data) => {
         vm.resources.candidates = data[0];
+        vm.resources.candidates.forEach((element, index) => {
+          // status greater than 5 respresent status of intership or employee
+          if (element.status < 5) {
+            vm.candidates.push(element);
+          }
+        });
 
-        vm.candidate = vm.resources.candidates;
-        _updateTablePagination(vm.candidate);
+        _updateTablePagination(vm.candidates);
         _buildAutocompleteLists();
         _generateXlsx();
       });
     }
 
     function _buildAutocompleteLists() {
-      autocompleteService.buildList(vm.candidate, ['name']);
+      autocompleteService.buildList(vm.candidates, ['name']);
     }
 
     function _updateTablePagination(data) {
@@ -165,7 +175,7 @@
 
     function _generateXlsx() {
       excelData = [];
-      exportCandidates = vm.searchText ? querySearchItems : vm.candidate;
+      exportCandidates = vm.searchText ? querySearchItems : vm.candidates;
 
       let tableHeader = {
         name: 'Name',
