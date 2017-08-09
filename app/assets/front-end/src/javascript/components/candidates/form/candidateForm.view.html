@@ -1,4 +1,4 @@
-<md-dialog nlayout="column" class="md-inline-form" aria-label="Add Candidate">
+<md-dialog nlayout="column" class="md-inline-form hra-candidates" aria-label="Add Candidate">
 
   <md-toolbar class="md-table-toolbar">
     <div class="md-toolbar-tools">
@@ -32,7 +32,7 @@
 
 
         <!-- SELECT START/END DATE -->
-        <section layout-gt-xs="row" layout-align="start center" class="md-padding">
+        <section layout-gt-xs="row" layout-align="start center">
           <div flex-gt-xs="50">
             <label>University start year</label>
             <md-datepicker
@@ -72,9 +72,9 @@
         <!-- TECHNOLOGY SECTION-->
         <md-list layout="row" layout-wrap>
 
-          <md-list-item class="md-2-line c-filters__label">
+          <md-list-item class="md-2-line c-filters__label" ng-if="candidateForm.candidateTechnologies.length">
              <div class="md-list-item-text" layout="column">
-               <h4>Add/Remove technology:</h4>
+               <h4>Remove technology</h4>
              </div>
            </md-list-item>
               
@@ -124,25 +124,24 @@
 
 
             <!--TECHNOLOGY LEVEL-->
-            <div class="md-padding" flex-gt-xs="100">
-              <div flex-gt-xs="100">
-                <div layout layout-align="center center">
-                  <span class="u-font-small">
-                    Technology level(1 Junior, 10 Senior)
-                  </span>
-                </div>
-                <md-slider flex
-                  md-discrete
-                  ng-model="candidateForm.selectedTechnologyLevel[$index]"
-                  ng-disabled="!candidateForm.searchTechnology[$index]"
-                  class="md-primary"
-                  value='1'
-                  step="1"
-                  min="1"
-                  max="10"
-                  aria-label="Skill level">
-                </md-slider>
+            <div flex-gt-xs="100" class="u-mt-10">
+              <div layout layout-align="center center">
+                <span class="u-font-small">
+                  Technology level* (1 Junior, 10 Senior)
+                </span>
               </div>
+              <md-slider flex
+                md-discrete
+                ng-model="candidateForm.selectedTechnologyLevel[$index]"
+                ng-disabled="!candidateForm.searchTechnology[$index]"
+                class="md-primary"
+                value='1'
+                step="1"
+                min="1"
+                max="10"
+                aria-label="Skill level"
+                ng-required='candidateForm.searchTechnology[$index]'>
+              </md-slider>
             </div>
             <!--TECHNOLOGY LEVEL -->
 
@@ -152,12 +151,11 @@
         
 
         <!-- ADD NEW TECHNOLOGY SECTION-->
-        <section class="md-padding"
-          ng-show="!showDetails">
+        <section>
           <md-button
             md-no-ink
             class="md-primary small-text"
-            ng-click="candidateForm.addNewTechnology(); ">
+            ng-click="candidateForm.addNewTechnology();">
             Add New Technology
           </md-button>
         </section>
@@ -179,9 +177,11 @@
         <!-- CATEGORY -->
         <div layout-gt-xs="row">
           <label>Category</label>
+        </div>
+        <div layout-gt-xs="row">
           <md-radio-group ng-model="candidateForm.candidate.category">
             <md-radio-button value="0" class="md-primary">Front End</md-radio-button>
-            <md-radio-button value="1" class="md-primary"> Backend </md-radio-button>
+            <md-radio-button value="1" class="md-primary">Back End</md-radio-button>
           </md-radio-group>
         </div>
         <!-- /CATEGORY -->
@@ -249,7 +249,7 @@
 
         <!-- UPLOAD FILES-->
         <div layout-gt-xs="row">
-          <label>Upload mp4/mp3 files:</label>
+          <label class="u-mr-20">Upload mp4/mp3 files</label>
             <input type="file" ngf-select ng-model="files[0]" name="file" multiple accept="video/mp4, audio/mp3"><br/>
         </div>
          <!-- /UPLOAD FILES-->
@@ -306,7 +306,7 @@
 
         <!-- UPLOAD CV-->
         <div layout-gt-xs="row">
-          <label>Upload CV (pdf/word):</label>
+          <label class="u-mr-20">Upload CV (pdf/word)</label>
             <input type="file" ngf-select ng-model="files[1]" name="file">
         </div>
         <!-- /UPLOAD CV-->
@@ -314,10 +314,11 @@
 
         <!--STATUS-->
         <div flex-gt-xs="100">
-          <md-input-container>
-            <label>Candidate status</label>
+          <label>Candidate status</label>
+          <md-input-container md-no-float>
+            <label></label> <!-- required for accessibility to not show console warning -->
             <md-select class="u-no-margin"
-              aria-label="Candidate status"
+              placeholder="applied"
               ng-model="candidateForm.candidate.status">
               <md-optgroup label="Candidate status">
                 <md-option value="{{$index}}" ng-repeat="status in candidateForm.status">
@@ -339,11 +340,6 @@
           ng-click="candidateForm.save(files)"
           ng-disabled="candForm.$invalid || candidateForm.validateDate">
           Save
-        </md-button>
-
-        <md-button class="md-raised md-primary" 
-          ng-click="candidateForm.clearButton()">
-          Clear
         </md-button>
 
         <md-button class="md-raised" 

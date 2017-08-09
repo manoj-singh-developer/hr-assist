@@ -71,10 +71,10 @@
         ng-disabled="candidates.isDisabled"
         ng-model="candidates.searchText"
         md-selected-item="candidates.selectedItem"
-        md-search-text-change="candidates.querySearch(candidates.searchText, candidates.candidate)"
+        md-search-text-change="candidates.querySearch(candidates.searchText, candidates.candidates)"
         md-search-text="candidates.searchText"
-        md-selected-item-change="candidates.querySearch(candidates.searchText, candidates.candidate)"
-        md-items="item in candidates.querySearch(candidates.searchText, candidates.candidate)"
+        md-selected-item-change="candidates.querySearch(candidates.searchText, candidates.candidates)"
+        md-items="item in candidates.querySearch(candidates.searchText, candidates.candidates)"
         md-item-text="item.name"
         md-min-length="0"
         md-dropdown-position="bottom"
@@ -146,7 +146,7 @@
           md-row
           md-select="candidate"
           md-on-select="logItem"
-          ng-repeat="candidate in candidates.candidate 
+          ng-repeat="candidate in candidates.candidates 
           | filter: (candidates.firstNameFilter || candidates.searchText)
           | orderBy: candidates.tableSettings.query.order 
           | limitTo: candidates.tableSettings.query.limit : (candidates.tableSettings.query.page - 1) * candidates.tableSettings.query.limit track by $index">
@@ -166,7 +166,7 @@
           <!-- <td md-cell>{{candidate.technology}}</td> -->
           <td md-cell>
             <p ng-if="candidate.category===0">Front End</p>
-            <p ng-if="candidate.category!=0">Back End</p>
+            <p ng-if="candidate.category===1">Back End</p>
           </td>
 
           <td md-cell>
@@ -180,7 +180,7 @@
 
           <td md-cell>
             <md-button
-              ng-show="candidates.candidate"
+              ng-show="candidates.candidates"
               class="md-icon-button md-primary"
               label="Update candidate"
               aria-label="Update candidate"
