@@ -6,16 +6,15 @@
     .module('HRA')
     .controller('internsCtrl', internsCtrl);
 
-  function internsCtrl($mdDialog, $rootScope, tableSettings, autocompleteService, Candidate) {
+  function internsCtrl(autocompleteService, Candidate, tableSettings) {
 
-    var vm = this;
+    let vm = this;
     let excelData = [];
     let exportCandidates = [];
     let querySearchItems = [];
 
     vm.tableSettings = tableSettings;
     vm.querySearch = querySearch;
-    // vm.remove = remove;
     vm.saveExcelFile = saveExcelFile;
     vm.getTechnologyLvlTxt = getTechnologyLvlTxt;
 
@@ -32,22 +31,6 @@
       }
       return autocompleteService.querySearch(query, vm.interns);
     }
-
-    // function remove(intern, event) {
-    //   let confirm = $mdDialog.confirm()
-    //     .title('Would you like to delete ' + intern.name + ' intern?')
-    //     .targetEvent(event)
-    //     .ok('Yes')
-    //     .cancel('No');
-
-    //   $mdDialog.show(confirm).then(() => {
-    //     Candidate.remove(intern).then(() => {
-    //       let toRemove = _.findWhere(vm.interns, { id: intern.id });
-    //       vm.interns = _.without(vm.interns, toRemove);
-    //       _updateTablePagination(vm.interns);
-    //     });
-    //   });
-    // }
 
     function getTechnologyLvlTxt(data) {
       switch (data) {
@@ -91,19 +74,20 @@
         sheetid: 'Interns Raport',
         headers: false
       }];
-      let res = alasql('SELECT INTO XLSX("Candidates Raport.xlsx",?) FROM ? ORDER BY name', [opts, [excelData]]);
+      let res = alasql('SELECT INTO XLSX("Interns Raport.xlsx",?) FROM ? ORDER BY name', [opts, [excelData]]);
     }
 
     function _getInterns() {
       Candidate.getAll().then((data) => {
         vm.interns = [];
+        if (data) {
+          data.forEach((element, index) => {
+            if (element.status === 5) {
+              vm.interns.push(element);
+            }
+          });
+        }
 
-        data.forEach((element, index) => {
-
-          if (element.status === 5) {
-            vm.interns.push(element);
-          }
-        });
         _generateXlsx();
         _updateTablePagination(vm.interns);
         return autocompleteService.buildList(vm.interns, ['name']);
