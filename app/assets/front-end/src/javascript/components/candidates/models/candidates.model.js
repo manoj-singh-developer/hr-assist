@@ -7,7 +7,7 @@
     .factory('Candidate', Candidate);
 
 
-  function Candidate($resource, apiUrl, alertService, errorService, Upload) {
+  function Candidate($httpParamSerializerJQLike, $resource, apiUrl, alertService, errorService, Upload) {
 
     function Candidate() {}
 
@@ -127,6 +127,28 @@
           alertService.error(model, 'removeFiles')
         });
 
+      return promise;
+    };
+
+    Candidate.filter = (data) => {
+      let filterUrl = '/candidates?';
+      let decodedObjUrl = decodeURIComponent($httpParamSerializerJQLike(data).replace(/\+/g, " "));
+      url = apiUrl + filterUrl + decodedObjUrl;
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
+
+      promise = resource.$promise
+        .then((data) => {
+          return data.items;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'filter');
+        });
       return promise;
     };
 
