@@ -225,7 +225,7 @@
                       Delete candidate file
                     </md-tooltip>
                   </md-button>
-                  <a ng-href="http://192.168.200.115:3000{{file.file_url}}" target="_blank">
+                  <a ng-href="{{candidateForm.url + file.file_url}}" target="_blank">
                     <md-button
                       class="md-icon-button md-primary"
                       label="View candidate file"
@@ -283,7 +283,7 @@
                   {{candidateForm.candidate.candidate_cv.cv_file_name.length > 35? "..." : ''}}
                   </span>
                 
-                  <a ng-href="http://192.168.200.115:3000{{candidateForm.candidate.candidate_cv.cv_url}}" target="_blank" download='candidateForm.candidate.candidate_cv.file_file_name'>
+                  <a ng-href="{{candidateForm.url + candidateForm.candidate.candidate_cv.cv_url}}" target="_blank" download='candidateForm.candidate.candidate_cv.file_file_name'>
                     <md-button
                       ng-click="users.saveExcelFile()"
                       class="md-primary"
