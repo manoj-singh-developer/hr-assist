@@ -66,6 +66,7 @@ class AccessPolicy
       can :read, User
       can :update, User
       can :read, Holiday
+      can :create, Technology
     end
   end
 end

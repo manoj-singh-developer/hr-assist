@@ -3,7 +3,7 @@
 // Normal input
 md-input-container
   label
-    color: $hr-input-label-color !important
+    color: $hr-input-label-color 
 
   .md-input
     box-sizing: border-box
@@ -23,7 +23,7 @@ md-input-container
   label
     position: static !important
     margin-bottom: 5px !important
-    font-size: 15px !important
+    font-size: 15px 
     transform: none !important
     display: block !important
 
@@ -51,11 +51,14 @@ md-select
   content: '*'
 
 
+
 // @AUTOCOMPLETE
 .input-autocomplete
   input
     border: none !important
 
+md-input-container.md-input-focused:not([md-no-float]) .md-select-placeholder span:first-child
+  transform: translateY(-26px) translateX(9px) scale(0.75)
 
 md-autocomplete
   background-color: transparent
@@ -72,3 +75,6 @@ md-autocomplete-wrap
 .md-chip-input-container
   md-autocomplete-wrap
     border: none !important
+
+.show-scroll-right
+  overflow-y: scroll

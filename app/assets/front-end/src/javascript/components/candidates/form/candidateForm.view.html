@@ -1,0 +1,359 @@
+<md-dialog nlayout="column" class="md-inline-form hra-candidates" aria-label="Add Candidate">
+
+  <md-toolbar class="md-table-toolbar">
+    <div class="md-toolbar-tools">
+      <h2>Add Candidate</h2>
+    </div>
+  </md-toolbar>
+
+  <section class="md-padding">
+    <form 
+      class="form form-add-candidate"
+      ng-submit="candidateForm.add()"
+      novalidate ng-cloak
+      name="candForm">
+
+      <md-content class="md-padding">
+      
+        <!-- NAME INPUT -->
+        <div layout-gt-xs="row">
+          <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+            <label>Name</label>
+            <input ng-model="candidateForm.candidate.name" name="name" required>
+              
+            <div ng-messages="candForm.name.$error">
+              <div ng-message="required">This field is required</div>
+            </div>
+
+          </md-input-container>
+        </div>
+        <!-- /NAME INPUT -->
+
+
+        <!-- SELECT START/END DATE -->
+        <section layout-gt-xs="row" layout-align="start center">
+          <div flex-gt-xs="50">
+            <label class="u-ml-15">University start year</label>
+            <md-datepicker
+              ng-model="candidateForm.candidate.university_start_year"
+              md-placeholder="Pick start year"
+              name="start"
+              md-open-on-focus
+              ng-change="candidateForm.checkDates()"
+              >
+            </md-datepicker>
+          </div>
+
+          <div flex-gt-xs="50">
+            <label class="u-ml-15">University end year</label>
+            <md-datepicker
+              ng-model="candidateForm.candidate.university_end_year"
+              md-placeholder="Pick end year"
+              name="end"
+              md-open-on-focus
+              ng-change="candidateForm.checkDates()">
+            </md-datepicker>
+          <div>
+        </section>
+        <!-- /SELECT START/END DATE -->
+
+
+        <!-- VALIDATE START/END DATE -->
+        <section ng-show="candidateForm.validateDate" layout-gt-xs="row" layout-align="center center">
+          <span class="alert-info fade"
+            role="alert">
+              "Start" university year must be greater than "End" year!
+          </span>
+        </section>
+        <!-- VALIDATE START/END DATE -->
+
+
+        <!-- TECHNOLOGY SECTION-->
+        <md-list layout="row" layout-wrap>
+
+          <md-list-item class="md-2-line c-filters__label" ng-if="candidateForm.candidateTechnologies.length">
+             <div class="md-list-item-text" layout="column">
+               <label class="u-ml-5">Remove technology</label>
+             </div>
+           </md-list-item>
+              
+          <md-list-item
+            class="md-2-line"
+            ng-repeat="technology in candidateForm.candidateTechnologies track by $index">
+            <div class="md-list-item-text" layout="column">
+              <p class="c-filters__item"
+                ng-click="candidateForm.removeFromQueue(technology)" >
+                 {{$index + 1}} {{technology.name}}
+                <span class="material-icons c-filters__icon">close</span>
+              </p>
+            </div>
+          </md-list-item>
+
+        </md-list>
+
+        <section
+          layout-gt-xs="row"
+          layout-align="center center"
+          ng-repeat="technology in  candidateForm.technologiesToAdd track by $index">
+
+          <div flex="100">
+            <label class="u-ml-5">Technology</label> 
+            <!-- TECHNOLOGY SELECT-->
+            <md-autocomplete class="u-mt-5"
+              ng-model="candidateForm.searchTechnology[$index]"
+              md-selected-item="candidateForm.selectedItem[$index]"
+              md-search-text-change="candidateForm.searchTextChange(candidateForm.searchTechnology[$index])"
+              md-search-text="candidateForm.searchTechnology[$index]"
+              md-selected-item-change="candidateForm.addInQueue(item)"
+              md-items="item in candidateForm.querySearch(candidateForm.searchTechnology[$index], candidateForm.technologies)"
+              md-min-length="0"
+              md-item-text="item.name"
+              placeholder="Search"
+              md-dropdown-position="bottom">
+
+              <md-item-template>
+                <span
+                class="item-metadata"
+                md-highlight-text="candidateForm.searchText">
+                  {{item.name}}
+                </span>
+              </md-item-template>
+            </md-autocomplete>
+            <!-- /TECHNOLOGY SELECT-->
+
+
+            <!--TECHNOLOGY LEVEL-->
+            <div flex-gt-xs="100" class="u-mt-10">
+              <div layout layout-align="center center">
+                <span class="u-font-small">
+                  Technology level* (1 Junior, 10 Senior)
+                </span>
+              </div>
+              <md-slider flex
+                md-discrete
+                ng-model="candidateForm.selectedTechnologyLevel[$index]"
+                ng-disabled="!candidateForm.searchTechnology[$index]"
+                class="md-primary"
+                value='1'
+                step="1"
+                min="1"
+                max="10"
+                aria-label="Skill level"
+                ng-required='candidateForm.searchTechnology[$index]'>
+              </md-slider>
+            </div>
+            <!--TECHNOLOGY LEVEL -->
+
+          </div>
+        </section>
+        <!-- TECHNOLOGY SECTION-->
+        
+
+        <!-- ADD NEW TECHNOLOGY SECTION-->
+        <section>
+          <md-button
+            md-no-ink
+            class="md-primary small-text"
+            ng-click="candidateForm.addNewTechnology();">
+            Add New Technology
+          </md-button>
+        </section>
+        <!-- /ADD NEW TECHNOLOGY SECTION-->
+
+
+        <!-- PROJECTS -->
+        <div layout-gt-xs="row">
+          <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+            <label>Projects</label>
+            <input ng-model="candidateForm.candidate.projects">
+
+          </md-input-container>
+        </div>
+        <!-- /PROJECTS -->
+
+
+        <!-- CATEGORY -->
+        <div layout-gt-xs="row">
+          <label class="u-ml-5">Category</label>
+        </div>
+        <div layout-gt-xs="row">
+          <md-radio-group ng-model="candidateForm.candidate.category">
+            <md-radio-button value="0" class="md-primary  u-mr-5">Front End</md-radio-button>
+            <md-radio-button value="1" class="md-primary">Back End</md-radio-button>
+          </md-radio-group>
+        </div>
+        <!-- /CATEGORY -->
+
+
+        <!--CONTACT INFO PHONE AND EMAIL -->
+        <div layout-gt-xs="row">
+          <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+            <label>Contact info</label>
+            <input ng-model="candidateForm.candidate.contact_info" name="contact_info">
+
+          </md-input-container>
+        </div>
+        <!-- /CONTACT INFO PHONE AND EMAIL -->
+
+
+        <!-- UPLOADED FILES -->
+        <div layout-gt-xs="row" ng-if="candidateForm.candidateFiles.length">
+
+          <md-list layout="row" layout-wrap>
+
+            <md-list-item flex-gt-xs="100">
+               <div class="md-list-item-text" layout="column">
+                 <label class="u-ml-5">Uploaded files</label>
+               </div>
+             </md-list-item>
+                
+            <md-list-item
+              ng-repeat="file in candidateForm.candidateFiles track by $index">
+              <div class="md-list-item-text" layout="column">
+                <p class="c-filters__item">
+                   {{$index + 1}}. {{file.file_file_name | limitTo: 25}}{{file.file_file_name.length > 25 ? "..." : ''}}
+                  <md-button
+                    class="md-icon-button md-warn"
+                    label="Delete candidate file"
+                    aria-label="Delete candidate file"
+                    ng-click="candidateForm.removeFromQueueFile(file)"">
+                    <md-icon class="material-icons">close</md-icon>
+                    <md-tooltip md-autohide="true">
+                      Delete candidate file
+                    </md-tooltip>
+                  </md-button>
+                  <a ng-href="http://192.168.200.115:3000{{file.file_url}}" target="_blank">
+                    <md-button
+                      class="md-icon-button md-primary"
+                      label="View candidate file"
+                      aria-label="View candidate file">
+                      <md-icon class="material-icons">visibility</md-icon>
+                      <md-tooltip md-autohide="true">
+                        View candidate file
+                      </md-tooltip>
+                    </md-button>
+                  </a>
+                </p>
+              </div>
+            </md-list-item>
+
+          </md-list>
+
+        </div>
+        <!-- /UPLOADED FILES -->
+
+
+        <!-- UPLOAD FILES-->
+        <div layout-gt-xs="row">
+
+          <label class="u-mr-20 u-ml-5">Upload mp4/mp3 files</label>
+          <input type="file" ngf-select ng-model="files[0]" name="file" multiple accept="video/mp4, audio/mp3"><br/>
+        </div>
+         <!-- /UPLOAD FILES-->
+
+
+        <!-- COMMENTS -->
+        <div layout-gt-xs="row">
+          <md-input-container md-no-float class="md-block" flex-gt-xs="">
+            <label>Comments</label>
+            <textarea name="" id="" cols="30" rows="1"
+            ng-model="candidateForm.candidate.comments"></textarea>
+          </md-input-container>
+        </div>
+        <!-- /COMMENTS -->
+
+
+        <!-- UPLOADED CV -->
+        <div layout-gt-xs="row" ng-if="candidateForm.candidate.candidate_cv">
+          <md-list layout="row" layout-wrap>
+        
+            <md-list-item>
+               <div class="md-list-item-text" layout="column">
+                 <label class="u-ml-5 u-mr-20">Uploaded CV</label>
+               </div>
+             </md-list-item>
+
+            <md-list-item>
+              <div class="md-list-item-text" layout="column">
+                <p class="c-filters__item">
+                  <span>{{candidateForm.candidate.candidate_cv.cv_file_name | limitTo: 35}}
+                  {{candidateForm.candidate.candidate_cv.cv_file_name.length > 35? "..." : ''}}
+                  </span>
+                
+                  <a ng-href="http://192.168.200.115:3000{{candidateForm.candidate.candidate_cv.cv_url}}" target="_blank" download='candidateForm.candidate.candidate_cv.file_file_name'>
+                    <md-button
+                      ng-click="users.saveExcelFile()"
+                      class="md-primary"
+                      label="Download CV"
+                      aria-label="Download CV">
+                      <md-icon class="material-icons">file_download</md-icon>
+                      <md-tooltip md-autohide="true">
+                        Download CV
+                      </md-tooltip>
+                      Download
+                    </md-button>
+                  </a>
+                </p>
+              </div>
+            </md-list-item>
+
+          </md-list>
+        </div>
+        <!-- /UPLOADED CV -->
+
+        <!-- UPLOAD CV-->
+        <div layout-gt-xs="row">
+          <label class="u-mr-20 u-ml-5">Upload CV (pdf/word)</label>
+          <input type="file" ngf-select ng-model="files[1]" name="file">
+        </div>
+        <!-- /UPLOAD CV-->
+
+
+        <!--STATUS-->
+        <div flex-gt-xs="100">
+
+          <label class="u-ml-5">Candidate status</label>
+          <md-input-container md-no-float>
+            <label></label> <!-- required for accessibility to not show console warning -->
+            <md-select class="u-no-margin"
+              placeholder="applied"
+              ng-model="candidateForm.candidate.status">
+              <md-optgroup label="Candidate status">
+                <md-option value="{{$index}}" ng-repeat="status in candidateForm.status">
+                  <span>{{status}}</span>
+                </md-option>
+              </md-optgroup>
+            </md-select>
+          </md-input-container>
+          
+        </div>
+        <!-- /STATUS -->
+
+      </md-content>
+
+      
+      <!-- CARD ACTIONS -->
+      <div layout="row" layout-align="center center">
+
+        <md-button class="md-raised md-primary" 
+          ng-click="candidateForm.save(files)"
+          ng-disabled="candForm.$invalid || candidateForm.validateDate">
+          Save
+        </md-button>
+
+        <md-button class="md-raised" 
+          ng-click="candidateForm.closeButton()">
+          Close
+        </md-button>
+
+      </div>
+      <!-- /CARD ACTIONS -->
+      
+    </form>
+
+  </section>
+
+</md-dialog>

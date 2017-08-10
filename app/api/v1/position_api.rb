@@ -11,7 +11,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params).permit(:name, :job_detail)
       end
 
@@ -33,7 +33,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Position
+        get_paginated_items_for Position
       end
 
       desc "Get project"
@@ -41,7 +41,7 @@ module V1
         requires :id , type: Integer, desc: "Position ID"
       end
       get ':id' do
-        authorize! :read, Position.find(params[:id])
+        authorize!(:read, Position.find(params[:id]))
       end
 
       desc "Create new position"
@@ -50,7 +50,7 @@ module V1
         requires :job_detail, allow_blank: false, type: String
       end
       post 'new' do
-        authorizeAndCreate(Position, postParams)
+        authorize_and_create(Position, post_params)
       end
 
       desc "Update position"
@@ -60,8 +60,8 @@ module V1
       end
       put ':id' do
         position = Position.find(params[:id])
-        authorize! :update, Position
-        position.update(postParams)
+        authorize!(:update, Position)
+        position.update(post_params)
         success
       end
 

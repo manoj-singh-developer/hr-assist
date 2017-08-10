@@ -11,7 +11,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params)
           .permit(:user_id, :days, :start_date, :end_date, :signing_day)
       end
@@ -22,13 +22,13 @@ module V1
             project_name: holiday_replacement.project.name
           }
           partial_response.merge!({
-            team_leader: holiday_replacement.team_leader.name
-          }) if holiday_replacement.team_leader
+                                    team_leader: holiday_replacement.team_leader.name
+                                  }) if holiday_replacement.team_leader
 
           partial_response.merge!({
-            replacer_id: holiday_replacement.replacer_id,
-            replacer_name: holiday_replacement.replacer.name
-          }) if holiday_replacement.replacer
+                                    replacer_id: holiday_replacement.replacer_id,
+                                    replacer_name: holiday_replacement.replacer.name
+                                  }) if holiday_replacement.replacer
 
           partial_response
         end
@@ -58,16 +58,16 @@ module V1
         holidays.each do |holiday|
           holiday_replacements = holiday.holiday_replacements
           response << {
-          holiday_id: holiday.id,
-          user_id: holiday.user_id,
-          days: holiday.days,
-          start_date: holiday.start_date,
-          end_date: holiday.end_date,
-          signing_day: holiday.signing_day,
-          employee_replacements: employee_replacements(holiday_replacements)
-        }
+            holiday_id: holiday.id,
+            user_id: holiday.user_id,
+            days: holiday.days,
+            start_date: holiday.start_date,
+            end_date: holiday.end_date,
+            signing_day: holiday.signing_day,
+            employee_replacements: employee_replacements(holiday_replacements)
+          }
         end
-        return response
+        response
       end
 
       desc "Get holiday"
@@ -75,9 +75,13 @@ module V1
         requires :id, type: Integer , desc: "Holiday id"
       end
       get ':id' do
-        authorize! :read, Holiday
-        response = []
+        authorize!(:read, Holiday)
         holiday = Holiday.find(params[:id])
+
+        unless current_user.is_admin
+          return error(message: :not_the_author) if holiday.user_id != current_user.id
+        end
+
         holiday_replacements = holiday.holiday_replacements
         response = {
           holiday_id: holiday.id,
@@ -88,7 +92,7 @@ module V1
           signing_day: holiday.signing_day,
           employee_replacements: employee_replacements(holiday_replacements)
         }
-        return response
+        response
       end
 
       desc "Create new holiday"
@@ -105,15 +109,16 @@ module V1
       post 'new' do
         User.find(params[:user_id], params[:replacer_id], params[:team_leader_ids])
         params[:project_ids].each do |project_id|
-          project = Project.find(project_id)
+          Project.find(project_id)
         end
-        holiday = authorizeAndCreate(Holiday, postParams)
+        holiday = authorize_and_create(Holiday, post_params)
         params[:project_ids].zip(params[:replacer_ids], params[:team_leader_ids]).each do |project_id, replacer_id, team_leader_id|
           holiday_replacement = HolidayReplacement.create(holiday_id: holiday.id, project_id: project_id, replacer_id:replacer_id, team_leader_id: team_leader_id)
           holiday.holiday_replacements << holiday_replacement
         end
         holiday_replacements = holiday.holiday_replacements
-        response = {
+
+        {
           holiday_id: holiday.id,
           user_id: holiday.user_id,
           days: holiday.days,
@@ -133,8 +138,8 @@ module V1
       end
       put ':id' do
         holiday = Holiday.find(params[:id])
-        authorize! :update, Holiday
-        holiday.update(postParams)
+        authorize!(:update, Holiday)
+        holiday.update(post_params)
         success
       end
 

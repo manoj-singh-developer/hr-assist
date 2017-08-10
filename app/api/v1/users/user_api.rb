@@ -17,27 +17,27 @@ module V1
           "This user didn't fill in #{field} field"
         end
 
-        def postParams
+        def post_params
           ActionController::Parameters.new(params)
             .permit(:first_name, :middle_name, :last_name, :address, :city, :zip_code, :birthday, :phone, :picture, :observations,
-                    :other_email, :urgent_contact_name, :urgent_contact_phone, :car_plate, :company_start_date, :status, :email, :office_nr)
+                    :other_email, :urgent_contact_name, :urgent_contact_phone, :car_plate, :company_start_date, :status, :email, :office_nr, :cnp)
         end
 
         def filtered_users filters
 
             users = User.where(nil)
-          
-            users = users.by_year_and_month_birth(filters[:birthday].to_date) if filters[:birthday]
-            users = users.by_university_year(Time.now.year - filters[:university_year].to_i) if filters[:university_year]
+
+            users = users.by_month_birth(filters[:birthday].to_date) if filters[:birthday]
+            users = users.by_university_year(filters[:university_year].to_i) if filters[:university_year]
             users = users.by_company_start_date_until_present(filters[:start_date].to_date) if filters[:start_date]
             users = users.by_projects(filters[:projects]) if filters[:projects]
-            users = users.by_technologies(filters[:technologies]) if filters[:technologies]
             users = users.by_certifications(filters[:certifications]) if filters[:certifications]
-            users = users.by_languages(filters[:languages]) if filters[:languages]
+            users = users.by_technology_id_and_level(filters[:technologies].values.map(&:technology_id).zip(filters[:technologies].values.map(&:technology_level))) if filters[:technologies]
+            users = users.by_language_id_and_level(filters[:languages].values.map(&:language_id).zip(filters[:languages].values.map(&:language_level))) if filters[:languages]
 
             users
         end
-        
+
         params :pagination do
           optional :page, type: Integer
           optional :per_page, type: Integer
@@ -51,7 +51,7 @@ module V1
         desc "Return all users"
         params do
           use :pagination # aliases: includes, use_scope
-          optional :with, values: ['positions', 'user_languages', 'devices', 'educations', 'departments', 'projects', 'technologies', 'certifications'], type: [String]
+          optional :with, values: ['positions', 'languages', 'devices', 'educations', 'departments', 'projects', 'technologies', 'certifications', 'work_info'], type: [String]
           optional :filters, type: Hash
         end
         get do
@@ -69,9 +69,9 @@ module V1
           end
 
           if params[:filters]
-            paginateItems filtered_users(params[:filters]), params[:with] , defined?(exceptions) ? exceptions : []
+            paginate_items filtered_users(params[:filters]), params[:with] , defined?(exceptions) ? exceptions : []
           else
-            getPaginatedItemsFor User, params[:with] , defined?(exceptions) ? exceptions : []
+            get_paginated_items_for User, params[:with] , defined?(exceptions) ? exceptions : []
           end
 
         end
@@ -82,15 +82,16 @@ module V1
         end
         get ':id' do
           authorize! :read, User
-          user = find_user(params[:id])
+          user = User.find(params[:id])
           if(current_user.is_employee && current_user.id != user.id )
             return error({message: "Cannot access another user"})
           end
-          user
+          user.as_json(include: { work_info: { except: [:id, :user_id] } })
         end
 
         desc "Update user by id"
         params do
+          optional :cnp, type: String
           optional :first_name, type: String
           optional :middle_name, type: String
           optional :last_name, type: String
@@ -113,9 +114,14 @@ module V1
         put ':id' do
           user = User.find(params[:id])
           authorize! :update, User
-          user.update(postParams)
-          success
-          return user
+          user.update(post_params)
+          if params[:work_info]
+            user.work_info ||= WorkInfo.create(user_id: user.id)
+            params[:work_info].each do |key,value|
+              user.work_info.update(key.to_sym => value)
+            end
+          end
+          user.as_json(include: { work_info: { except: [:id, :user_id] } })
         end
       end
 
@@ -161,11 +167,12 @@ module V1
         optional :zip_code, type: String
         optional :office_nr, type: String
         optional :urgent_contact_phone, type: String
+        optional :cnp, type: String
       end
 
       put "me" do
         authenticate!
-        current_user.update(postParams)
+        current_user.update(post_params)
         success
         return current_user
       end

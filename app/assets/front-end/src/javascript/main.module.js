@@ -13,7 +13,8 @@
     'datePicker',
     'angular-loading-bar',
     'routes',
-    'ui.gravatar'
+    'ui.gravatar',
+    'angular-md5'
   ]);
 
   angular

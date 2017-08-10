@@ -1,0 +1,224 @@
+<section layout="column">
+
+
+
+
+
+  <!-- TITLE -->
+  <md-toolbar
+    class="md-table-toolbar md-default"
+    layout="row"
+    layout-align="space-between center">
+    <div class="md-toolbar-tools">
+
+      <div class="md-title">
+
+        <span >Candidates</span>
+
+        <md-button
+          class="md-primary"
+          label="Toggle filters"
+          aria-label="Toggle filters"
+          ng-click="candidates.toggleFilters()">
+          <md-icon class="material-icons">filter_list</md-icon>
+          <md-tooltip md-autohide="true">
+            Toggle filters
+          </md-tooltip>
+        </md-button>
+      </div>
+
+      <div flex="" class="flex"></div>
+
+      <div layout="row" layout-align="right">
+
+        <md-button
+          ng-click="candidates.showForm()"
+          class="md-primary">
+          <md-icon class="material-icons">group_add</md-icon>
+          <md-tooltip md-autohide="true">
+            ADD CANDIDATE
+          </md-tooltip>
+          ADD CANDIDATE
+        </md-button>
+        
+        <md-button
+          ng-click="candidates.saveExcelFile()"
+          class="md-primary">
+          <md-icon class="material-icons">file_download</md-icon>
+          <md-tooltip md-autohide="true">
+            Export Excel
+          </md-tooltip>
+          Export Excel
+        </md-button>
+
+      </div>
+
+    </div>
+  </md-toolbar>
+  <!-- /TITLE -->
+
+
+
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+
+  <!-- AUTOCOMPLETE SEARCH -->
+  <md-content class="md-padding"
+    ng-show="!candidates.showFilters">
+    <form ng-submit="$event.preventDefault()">
+      <md-autocomplete
+        ng-disabled="candidates.isDisabled"
+        ng-model="candidates.searchText"
+        md-selected-item="candidates.selectedItem"
+        md-search-text-change="candidates.querySearch(candidates.searchText, candidates.candidates)"
+        md-search-text="candidates.searchText"
+        md-selected-item-change="candidates.querySearch(candidates.searchText, candidates.candidates)"
+        md-items="item in candidates.querySearch(candidates.searchText, candidates.candidates)"
+        md-item-text="item.name"
+        md-min-length="0"
+        md-dropdown-position="bottom"
+        placeholder="Search">
+
+        <md-item-template>
+          <span class="item-metadata">
+            {{item.name}}
+        </md-item-template>
+      </md-autocomplete>
+    </form>
+  </md-content>
+  <!-- /AUTOCOMPLETE SEARCH -->
+
+
+
+
+  <!-- SELECTED ROWS -->
+  <md-toolbar
+    class="md-table-toolbar alternate"
+    ng-show="candidates.tableSettings.options.rowSelection && candidates.tableSettings.selected.length">
+    <div class="md-toolbar-tools">
+      <span>
+        {{candidates.tableSettings.selected.length}} {{candidates.tableSettings.selected.length > 1 ? 'employees' : 'employee'}} selected
+      </span>
+    </div>
+  </md-toolbar>
+  <!-- /SELECTED ROWS -->
+
+
+
+
+  <!-- ALL FILTERS -->
+  <hra-candidates-filters></hra-candidates-filters>
+  <!-- / ALL FILTERS -->
+
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+
+  <!-- TABLE CANDIDATES -->
+  <md-table-container>
+    <table
+      class="c-table--actions c-table--big table-employees"
+      md-table
+      md-row-select="candidates.tableSettings.options.rowSelection"
+      multiple="{{candidates.tableSettings.options.multiSelect}}"
+      ng-model="candidates.tableSettings.selected"
+      md-progress="promise">
+
+      <thead
+        ng-if="!candidates.tableSettings.options.decapitate"
+        md-head
+        md-order="candidates.tableSettings.query.order">
+        <tr md-row>
+        <th md-column>No.</th>
+          <th md-column md-order-by="name">Name</th>
+          <th md-column>Email/Phone</th>
+          <th md-column>Technologies</th>
+          <th md-column>Type of technology</th>
+          <th md-column>Projects</th>
+          <th md-column>Comments</th>
+          <th md-column>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody md-body>
+        <tr
+          md-row
+          md-select="candidate"
+          md-on-select="logItem"
+          ng-repeat="candidate in candidates.candidates 
+          | filter: (candidates.firstNameFilter || candidates.searchText)
+          | orderBy: candidates.tableSettings.query.order 
+          | limitTo: candidates.tableSettings.query.limit : (candidates.tableSettings.query.page - 1) * candidates.tableSettings.query.limit track by $index">
+          <td md-cell>{{$index + 1}}</td>
+          <td md-cell>{{candidate.name}}</td>
+          <td md-cell>{{candidate.contact_info}}</td>
+          <td md-cell>
+            <ul class="c-list" ng-if="candidate.technologies">
+              <li ng-repeat="technology in candidate.technologies">
+                {{$index + 1}}. {{technology.name}}: 
+                <span ng-if="technology.level">
+                  {{candidates.getTechnologyLvlTxt(technology.level)}}
+                </span>
+              </li>
+            </ul>
+          </td>
+          <!-- <td md-cell>{{candidate.technology}}</td> -->
+          <td md-cell>
+            <p ng-if="candidate.category===0">Front End</p>
+            <p ng-if="candidate.category===1">Back End</p>
+          </td>
+
+          <td md-cell>
+            <ul class="c-list" ng-if="candidate.projects">
+               {{candidate.projects}}
+
+            </ul>
+          </td>
+
+          <td md-cell>{{candidate.comments}}</td>
+
+          <td md-cell>
+            <md-button
+              ng-show="candidates.candidates"
+              class="md-icon-button md-primary"
+              label="Update candidate"
+              aria-label="Update candidate"
+              ng-click="candidates.showForm(candidate)">
+              <md-icon class="material-icons">create</md-icon>
+              <md-tooltip md-autohide="true">
+                Update candidate
+              </md-tooltip>
+            </md-button>
+            
+            <md-button
+              class="md-icon-button md-warn"
+              label="Remove candidate"
+              aria-label="Remove candidate"
+              ng-click="candidates.remove(candidate, $event)">
+              <md-icon class="material-icons">delete</md-icon>
+              <md-tooltip md-autohide="true">
+                Remove candidate
+              </md-tooltip>
+            </md-button>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </md-table-container>
+  <!-- /TABLE CANDIDATES -->
+
+
+
+
+   <!-- TABLE PAGINATION -->
+  <hra-table-pagination settings="candidates.tableSettings">
+  <hra-table-pagination>
+  <!-- /TABLE PAGINATION -->
+
+
+
+</section>
+
+

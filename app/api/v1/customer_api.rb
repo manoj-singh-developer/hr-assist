@@ -11,7 +11,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params).permit(:name, :country_id)
       end
 
@@ -33,7 +33,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Customer
+        get_paginated_items_for Customer
       end
 
       desc "Get customer"
@@ -41,12 +41,12 @@ module V1
         requires :id ,type: Integer , desc: "Customer id"
       end
       get ':id' do
-        authorize! :read, Customer.find(params[:id])
+        authorize!(:read, Customer.find(params[:id]))
       end
 
       desc "Get all customer projects"
       get ':id/projects' do
-        customer = Customer.find_by_id(params[:id])
+        customer = Customer.find(params[:id])
         projects = customer.projects
         {items: projects}
       end
@@ -67,10 +67,10 @@ module V1
       post 'new' do
         if params[:items]
           params[:items].each do |x|
-            authorizeAndCreate(Customer, {name: x[:name] , country_id: x[:country_id]})
+            authorize_and_create(Customer, {name: x[:name] , country_id: x[:country_id]})
           end
         else
-          authorizeAndCreate(Customer, postParams)
+          authorize_and_create(Customer, post_params)
         end
       end
 
@@ -80,8 +80,8 @@ module V1
       end
       put ':id' do
         customer = Customer.find(params[:id])
-        authorize! :update, Customer
-        customer.update(postParams)
+        authorize!(:update, Customer)
+        customer.update(post_params)
         success
       end
 

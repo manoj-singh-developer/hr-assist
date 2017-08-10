@@ -23,7 +23,7 @@ module V1
 
           desc "Get all user positions"
           get ':user_id/position' do
-            user = find_user(params[:user_id])
+            user = User.find(params[:user_id])
             user.positions.last ? user.positions.last : {}
           end
 
@@ -44,8 +44,8 @@ module V1
             requires :position_id, type: Integer
           end
           delete ':user_id/position' do
-            user = find_user(params[:user_id])
-            position = user.positions.find(params[:position_id])
+            user = User.find(params[:user_id])
+            user.positions.find(params[:position_id])
             user.positions.delete_all
           end
         end

@@ -11,7 +11,7 @@ module V1
       include Responses
       include APIHelpers
 
-      def postParams
+      def post_params
         ActionController::Parameters.new(params)
           .permit(:title, :description, :picture, :start_date, :duration, :user_id)
       end
@@ -34,7 +34,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
-        getPaginatedItemsFor Training
+        get_paginated_items_for Training
       end
 
       desc "Get training"
@@ -42,7 +42,7 @@ module V1
         requires :id , type: Integer , desc: "Training ID"
       end
       get ':id' do
-        authorize! :read, Training.find(params[:id])
+        authorize!(:read, Training.find(params[:id]))
       end
 
       desc "Create new training"
@@ -55,8 +55,8 @@ module V1
         optional :user_id, type: Integer
       end
       post 'new' do
-        authorizeAndCreate(Training, postParams) do
-          User.find(postParams[:user_id])
+        authorize_and_create(Training, post_params) do
+          User.find(post_params[:user_id])
         end
       end
 
@@ -70,8 +70,8 @@ module V1
       end
       put ':id' do
         training = Training.find(params[:id])
-        authorize! :update, Training
-        training.update(postParams)
+        authorize!(:update, Training)
+        training.update(post_params)
         success
       end
 

@@ -23,7 +23,7 @@ module V1
 
           desc "Get all user educations"
           get ':user_id/educations' do
-            user = find_user(params[:user_id])
+            user = User.find(params[:user_id])
             { items: user.educations }
           end
 
@@ -32,7 +32,7 @@ module V1
             requires :educations, type: Array[Hash], desc: "{ 'educations': [{ 'name': 'ed_name', 'description': 'ed_description', ... }] }"
           end
           post ':user_id/educations' do
-            user = find_user(params[:user_id])
+            user = User.find(params[:user_id])
             params[:educations].each do |education|
               user_education = Education.create(name: education.name, degree: education.degree, description: education.description, start_date: education.start_date, end_date: education.end_date)
               user.educations << user_education

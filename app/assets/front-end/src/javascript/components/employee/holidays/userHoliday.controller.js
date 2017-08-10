@@ -42,19 +42,24 @@
     vm.removeHoliday = removeHoliday;
     vm.toggleForm = toggleForm;
     vm.getWorkingDay = getWorkingDay;
-    vm.addLeaders = addLeaders;
+    vm.minLength = 0;
+    vm.changeMinLength = changeMinLength;
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.projects = data.projects;
       vm.users = data.users;
       vm.userHolidays = data.holidays;
       vm.tableSettings.total = vm.userHolidays.length;
-
+      _showHolidayTotalDays(vm.userHolidays);
       autocompleteService.buildList(vm.projects, ['name']);
       autocompleteService.buildList(vm.users, ['last_name', 'first_name']);
     });
 
     _checkRole();
+
+    function changeMinLength() {
+      vm.minLength = 1;
+    };
 
     function queryUserSearch(query) {
       let empArr = autocompleteService.querySearch(query, vm.users);
@@ -187,7 +192,7 @@
     }
 
     function checkDates() {
-      if (vm.from != undefined && vm.signingDate != undefined && vm.to != undefined && vm.signingDate > vm.from || vm.from > vm.to) {
+      if (vm.from && vm.signingDate && vm.to && vm.signingDate > vm.from || vm.from > vm.to) {
         vm.validateDate = true;
       } else {
         vm.validateDate = false;
@@ -213,10 +218,6 @@
       return !(day === 0 || day === 6);
     };
 
-    function addLeaders() {
-      vm.leader = ' ';
-    }
-
     function removeHoliday(holiday, event) {
       holiday.start_date = $filter('date')(holiday.start_date, "d MMM, y");
       holiday.end_date = $filter('date')(holiday.end_date, "d MMM, y");
@@ -234,6 +235,7 @@
               vm.userHolidays.splice(i, 1);
             }
           }
+          _showHolidayTotalDays(vm.userHolidays);
         });
       });
     }
@@ -242,12 +244,12 @@
       User.getHolidays($stateParams.id)
         .then((data) => {
           vm.userHolidays = data;
+          _showHolidayTotalDays(data);
         })
         .catch((error) => {
           console.log(error)
         });
     }
-
 
     function _addHoliday(objToSave) {
       User.addHolidays(objToSave)
@@ -294,6 +296,13 @@
 
     function _checkRole() {
       vm.isAdmin = $rootScope.isAdmin ? true : false;
+    }
+
+    function _showHolidayTotalDays(holidays) {
+      vm.totalDays = 0;
+      holidays.forEach((element, index) => {
+        vm.totalDays += element.days;
+      });
     }
 
   }

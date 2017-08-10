@@ -23,16 +23,16 @@ module V1
 
           desc "Get all user projects"
           get ':user_id/projects' do
-            user = find_user(params[:user_id])
+            user = User.find(params[:user_id])
             { items:
-              user.user_projects.map do |user_project|
-                {
-                  project: user_project.project,
-                  user_project_start_date: user_project.start_date,
-                  user_project_end_date: user_project.end_date,
-                  technologies: user_project.technologies
-                }
-              end
+                user.user_projects.map do |user_project|
+                  {
+                    project: user_project.project,
+                    user_project_start_date: user_project.start_date,
+                    user_project_end_date: user_project.end_date,
+                    technologies: user_project.technologies
+                  }
+                end
             }
           end
 
@@ -60,14 +60,14 @@ module V1
             optional :technology_ids, type: Array[Integer], desc: "Technology ids"
           end
           put ':user_id/projects/:project_id' do
-            user = find_user(params[:user_id])
+            User.find(params[:user_id])
             user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
             user_project = UserProject.create(user_id: params[:user_id], project_id: params[:project_id]) if user_project.nil?
             user_project.update(user_project_params)
             technologies = Technology.where(id: params[:technology_ids]) - user_project.technologies
             user_project.technologies << technologies if technologies.count > 0
 
-            response = {
+            {
               start_date: user_project.start_date,
               end_date: user_project.end_date,
               technologies:
@@ -78,12 +78,12 @@ module V1
                     label: technology.label
                   }
                 end
-              }
+            }
           end
 
           desc "Delete user project"
           delete ':user_id/projects/:project_id' do
-            user = User.find(params[:user_id])
+            User.find(params[:user_id])
             user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
             user_project.destroy
           end
@@ -93,7 +93,7 @@ module V1
             optional :technology_ids, type: Array[Integer], desc: "Technology ids"
           end
           delete ':user_id/projects/:project_id/technologies' do
-            user = User.find(params[:user_id])
+            User.find(params[:user_id])
             user_project = UserProject.find_by_project_id_and_user_id(params[:project_id], params[:user_id])
             technologies = Technology.where(id: params[:technology_ids])
             user_project.technologies.delete(technologies)

@@ -104,7 +104,7 @@
     }
 
     function querySearch(query, list) {
-      if (query != "" && query != " ") {
+      if (query) {
         vm.tableSettings.total = autocompleteService.querySearch(query, list).length;
         querySearchItemsLength = autocompleteService.querySearch(query, list).length;
         querySearchItems = autocompleteService.querySearch(query, list);
