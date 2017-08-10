@@ -152,6 +152,7 @@
       promises.push(Candidate.getAll());
       $q.all(promises).then((data) => {
         vm.resources.candidates = data[0];
+
         if (vm.resources.candidates) {
           vm.resources.candidates.forEach((element, index) => {
             // status greater than 5 respresent status of intership or employee
@@ -189,7 +190,7 @@
       if (exportCandidates) {
         angular.forEach(exportCandidates, function(value, key) {
           let technologies = [];
-
+          
           if (value.technologies) {
             angular.forEach(value.technologies, (technology, index) => {
               technologies.push(technology.name + ': ' + getTechnologyLvlTxt(technology.level));

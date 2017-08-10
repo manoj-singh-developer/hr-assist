@@ -180,7 +180,7 @@
         </div>
         <div layout-gt-xs="row">
           <md-radio-group ng-model="candidateForm.candidate.category">
-            <md-radio-button value="0" class="md-primary">Front End</md-radio-button>
+            <md-radio-button value="0" class="md-primary  u-mr-5">Front End</md-radio-button>
             <md-radio-button value="1" class="md-primary">Back End</md-radio-button>
           </md-radio-group>
         </div>
@@ -248,8 +248,9 @@
 
         <!-- UPLOAD FILES-->
         <div layout-gt-xs="row">
+
           <label class="u-mr-20 u-ml-5">Upload mp4/mp3 files</label>
-            <input type="file" ngf-select ng-model="files[0]" name="file" multiple accept="video/mp4, audio/mp3"><br/>
+          <input type="file" ngf-select ng-model="files[0]" name="file" multiple accept="video/mp4, audio/mp3"><br/>
         </div>
          <!-- /UPLOAD FILES-->
 
@@ -306,13 +307,14 @@
         <!-- UPLOAD CV-->
         <div layout-gt-xs="row">
           <label class="u-mr-20 u-ml-5">Upload CV (pdf/word)</label>
-            <input type="file" ngf-select ng-model="files[1]" name="file">
+          <input type="file" ngf-select ng-model="files[1]" name="file">
         </div>
         <!-- /UPLOAD CV-->
 
 
         <!--STATUS-->
         <div flex-gt-xs="100">
+
           <label class="u-ml-5">Candidate status</label>
           <md-input-container md-no-float>
             <label></label> <!-- required for accessibility to not show console warning -->
@@ -326,6 +328,7 @@
               </md-optgroup>
             </md-select>
           </md-input-container>
+          
         </div>
         <!-- /STATUS -->
 
