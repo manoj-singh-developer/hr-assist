@@ -6,7 +6,7 @@
     .module('HRA')
     .controller('candidateFormCtrl', candidateFormCtrl);
 
-  function candidateFormCtrl($mdDialog, $rootScope, $scope, autocompleteService, Candidate, dateService, Project, Technology, data) {
+  function candidateFormCtrl($mdDialog, $rootScope, $scope, autocompleteService, apiUrl, Candidate, dateService, Project, Technology, data) {
 
     let vm = this;
     let candidateCv;
@@ -15,10 +15,10 @@
     let technologiesToAdd = [];
     let interview = [];
     let dataObj = {};
-
     vm.selectedTechnologyLevel = [];
     vm.selectedItem = [];
 
+    vm.url = apiUrl.split('/api')[0];
     vm.candidate = data.candidate || {};
     vm.candidateTechnologies = vm.candidate.technologies;
     vm.candidateFiles = vm.candidate.candidate_files;
@@ -125,11 +125,11 @@
             filesToRemove = [];
           });
 
-        } 
-          Candidate.update(dataObj).then((resource) => {
-            _sendEventNotify('candidateEdited', resource.data.items);
-          });
-        
+        }
+        Candidate.update(dataObj).then((resource) => {
+          _sendEventNotify('candidateEdited', resource.data.items);
+        });
+
 
       } else if (dataObj) {
         Candidate.save(dataObj).then((resource) => {
@@ -188,13 +188,13 @@
         category: vm.candidate.category,
         audio_files: interview
       };
-      
+
       for (let key in dataObj) {
         if (!dataObj[key] || dataObj[key].length == 0) {
           delete dataObj[key];
         }
       }
-      
+
       return dataObj;
     }
 

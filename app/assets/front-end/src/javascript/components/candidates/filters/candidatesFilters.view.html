@@ -84,6 +84,7 @@
 	        md-search-text="searchTechnologies[$index]"
 	        md-items="item in candidates.querySearch(searchTechnologies[$index], candidates.resources.technologies)"
 	        md-item-text="item.name"
+	        md-min-length="0"
 	        placeholder="Technology">
 	        <span md-highlight-text="candidates.filter.technologies[$index]">
 	          {{item.name}}
