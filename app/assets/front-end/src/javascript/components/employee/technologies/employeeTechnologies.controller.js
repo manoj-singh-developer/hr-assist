@@ -6,152 +6,164 @@
     .module('HRA')
     .controller('employeeTechnologiesController', employeeTechnologiesController);
 
-  function employeeTechnologiesController($rootScope, $scope, $stateParams, $timeout, autocompleteService, User) {
+  function employeeTechnologiesController($rootScope, autocompleteService, User) {
 
     let vm = this;
-    let technologiesToAdd = [];
     let technologiesToRemove = [];
+    let userTechnologiesCopy = [];
+    let objToSave = {};
+    let objToUpdate = {};
+
+    objToSave.technologies = [];
+    objToUpdate.technologies = [];
     vm.user = {};
     vm.technologies = [];
     vm.userTechnologies = [];
     vm.showForm = false;
-    vm.skillLvlTxt = [];
-    vm.replaceInputs = [{}];
+    vm.userNewTech = [{}];
+    vm.disableSaveBtn = true;
 
     vm.addNewTechnologie = addNewTechnologie;
-    vm.saveTechnologies = saveTechnologies;
     vm.deleteTechQuery = deleteTechQuery;
+    vm.save = save;
     vm.toggleForm = toggleForm;
     vm.cancel = cancel;
+    vm.getLvlTxt = getLvlTxt;
+    vm.excludeTechnology = excludeTechnology;
 
     _getUserTech();
-    _validateForm();
-
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.user = data.user;
       vm.technologies = data.technologies;
-
       autocompleteService.buildList(vm.technologies, ['name']);
     });
 
-
     function addNewTechnologie() {
-      vm.replaceInputs.push({});
+      vm.userNewTech.push({});
+    }
+
+    function excludeTechnology(item) {
+      vm.technologies = _.without(vm.technologies, item);
+      _disableSaveBtn(false);
     }
 
     function deleteTechQuery(technology) {
-
-      let techId = technology.id;
-      let userId = $stateParams.id;
-
-      let delObj = {
-        technology_ids: technology.id,
-        user_id: userId
-      };
-
       let toRemove = _.findWhere(vm.userTechnologies, { id: technology.id });
       vm.userTechnologies = _.without(vm.userTechnologies, toRemove);
-      technologiesToAdd = _.without(technologiesToAdd, toRemove);
       technologiesToRemove.push(technology);
-
-      if (technologiesToRemove.length) {
-        $timeout(() => {
-          $scope.addTechForm.$invalid = false;
-        }, 100);
-      }
+      _disableSaveBtn(false);
     }
 
-    function saveTechnologies() {
-      let techName = [];
-      let techTypes = [];
-      let techLvl = [];
-      let userID = $stateParams.id;
-      let userTechArr = vm.userTechnologies;
+    function save() {
 
-      let techNameArr = $.map(vm.searchText, (value, index) => {
-        return [value];
-      });
-
-      let techTypesArr = $.map(vm.selectedSkillTypes, (value, index) => {
-        return [value];
-      });
-
-      let techLvlArr = $.map(vm.selectedSkillLevel, (value, index) => {
-        return [value];
-      })
-
-      for (let i = 0; i < techNameArr.length; i++) {
-        techName.push(techNameArr[i]);
-      }
-
-      for (let x = 0; x < techTypesArr.length; x++) {
-        techTypes.push(techTypesArr[x]);
-      }
-
-      for (let y = 0; y < techLvlArr.length; y++) {
-        techLvl.push(techLvlArr[y]);
-      }
-
-      let objToSave = {
-        names: techName,
-        types: techTypes,
-        levels: techLvl,
-        user_id: userID
-      };
-
-      for (let i = 0; i < userTechArr.length; i++) {
-        if (userTechArr[i].name === objToSave.names[0]) {
-          User.deleteUserTechnologies([userTechArr[i]]);
+      if (vm.userNewTech) {
+        for (let key in vm.userNewTech) {
+          if (!vm.userNewTech[key].technology || vm.userNewTech[key].technology.length == 0) {
+            delete vm.userNewTech[key];
+          }
         }
       }
 
-      if (objToSave.names.length) {
-        User.addUserTechnologies(objToSave)
-          .then((response) => {
-            vm.technologiesToAdd = [{}];
-            vm.searchText = '';
-            vm.selectedSkillTypes = '';
-            vm.selectedSkillLevel = '';
-
-            $timeout(() => {
-              _getUserTech();
-            });
-          });
-      }
+      _createObjectToSave();
 
       if (technologiesToRemove.length) {
         User.deleteUserTechnologies(technologiesToRemove)
           .then((response) => {
-            $timeout(() => {
-              $scope.addTechForm.$invalid = true;
-            }, 100);
             technologiesToRemove = [];
             _getUserTech();
           });
       }
+
+      if (objToSave.names.length) {
+        _saveTechnologies();
+      }
+
+      if (objToUpdate.technologies.length) {
+        _updateTechnologies();
+      }
+
       toggleForm();
     }
 
     function toggleForm() {
       vm.showForm = !vm.showForm;
+       _disableSaveBtn(true);
     }
 
     function cancel() {
       vm.displayOrHide = false;
       vm.showDelete = false;
       technologiesToRemove = [];
-      vm.userTechnologies = [];
       vm.searchText = '';
-      vm.selectedSkillTypes = '';
-      vm.selectedSkillLevel = '';
-      $timeout(() => {
-        _getUserTech();
-      });
+      vm.userTechnologies = userTechnologiesCopy.length > vm.userTechnologies.length ? userTechnologiesCopy : vm.userTechnologies;
       toggleForm();
-    };
+    }
 
-    function _getLvlTxt(data) {
+    function _createObjectToSave() {
+      let newTechnologiesName = [];
+      let newTechnologiesType = [];
+      let newTechnologiesLvl = [];
+
+      if (!vm.userNewTech.technology) {
+
+        vm.userNewTech.forEach((element, index) => {
+          newTechnologiesName.push(element.technology.name);
+          newTechnologiesType.push(parseInt(element.type));
+          newTechnologiesLvl.push(element.level);
+        });
+
+        objToSave = {
+          names: newTechnologiesName,
+          types: newTechnologiesType,
+          levels: newTechnologiesLvl
+        }
+
+        for (let i = 0; i < objToSave.names.length; i++) {
+
+          vm.userTechnologies.forEach((element, index) => {
+            if (element.name === objToSave.names[i]) {
+
+              //remove from object to save existing technologies
+              objToSave.names.splice(i, 1);
+              objToSave.types.splice(i, 1);
+              objToSave.levels.splice(i, 1);
+
+              // push into object to update existing technologies
+              objToUpdate.technologies.push({
+                name: vm.userNewTech[i].technology.name,
+                id: vm.userNewTech[i].technology.id,
+                level: vm.userNewTech[i].level,
+                technology_type: parseInt(vm.userNewTech[i].type)
+              });
+            }
+
+          });
+
+        }
+
+      }
+    }
+
+    function _saveTechnologies() {
+      User.saveUserTechnologies(objToSave).then((response) => {
+        vm.searchText = '';
+        vm.userNewTech = [{}];
+        objToSave = [];
+        vm.userTechnologies = vm.userTechnologies.concat(response);
+      });
+    }
+
+    function _updateTechnologies() {
+      User.updateUserTechnologies(objToUpdate).then((response) => {
+        vm.searchText = '';
+        vm.userNewTech = [{}];
+        objToUpdate.technologies = [];
+        vm.userTechnologies = response;
+      });
+    }
+
+    function getLvlTxt(data) {
       switch (data) {
         case 1:
           return "Junior";
@@ -191,32 +203,13 @@
     function _getUserTech() {
       User.getTechnologies()
         .then((response) => {
-          let userTechnologies = response;
-
-          for (let j = 0; j < userTechnologies.length; j++) {
-
-            let promise = new Promise((resolve) => {
-              resolve(_getLvlTxt(userTechnologies[j].level));
-            });
-
-            vm.skillLvlTxt = [];
-            promise
-              .then((response) => {
-                vm.skillLvlTxt.push(response);
-                for (let i = 0; i < userTechnologies.length; i++) {
-                  userTechnologies[i].level = _.assign(vm.skillLvlTxt[i], userTechnologies[i].level);
-                }
-
-                vm.userTechnologies = userTechnologies;
-              });
-          }
+          vm.userTechnologies = response;
+          userTechnologiesCopy = response;
         });
     }
 
-    function _validateForm() {
-      $timeout(() => {
-        $scope.addTechForm.$invalid = !vm.searchText ? false : true;
-      }, 100);
+    function _disableSaveBtn(booleanValue) {
+      vm.disableSaveBtn = !booleanValue ? booleanValue : true;
     }
 
   }
