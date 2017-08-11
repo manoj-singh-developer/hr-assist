@@ -47,7 +47,7 @@
         ng-if="employeeTechnologies.userTechnologies[$index].technology_type === 'main'" >
         <div class="md-list-item-text" layout="column">
           <h4>{{ technology.name }}</h4>
-          <p>{{technology.level}}</p>
+          <p>{{employeeTechnologies.getLvlTxt(technology.level)}}</p>
         </div>
       </md-list-item>
     </md-list>
@@ -61,7 +61,7 @@
         ng-if="employeeTechnologies.userTechnologies[$index].technology_type === 'secondary'">
         <div class="md-list-item-text" layout="column">
           <h4>{{ technology.name }}</h4>
-          <p>{{technology.level}}</p>
+          <p>{{employeeTechnologies.getLvlTxt(technology.level)}}</p>
         </div>
       </md-list-item>
     </md-list><!-- /PREVIEW TECHNOLOGIES -->
@@ -95,18 +95,18 @@
       <!-- FILTER TECHNOLOGIES -->
       <section layout-gt-xs="row"
         layout-align="center center"
-        ng-repeat="date in employeeTechnologies.replaceInputs track by $index" >
+        ng-repeat="date in employeeTechnologies.userNewTech track by $index" >
 
           <!-- TECHNOLOGIES SELECT-->
           <div class="md-padding" flex-gt-xs="35">
           <md-content class="md-padding">
             <md-input-container>
               <label>Select technology</label>
-              <md-autocomplete md-selected-item="employeeTechnologies.selectedItem[$index]"
-                md-search-text-change="employeeTechnologies.searchTextChange(employeeTechnologies.searchText[$index])"
-                ng-model="employeeTechnologies.searchText[$index]"
+              <md-autocomplete md-selected-item="employeeTechnologies.userNewTech[$index].technology"
+                md-search-text-change="employeeTechnologies.searchTextChange(employeeTechnologies.userNewTech[$index].technology)"
+                ng-model="employeeTechnologies.userNewTech[$index].technology.name"
                 md-search-text="employeeTechnologies.searchText[$index]"
-                md-selected-item-change="employeeTechnologies.selectedTechnologyChange(item, $index)"
+                md-selected-item-change="employeeTechnologies.excludeTechnology(item)"
                 md-items="item in employeeTechnologies.querySearch(employeeTechnologies.searchText[$index], employeeTechnologies.technologies)"
                 md-item-text="item.name"
                 md-min-length="0"
@@ -115,8 +115,8 @@
 
                 <md-item-template>
                   <span class="item-metadata"
-                        md-highlight-text="employeeTechnologies.searchText">
-                    {{item.name}}
+                    md-highlight-text="employeeTechnologies.userNewTech">
+                   {{item.name}}
                   </span>
                 </md-item-template>
 
@@ -132,8 +132,8 @@
             <label>Skill type</label>
             <md-select class="u-no-margin"
               aria-label="skillType"
-              ng-model="employeeTechnologies.selectedSkillTypes[$index]"
-              required>
+              ng-model="employeeTechnologies.userNewTech[$index].type"
+              ng-required="employeeTechnologies.searchText[$index]">
               <md-optgroup label="Skill type">
                 <md-option value="0">
                   <span>Main</span>
@@ -156,39 +156,42 @@
             </div>
             <md-slider flex
               md-discrete
-              ng-model="employeeTechnologies.selectedSkillLevel[$index]"
+              ng-model="employeeTechnologies.userNewTech[$index].level"
               class="md-primary"
               step="1"
               min="1"
               max="10"
               aria-label="Skill level"
-              required
-               ng-disabled="!employeeTechnologies.selectedSkillTypes[$index]">
+              ng-required="employeeTechnologies.searchText[$index]"
+              ng-disabled="!employeeTechnologies.userNewTech[$index].type">
             </md-slider>
           </div>
         </div><!--TECHNOLOGY LEVEL-->
 
         <!--TECHNOLOGY LEVEL-->
 
+
         <!-- ADD TECHNOLOGY-->
-        <!--<div class="md-padding" flex-gt-xs="10">-->
-          <!--<md-button class="md-icon-button md-warn"-->
-                    <!--label="Add technology"-->
-                    <!--aria-label="add technology"-->
-                    <!--ng-click="employeeTechnologies.addNewTechnologie()">-->
-            <!--<md-icon class="material-icons">add</md-icon>-->
-          <!--</md-button>-->
-        <!--</div>-->
+        <div class="md-padding" flex-gt-xs="10">
+          <md-button class="md-icon-button md-warn"
+            label="Add technology"
+            aria-label="add technology"
+            ng-click="employeeTechnologies.addNewTechnologie()">
+            <md-icon class="material-icons">add</md-icon>
+          </md-button>
+        </div>
+
+
         <!-- REMOVE  TECHNOLOGY-->
-        <!-- <div class="md-padding" flex-gt-xs="10">
+         <div class="md-padding" flex-gt-xs="10">
           <md-button class="md-icon-button md-warn"
             label="Remove technology"
             aria-label="Remove technology"
-            ng-click="employeeTechnologies.replaceInputs.splice($index, 1)"
-            ng-show="employeeTechnologies.replaceInputs[$index] !== 1">
+            ng-click="employeeTechnologies.userNewTech.splice($index, 1)"
+            ng-show="employeeTechnologies.userNewTech[$index] !== 1">
             <md-icon class="material-icons">delete</md-icon>
           </md-button>
-        </div> -->
+        </div>
         <!-- /REMOVE TECHNOLOGY -->
 
 
@@ -215,8 +218,8 @@
       class="additional">
 
       <md-button class="md-raised md-primary"
-        ng-click="employeeTechnologies.saveTechnologies()"
-        ng-disabled="addTechForm.$invalid">
+        ng-click="employeeTechnologies.save()"
+        ng-disabled="employeeTechnologies.disableSaveBtn || addTechForm.$invalid">
         Save
       </md-button>
 
