@@ -13,7 +13,7 @@ module V1
           include Authentication
           include AccessGranted::Rails::ControllerMethods
 
-          def ceritifcation_params(certification)
+          def certification_params(certification)
             ActionController::Parameters.new(certification)
               .permit(:name, :authority, :licence_number, :year)
           end
@@ -38,7 +38,6 @@ module V1
           end
           post ':user_id/certifications' do
             user = User.find(params[:user_id])
-
             params[:certifications].each do |certification|
               user_certification = Certification.create(
                 name:           certification.name,

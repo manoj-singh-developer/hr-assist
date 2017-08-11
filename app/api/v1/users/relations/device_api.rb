@@ -37,6 +37,11 @@ module V1
             user.devices << devices if devices.count > 0
             { items: user.devices }
           end
+
+          desc "Delete user devices"
+          delete ':user_id/devices' do
+            delete_object(User, Device, params[:user_id], params[:device_ids])
+          end
         end
       end
     end
