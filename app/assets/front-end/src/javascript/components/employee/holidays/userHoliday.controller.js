@@ -7,8 +7,6 @@
     .module('HRA')
     .controller('userHolidayCtrl', userHolidayCtrl);
 
-  userHolidayCtrl
-
   function userHolidayCtrl($filter, $mdDialog, $rootScope, $stateParams, $timeout, autocompleteService, dateService, User, tableSettings) {
 
     let vm = this;
@@ -186,6 +184,7 @@
       vm.to = undefined;
       vm.signingDate = undefined;
       vm.errMsg = false;
+      vm.validateDate = false;
       vm.errMsgIntersectInterval = false;
       vm.replaceInputs = [{}];
       toggleForm();
