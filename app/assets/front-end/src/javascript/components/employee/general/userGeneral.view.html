@@ -154,7 +154,44 @@
         <span class="u-float-right">
           {{ userGeneral.schedule.name }}
         </span>
-       </p>
+      </p>
+
+      <p class="c-card-profile__info u-clearfix">
+        <strong>Personal Identification number: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.user.cnp }}
+        </span>
+      </p>
+
+      <p class="c-card-profile__info u-clearfix">
+        <strong>Bitbucket Username: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.user.work_info.bitbucket }}
+        </span>
+      </p>
+      <p class="c-card-profile__info u-clearfix">
+        <strong>Github Username: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.user.work_info.github }}
+        </span>
+      </p>
+      
+      <p class="c-card-profile__info u-clearfix"
+        ng-if="userGeneral.user.work_info.ssh_public_key.length">
+        <strong>Public SSH key: </strong>
+        <span class="u-float-right" ng-click="userGeneral.viewSsh()">
+            <span ng-show="!userGeneral.showSshKey">
+              <md-icon class="material-icons md-primary">visibility</md-icon>View SSH key
+            </span>
+            <span ng-show="userGeneral.showSshKey">
+              <md-icon class="material-icons md-primary">visibility_off</md-icon>
+              Hide SSH key
+            </span>
+        </span>
+        <p class="wrap-text" ng-if="userGeneral.showSshKey">
+          {{ userGeneral.user.work_info.ssh_public_key }}
+        </p>
+      </p>
 
       <md-divider
         class="md-padding divider-bold u-no-padding u-mt-20 u-mb-20">

@@ -24,6 +24,7 @@
     vm.schedule = {};
     vm.certifications = [];
     vm.dateService = dateService;
+    vm.showSshKey = false;
     vm.contractType = [
       'Full-time',
       'Part-time 4h',
@@ -36,6 +37,7 @@
     vm.cancel = cancel;
     vm.userLogOut = userLogOut;
     vm.generateCv = generateCv;
+    vm.viewSsh = viewSsh;
 
     _getPositions();
 
@@ -66,6 +68,10 @@
     $rootScope.$on('notifyScheduleUpdate', (event, data) => {
       _getUserSchedule();
     });
+
+    function viewSsh() {
+      vm.showSshKey = !vm.showSshKey;
+    }
 
     function save() {
       vm.user.company_start_date = vm.user.company_start_date ? vm.dateService.format(vm.user.company_start_date) : null;
@@ -228,7 +234,8 @@
                 'Description': ''
               },
               'Driving': {
-                'Description': [vm.user.car_plate && vm.user.car_plate != 'no' && vm.user.car_plate != '-' ? 'yes' : '-'] },
+                'Description': [vm.user.car_plate && vm.user.car_plate != 'no' && vm.user.car_plate != '-' ? 'yes' : '-']
+              },
             },
             'Achievement': [{
               'Title': {
@@ -252,7 +259,7 @@
       vm.AuthInterceptor.request = vm.AuthInterceptor.request != null ? null : defaultAuthRequest; // AuthInterceptor set config headers to null
 
       User.getCv(data, url).then((resource) => {
-        
+
         let ieEDGE = navigator.userAgent.match(/Edge/g);
         let ie = navigator.userAgent.match(/.NET/g); // IE 11+
         let oldIE = navigator.userAgent.match(/MSIE/g);
