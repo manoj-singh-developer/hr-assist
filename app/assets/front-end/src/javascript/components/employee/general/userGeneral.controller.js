@@ -228,8 +228,7 @@
                 'Description': ''
               },
               'Driving': {
-                'Description': ['']
-              },
+                'Description': [vm.user.car_plate && vm.user.car_plate != 'no' && vm.user.car_plate != '-' ? 'yes' : '-'] },
             },
             'Achievement': [{
               'Title': {

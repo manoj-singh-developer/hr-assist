@@ -41,8 +41,8 @@
     class="c-card-profile__preview">
     <md-list layout="row" layout-wrap>
       <md-list-item
-        flex="50"
-        class="md-2-line"
+        flex-gt-sm="50"
+        class="md-2-line u-mb-15"
         ng-repeat="education in userEducation.userEducationList track by $index">
         <div class="md-list-item-text" layout="column">
            <h4>{{education.name}}</h4>
