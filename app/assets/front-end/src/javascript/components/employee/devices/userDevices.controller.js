@@ -6,26 +6,26 @@
     .module('HRA')
     .controller('userDevicesCtrl', userDevicesCtrl);
 
-  userDevicesCtrl
-    .$inject = ['$rootScope', 'autocompleteService', 'User', '$stateParams', 'Device'];
-
-  function userDevicesCtrl($rootScope, autocompleteService, User, $stateParams, Device) {
+  function userDevicesCtrl($rootScope, $stateParams, autocompleteService, Device, User) {
 
     let vm = this;
     let devicesToAdd = [];
     let devicesToRemove = [];
+    
     vm.user = {};
     vm.devices = [];
     vm.userDevices = [];
     vm.copyUserDevices = [];
-    vm.addNewDevice = addNewDevice;
     vm.disableSaveBtn = true;
+    vm.minLength = 0;
+    vm.showForm = false;
 
+    vm.addNewDevice = addNewDevice;
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.cancel = cancel;
     vm.saveDevices = saveDevices;
-    vm.showEditDevices = false;
+    vm.toggleForm = toggleForm;
 
     _getDevices();
 
@@ -50,7 +50,8 @@
         devicesToAdd.push(device);
         vm.copyUserDevices.push(device);
 
-        vm.searchText = ' ';
+        vm.searchText = '';
+        vm.minLength = 1;
       }
       vm.disableSaveBtn = false;
     }
@@ -72,25 +73,32 @@
         });
       vm.searchText = "";
       vm.disableSaveBtn = true;
+      vm.minLength = 0;
+      toggleForm();
     }
 
     function saveDevices() {
 
-      if (devicesToAdd.length > 0) {
+      if (devicesToRemove.length) {
+        User.removeDevices(vm.user, devicesToRemove);
+        devicesToRemove = [];
+      }
+
+      if (devicesToAdd.length) {
         User.updateDevices(vm.user, devicesToAdd).then((data) => {
           vm.userDevices = data;
         });
         devicesToAdd = [];
       }
 
-      if (devicesToRemove.length > 0) {
-        User.removeDevices(vm.user, devicesToRemove);
-        devicesToRemove = [];
-      }
-
-      vm.showEditDevices = false;
+      toggleForm();
       vm.disableSaveBtn = true;
       vm.searchText = "";
+      vm.minLength = 0;
+    }
+
+    function toggleForm() {
+      vm.showForm = !vm.showForm;
     }
 
     function _getDevices() {
@@ -109,9 +117,6 @@
         });
     }
 
-    vm.displayEditDevices = () => {
-      vm.showEditDevices = !vm.showEditDevices;
-    }
 
   }
 

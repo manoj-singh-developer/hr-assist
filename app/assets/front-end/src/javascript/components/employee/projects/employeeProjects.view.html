@@ -39,7 +39,7 @@
 
   <!-- PREVIEW PROJECTS -->
   <md-content
-    ng-show="!userProjects.displayOrHide"
+    ng-show="!userProjects.showForm"
     class="c-card-profile__preview">
     <!--
       @!TODO: Angajatul are adaugat un proiect.
@@ -106,7 +106,8 @@
         </div>
       </md-list-item>
     </md-list>
-  </md-content><!-- /PREVIEW PROJECTS -->
+  </md-content>
+  <!-- /PREVIEW PROJECTS -->
 
 
 
@@ -116,7 +117,7 @@
     novalidate>
 
     <!-- FORM PROJECTS -->
-    <md-content ng-show="userProjects.displayOrHide" class="md-padding">
+    <md-content ng-show="userProjects.showForm" class="md-padding">
 
       <!-- CARD GROUP  -->
       <section
@@ -273,11 +274,11 @@
             <div class="md-block" flex-gt-xs="100">
                 <md-autocomplete
                   md-search-text-change="userProjects.searchTextChange(userProjects.searchTechnology)"
-                  md-selected-item-change="userProjects.addInQueue(item)"
+                  md-selected-item-change="userProjects.addInQueue(item); userProjects.changeMinLength()"
                   md-search-text="userProjects.searchTechnology"
                   md-items="item in userProjects.querySearch(userProjects.searchTechnology, userProjects.technologies)"
                   md-item-text="item.name"
-                  md-min-length="0"
+                  md-min-length="userProjects.minLength"
                   placeholder="Search Technologies"
                   md-input-name="autocompleteTechnology">
 
@@ -290,7 +291,8 @@
                   </md-item-template>
                 </md-autocomplete>
 
-            </div><!-- /TECHNOLOGIES AUTOCOMPLETE -->
+            </div>
+            <!-- /TECHNOLOGIES AUTOCOMPLETE -->
 
           </md-list-item>
         </md-list>
@@ -301,9 +303,8 @@
 
         <section ng-show="!userProjects.showTechnologies">
           <md-button
-            md-no-ink
             class="md-primary small-text"
-            ng-click="userProjects.AddTechnology(); userProjects.showTechnologies='true';">
+            ng-click="userProjects.addTechnology()">
             Add <span ng-show="userProjects.userTechnologies.length > 0">New</span> Technology
           </md-button>
         </section>
@@ -321,10 +322,10 @@
     <md-card-actions
       layout="column"
       layout-align="start"
-      ng-show="!userProjects.displayOrHide">
+      ng-show="!userProjects.showForm">
       <md-button
         class="c-card-profile__btn no-margin noPrint"
-        ng-click="userProjects.displayForm()"
+        ng-click="userProjects.toggleForm()"
         ng-disabled="btnIsDisabled">
         Add Project
       </md-button>
@@ -333,7 +334,7 @@
     <md-card-actions
       layout="row"
       layout-align="center center"
-      ng-show="userProjects.displayOrHide"
+      ng-show="userProjects.showForm"
       class="additional">
 
       <md-button
@@ -346,7 +347,7 @@
 
       <md-button
         class="md-raised"
-        ng-click="userProjects.displayForm(); userProjects.clearInputs(); userProjects.showTechnologies = 'false';">
+        ng-click="userProjects.cancel()">
         Cancel
       </md-button>
 

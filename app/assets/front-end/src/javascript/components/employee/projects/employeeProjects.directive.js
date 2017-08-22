@@ -13,9 +13,7 @@
       scope: {},
       require: 'hraCard',
       bindToController: {
-        'toggleForm': '=',
-        'querySearch': '=',
-        'settings': '='
+        'querySearch': '='
       },
       controller: 'userProjectsCtrl',
       controllerAs: 'userProjects',

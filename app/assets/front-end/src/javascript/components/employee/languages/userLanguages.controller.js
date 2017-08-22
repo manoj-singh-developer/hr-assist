@@ -11,22 +11,23 @@
     let vm = this;
     let languagesToRemove = [];
     let initLanguages = [];
-    vm.disableSaveBtn = true;
+    let objToSave = {};
 
     vm.user = {};
     vm.languages = [];
-    vm.userLanguages = [];
-    vm.copyUserLanguages = [];
+    vm.userLanguages = [];;
     vm.selectedLanguageLevel = [];
     vm.languagesToAdd = [];
     vm.selectedItem = [];
-
+    vm.disableSaveBtn = true;
+    
     vm.addNewLanguage = addNewLanguage;
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.save = save;
     vm.cancel = cancel;
     vm.toggleForm = toggleForm;
+    vm.getLevelText = getLevelText;
 
     _getLanguages();
 
@@ -45,8 +46,8 @@
     }
 
     function removeFromQueue(language) {
-      let toRemove = _.findWhere(vm.copyUserLanguages, { language_id: language.language_id });
-      vm.copyUserLanguages = _.without(vm.copyUserLanguages, toRemove);
+      let toRemove = _.findWhere(vm.userLanguages, { language_id: language.language_id });
+      vm.userLanguages = _.without(vm.userLanguages, toRemove);
 
       languagesToRemove.push(language.language_id);
       _disableSaveBtn(false);
@@ -64,66 +65,28 @@
     }
 
     function save() {
-      let languagesToAdd = [];
-      let levelArr = $.map(vm.selectedLanguageLevel, (value, index) => {
-        return [value];
-      });
-      let languageIdArr = $.map(vm.selectedItem, (value, index) => {
-        return [value.id];
-      });
-
-      for (let i = 0; i < vm.selectedItem.length; i++) {
-        languagesToAdd.push({
-          id: languageIdArr[i],
-          level: levelArr[i]
-        });
-      }
-
-      let objToSave = { languages: languagesToAdd };
+      _getLanguageObject();
 
       if (objToSave.languages.length) {
-        User.updateLanguages(vm.user, objToSave)
-          .then((data) => cancel());
-        objToSave = [];
+        User.updateLanguages(vm.user, objToSave).then((data) => {
+          cancel();
+          objToSave = [];
+        });
       }
-
       if (languagesToRemove.length) {
         User.removeLanguages(vm.user, languagesToRemove).then(() => {
           cancel();
+          languagesToRemove = [];
         });
-        languagesToRemove = [];
       }
       vm.languages = initLanguages;
-
     }
 
     function toggleForm() {
       vm.showForm = !vm.showForm;
     }
 
-    function _getLanguages() {
-      User.getLanguages()
-        .then((data) => {
-          vm.languages = data;
-          initLanguages = data;
-          autocompleteService.buildList(vm.languages, ['long_name']);
-        });
-    }
-
-    function _getUserLanguages() {
-      vm.copyUserLanguages = [];
-      User.getUserLanguages(vm.user)
-        .then((data) => {
-          vm.userLanguages = data;
-          vm.copyUserLanguages.push(...vm.userLanguages);
-          for (let j = 0; j < vm.copyUserLanguages.length; j++) {
-            vm.copyUserLanguages[j].level = _getLvlTxt(vm.copyUserLanguages[j].level);
-          }
-
-        });
-    }
-
-    function _getLvlTxt(data) {
+    function getLevelText(data) {
       switch (data) {
         case 1:
           return "Elementary proficiency";
@@ -143,6 +106,36 @@
         default:
           return "Please select your experience level";
       }
+    }
+
+    function _getLanguageObject() {
+      let languagesToAdd = [];
+      vm.selectedItem.forEach((element, index)=> {
+        languagesToAdd.push({
+          id: element.id,
+          level: element.level
+        });
+      });
+      
+      objToSave = { languages: languagesToAdd };
+      
+      return objToSave;
+    }
+
+    function _getLanguages() {
+      User.getLanguages()
+        .then((data) => {
+          vm.languages = data;
+          initLanguages = data;
+          autocompleteService.buildList(vm.languages, ['long_name']);
+        });
+    }
+
+    function _getUserLanguages() {
+      User.getUserLanguages(vm.user)
+        .then((data) => {
+          vm.userLanguages = data;
+        });
     }
 
     function _disableSaveBtn(booleanValue) {

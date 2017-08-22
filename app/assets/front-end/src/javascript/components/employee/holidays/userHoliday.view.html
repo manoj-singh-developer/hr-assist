@@ -3,13 +3,12 @@
 
   <!-- CARD TITLE -->
   <md-card-title>
-    <md-card-title-text>
-      <span class="md-headline">Holidays</span>
-      <span ng-if="userHoliday.totalDays">
+    <md-card-title-text layout="row">
+      <span class="md-headline" flex-gt-xs="35">Holidays</span>
+      <span ng-if="userHoliday.totalDays" flex-gt-xs="65">
       <i class="material-icons">star</i>
-        <i>{{userHoliday.totalDays}}</i> {{userHoliday.totalDays>1?"days":'day'}} taken
-      </span>
-      
+      <i>{{userHoliday.totalDays}}</i> {{userHoliday.totalDays>1?"days":'day'}} taken
+    </span>
     </md-card-title-text>
   </md-card-title>
   <!-- /CARD TITLE -->
@@ -59,7 +58,7 @@
               <th md-column>End date</th>
               <th md-column>Number of days</th>
               <th md-column>Project</th>
-              <th md-column>Action</th>
+              <th md-column class="text-center">Action</th>
             </tr>
           </thead>
 
@@ -87,7 +86,7 @@
                 </div>
               </td>
 
-              <td md-cell>
+              <td md-cell class="text-center">
                 <md-button class="md-icon-button md-primary"
                   label="View Holiday"
                   aria-label="View Holiday"
