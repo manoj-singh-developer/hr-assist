@@ -18,6 +18,7 @@
     vm.searchProj = [];
     vm.searchUser = [];
     vm.isAdmin = false;
+    vm.leaderRequired = true;
 
     vm.tableSettings = tableSettings;
     vm.tableSettings.query.limit = 5;
@@ -42,6 +43,7 @@
     vm.getWorkingDay = getWorkingDay;
     vm.minLength = 0;
     vm.changeMinLength = changeMinLength;
+    vm.verifyRequiredStatus = verifyRequiredStatus;
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.projects = data.projects;
@@ -58,6 +60,10 @@
     function changeMinLength() {
       vm.minLength = 1;
     };
+
+    function verifyRequiredStatus() {
+      vm.leaderRequired = vm.teamLeaders.length ? false : true;
+    }
 
     function queryUserSearch(query) {
       let empArr = autocompleteService.querySearch(query, vm.users);

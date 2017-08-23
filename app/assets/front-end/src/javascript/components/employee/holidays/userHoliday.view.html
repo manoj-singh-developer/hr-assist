@@ -192,17 +192,18 @@
               
                 <md-chips
                   ng-model="userHoliday.teamLeaders"
-                  md-on-remove
+                  md-on-remove="userHoliday.verifyRequiredStatus()"
                   md-on-add="userHoliday.changeMinLength()"
-                  md-require-match
                   md-input-name="autocompleteLeader">
                   <md-autocomplete
+                    md-selected-item-change="userHoliday.verifyRequiredStatus()"
                     md-search-text="userHoliday.leader"
                     md-items="user in userHoliday.querySearch(userHoliday.leader, userHoliday.users)"
                     md-item-text="user.first_name+' '+user.last_name"
                     md-min-length="userHoliday.minLength"
                     md-dropdown-position="bottom"
-                    placeholder="Select team leader">
+                    ng-required="userHoliday.leaderRequired"
+                    placeholder="Select team leader*">
                     <md-item-template>
                       <span md-highlight-text="userHoliday.leader">
                         {{user.first_name}} {{user.last_name}}
