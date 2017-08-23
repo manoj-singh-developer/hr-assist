@@ -6,12 +6,14 @@
     .module('HRA')
     .controller('userProjectsCtrl', userProjectsCtrl);
 
-  function userProjectsCtrl($rootScope, autocompleteService, $mdDialog, Project, User, dateService) {
+  function userProjectsCtrl($rootScope, $q, autocompleteService, $mdDialog, Project, User, dateService) {
 
     let vm = this;
     let projectsToAdd = [];
     let technologiesToRemove = [];
     let technologiesToAdd = [];
+
+
     vm.user = {};
     vm.projects = [];
     vm.userProjects = [];
@@ -40,7 +42,7 @@
       vm.user = data.user;
       vm.technologies = data.technologies;
       vm.projects = data.projects;
-
+      autocompleteService.buildList(vm.projects, ['name']);
       autocompleteService.buildList(vm.technologies, ['name']);
       _getUserProjects();
     });
@@ -177,13 +179,42 @@
       User.getProjects(vm.user).then((data) => {
         vm.userProjects = data;
 
+        if (data) {
+          let getNewUserProjects = updateUserProjects();
+          getNewUserProjects.then((resolve) => {
+            vm.projects = resolve;
+          }, (reject) => {
+            console.log(reject);
+          });
+        }
+
+      });
+    }
+
+    function updateUserProjects() {
+      let deferred = $q.defer();
+      let returnedValue;
+      setTimeout(() => {
+
         vm.userProjects.forEach((element, index) => {
           let existingProject = _.findWhere(vm.projects, { id: element.project.id });
           vm.projects = _.without(vm.projects, existingProject);
+          returnedValue = vm.projects;
+
+          if (vm.userProjects.length == index + 1) {
+            return returnedValue;
+          }
+
         });
 
-        autocompleteService.buildList(vm.projects, ['name']);
-      });
+        if (returnedValue) {
+          deferred.resolve(returnedValue);
+        } else {
+          deferred.reject('Could not be eliminated existing projects');
+        }
+      }, 100);
+
+      return deferred.promise;
     }
 
   }

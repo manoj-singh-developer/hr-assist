@@ -72,6 +72,7 @@
           .then((response) => {
             technologiesToRemove = [];
             _getUserTech();
+            $rootScope.$emit('technologiesUpdated', vm.userTechnologies);
           });
       }
 
@@ -80,7 +81,9 @@
       }
 
       if (objToUpdate.technologies.length) {
-        _updateTechnologies();
+        setTimeout(() => {
+          _updateTechnologies();
+        }, 300);
       }
 
       toggleForm();
@@ -88,7 +91,7 @@
 
     function toggleForm() {
       vm.showForm = !vm.showForm;
-       _disableSaveBtn(true);
+      _disableSaveBtn(true);
     }
 
     function cancel() {
@@ -151,6 +154,7 @@
         vm.userNewTech = [{}];
         objToSave = [];
         vm.userTechnologies = vm.userTechnologies.concat(response);
+        $rootScope.$emit('technologiesUpdated', vm.userTechnologies);
       });
     }
 
@@ -160,6 +164,7 @@
         vm.userNewTech = [{}];
         objToUpdate.technologies = [];
         vm.userTechnologies = response;
+        $rootScope.$emit('technologiesUpdated', vm.userTechnologies);
       });
     }
 

@@ -522,12 +522,12 @@
 
       promise = resource.$promise
         .then((data) => {
-          alertService.success(model, 'addUserTechnologies');
+          alertService.success(model, 'saveUserTechnologies');
           return data.items;
         })
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'addUserTechnologies');
+          alertService.error(model, 'saveUserTechnologies');
         });
 
       return promise;
@@ -543,12 +543,12 @@
 
       promise = resource.$promise
         .then((data) => {
-          alertService.success(model, 'addUserTechnologies');
+          alertService.success(model, 'updateUserTechnologies');
           return data.items;
         })
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'addUserTechnologies');
+          alertService.error(model, 'updateUserTechnologies');
         });
 
       return promise;

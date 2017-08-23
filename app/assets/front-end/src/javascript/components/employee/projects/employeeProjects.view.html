@@ -129,6 +129,7 @@
           <div class="u-mr-5 u-ml-5 u-mb-20" flex-gt-xs="100">
             <label>Project<span ng-show="!userProjects.disableProjectName">*</span>: <span ng-show="userProjects.disableProjectName">{{userProjects.searchText}}</span></label>
             <md-autocomplete
+              md-no-cache="true"
               ng-show="!userProjects.disableProjectName"
               md-selected-item="userProjects.selectedItem"
               md-search-text-change="userProjects.searchTextChange(userProjects.searchText)"

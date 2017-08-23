@@ -55,6 +55,7 @@
           User.removeEducations(vm.user.id, obj);
           vm.userEducations.splice(index, 1);
           vm.userEducationList.splice(index, 1);
+          $rootScope.$emit('educationUpdated', vm.userEducations);
         });
 
       } else {
@@ -83,12 +84,14 @@
       if (updateEducationsObj["educations"].length !== 0)
         User.updateEducations(vm.user.id, updateEducationsObj).then((data) => {
           vm.userEducations = data;
+          $rootScope.$emit('educationUpdated', vm.userEducations);
           _initEducations();
         });
 
       if (saveEducationsObj["educations"].length !== 0)
         User.saveEducations(vm.user.id, saveEducationsObj).then((data) => {
           vm.userEducations = data;
+          $rootScope.$emit('educationUpdated', vm.userEducations);
           _initEducations();
         });
       toggleForm();
