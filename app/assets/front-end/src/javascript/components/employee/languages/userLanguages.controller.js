@@ -20,7 +20,7 @@
     vm.languagesToAdd = [];
     vm.selectedItem = [];
     vm.disableSaveBtn = true;
-    
+
     vm.addNewLanguage = addNewLanguage;
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
@@ -59,7 +59,6 @@
       vm.selectedItem = [];
       vm.languagesToAdd = [];
       vm.selectedLanguageLevel = [];
-      _getUserLanguages();
       _disableSaveBtn(true);
       toggleForm();
     }
@@ -68,18 +67,24 @@
       _getLanguageObject();
 
       if (objToSave.languages.length) {
-        User.updateLanguages(vm.user, objToSave).then((data) => {
-          cancel();
-          objToSave = [];
-        });
+        // timeout is used for case when delete and add same language
+        // delete shoud execute first then update
+        setTimeout(() => {
+          User.updateLanguages(vm.user, objToSave).then((data) => {
+            objToSave = [];
+            _getUserLanguages();
+          });
+        }, 500);
       }
+
       if (languagesToRemove.length) {
         User.removeLanguages(vm.user, languagesToRemove).then(() => {
-          cancel();
           languagesToRemove = [];
+          _getUserLanguages();
         });
       }
       vm.languages = initLanguages;
+      cancel();
     }
 
     function toggleForm() {
@@ -110,15 +115,15 @@
 
     function _getLanguageObject() {
       let languagesToAdd = [];
-      vm.selectedItem.forEach((element, index)=> {
+      vm.selectedItem.forEach((element, index) => {
         languagesToAdd.push({
           id: element.id,
           level: element.level
         });
       });
-      
+
       objToSave = { languages: languagesToAdd };
-      
+
       return objToSave;
     }
 

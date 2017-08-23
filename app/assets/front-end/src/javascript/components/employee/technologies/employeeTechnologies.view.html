@@ -178,6 +178,9 @@
             aria-label="add technology"
             ng-click="employeeTechnologies.addNewTechnologie()">
             <md-icon class="material-icons">add</md-icon>
+            <md-tooltip md-autohide="true">
+            Add new Technology
+          </md-tooltip>
           </md-button>
         </div>
 
@@ -188,8 +191,11 @@
             label="Remove technology"
             aria-label="Remove technology"
             ng-click="employeeTechnologies.userNewTech.splice($index, 1)"
-            ng-show="employeeTechnologies.userNewTech[$index] !== 1">
+            ng-show="employeeTechnologies.userNewTech.length !=1">
             <md-icon class="material-icons">delete</md-icon>
+            <md-tooltip md-autohide="true">
+            Remove new Technology
+          </md-tooltip>
           </md-button>
         </div>
         <!-- /REMOVE TECHNOLOGY -->

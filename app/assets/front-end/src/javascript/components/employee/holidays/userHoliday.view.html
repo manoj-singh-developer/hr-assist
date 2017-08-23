@@ -3,9 +3,9 @@
 
   <!-- CARD TITLE -->
   <md-card-title>
-    <md-card-title-text layout="row">
-      <span class="md-headline" flex-gt-xs="35">Holidays</span>
-      <span ng-if="userHoliday.totalDays" flex-gt-xs="65">
+    <md-card-title-text>
+      <span class="md-headline">Holidays</span>
+      <span ng-if="userHoliday.totalDays">
       <i class="material-icons">star</i>
       <i>{{userHoliday.totalDays}}</i> {{userHoliday.totalDays>1?"days":'day'}} taken
     </span>
@@ -54,10 +54,10 @@
           <thead md-head
             md-order="query.order">
             <tr md-row>
-              <th md-column>Start date</th>
-              <th md-column>End date</th>
-              <th md-column>Number of days</th>
-              <th md-column>Project</th>
+              <th md-column class="text-center">Start date</th>
+              <th md-column class="text-center">End date</th>
+              <th md-column class="text-center">Number of days</th>
+              <th md-column class="text-center">Project</th>
               <th md-column class="text-center">Action</th>
             </tr>
           </thead>
@@ -68,19 +68,19 @@
               md-auto-select
               ng-repeat="holiday in userHoliday.userHolidays | limitTo: userHoliday.tableSettings.query.limit : (userHoliday.tableSettings.query.page - 1) * userHoliday.tableSettings.query.limit">
 
-              <td md-cell>
+              <td md-cell class="text-center">
                 {{holiday.start_date | date:'dd-MM-yyyy'}}
               </td>
 
-              <td md-cell>
+              <td md-cell class="text-center">
                 {{holiday.end_date | date:'dd-MM-yyyy'}}
               </td>
 
-              <td md-cell>
+              <td md-cell class="text-center">
                 {{holiday.days}}
               </td>
 
-              <td md-cell>
+              <td md-cell class="text-center">
                 <div ng-repeat="project in holiday.employee_replacements">
                   <span>{{project.project_name}}</span>
                 </div>

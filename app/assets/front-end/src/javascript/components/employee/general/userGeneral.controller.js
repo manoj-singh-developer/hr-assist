@@ -47,7 +47,7 @@
       vm.isAdmin = false;
     }
 
-    $rootScope.$on('event:userResourcesLoaded', function(event, resources) {
+    $rootScope.$on('event:userResourcesLoaded', (event, resources)=> {
       vm.user = resources.user;
       vm.education = resources.educations;
       vm.technologies = resources.userTechnologies;
@@ -59,6 +59,19 @@
       _getBase64ImageUrl(vm.user.email, 100);
       _getUserLanguage();
 
+    });
+
+     $rootScope.$on('educationUpdated', (event, education) => {
+      vm.education = education;
+      _getEducation();
+    });
+
+      $rootScope.$on('technologiesUpdated', (event, technologies) => {
+      vm.technologies = technologies;
+    });
+
+    $rootScope.$on('certificationUpdated', (event, certifications) => {
+      vm.certifications = certifications;
     });
 
     $rootScope.$on('loadUserSchedule', (event, data) => {
@@ -111,7 +124,7 @@
     }
 
     function generateCv(typeOfDoc) {
-
+     
       let objectToGenerate = {
         'SkillsPassport': {
           'Locale': 'en',
@@ -385,6 +398,7 @@
     }
 
     function _getEducation() {
+      education = [];
       for (let i = 0; i < vm.education.length; i++) {
         let edObj = {};
         edObj.Period = {};
