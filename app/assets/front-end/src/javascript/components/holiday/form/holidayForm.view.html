@@ -241,17 +241,16 @@
                   <span ng-if="(holidayForm.dateList.to - holidayForm.dateList.from - 86400000)> 1">aferente</span> anului
 
                   <strong>{{ holidayForm.dateList.to | date: 'yyyy' }}</strong>
-                  <span>în intervalul</span>
-                  <strong>{{holidayForm.dateList.from | date: 'dd.MM.yyyy'}} - {{holidayForm.dateList.to | date: 'dd.MM.yyyy'}}</strong>
 
                   <span ng-if="(holidayForm.dateList.to - holidayForm.dateList.from - 86400000) > 1">în intervalul
                     <span>
-                        <strong>{{holidayForm.dateList.to | date: 'dd.MM.yyyy'}} - {{holidayForm.dateList.from | date: 'dd.MM.yyyy'}}</strong>
+                        <strong>{{holidayForm.dateList.from | date: 'dd.MM.yyyy'}} - {{holidayForm.dateList.to | date: 'dd.MM.yyyy'}}</strong>
                     </span>.
                   </span>
-                  <span ng-if="(holidayForm.dateList.to - holidayForm.dateList.from - 86400000) === 1">în intervalul
+
+                  <span ng-if="(holidayForm.dateList.to - holidayForm.dateList.from - 86400000) === 0">în data de
                     <span>
-                        <strong>{{{{holidayForm.dateList.from | date: 'dd.MM.yyyy'}}</strong>
+                        <strong>{{holidayForm.dateList.from | date: 'dd.MM.yyyy'}}</strong>
                     </span>.
                   </span>
               </p>

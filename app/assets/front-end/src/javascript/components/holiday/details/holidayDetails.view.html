@@ -28,6 +28,12 @@
         <span ng-if="holidayDetails.holidayPaper.signing">{{holidayDetails.holidayPaper.signing | date: 'yyyy'}}</span>
         <span ng-if="!holidayDetails.holidayPaper.signing">{{today | date: 'yyyy'}}</span>
 
+        <span ng-if="holidayDetails.holidayPaper.holidays > 1">în intervalul        
+          <span>        
+           <strong>{{holidayDetails.holidayPaper.startDate | date: 'dd.MM.yyyy'}} - {{holidayDetails.holidayPaper.endDate | date: 'dd.MM.yyyy'}}</strong>        
+          </span>.      
+        </span>
+        
         <span ng-if="holidayDetails.holidayPaper.holidays === 1">în data de <span>
             <strong>{{holidayDetails.holidayPaper.startDate | date: 'dd.MM.yyyy'}}</strong>
         </span>.
