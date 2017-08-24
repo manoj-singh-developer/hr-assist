@@ -74,19 +74,18 @@
 
     };
 
-    Holiday.remove = (id) => {
+    Holiday.remove = (holiday) => {
 
-      url = apiUrl + '/holidays:id';
-      resource = $resource(url).delete({ id: id });
+      url = apiUrl + '/holidays/:id';
+      resource = $resource(url).delete({ id: holiday.holidayId });
 
       promise = resource.$promise
         .then((data) => {
-          alertService.success(model, 'remove');
-          return data;
+          alertService.success(model, 'Holiday removed');
         })
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'remove')
+          alertService.error(model, 'Holiday removed')
         });
 
       return promise;
