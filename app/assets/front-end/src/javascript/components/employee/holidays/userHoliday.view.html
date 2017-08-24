@@ -96,17 +96,38 @@
                     View Holiday
                   </md-tooltip>
                 </md-button>
+
+                <!-- DELETE BUTTON IF USER -->
                 <md-button
+                  ng-if="!userHoliday.isAdmin"
+                  class="md-icon-button md-warn"
+                  label="Delete holiday"
+                  aria-label="Delete holiday">
+                  <md-icon class="material-icons">delete</md-icon>
+                  <md-tooltip 
+                    class="holiday-tooltip"
+                    md-autohide="true"
+                    md-direction="left">
+                    <span>
+                      If you want to delete / edit please contact Ionela Lungu.
+                    </span>
+                  </md-tooltip>
+                </md-button>
+                <!-- /DELETE BUTTON IF USER -->
+
+                <!-- DELETE BUTTON IF ADMIN -->
+                <md-button
+                  ng-if="userHoliday.isAdmin"
                   class="md-icon-button md-warn"
                   label="Delete holiday"
                   aria-label="Delete holiday"
-                  ng-click="userHoliday.removeHoliday(holiday)"
-                  ng-if="userHoliday.isAdmin">
+                  ng-click="userHoliday.removeHoliday(holiday)">
                   <md-icon class="material-icons">delete</md-icon>
                   <md-tooltip md-autohide="true">
-                    Delete holiday
+                    <span>Delete holiday</span>
                   </md-tooltip>
                 </md-button>
+                <!-- /DELETE BUTTON IF ADMIN -->
               </td>
 
             </tr>
