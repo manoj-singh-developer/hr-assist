@@ -11,11 +11,13 @@
     let vm = this;
     let languagesToRemove = [];
     let initLanguages = [];
+    let initUserLanguages = [];
     let objToSave = {};
+    let cancelWithoutSave = true;
 
     vm.user = {};
     vm.languages = [];
-    vm.userLanguages = [];;
+    vm.userLanguages = [];
     vm.selectedLanguageLevel = [];
     vm.languagesToAdd = [];
     vm.selectedItem = [];
@@ -54,10 +56,18 @@
     }
 
     function cancel() {
+
+      if (cancelWithoutSave && languagesToRemove.length) {
+        vm.userLanguages = initUserLanguages;
+      }
+
       vm.searchText = '';
       vm.disableSaveBtn = true;
       vm.selectedItem = [];
       vm.languagesToAdd = [];
+      languagesToRemove = [];
+      cancelWithoutSave = true;
+      vm.languages = initLanguages;
       vm.selectedLanguageLevel = [];
       _disableSaveBtn(true);
       toggleForm();
@@ -65,6 +75,7 @@
 
     function save() {
       _getLanguageObject();
+      cancelWithoutSave = false;
 
       if (objToSave.languages.length) {
         // timeout is used for case when delete and add same language
@@ -83,7 +94,7 @@
           _getUserLanguages();
         });
       }
-      vm.languages = initLanguages;
+
       cancel();
     }
 
@@ -116,10 +127,14 @@
     function _getLanguageObject() {
       let languagesToAdd = [];
       vm.selectedItem.forEach((element, index) => {
+
         languagesToAdd.push({
           id: element.id,
           level: element.level
         });
+
+        element.level = null
+
       });
 
       objToSave = { languages: languagesToAdd };
@@ -140,6 +155,7 @@
       User.getUserLanguages(vm.user)
         .then((data) => {
           vm.userLanguages = data;
+          initUserLanguages = data;
         });
     }
 
