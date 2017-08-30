@@ -35,8 +35,8 @@ class User < ApplicationRecord
   has_one :schedule
   has_one :work_info
   has_many :uploads
+  has_many :devices
   has_and_belongs_to_many :positions
-  has_and_belongs_to_many :devices
   has_and_belongs_to_many :educations
   has_and_belongs_to_many :certifications
   has_and_belongs_to_many :departments
@@ -102,6 +102,19 @@ class User < ApplicationRecord
       partial_result[:technology_id] = technology.id
       partial_result[:name] = technology.name
       partial_result[:level] = tech.level
+      result << partial_result
+    end
+    result
+  end
+
+  def get_devices
+    user_devices = Device.where(user_id: self.id)
+    result = []
+    user_devices.each do |device|
+      partial_result = {}
+      partial_result[:device_id] = device.id
+      partial_result[:device_name] = device.name
+      partial_result[:hardware_components] = HardwareComponent.where(id: device.user_device_specifications.pluck(:hardware_component_id))
       result << partial_result
     end
     result
