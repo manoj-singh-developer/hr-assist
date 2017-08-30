@@ -13,7 +13,7 @@ module V1
       include APIHelpers
 
       def post_params
-        ActionController::Parameters.new(params).permit(:name, :description, :total)
+        ActionController::Parameters.new(params).permit(:name, :user_id)
       end
 
       params :pagination do
