@@ -43,8 +43,11 @@ module V1
           end
 
           desc "Delete user devices"
+          params do
+            requires :device_ids, type: Integer, desc: "Device ids"
+          end
           delete ':user_id/devices' do
-            delete_object(User, Device, params[:user_id], params[:device_ids])
+            Device.find(params[:device_ids]).destroy
           end
         end
       end
