@@ -44,10 +44,13 @@ module V1
 
           desc "Delete user devices"
           params do
-            requires :device_ids, type: Integer, desc: "Device ids"
+            requires :device_ids, type: [Integer], desc: "Device ids"
           end
           delete ':user_id/devices' do
-            Device.find(params[:device_ids]).destroy
+            devices = Device.where(id: params[:device_ids])
+            devices.each do |device|
+              device.destroy
+            end
           end
         end
       end
