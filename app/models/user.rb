@@ -114,7 +114,7 @@ class User < ApplicationRecord
       partial_result = {}
       partial_result[:device_id] = device.id
       partial_result[:device_name] = device.name
-      partial_result[:hardware_components] = HardwareComponent.where(id: device.user_device_specifications.pluck(:hardware_component_id))
+      partial_result[:components] = HardwareComponent.where(id: device.user_device_specifications.pluck(:hardware_component_id))
       result << partial_result
     end
     result
