@@ -6,117 +6,152 @@
     .module('HRA')
     .controller('userDevicesCtrl', userDevicesCtrl);
 
-  function userDevicesCtrl($rootScope, $stateParams, autocompleteService, Device, User) {
+  function userDevicesCtrl($mdDialog, $rootScope, autocompleteService, Device, User) {
 
     let vm = this;
-    let devicesToAdd = [];
-    let devicesToRemove = [];
-    
+    //let componentsToRemove = [];
+    let componentsToAdd = [];
+    let deviceToEdit = null;
+
     vm.user = {};
-    vm.devices = [];
     vm.userDevices = [];
-    vm.copyUserDevices = [];
+    vm.userComponents = [];
     vm.disableSaveBtn = true;
+    vm.editedDevice = false;
     vm.minLength = 0;
     vm.showForm = false;
+    vm.components = [];
 
-    vm.addNewDevice = addNewDevice;
     vm.addInQueue = addInQueue;
     vm.removeFromQueue = removeFromQueue;
     vm.cancel = cancel;
-    vm.saveDevices = saveDevices;
+    vm.save = save;
     vm.toggleForm = toggleForm;
-
-    _getDevices();
+    vm.editDevice = editDevice;
+    vm.addComponents = addComponents;
+    vm.deleteDevice = deleteDevice;
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.user = data.user;
       _getUserDevices();
+      _getComponents();
     });
 
-    function addNewDevice() {
-      if (!vm.devicesToAdd) {
-        vm.devicesToAdd = [];
-      }
-      vm.devicesToAdd.push({});
-
+    function addComponents() {
+      vm.componentAutocomplete = true;
     }
 
-    function addInQueue(device) {
+    function editDevice(device) {
+      vm.deviceName = device.device_name;
+      vm.userComponents = device.components;
+      vm.editedDevice = true;
+      deviceToEdit = device;
+      toggleForm();
+    }
 
-      if (device) {
-        let toRemove = _.findWhere(devicesToRemove, { id: device.id });
-        devicesToRemove = _.without(devicesToRemove, toRemove);
-        devicesToAdd.push(device);
-        vm.copyUserDevices.push(device);
-
-        vm.searchText = '';
+    function addInQueue(component) {
+      if (component) {
+        //let notToAdd = _.findWhere(vm.userTechnologies, { name: component.name });
+        //let toRemove = _.findWhere(componentsToRemove, { name: component.name });
+        // componentsToRemove = _.without(componentsToRemove, toRemove);
+        // componentsToAdd.push(component.id);
+        vm.userComponents.push(component);
+        _disableSaveBtn(false);
+        vm.searchComponent = '';
         vm.minLength = 1;
       }
-      vm.disableSaveBtn = false;
     }
 
-    function removeFromQueue(device) {
-      let toRemove = _.findWhere(vm.copyUserDevices, { id: device.id });
-      vm.copyUserDevices = _.without(vm.copyUserDevices, toRemove);
-      devicesToAdd = _.without(devicesToAdd, toRemove);
-      devicesToRemove.push(device.id);
-      vm.disableSaveBtn = false;
+    function removeFromQueue(component) {
+      let toRemove = _.findWhere(vm.userComponents, { name: component.name });
+      vm.userComponents = _.without(vm.userComponents, toRemove);
+      //componentsToAdd = _.without(componentsToAdd, toRemove);
+      // componentsToRemove.push(component.id);
+      _disableSaveBtn(false);
     }
 
     function cancel() {
-      vm.copyUserDevices = [];
-      User.getUserDevices($stateParams.id)
-        .then((data) => {
-          vm.userDevices = data;
-          vm.copyUserDevices.push(...vm.userDevices);
-        });
-      vm.searchText = "";
-      vm.disableSaveBtn = true;
-      vm.minLength = 0;
+      _disableSaveBtn(true);
       toggleForm();
+
+      vm.editedDevice = false;
+      vm.componentAutocomplete = false;
+      deviceToEdit = null;
+      vm.minLength = 0;
+      vm.searchComponent = '';
+      vm.deviceName = '';
+      vm.serialNumber = '';
+      vm.userComponents = [];
+      componentsToAdd = [];
     }
 
-    function saveDevices() {
-
-      if (devicesToRemove.length) {
-        User.removeDevices(vm.user, devicesToRemove);
-        devicesToRemove = [];
+    function save() {
+      if (vm.userComponents.length) {
+        vm.userComponents.forEach((element, index) => {
+          componentsToAdd.push(element.name);
+        });
       }
 
-      if (devicesToAdd.length) {
-        User.updateDevices(vm.user, devicesToAdd).then((data) => {
+      let objToSave = {
+        device_name: vm.deviceName,
+        components: componentsToAdd
+      }
+
+      if (deviceToEdit) {
+        User.removeDevices(vm.user, deviceToEdit).then(() => {
+          vm.userDevices = _.without(vm.userDevices, deviceToEdit);
+
+          User.updateDevices(vm.user, objToSave).then((data) => {
+            vm.userDevices = data;
+          });
+        });
+      }
+
+      if (!deviceToEdit) {
+        User.updateDevices(vm.user, objToSave).then((data) => {
           vm.userDevices = data;
         });
-        devicesToAdd = [];
       }
 
-      toggleForm();
-      vm.disableSaveBtn = true;
-      vm.searchText = "";
-      vm.minLength = 0;
+      cancel();
+    }
+
+    function deleteDevice(device, event) {
+      let confirm = $mdDialog.confirm()
+        .title('Would you like to delete ' + device.device_name + ' device?')
+        .targetEvent(event)
+        .ok('Yes')
+        .cancel('No');
+
+      $mdDialog.show(confirm).then(() => {
+        User.removeDevices(vm.user, device).then(() => {
+          vm.userDevices = _.without(vm.userDevices, device);
+        });
+      });
     }
 
     function toggleForm() {
       vm.showForm = !vm.showForm;
     }
 
-    function _getDevices() {
-      Device.getAll($stateParams.id)
-        .then((data) => {
-          vm.devices = data;
-          autocompleteService.buildList(vm.devices, ['name']);
-        });
-    }
-
     function _getUserDevices() {
-      User.getUserDevices($stateParams.id)
+      User.getUserDevices(vm.user.id)
         .then((data) => {
           vm.userDevices = data;
-          vm.copyUserDevices.push(...vm.userDevices);
         });
     }
 
+    function _getComponents() {
+      Device.getComponents()
+        .then((data) => {
+          vm.components = data;
+          autocompleteService.buildList(vm.components, ['name']);
+        });
+    }
+
+    function _disableSaveBtn(booleanValue) {
+      vm.disableSaveBtn = !booleanValue ? booleanValue : true;
+    }
 
   }
 

@@ -23,7 +23,7 @@
   <!-- CARD NOTES -->
 
   <md-content class="c-card-profile__notes"
-    ng-if="!userDevices.copyUserDevices.length > 0">
+    ng-if="!userDevices.userDevices.length > 0">
     <p>
       <strong>You not have any device added.</strong>
     </p>
@@ -38,14 +38,50 @@
       ng-show="!userDevices.showForm"
       class="c-card-profile__preview">
         
-      <md-list layout="row" layout-wrap>
+      <md-list layout-gt-xs="row" layout-wrap>
         <md-list-item
-          flex="25"
-          class="md-2-line"
-          ng-repeat="device in userDevices.copyUserDevices track by $index">
+          flex-gt-xs="50"
+          class="md-2-line projects-list"
+          ng-repeat="device in userDevices.userDevices track by $index">
+          
           <div class="md-list-item-text" layout="column">
-            <h4>{{device.name}}</h4>
+
+            <h3 class="u-mb-10">
+              <strong>{{device.device_name}}</strong>
+              <span>
+                <md-button
+                  class="md-icon-button md-primary"
+                  label="View device details"
+                  aria-label="View device details"
+                  ng-click="userDevices.editDevice(device)">
+                  <md-icon class="material-icons">visibility</md-icon>
+                  <md-tooltip md-autohide="true">
+                    View device details
+                  </md-tooltip>
+                </md-button>
+              </span>
+
+              <span>
+                <md-button
+                  class="md-fab md-mini md-warn c-card-group__remove"
+                  label="delete"
+                  aria-label="delete"
+                  ng-click="userDevices.deleteDevice(device, $event)">
+                    <md-icon class="material-icons">delete</md-icon>
+                    <md-tooltip>DELETE</md-tooltip>
+                </md-button>
+              </span>
+            </h3>
+
+            <p>
+              <strong>Comonents :</strong>
+            </p>
+
+            <p  ng-repeat="component in device.components track by $index">
+             {{component.name}}
+            </p>
           </div>
+
         </md-list-item>
       </md-list>
 
@@ -62,79 +98,105 @@
       class="md-padding"
       ng-show="userDevices.showForm">
 
-      <md-list layout="row" layout-wrap>
+      <section layout-gt-xs="row">
+        <!-- DEVICE -->
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+          <label>Device (i.e Desktop / Laptop)</label>
+          <input
+            ng-model="userDevices.deviceName"
+            ng-disabled="userDevices.editedDevice"
+            ng-required="!userDevices.editedDevice"
+            ng-keyup="userDevices.disableSaveBtn=false"
+            name="deviceName">
 
-        <md-list-item class="md-2-line c-filters__label">
-          <div class="md-list-item-text " layout="column">
-            <h4>Add/Remove device: </h4>
+            <div ng-messages="deviceForm.deviceName.$error">
+            <div ng-message="required">Device field is required</div>
+          </div>
+        </md-input-container>
+        <!-- /DEVICE -->
+
+        <!-- SERIAL -->
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+          <label>Device Serial No.</label>
+          <input
+            ng-model="userDevices.serialNumber">
+        </md-input-container>
+        <!-- /SERIAL -->
+      </section>
+        
+
+
+
+
+      <p ng-show="userDevices.userComponents.length > 0" class="u-mb-10">
+        <strong>
+          On this devices I have following components:
+        </strong>
+      </p>
+
+      
+
+      <!-- COMPONENTS -->
+      <md-list layout="row" layout-wrap layout-align="left center">
+        <md-list-item
+          class="md-2-line"
+          ng-repeat="component in userDevices.userComponents track by $index">
+          <div class="md-list-item-text" layout="column">
+            <p class="c-filters__item"
+              ng-click="userDevices.removeFromQueue(component)" >
+              {{$index + 1}} {{component.name}}
+              <span class="material-icons c-filters__icon">close</span>
+            </p>
           </div>
         </md-list-item>
-
-          <md-list-item
-            class="md-2-line"
-            ng-repeat="device in userDevices.copyUserDevices track by $index">
-            <div class="md-list-item-text" layout="column">
-              <p class="c-filters__item"
-                ng-click="userDevices.removeFromQueue(device)">
-                {{$index + 1}} {{device.name}}
-                <span class="material-icons c-filters__icon">close</span>
-              </p>
-            </div>
-          </md-list-item>
-
       </md-list>
 
-      <!-- FILTER DEVICE -->
       <section
+        flex="100"
         layout-gt-xs="row"
-        layout-align="center center"
-        ng-repeat="device in userDevices.devicesToAdd track by $index" >
+        ng-show="userDevices.componentAutocomplete">
 
-          <!-- DEVICE INPUT-->
-          <div flex="100">
-            
-            <!-- DEVICE SELECT-->
-            <md-content class="md-padding">
-              <form ng-submit="$event.preventDefault()">
-                <md-autocomplete
-                  md-selected-item="userDevices.selectedItem"
-                  md-search-text-change="userDevices.searchTextChange(userDevices.searchText)"
-                  md-search-text="userDevices.searchText"
-                  md-selected-item-change="userDevices.addInQueue(item)"
-                  md-items="item in userDevices.querySearch(userDevices.searchText, userDevices.devices)"
-                  md-item-text="item.name"
-                  md-min-length="userDevices.minLength"
-                  placeholder="Search"
-                  md-dropdown-position="bottom">
+        <!-- COMPONENTS AUTOCOMPLETE -->
+        <div class="md-block" flex-gt-xs="100">
 
-                  <md-item-template>
-                    <span class="item-metadata"
-                      md-highlight-text="userDevices.searchText">
-                      {{item.name}}
-                    </span>
-                  </md-item-template>
+          <label>Components </label>
 
-                </md-autocomplete>
-              </form>
-            </md-content>
-            <!-- /DEVICE SELECT-->
+            <md-autocomplete
+              md-search-text-change="userDevices.searchTextChange(userDevices.searchComponent)"
+              md-selected-item-change="userDevices.addInQueue(item); userDevices.changeMinLength()"
+              md-search-text="userDevices.searchComponent"
+              md-items="item in userDevices.querySearch(userDevices.searchComponent, userDevices.components)"
+              md-item-text="item.name"
+              md-min-length="userDevices.minLength"
+              placeholder="Search Component"
+              md-input-name="autocompleteComponents">
 
-          </div>
-          <!-- DEVICE INPUT-->
+            <md-item-template>
+                <span
+                class="item-metadata"
+                md-highlight-text="userDevices.searchComponent">
+                  {{item.name}}
+                </span>
+              </md-item-template>
+            </md-autocomplete>
 
+        </div>
+        <!-- /COMPONENTS AUTOCOMPLETE -->
 
       </section>
-      <!-- /FILTER DEVICE -->
+      <!-- /COMPONENTS -->
+
+
 
 
       <section 
-        class="md-padding"
-        ng-show="!showDetails">
+        class="md-padding">
         <md-button
           md-no-ink
           class="md-primary small-text"
-          ng-click="userDevices.addNewDevice(); showDetails = ! showDetails">
-          Add New Device
+          ng-show="!userDevices.componentAutocomplete"
+          ng-click="userDevices.addComponents()">
+          Add New Components
         </md-button>
       </section>
 
@@ -164,8 +226,8 @@
 
       <md-button
         class="md-raised md-primary"
-        ng-click="userDevices.saveDevices()"
-        ng-disabled="userDevices.disableSaveBtn">
+        ng-click="userDevices.save()"
+        ng-disabled="deviceForm.$invalid || userDevices.disableSaveBtn">
         Save
       </md-button>
 
