@@ -24,7 +24,7 @@ module V1
           desc "Get all user devices"
           get ':user_id/devices' do
             user = User.find(params[:user_id])
-            {items: user.get_user_devices}
+            { items: user.get_user_devices }
           end
 
           desc "Add devices to user"
