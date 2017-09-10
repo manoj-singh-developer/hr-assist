@@ -6,13 +6,17 @@
     .module('HRA')
     .controller('candidatesCtrl', candidatesCtrl);
 
-  function candidatesCtrl($mdDialog, $rootScope, $q, autocompleteService, dateService, Candidate, tableSettings) {
+  function candidatesCtrl($mdDialog, $rootScope, $q, autocompleteService, dateService, Candidate, tableSettings, Technology) {
 
     let vm = this;
     let excelData = [];
     let exportCandidates = [];
     let querySearchItems = [];
+    let technologies = [];
+    let filterObj = {};
+    let statusNumber = null;
 
+    vm.selectedTechnologies = [];
     vm.showFilters = false;
     vm.resources = {};
     vm.tableSettings = tableSettings;
@@ -21,13 +25,22 @@
       limit: 10,
       page: 1
     };
+    vm.filters = {
+      technologies: [],
+      category: null
+    };
+    vm.status = ['applied', 'meeting', 'test', 'accepted', 'failed'];
 
+    vm.search = search;
     vm.showForm = showForm;
     vm.remove = remove;
     vm.querySearch = querySearch;
     vm.toggleFilters = toggleFilters;
     vm.saveExcelFile = saveExcelFile;
     vm.getTechnologyLvlTxt = getTechnologyLvlTxt;
+    vm.addTechnologyInFilter = addTechnologyInFilter;
+    vm.selectedStatus = selectedStatus;
+    vm.resetFilters = resetFilters;
 
     _getResources();
 
@@ -64,6 +77,35 @@
           candidate: angular.copy(candidate)
         }
       });
+    }
+
+    function addTechnologyInFilter() {
+      vm.filters.technologies.push({});
+    }
+
+    function selectedStatus(data) {
+      if (data) {
+        statusNumber = vm.status.indexOf(data);
+        return data;
+      } else {
+        return "Pick a status";
+      }
+    }
+
+    function search() {
+      _createTechArray();
+      _createFilterObj();
+
+      if (!angular.equals(filterObj, {})) {
+
+        Candidate.filter(filterObj).then((data) => {
+          technologies = [];
+          vm.candidates = data;
+          _generateXlsx();
+          _updateTablePagination(vm.candidates);
+        });
+
+      }
     }
 
     function getTechnologyLvlTxt(data) {
@@ -124,6 +166,27 @@
       vm.showFilters = !vm.showFilters;
     }
 
+    function resetFilters() {
+
+      angular.forEach(vm.filters, (item, key) => {
+        if (typeof vm.filters[key] === 'object' && vm.filters[key] instanceof Array) {
+          vm.filters[key] = [];
+        } else {
+          vm.filters[key] = null;
+        }
+      });
+
+      vm.searchText = '';
+      technologies = [];
+      statusNumber = null;
+      vm.selectedTechnologies = [];
+      filterObj = {};
+      vm.candidates = vm.candidatesCopy;
+
+      _generateXlsx();
+      _updateTablePagination(vm.candidates);
+    }
+
     function querySearch(query, list) {
       if (query) {
         _updateTablePagination(autocompleteService.querySearch(query, list));
@@ -150,8 +213,11 @@
       vm.candidates = [];
 
       promises.push(Candidate.getAll());
+      promises.push(Technology.getAll());
+
       $q.all(promises).then((data) => {
         vm.resources.candidates = data[0];
+        vm.resources.technologies = data[1];
 
         if (vm.resources.candidates) {
           vm.resources.candidates.forEach((element, index) => {
@@ -161,7 +227,7 @@
             }
           });
         }
-
+        vm.candidatesCopy = vm.candidates;
         _updateTablePagination(vm.candidates);
         _buildAutocompleteLists();
         _generateXlsx();
@@ -170,6 +236,7 @@
 
     function _buildAutocompleteLists() {
       autocompleteService.buildList(vm.candidates, ['name']);
+      autocompleteService.buildList(vm.resources.technologies, ['name'])
     }
 
     function _updateTablePagination(data) {
@@ -190,7 +257,7 @@
       if (exportCandidates) {
         angular.forEach(exportCandidates, function(value, key) {
           let technologies = [];
-          
+
           if (value.technologies) {
             angular.forEach(value.technologies, (technology, index) => {
               technologies.push(technology.name + ': ' + getTechnologyLvlTxt(technology.level));
@@ -223,6 +290,41 @@
       }
     }
 
+    function _createTechArray() {
+      if (vm.selectedTechnologies) {
+        vm.selectedTechnologies.forEach(function(element, index) {
+          if (element) {
+            technologies.push(element.id);
+          }
+        });
+      }
+    }
+
+    function _createFilterObj() {
+      if (vm.filters.projects) {
+        vm.filters.projects.forEach((element, index) => {
+          projects.push(element.id);
+        });
+      }
+
+      filterObj = {
+        technology_id: technologies,
+        status: statusNumber,
+        category: vm.filters.category
+      };
+
+      for (let key in filterObj) {
+        if (!filterObj[key] || filterObj[key].length == 0) {
+          delete filterObj[key];
+        }
+      }
+
+      if (!angular.equals(filterObj, {})) {
+        filterObj = {
+          filters: filterObj
+        }
+      }
+    }
 
   }
 

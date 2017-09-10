@@ -6,7 +6,7 @@
     .module('HRA')
     .controller('employeeTechnologiesController', employeeTechnologiesController);
 
-  function employeeTechnologiesController($rootScope, autocompleteService, User, $stateParams, $timeout, $scope) {
+  function employeeTechnologiesController($rootScope, $scope, $stateParams, $timeout, autocompleteService, User) {
 
     let vm = this;
     let technologiesToAdd = [];
@@ -26,6 +26,7 @@
 
     _getUserTech();
     _validateForm();
+
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.user = data.user;

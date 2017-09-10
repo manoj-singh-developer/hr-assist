@@ -1,7 +1,115 @@
 <md-content
-  class="c-filters md-padding"
+  class="c-filters md-padding md-inline-form"
   ng-show="candidates.showFilters">
-	
-	<h1 class="md-title">Filter not yet implemented</h1>
-	
- </md-content>
+
+
+  <md-button
+    class="md-warn"
+    label="Reset all filters"
+    aria-label="Reset all filters"
+    ng-click="candidates.resetFilters()">
+    <md-icon class="material-icons">autorenew</md-icon>
+    Reset filters
+    <md-tooltip md-autohide="true">
+      Reset all filters
+    </md-tooltip>
+  </md-button>
+
+
+
+  <md-button
+    class="md-primary"
+    label="Reset all filters"
+    aria-label="Reset all filters"
+    ng-click="candidates.search()">
+    <md-icon class="material-icons">search</md-icon>
+    Filter candidates
+    <md-tooltip md-autohide="true">
+      Filter candidates
+    </md-tooltip>
+  </md-button>
+
+
+	<div class="md-padding">
+
+		<!-- CATEGORY -->
+		<section layout="row" layout-align="left center" layout-wrap>
+		  <p class="u-mr-15">Category:</p>
+		  <md-radio-group ng-model="candidates.filters.category">
+		    <md-radio-button value="0" class="md-primary  u-mr-5">Front End</md-radio-button>
+		    <md-radio-button value="1" class="md-primary">Back End</md-radio-button>
+		  </md-radio-group>
+		</section>
+		<!-- /CATEGORY -->
+
+
+
+	  <!-- FILTER BY STATUS -->  
+	  <section layout="row" layout-align="left center">
+
+	    <label class="u-mr-15">Filter by status:</label>
+
+	    <md-input-container md-no-float>
+	      <md-select class="u-no-margin"
+	        aria-label="Status"
+	        ng-model="candidates.filters.status"
+	        placeholder="Pick a status"
+	        md-selected-text="candidates.selectedStatus(candidates.filters.status)">
+	        <md-optgroup label="Status">
+	          <md-option
+	            value="{{status}}"
+	            ng-repeat="status in candidates.status">
+	            {{status}}
+	          </md-option>
+	        </md-optgroup>
+	      </md-select>
+	    </md-input-container>
+
+	  </section>
+	  <!-- FILTER BY STATUS -->
+
+
+
+	  <!--TECHNOLOGIES-->
+	  <section layout="row" layout-align="left center" layout-wrap>
+	    <p>Filter by technologies: </p>
+
+	    <div layout-gt-xs="row" ng-repeat="technology in candidates.filters.technologies track by $index">
+	      
+	      <md-autocomplete 
+	        flex-gt-xs="100" class="without-border"
+	        md-selected-item="candidates.selectedTechnologies[$index]"
+	        md-search-text-change="candidates.searchTextChange(userLanguages.searchText[$index])"
+	        md-selected-item-change="userLanguages.addInQueue(item)"
+	        md-search-text="searchTechnologies[$index]"
+	        md-items="item in candidates.querySearch(searchTechnologies[$index], candidates.resources.technologies)"
+	        md-item-text="item.name"
+	        md-min-length="0"
+	        placeholder="Technology">
+	        <span md-highlight-text="candidates.filter.technologies[$index]">
+	          {{item.name}}
+	        </span>
+	      </md-autocomplete>
+
+	    </div> 
+
+	    <div>
+	      <md-button
+	        md-no-ink
+	        class="md-primary small-text"
+	        label="Reset all filters"
+	        aria-label="Reset all filters"
+	        ng-click="candidates.addTechnologyInFilter()">
+	        <md-icon class="material-icons">add_circle_outline</md-icon>
+	        Add Technology
+	        <md-tooltip md-autohide="true">
+	          Add Technology
+	        </md-tooltip>
+	      </md-button>
+	    </div>
+	  </section>
+	  <!-- /TECHNOLOGIES -->
+
+	</div>
+
+</md-content>

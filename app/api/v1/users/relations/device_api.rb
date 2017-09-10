@@ -24,18 +24,33 @@ module V1
           desc "Get all user devices"
           get ':user_id/devices' do
             user = User.find(params[:user_id])
-            { items: user.devices }
+            { items: user.get_user_devices }
           end
 
           desc "Add devices to user"
           params do
-            requires :device_ids, type: [Integer], desc: "Device ids"
+            requires :device_name, type: String, desc: "Device name"
+            requires :components, type: [String], desc: "Components"
           end
           put ':user_id/devices' do
             user = User.find(params[:user_id])
-            devices = Device.where(id: params[:device_ids]) - user.devices
-            user.devices << devices if devices.count > 0
-            { items: user.devices }
+            Device.create(name: params[:device_name], user_id: user.id)
+            components = HardwareComponent.where(name: params[:components])
+            components.each do |component|
+              UserDeviceSpecification.create(device_id: Device.last.id, hardware_component_id: component.id)
+            end
+            { items: user.get_user_devices }
+          end
+
+          desc "Delete user devices"
+          params do
+            requires :device_ids, type: [Integer], desc: "Device ids"
+          end
+          delete ':user_id/devices' do
+            devices = Device.where(id: params[:device_ids])
+            devices.each do |device|
+              device.destroy
+            end
           end
         end
       end
