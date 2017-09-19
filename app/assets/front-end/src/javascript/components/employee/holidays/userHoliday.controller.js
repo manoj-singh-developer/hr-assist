@@ -7,8 +7,6 @@
     .module('HRA')
     .controller('userHolidayCtrl', userHolidayCtrl);
 
-  userHolidayCtrl
-
   function userHolidayCtrl($filter, $mdDialog, $rootScope, $stateParams, $timeout, autocompleteService, dateService, User, tableSettings) {
 
     let vm = this;
@@ -20,6 +18,7 @@
     vm.searchProj = [];
     vm.searchUser = [];
     vm.isAdmin = false;
+    vm.leaderRequired = true;
 
     vm.tableSettings = tableSettings;
     vm.tableSettings.query.limit = 5;
@@ -44,6 +43,7 @@
     vm.getWorkingDay = getWorkingDay;
     vm.minLength = 0;
     vm.changeMinLength = changeMinLength;
+    vm.verifyRequiredStatus = verifyRequiredStatus;
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.projects = data.projects;
@@ -60,6 +60,10 @@
     function changeMinLength() {
       vm.minLength = 1;
     };
+
+    function verifyRequiredStatus() {
+      vm.leaderRequired = vm.teamLeaders.length ? false : true;
+    }
 
     function queryUserSearch(query) {
       let empArr = autocompleteService.querySearch(query, vm.users);
@@ -186,6 +190,7 @@
       vm.to = undefined;
       vm.signingDate = undefined;
       vm.errMsg = false;
+      vm.validateDate = false;
       vm.errMsgIntersectInterval = false;
       vm.replaceInputs = [{}];
       toggleForm();

@@ -6,12 +6,14 @@
     .module('HRA')
     .controller('userProjectsCtrl', userProjectsCtrl);
 
-  function userProjectsCtrl($rootScope, autocompleteService, $mdDialog, Project, User, dateService) {
+  function userProjectsCtrl($rootScope, $q, autocompleteService, $mdDialog, Project, User, dateService) {
 
     let vm = this;
     let projectsToAdd = [];
     let technologiesToRemove = [];
     let technologiesToAdd = [];
+
+
     vm.user = {};
     vm.projects = [];
     vm.userProjects = [];
@@ -19,24 +21,34 @@
     vm.disableProjectName = false;
     vm.userTechnologies = [];
     vm.validateDate = false;
-    vm.displayOrHide = false;
     vm.showTechnologies = false;
+    vm.minLength = 0;
 
     vm.dateService = dateService;
+    vm.toggleForm = toggleForm;
+    vm.editProject = editProject;
+    vm.addProject = addProject;
+    vm.addInQueue = addInQueue;
+    vm.removeFromQueue = removeFromQueue;
+    vm.deleteProject = deleteProject;
+    vm.checkDates = checkDates;
+    vm.save = save;
+    vm.cancel = cancel;
+    vm.checkOnGoing = checkOnGoing;
+    vm.changeMinLength = changeMinLength;
+    vm.addTechnology = addTechnology;
 
     $rootScope.$on("event:userResourcesLoaded", (event, data) => {
       vm.user = data.user;
       vm.technologies = data.technologies;
       vm.projects = data.projects;
-
-      autocompleteService.buildList(vm.technologies, ['name']);
       autocompleteService.buildList(vm.projects, ['name']);
+      autocompleteService.buildList(vm.technologies, ['name']);
       _getUserProjects();
     });
 
-    vm.editProject = (project) => {
+    function editProject(project) {
       vm.searchText = project.project.name;
-
       vm.start_date = project.user_project_start_date ? new Date(project.user_project_start_date) : undefined;
       vm.end_date = project.user_project_end_date ? new Date(project.user_project_end_date) : undefined;
       vm.onGoing = project.user_project_end_date ? undefined : true;
@@ -45,16 +57,16 @@
       vm.technologiesToAdd = project.technologies;
       vm.disableProjectName = true;
       vm.userTechnologies = project.technologies;
-      vm.displayOrHide = true;
+      toggleForm();
     }
 
-    vm.addProject = (project) => {
+    function addProject(project) {
       if (project) {
         projectsToAdd.push(project);
       }
     }
 
-    vm.addInQueue = (technology) => {
+    function addInQueue(technology) {
       if (technology) {
         let notToAdd = _.findWhere(vm.userTechnologies, { id: technology.id });
         if (notToAdd === undefined) {
@@ -63,18 +75,18 @@
           technologiesToAdd.push(technology.id);
           vm.userTechnologies.push(technology);
         }
-        vm.searchTechnology = " ";
+        vm.searchTechnology = '';
       }
     }
 
-    vm.removeFromQueue = (technology) => {
+    function removeFromQueue(technology) {
       let toRemove = _.findWhere(vm.userTechnologies, { id: technology.id });
       vm.userTechnologies = _.without(vm.userTechnologies, toRemove);
       technologiesToAdd = _.without(technologiesToAdd, toRemove);
       technologiesToRemove.push(technology);
     }
 
-    vm.deleteProject = (project, event) => {
+    function deleteProject(project, event) {
       var confirm = $mdDialog.confirm()
         .title('Would you like to delete ' + project.project.name + ' project?')
         .targetEvent(event)
@@ -83,17 +95,16 @@
 
       $mdDialog.show(confirm).then(() => {
         User.removeProjects(vm.user, project).then(() => {
-          _getUserProjects()
-
+          vm.userProjects = _.without(vm.userProjects, project);
         });
       });
     }
 
-    vm.checkDates = () => {
+    function checkDates() {
       if (vm.onGoing) {
         vm.validateDate = false;
       } else {
-        if (vm.start_date != undefined && vm.end_date != undefined && vm.start_date > vm.end_date) {
+        if (vm.start_date && vm.end_date && vm.start_date > vm.end_date) {
           vm.validateDate = true;
         } else {
           vm.validateDate = false;
@@ -101,7 +112,7 @@
       }
     }
 
-    vm.save = () => {
+    function save() {
       let projectId = [];
       let startDate = vm.dateService.format(vm.start_date);
       let endDate = vm.end_date ? vm.dateService.format(vm.end_date) : null;
@@ -119,48 +130,91 @@
       };
 
       User.updateProjects(vm.user, projectObj).then((data) => {
-        vm.clearInputs();
         _getUserProjects();
       });
 
       if (technologiesToRemove.length) {
-        User.removeProjectTechnologies(projectObj, technologiesToRemove).then((data) => {
-          _getUserProjects();
-        });
-        technologiesToRemove = [];
+        User.removeProjectTechnologies(projectObj, technologiesToRemove);
       }
 
-      vm.clearInputs();
-      vm.displayOrHide = false;
+      cancel();
     }
 
-    vm.clearInputs = () => {
+    function cancel() {
       vm.userTechnologies = [];
       vm.technologiesToAdd = [];
-      vm.searchText = '';
-      vm.disableProjectName = false;
-      vm.start_date = undefined;
-      vm.end_date = undefined;
-      vm.searchTechnology = "";
-      vm.onGoing = undefined;
-      vm.showTechnologies = false;
+      technologiesToRemove = [];
       projectsToAdd = [];
       technologiesToAdd = [];
+      vm.minLength = 0;
+      vm.searchText = '';
+      vm.searchTechnology = '';
+      vm.disableProjectName = false;
+      vm.validateDate = false;
+      vm.start_date = undefined;
+      vm.end_date = undefined;
+      vm.onGoing = undefined;
+      vm.showTechnologies = false;
+      toggleForm();
     }
 
-    vm.displayForm = () => {
-      vm.displayOrHide = !vm.displayOrHide;
+    function addTechnology() {
+      vm.showTechnologies = true;
     }
 
-    vm.checkOnGoing = () => {
+    function checkOnGoing() {
       vm.end_date = vm.onGoing ? null : vm.end_date;
       return vm.onGoing;
     }
 
+    function toggleForm() {
+      vm.showForm = !vm.showForm;
+    }
+
+    function changeMinLength() {
+      vm.minLength = 1;
+    };
+
     function _getUserProjects() {
       User.getProjects(vm.user).then((data) => {
         vm.userProjects = data;
+
+        if (data) {
+          let getNewUserProjects = updateUserProjects();
+          getNewUserProjects.then((resolve) => {
+            vm.projects = resolve;
+          }, (reject) => {
+            console.log(reject);
+          });
+        }
+
       });
+    }
+
+    function updateUserProjects() {
+      let deferred = $q.defer();
+      let returnedValue;
+      setTimeout(() => {
+
+        vm.userProjects.forEach((element, index) => {
+          let existingProject = _.findWhere(vm.projects, { id: element.project.id });
+          vm.projects = _.without(vm.projects, existingProject);
+          returnedValue = vm.projects;
+
+          if (vm.userProjects.length == index + 1) {
+            return returnedValue;
+          }
+
+        });
+
+        if (returnedValue) {
+          deferred.resolve(returnedValue);
+        } else {
+          deferred.reject('Could not be eliminated existing projects');
+        }
+      }, 100);
+
+      return deferred.promise;
     }
 
   }

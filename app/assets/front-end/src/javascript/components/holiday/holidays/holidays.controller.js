@@ -6,9 +6,7 @@
     .module('HRA')
     .controller('HolidaysController', HolidaysController);
 
-
-  function HolidaysController($mdDialog, $rootScope, autocompleteService, Holiday, tableSettings, User) {
-
+  function HolidaysController($filter, $mdDialog, $rootScope, autocompleteService, Holiday, tableSettings, User) {
 
     let vm = this;
     let filteredHolidays = [];
@@ -24,7 +22,7 @@
     vm.dateList = [];
     vm.selectedMonth = null;
 
-    vm.monthsList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    vm.monthsList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     vm.tableSettings = tableSettings;
     vm.tableSettings.query = {
@@ -33,6 +31,7 @@
       page: 1
     };
 
+    vm.removeHoliday = removeHoliday;
     vm.querySearch = querySearch;
     vm.showFormDialog = showFormDialog;
     vm.selectedMonthDate = selectedMonthDate;
@@ -74,7 +73,7 @@
         vm.monthSelection[vm.indexMonth] = data;
         return vm.selectedMonth;
       } else {
-        return "Pick a month";
+        return 'Pick a month';
       }
     }
 
@@ -101,7 +100,7 @@
       filteredHolidays = [];
       vm.dateList = [];
       vm.selectedMonth = null;
-      vm.searchText = "";
+      vm.searchText = '';
       vm.disabledMonth = false;
       vm.disabledPeriod = false;
       vm.validateDate = false;
@@ -132,6 +131,26 @@
       } else {
         vm.validateDate = false;
       }
+    }
+
+    function removeHoliday(holiday, event) {
+
+      holiday.startDate = $filter('date')(holiday.startDate, 'd MMM, y');
+      holiday.endDate = $filter('date')(holiday.endDate, 'd MMM, y');
+
+      let confirm = $mdDialog.confirm()
+        .title('Are you sure you want to delete the holiday of ' + holiday.employee + ' between ' + holiday.startDate + ' and ' + holiday.endDate + ' ?')
+        .targetEvent(event)
+        .ok('Yes')
+        .cancel('No');
+
+      $mdDialog.show(confirm).then(() => {
+        Holiday.remove(holiday).then(() => {
+          let holidayToRemove = _.findWhere(vm.holidays, { holidayId: holiday.holidayId });
+          vm.holidays = _.without(vm.holidays, holidayToRemove);
+          _updateTablePagination(vm.holidays);
+        });
+      });
     }
 
     function _getHolidays() {

@@ -24,6 +24,7 @@
     vm.schedule = {};
     vm.certifications = [];
     vm.dateService = dateService;
+    vm.showSshKey = false;
     vm.contractType = [
       'Full-time',
       'Part-time 4h',
@@ -36,6 +37,7 @@
     vm.cancel = cancel;
     vm.userLogOut = userLogOut;
     vm.generateCv = generateCv;
+    vm.viewSsh = viewSsh;
 
     _getPositions();
 
@@ -45,7 +47,7 @@
       vm.isAdmin = false;
     }
 
-    $rootScope.$on('event:userResourcesLoaded', function(event, resources) {
+    $rootScope.$on('event:userResourcesLoaded', (event, resources)=> {
       vm.user = resources.user;
       vm.education = resources.educations;
       vm.technologies = resources.userTechnologies;
@@ -59,6 +61,19 @@
 
     });
 
+     $rootScope.$on('educationUpdated', (event, education) => {
+      vm.education = education;
+      _getEducation();
+    });
+
+      $rootScope.$on('technologiesUpdated', (event, technologies) => {
+      vm.technologies = technologies;
+    });
+
+    $rootScope.$on('certificationUpdated', (event, certifications) => {
+      vm.certifications = certifications;
+    });
+
     $rootScope.$on('loadUserSchedule', (event, data) => {
       vm.schedule = data;
     });
@@ -66,6 +81,10 @@
     $rootScope.$on('notifyScheduleUpdate', (event, data) => {
       _getUserSchedule();
     });
+
+    function viewSsh() {
+      vm.showSshKey = !vm.showSshKey;
+    }
 
     function save() {
       vm.user.company_start_date = vm.user.company_start_date ? vm.dateService.format(vm.user.company_start_date) : null;
@@ -105,7 +124,7 @@
     }
 
     function generateCv(typeOfDoc) {
-
+     
       let objectToGenerate = {
         'SkillsPassport': {
           'Locale': 'en',
@@ -228,7 +247,7 @@
                 'Description': ''
               },
               'Driving': {
-                'Description': ['']
+                'Description': [vm.user.car_plate && vm.user.car_plate != 'no' && vm.user.car_plate != '-' ? 'yes' : '-']
               },
             },
             'Achievement': [{
@@ -253,7 +272,7 @@
       vm.AuthInterceptor.request = vm.AuthInterceptor.request != null ? null : defaultAuthRequest; // AuthInterceptor set config headers to null
 
       User.getCv(data, url).then((resource) => {
-        
+
         let ieEDGE = navigator.userAgent.match(/Edge/g);
         let ie = navigator.userAgent.match(/.NET/g); // IE 11+
         let oldIE = navigator.userAgent.match(/MSIE/g);
@@ -379,6 +398,7 @@
     }
 
     function _getEducation() {
+      education = [];
       for (let i = 0; i < vm.education.length; i++) {
         let edObj = {};
         edObj.Period = {};

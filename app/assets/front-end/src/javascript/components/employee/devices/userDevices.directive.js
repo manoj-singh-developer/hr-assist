@@ -2,28 +2,24 @@
 
   'use strict';
 
-  // ------------------------------------------------------------------------
-  // @hraEmployeeForm
-  // ------------------------------------------------------------------------
-
   angular
     .module('HRA')
     .directive('hraUserDevices', hraUserDevices);
 
   function hraUserDevices() {
-    return {
+    let directive = {
       restrict: 'A',
       scope: {},
       require: 'hraCard',
       bindToController: {
-        'toggleForm': '=',
-        'querySearch': '=',
-        'settings': '='
+        'querySearch': '='
       },
       controller: 'userDevicesCtrl',
       controllerAs: 'userDevices',
       templateUrl: rootTemplatePath + 'employee/devices/userDevices.view.html'
     };
+    
+    return directive
   }
 
 })();

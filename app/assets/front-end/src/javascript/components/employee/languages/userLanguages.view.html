@@ -23,7 +23,7 @@
   <!-- CARD NOTES -->
 
   <md-content class="c-card-profile__notes"
-    ng-if="!userLanguages.copyUserLanguages.length">
+    ng-if="!userLanguages.userLanguages.length">
     <p>
       <strong>You not have any language added.</strong>
     </p>
@@ -39,10 +39,10 @@
       <md-list-item
         flex="25"
         class="md-2-line"
-        ng-repeat="language in userLanguages.copyUserLanguages track by $index">
+        ng-repeat="language in userLanguages.userLanguages track by $index">
         <div class="md-list-item-text" layout="column">
           <h4>{{language.long_name}}</h4>
-          <p>{{language.level}}</p>
+          <p ng-if="language.level">{{userLanguages.getLevelText(language.level)}}</p>
         </div>
       </md-list-item>
     </md-list>
@@ -67,7 +67,7 @@
 
          <md-list-item
            class="md-2-line"
-           ng-repeat="language in userLanguages.copyUserLanguages track by $index">
+           ng-repeat="language in userLanguages.userLanguages track by $index">
            <div class="md-list-item-text" layout="column">
              <p class="c-filters__item"
               ng-click="userLanguages.removeFromQueue(language)" >
@@ -102,7 +102,8 @@
               md-item-text="item.long_name"
               md-min-length="0"
               placeholder="Search"
-              md-dropdown-position="bottom">
+              md-dropdown-position="bottom"
+              md-no-cache="true">
 
               <md-item-template>
                 <span
@@ -125,12 +126,13 @@
               </div>
               <md-slider flex
                 md-discrete
-                ng-model="userLanguages.selectedLanguageLevel[$index]"
+                ng-model="userLanguages.selectedItem[$index].level"
                 class="md-primary"
                 step="1"
                 min="1"
                 max="5"
                 aria-label="Skill level"
+                ng-disabled='!userLanguages.selectedItem[$index]'
                 required>
               </md-slider>
             </div>
@@ -188,7 +190,7 @@
 
       <md-button
         class="md-raised"
-        ng-click=" userLanguages.cancel()">
+        ng-click="userLanguages.cancel()">
         Cancel
       </md-button>
 

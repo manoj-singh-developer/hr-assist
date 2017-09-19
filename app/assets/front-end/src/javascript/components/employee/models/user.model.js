@@ -512,7 +512,7 @@
       return promise;
     };
 
-    User.addUserTechnologies = (data) => {
+    User.saveUserTechnologies = (data) => {
 
       let userId = $stateParams.id;
       url = apiUrl + '/users/' + userId + '/technologies';
@@ -522,12 +522,33 @@
 
       promise = resource.$promise
         .then((data) => {
-          alertService.success(model, 'addUserTechnologies');
-          return data;
+          alertService.success(model, 'saveUserTechnologies');
+          return data.items;
         })
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'addUserTechnologies');
+          alertService.error(model, 'saveUserTechnologies');
+        });
+
+      return promise;
+    };
+
+    User.updateUserTechnologies = (data) => {
+      let userId = $stateParams.id;
+
+      url = apiUrl + '/users/' + userId + '/technologies';
+      resource = $resource(url, {}, {
+        'update': { method: 'PUT' }
+      }).update(data);
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'updateUserTechnologies');
+          return data.items;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'updateUserTechnologies');
         });
 
       return promise;

@@ -7,9 +7,8 @@
       <span class="md-headline">Holidays</span>
       <span ng-if="userHoliday.totalDays">
       <i class="material-icons">star</i>
-        <i>{{userHoliday.totalDays}}</i> {{userHoliday.totalDays>1?"days":'day'}} taken
-      </span>
-      
+      <i>{{userHoliday.totalDays}}</i> {{userHoliday.totalDays>1?"days":'day'}} taken
+    </span>
     </md-card-title-text>
   </md-card-title>
   <!-- /CARD TITLE -->
@@ -55,11 +54,11 @@
           <thead md-head
             md-order="query.order">
             <tr md-row>
-              <th md-column>Start date</th>
-              <th md-column>End date</th>
-              <th md-column>Number of days</th>
-              <th md-column>Project</th>
-              <th md-column>Action</th>
+              <th md-column class="text-center">Start date</th>
+              <th md-column class="text-center">End date</th>
+              <th md-column class="text-center">Number of days</th>
+              <th md-column class="text-center">Project</th>
+              <th md-column class="text-center">Action</th>
             </tr>
           </thead>
 
@@ -69,25 +68,25 @@
               md-auto-select
               ng-repeat="holiday in userHoliday.userHolidays | limitTo: userHoliday.tableSettings.query.limit : (userHoliday.tableSettings.query.page - 1) * userHoliday.tableSettings.query.limit">
 
-              <td md-cell>
+              <td md-cell class="text-center">
                 {{holiday.start_date | date:'dd-MM-yyyy'}}
               </td>
 
-              <td md-cell>
+              <td md-cell class="text-center">
                 {{holiday.end_date | date:'dd-MM-yyyy'}}
               </td>
 
-              <td md-cell>
+              <td md-cell class="text-center">
                 {{holiday.days}}
               </td>
 
-              <td md-cell>
+              <td md-cell class="text-center">
                 <div ng-repeat="project in holiday.employee_replacements">
                   <span>{{project.project_name}}</span>
                 </div>
               </td>
 
-              <td md-cell>
+              <td md-cell class="text-center">
                 <md-button class="md-icon-button md-primary"
                   label="View Holiday"
                   aria-label="View Holiday"
@@ -97,17 +96,38 @@
                     View Holiday
                   </md-tooltip>
                 </md-button>
+
+                <!-- DELETE BUTTON IF USER -->
                 <md-button
+                  ng-if="!userHoliday.isAdmin"
+                  class="md-icon-button md-warn"
+                  label="Delete holiday"
+                  aria-label="Delete holiday">
+                  <md-icon class="material-icons">delete</md-icon>
+                  <md-tooltip 
+                    class="holiday-tooltip"
+                    md-autohide="true"
+                    md-direction="left">
+                    <span>
+                      If you want to delete / edit please contact Ionela Lungu.
+                    </span>
+                  </md-tooltip>
+                </md-button>
+                <!-- /DELETE BUTTON IF USER -->
+
+                <!-- DELETE BUTTON IF ADMIN -->
+                <md-button
+                  ng-if="userHoliday.isAdmin"
                   class="md-icon-button md-warn"
                   label="Delete holiday"
                   aria-label="Delete holiday"
-                  ng-click="userHoliday.removeHoliday(holiday)"
-                  ng-if="userHoliday.isAdmin">
+                  ng-click="userHoliday.removeHoliday(holiday)">
                   <md-icon class="material-icons">delete</md-icon>
                   <md-tooltip md-autohide="true">
-                    Delete holiday
+                    <span>Delete holiday</span>
                   </md-tooltip>
                 </md-button>
+                <!-- /DELETE BUTTON IF ADMIN -->
               </td>
 
             </tr>
@@ -193,17 +213,18 @@
               
                 <md-chips
                   ng-model="userHoliday.teamLeaders"
-                  md-on-remove
+                  md-on-remove="userHoliday.verifyRequiredStatus()"
                   md-on-add="userHoliday.changeMinLength()"
-                  md-require-match
                   md-input-name="autocompleteLeader">
                   <md-autocomplete
+                    md-selected-item-change="userHoliday.verifyRequiredStatus()"
                     md-search-text="userHoliday.leader"
                     md-items="user in userHoliday.querySearch(userHoliday.leader, userHoliday.users)"
                     md-item-text="user.first_name+' '+user.last_name"
                     md-min-length="userHoliday.minLength"
                     md-dropdown-position="bottom"
-                    placeholder="Select team leader">
+                    ng-required="userHoliday.leaderRequired"
+                    placeholder="Select team leader*">
                     <md-item-template>
                       <span md-highlight-text="userHoliday.leader">
                         {{user.first_name}} {{user.last_name}}

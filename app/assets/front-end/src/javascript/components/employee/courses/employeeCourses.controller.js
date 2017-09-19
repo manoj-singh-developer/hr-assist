@@ -46,6 +46,7 @@
           User.removeCertifications(vm.user.id, vm.userCertifications[index]);
           vm.userCertifications.splice(index, 1);
           vm.userCertificationList.splice(index, 1);
+          $rootScope.$emit('certificationUpdated', vm.userCertifications);
         });
 
       } else {
@@ -72,12 +73,14 @@
       if (updateCourseObj.certifications.length)
         User.updateCertifications(vm.user.id, updateCourseObj).then((data) => {
           vm.userCertifications = data;
+          $rootScope.$emit('certificationUpdated', vm.userCertifications);
           _initEducations();
         });
 
       if (saveCourseObj.certifications.length)
         User.saveCertifications(vm.user.id, saveCourseObj).then((data) => {
           vm.userCertifications = data;
+          $rootScope.$emit('certificationUpdated', vm.userCertifications);
           _initEducations();
         });
       toggleForm();
