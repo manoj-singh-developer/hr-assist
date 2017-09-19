@@ -42,7 +42,9 @@ module V1
         if params[:filters]
          filtered_devices(params[:filters])
         else
-          users_devices = User.all.reject{|user| user.devices.empty? }.map(&:get_all_devices)
+          users_devices = User.all
+            .reject{ |user| user.devices.empty? }
+            .map(&:get_all_devices)
           { items: users_devices }
         end
       end
