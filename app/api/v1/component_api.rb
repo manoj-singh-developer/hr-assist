@@ -36,6 +36,19 @@ module V1
         get_paginated_items_for HardwareComponent
       end
 
+      desc "Add new component"
+      params do
+        requires :name, type: [String], allow_blank: false, type: String
+      end
+
+      post 'new' do
+        if params[:name]
+          params[:name].each do |value|
+            authorize_and_create(HardwareComponent, { name: value})
+          end
+        end
+      end
+
     end
   end
 end
