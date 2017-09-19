@@ -134,7 +134,6 @@ module V1
 
       post "login" do
         result = ldap_login
-
         if result
           create_user(result.first)
         else

@@ -29,12 +29,15 @@ module V1
     resource :devices do
 
       desc "Get all devices"
-      params do
-        use :pagination # aliases: includes, use_scope
-      end
       get do
-        get_paginated_items_for Device
+        users = User.all
+        result = []
+        users.each do |user|
+         result << user.get_all_devices if Device.where(user_id: user.id).exists?
+        end
+        { items: result }
       end
+
 
       desc "Get device"
       params do

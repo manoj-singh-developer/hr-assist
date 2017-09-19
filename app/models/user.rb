@@ -107,16 +107,25 @@ class User < ApplicationRecord
     result
   end
 
-  def get_devices
+  def get_user_devices
     user_devices = Device.where(user_id: self.id)
     result = []
     user_devices.each do |device|
       partial_result = {}
       partial_result[:device_id] = device.id
       partial_result[:device_name] = device.name
-      partial_result[:hardware_components] = HardwareComponent.where(id: device.user_device_specifications.pluck(:hardware_component_id))
+      partial_result[:components] = HardwareComponent.where(id: device.user_device_specifications.pluck(:hardware_component_id))
       result << partial_result
     end
+    result
+  end
+
+  def get_all_devices
+    result = {}
+    user = User.find(self.id)
+    result[:user_id] = user.id
+    result[:user_name] = user.name
+    result[:user_devices] = user.get_user_devices
     result
   end
 
