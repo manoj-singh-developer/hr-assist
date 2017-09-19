@@ -22,19 +22,13 @@ module V1
       end
 
       def filtered_devices(filters)
-        devices = Device.all
-        devices = devices.by_component(filters[:component]) if filters[:component]
-        result = []
-        users = []
-        devices.each do |device|
-          users << device.user unless users.include?(device.user)
-        end
-        users.each do |user|
-          result << user.get_all_devices
-        end
-        { items: result }
-      end
+        devices = Device.all.by_component(filters[:component])
+        users_devices = devices
+          .map(&:user).uniq
+          .map(&:get_all_devices)
 
+        { items: users_devices }
+      end
     end
 
     before do
