@@ -6,7 +6,7 @@
     .module('HRA')
     .controller('employeeTechnologiesController', employeeTechnologiesController);
 
-  function employeeTechnologiesController($rootScope, autocompleteService, User) {
+  function employeeTechnologiesController($rootScope, $scope, autocompleteService, User) {
 
     let vm = this;
     let technologiesToRemove = [];
@@ -92,6 +92,8 @@
     function toggleForm() {
       vm.showForm = !vm.showForm;
       _disableSaveBtn(true);
+      $scope.addTechForm['year-0'].$valid = true;
+       $scope.addTechForm['year-0'].$invalid = false;
     }
 
     function cancel() {
@@ -101,12 +103,14 @@
       vm.searchText = '';
       vm.userTechnologies = userTechnologiesCopy.length > vm.userTechnologies.length ? userTechnologiesCopy : vm.userTechnologies;
       toggleForm();
+      vm.userNewTech = [{}];
     }
 
     function _createObjectToSave() {
       let newTechnologiesName = [];
       let newTechnologiesType = [];
       let newTechnologiesLvl = [];
+      let newTechnologiesYear = [];
 
       if (!vm.userNewTech.technology) {
 
@@ -114,12 +118,14 @@
           newTechnologiesName.push(element.technology.name);
           newTechnologiesType.push(parseInt(element.type));
           newTechnologiesLvl.push(element.level);
+          newTechnologiesYear.push(element.year);
         });
 
         objToSave = {
           names: newTechnologiesName,
           types: newTechnologiesType,
-          levels: newTechnologiesLvl
+          levels: newTechnologiesLvl,
+          year: newTechnologiesYear
         }
 
         for (let i = 0; i < objToSave.names.length; i++) {
@@ -131,13 +137,16 @@
               objToSave.names.splice(i, 1);
               objToSave.types.splice(i, 1);
               objToSave.levels.splice(i, 1);
+              objToSave.year.splice(i, 1);
 
               // push into object to update existing technologies
               objToUpdate.technologies.push({
                 name: vm.userNewTech[i].technology.name,
                 id: vm.userNewTech[i].technology.id,
                 level: vm.userNewTech[i].level,
-                technology_type: parseInt(vm.userNewTech[i].type)
+                technology_type: parseInt(vm.userNewTech[i].type),
+                year: vm.userNewTech[i].year,
+
               });
             }
 
