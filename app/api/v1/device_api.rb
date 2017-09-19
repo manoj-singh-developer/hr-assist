@@ -42,12 +42,8 @@ module V1
         if params[:filters]
          filtered_devices(params[:filters])
         else
-          users = User.all
-          result = []
-          users.each do |user|
-            result << user.get_all_devices if Device.where(user_id: user.id).exists?
-          end
-          { items: result }
+          users_devices = User.all.reject{|user| user.devices.empty? }.map(&:get_all_devices)
+          { items: users_devices }
         end
       end
 
