@@ -6,10 +6,9 @@
     .module('HRA')
     .controller('userDevicesCtrl', userDevicesCtrl);
 
-  function userDevicesCtrl($mdDialog, $rootScope, autocompleteService, Device, User) {
+  function userDevicesCtrl($mdDialog, $rootScope, $scope, autocompleteService, Device, User) {
 
     let vm = this;
-    //let componentsToRemove = [];
     let componentsToAdd = [];
     let deviceToEdit = null;
 
@@ -51,10 +50,6 @@
 
     function addInQueue(component) {
       if (component) {
-        //let notToAdd = _.findWhere(vm.userTechnologies, { name: component.name });
-        //let toRemove = _.findWhere(componentsToRemove, { name: component.name });
-        // componentsToRemove = _.without(componentsToRemove, toRemove);
-        // componentsToAdd.push(component.id);
         vm.userComponents.push(component);
         _disableSaveBtn(false);
         vm.searchComponent = '';
@@ -65,15 +60,12 @@
     function removeFromQueue(component) {
       let toRemove = _.findWhere(vm.userComponents, { name: component.name });
       vm.userComponents = _.without(vm.userComponents, toRemove);
-      //componentsToAdd = _.without(componentsToAdd, toRemove);
-      // componentsToRemove.push(component.id);
       _disableSaveBtn(false);
     }
 
     function cancel() {
       _disableSaveBtn(true);
       toggleForm();
-
       vm.editedDevice = false;
       vm.componentAutocomplete = false;
       deviceToEdit = null;
@@ -132,6 +124,7 @@
 
     function toggleForm() {
       vm.showForm = !vm.showForm;
+      $scope.deviceForm.deviceName.$invalid = false;
     }
 
     function _getUserDevices() {

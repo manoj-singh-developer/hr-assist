@@ -105,22 +105,23 @@
           <input
             ng-model="userDevices.deviceName"
             ng-disabled="userDevices.editedDevice"
-            ng-required="!userDevices.editedDevice"
+            ng-required="!userDevices.deviceName"
             ng-keyup="userDevices.disableSaveBtn=false"
             name="deviceName">
 
-            <div ng-messages="deviceForm.deviceName.$error">
+            <div ng-messages="deviceForm.deviceName.$invalid && deviceForm.deviceName.$error">
             <div ng-message="required">Device field is required</div>
           </div>
         </md-input-container>
         <!-- /DEVICE -->
 
         <!-- SERIAL -->
-        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+        <!-- TODO backend for Serial number -->
+        <!-- <md-input-container md-no-float class="md-block" flex-gt-xs="">
           <label>Device Serial No.</label>
           <input
             ng-model="userDevices.serialNumber">
-        </md-input-container>
+        </md-input-container> -->
         <!-- /SERIAL -->
       </section>
         
