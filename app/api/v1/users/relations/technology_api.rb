@@ -42,7 +42,7 @@ module V1
             requires :names, type: Array[String], desc: "['first_technology_name', 'second_technology_name']"
             requires :types, type: Array[Integer], desc: "[6,10]"
             requires :levels, type: Array[Integer], desc: "[0,1]"
-            requires :year, type: String, desc: "The year the user started using the technology"
+            requires :year, type: Array[String], desc: "The year the user started using the technology"
           end
           post ':user_id/technologies' do
             user = User.find(params[:user_id])
@@ -63,7 +63,7 @@ module V1
 
           desc "Update user technologies"
           params do
-            requires :technologies, type: Array[Hash], desc: "{ 'technologies': [{ 'id': 1, 'name': 'tech_name', 'level': 4, 'technology_type': 0 }] }"
+            requires :technologies, type: Array[Hash], desc: "{ 'technologies': [{ 'id': 1, 'name': 'tech_name', 'level': 4, 'technology_type': 0, 'year': '2015' }] }"
           end
           put ':user_id/technologies' do
             user = User.find(params[:user_id])
