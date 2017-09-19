@@ -20,6 +20,15 @@ module V1
         optional :page, type: Integer
         optional :per_page, type: Integer
       end
+
+      def filtered_devices(filters)
+        devices = Device.all.by_component(filters[:component])
+        users_devices = devices
+          .map(&:user).uniq
+          .map(&:get_all_devices)
+
+        { items: users_devices }
+      end
     end
 
     before do
@@ -30,12 +39,14 @@ module V1
 
       desc "Get all devices"
       get do
-        users = User.all
-        result = []
-        users.each do |user|
-         result << user.get_all_devices if Device.where(user_id: user.id).exists?
+        if params[:filters]
+         filtered_devices(params[:filters])
+        else
+          users_devices = User.all
+            .reject{ |user| user.devices.empty? }
+            .map(&:get_all_devices)
+          { items: users_devices }
         end
-        { items: result }
       end
 
 
