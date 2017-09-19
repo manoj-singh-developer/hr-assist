@@ -30,7 +30,8 @@ module V1
                 id: user_technology.technology_id,
                 name: user_technology.technology.name,
                 level: user_technology.level,
-                technology_type: user_technology.technology_type
+                technology_type: user_technology.technology_type,
+                technology_starting_year: user_technology.year
               }
             end
             }
@@ -41,18 +42,20 @@ module V1
             requires :names, type: Array[String], desc: "['first_technology_name', 'second_technology_name']"
             requires :types, type: Array[Integer], desc: "[6,10]"
             requires :levels, type: Array[Integer], desc: "[0,1]"
+            requires :year, type: String, desc: "The year the user started using the technology"
           end
           post ':user_id/technologies' do
             user = User.find(params[:user_id])
             response = []
-            params[:names].zip(params[:types], params[:levels]) do |name, type, level|
+            params[:names].zip(params[:types], params[:levels], params[:year]) do |name, type, level, year|
               technology = Technology.find_or_create_by(name: name)
-              user_technology = UserTechnology.create(level: level, technology_type: type, technology_id: technology.id, user_id: user.id)
+              user_technology = UserTechnology.create(level: level, technology_type: type, technology_id: technology.id, user_id: user.id, year: year)
               response << {
                 id: user_technology.technology_id,
                 name: user_technology.technology.name,
                 level: user_technology.level,
-                technology_type: user_technology.technology_type
+                technology_type: user_technology.technology_type,
+                technology_starting_year: user_technology.year
               }
             end
             { items: response }
@@ -68,7 +71,7 @@ module V1
               u_technology = user.technologies.find(technology.id)
               u_technology.update(ActionController::Parameters.new(technology).permit(:name, :label))
               user_technology = UserTechnology.find_by_technology_id_and_user_id(technology.id, user.id)
-              user_technology.update(ActionController::Parameters.new(technology).permit(:level, :technology_type))
+              user_technology.update(ActionController::Parameters.new(technology).permit(:level, :technology_type, :year))
             end
             { items:
             user.user_technologies.map do |user_technology|
@@ -76,7 +79,8 @@ module V1
                 id: user_technology.technology_id,
                 name: user_technology.technology.name,
                 level: user_technology.level,
-                technology_type: user_technology.technology_type
+                technology_type: user_technology.technology_type,
+                technology_starting_year: user_technology.year
               }
             end
             }
