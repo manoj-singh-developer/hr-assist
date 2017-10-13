@@ -198,16 +198,16 @@
     };
 
     User.updateDevices = (user, devices) => {
-      let deviceIds = devices.map(device => device.id);
+      //let deviceIds = devices.map(device => device.id);
       url = apiUrl + '/users/:id/devices';
       resource = $resource(url, {}, {
         'update': { method: 'PUT' }
-      }).update({ id: user.id }, { device_ids: deviceIds });
+      }).update({ id: user.id }, devices);
 
       promise = resource.$promise
         .then((data) => {
           alertService.success(model, 'updateDevices');
-          return data;
+          return data.items;
         })
         .catch((error) => {
           errorService.forceLogout(error);
@@ -217,15 +217,16 @@
       return promise;
     };
 
-    User.removeDevices = (user, devices) => {
+    User.removeDevices = (user, device) => {
       let data = {};
-      data["device_ids[]"] = devices;
+      data["device_ids"] = device.device_id;
       url = apiUrl + '/users/:id/devices';
+      
       resource = $resource(url, data).delete({ id: user.id });
 
       promise = resource.$promise
         .then((data) => {
-          alertService.success(model, 'removeDevices');
+          // alertService.success(model, 'removeDevices');
           return data;
         })
         .catch((error) => {

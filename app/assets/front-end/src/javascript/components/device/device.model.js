@@ -145,6 +145,25 @@
       return promise;
     };
 
+    Device.getComponents = () => {
+      url = apiUrl + '/components';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getAll');
+        });
+
+      return promise;
+    };
+
     return Device;
 
   }
