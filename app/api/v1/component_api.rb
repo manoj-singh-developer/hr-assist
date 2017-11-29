@@ -38,9 +38,8 @@ module V1
 
       desc "Add new component"
       params do
-        requires :name, type: [String], allow_blank: false, type: String
+        requires :name, allow_blank: false, type: [String]
       end
-
       post 'new' do
         if params[:name]
           params[:name].each do |value|
@@ -48,7 +47,6 @@ module V1
           end
         end
       end
-
     end
   end
 end
