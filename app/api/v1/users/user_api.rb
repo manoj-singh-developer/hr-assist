@@ -20,12 +20,13 @@ module V1
         def post_params
           ActionController::Parameters.new(params)
             .permit(:first_name, :middle_name, :last_name, :address, :city, :zip_code, :birthday, :phone, :picture, :observations,
-                    :other_email, :urgent_contact_name, :urgent_contact_phone, :car_plate, :company_start_date, :status, :email, :office_nr, :cnp)
+                    :other_email, :urgent_contact_name, :urgent_contact_phone, :car_plate, :company_start_date, :status, :email, :office_nr, :cnp,
+                    :company_end_date )
         end
 
         def filtered_users filters
 
-            users = User.where(nil)
+            users = User.where(company_end_date: nil)
 
             users = users.by_month_birth(filters[:birthday].to_date) if filters[:birthday]
             users = users.by_university_year(filters[:university_year].to_i) if filters[:university_year]
@@ -67,11 +68,10 @@ module V1
                 "auth_token"
               ]
           end
-
           if params[:filters]
             paginate_items filtered_users(params[:filters]), params[:with] , defined?(exceptions) ? exceptions : []
           else
-            get_paginated_items_for User, params[:with] , defined?(exceptions) ? exceptions : []
+            get_paginated_items_for User.where(company_end_date: nil), params[:with] , defined?(exceptions) ? exceptions : []
           end
 
         end
@@ -104,6 +104,7 @@ module V1
           optional :urgent_contact_name, type: String
           optional :car_plate, type: String
           optional :company_start_date, type: Date
+          optional :company_end_date, type: Date
           optional :status, type: Integer
           optional :city, type: String
           optional :zip_code, type: String
@@ -161,6 +162,7 @@ module V1
         optional :urgent_contact_name, type: String
         optional :car_plate, type: String
         optional :company_start_date, type: Date
+        optional :company_end_date, type: Date
         optional :status, type: Integer
         optional :city, type: String
         optional :zip_code, type: String
