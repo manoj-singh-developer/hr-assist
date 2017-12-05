@@ -13,7 +13,7 @@ ActiveAdmin.register User do
 # end
 
   permit_params :role_ids,:first_name,:middle_name,:last_name,:address,:birthday,:phone,:picture,:observations,:other_email,:urgent_contact_name,:car_plate,
-                  :company_start_date,:status, :city, :zip_code, :office_nr, :urgent_contact_phone
+                  :company_start_date,:status, :city, :zip_code, :office_nr, :urgent_contact_phone, :company_end_date, :is_active
 
   form do |f|
     f.inputs "Edit User" do
@@ -35,6 +35,8 @@ ActiveAdmin.register User do
       f.input :office_nr
       f.input :urgent_contact_phone
       f.input :role_ids, :label => "Roles (1 for admin)"
+      f.input :company_end_date
+      f.input :is_active
     end
     f.actions
   end
