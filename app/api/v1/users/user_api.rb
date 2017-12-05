@@ -26,7 +26,7 @@ module V1
 
         def filtered_users filters
 
-            users = User.where(company_end_date: nil)
+            users = User.where(company_end_date: nil, is_active: true)
 
             users = users.by_month_birth(filters[:birthday].to_date) if filters[:birthday]
             users = users.by_university_year(filters[:university_year].to_i) if filters[:university_year]
@@ -71,7 +71,7 @@ module V1
           if params[:filters]
             paginate_items filtered_users(params[:filters]), params[:with] , defined?(exceptions) ? exceptions : []
           else
-            get_paginated_items_for User.where(company_end_date: nil), params[:with] , defined?(exceptions) ? exceptions : []
+            get_paginated_items_for User.where(company_end_date: nil, is_active: true), params[:with] , defined?(exceptions) ? exceptions : []
           end
 
         end
