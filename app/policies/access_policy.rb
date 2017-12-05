@@ -59,6 +59,7 @@ class AccessPolicy
       can :manage, Project
       can :manage, User
       can :manage, Candidate
+      can :manage, HardwareComponent
       #can :view_project, Project
     end
 
