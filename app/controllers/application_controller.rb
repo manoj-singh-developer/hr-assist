@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
 
   #before_filter :authenticate_admin_user!
 
+  def can_administer?
+    session["warden.user.admin_user.key"].try(:first).try(:first) == 1
+  end
+
   def createOption hash
     AppSetting::create([key: hash.key, value: hash.value])
   end
