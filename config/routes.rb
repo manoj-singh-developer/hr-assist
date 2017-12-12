@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  mount Rapidfire::Engine => 'admin/rapidfire'
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   get '/users/sign_in' , to: 'admin/authenticate#index'
@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   mount V1::ScheduleAPI => '/api'
   mount V1::CandidateAPI => '/api'
   mount V1::ComponentAPI => '/api'
+  mount V1::SurveyAPI => '/api'
 
   get '/show' , to: 'admin/authenticate#show'
   post '/show' , to: 'app_settings#create'
@@ -45,5 +46,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   post '/deploy', to: 'deploy#index'
+
+
 
 end
