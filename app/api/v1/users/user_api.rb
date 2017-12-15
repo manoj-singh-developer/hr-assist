@@ -34,8 +34,8 @@ module V1
             users = users.by_company_years(filters[:company_years].to_i) if filters[:company_years]
             users = users.by_projects(filters[:projects]) if filters[:projects]
             users = users.by_certifications(filters[:certifications]) if filters[:certifications]
-            users = users.by_technology_id_and_level(filters[:technologies].values.map(&:technology_id).zip(filters[:technologies].values.map(&:technology_level))) if filters[:technologies]
-            users = users.by_language_id_and_level(filters[:languages].values.map(&:language_id).zip(filters[:languages].values.map(&:language_level))) if filters[:languages]
+            users = users.by_technology_id_and_level(filters[:technologies].values.map{|x| x[:technology_id]}.zip(filters[:technologies].values.map{|x| x[:technology_level]})) if filters[:technologies]
+            users = users.by_language_id_and_level(filters[:languages].values.map{|x| x[:language_id]}.zip(filters[:languages].values.map{|x| x[:language_level]})) if filters[:languages]
 
             users
         end
