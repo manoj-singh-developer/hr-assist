@@ -79,7 +79,7 @@ module APIHelpers
       end
     else
       #TODO Refactor next condition
-      if special_relations && (model == User || model == Candidate || model.name == "Candidate")
+      if special_relations && (model == User || model.name == "User" || model == Candidate || model.name == "Candidate")
         get_custom_object(special_relations, model, relations, exception)
       else
         {items:  model.all.includes(relations).as_json(include: relations, except: exception)}
