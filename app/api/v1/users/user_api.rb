@@ -31,6 +31,7 @@ module V1
             users = users.by_month_birth(filters[:birthday].to_date) if filters[:birthday]
             users = users.by_university_year(filters[:university_year].to_i) if filters[:university_year]
             users = users.by_company_start_date_until_present(filters[:start_date].to_date) if filters[:start_date]
+            users = users.by_company_years(filters[:company_years].to_i) if filters[:company_years]
             users = users.by_projects(filters[:projects]) if filters[:projects]
             users = users.by_certifications(filters[:certifications]) if filters[:certifications]
             users = users.by_technology_id_and_level(filters[:technologies].values.map(&:technology_id).zip(filters[:technologies].values.map(&:technology_level))) if filters[:technologies]
