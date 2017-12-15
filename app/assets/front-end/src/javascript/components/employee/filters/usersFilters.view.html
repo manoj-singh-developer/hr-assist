@@ -31,7 +31,7 @@
 
 
   <!-- FILTER BY PROJECT -->  
-  <section layout="row" layout-align="left center" class="md-padding">
+  <section layout="row" layout-align="left center">
     <p>Filter by projects:</p>
     <md-chips
       ng-model="users.filters.projects"
@@ -179,8 +179,21 @@
   <!--/FOR LANGUAGES WITH LEVEL -->
 
 
+  <!-- FILTER BY YEARS IN COMPANY -->
+  <section layout="row" layout-align="left center">
+    <label>Filter by years in company:</label>
+    <md-input-container>
+    <input type="number"
+      aria-label="certification"
+      ng-model="users.filters.company_years">
+    </input>
+  </md-input-container>
+  </section>
+  <!-- /FILTER BY YEARS IN COMPANY -->
+
+
   <!-- FILTER BY START COMPANY DAY-->
-  <section layout="row" layout-align="left center" class="md-padding">
+  <section layout="row" layout-align="left center">
     <label>Filter by start company date:</label>
     <md-datepicker ng-model="users.filters.start_date"
       md-placeholder="Start date"
