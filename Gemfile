@@ -74,8 +74,4 @@ gem 'jwt', '>= 1.5.6'
 gem 'rack-cors', :require => 'rack/cors'
 gem "paperclip", "~> 5.1.0"
 
-gem 'slack-notifier', '~> 2.3', '>= 2.3.1'
-
-gem 'ruby-stackoverflow'
-
 gem 'rapidfire'
