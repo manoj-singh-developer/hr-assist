@@ -85,7 +85,6 @@ module V1
       desc "Create new candidate"
       params do
         requires :name,                   allow_blank: false, type: String
-        requires :status,                 allow_blank: false, type: Integer
         optional :technologies,           allow_blank: false, type: Array::Hash
         optional :university_start_year,  allow_blank: false, type: Date
         optional :university_end_year,    allow_blank: false, type: Date
@@ -95,6 +94,7 @@ module V1
         optional :candidate_cv,                               type: File
         optional :comments,               allow_blank: false, type: String
         optional :audio_files,                                type: [File]
+        requires :status,                 allow_blank: false, type: Integer
         optional :cnp,                    allow_blank: false, type: String
       end
       post 'new' do
@@ -125,7 +125,6 @@ module V1
       desc "Update candidate"
       params do
         requires :name,                   allow_blank: false, type: String
-        requires :status,                 allow_blank: false, type: Integer
         optional :technologies,           allow_blank: false, type: Array::Hash
         optional :university_start_year,  allow_blank: false, type: Date
         optional :university_end_year,    allow_blank: false, type: Date
@@ -135,6 +134,7 @@ module V1
         optional :candidate_cv,                               type: File
         optional :comments,               allow_blank: false, type: String
         optional :audio_files,            allow_blank: false, type: [File]
+        requires :status,                 allow_blank: false, type: Integer
         optional :cnp,                    allow_blank: false, type: String
       end
 
