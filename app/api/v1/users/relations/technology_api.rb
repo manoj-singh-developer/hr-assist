@@ -68,9 +68,9 @@ module V1
           put ':user_id/technologies' do
             user = User.find(params[:user_id])
             params[:technologies].each do |technology|
-              u_technology = user.technologies.find(technology.id)
+              u_technology = user.technologies.find(technology[:id])
               u_technology.update(ActionController::Parameters.new(technology).permit(:name, :label))
-              user_technology = UserTechnology.find_by_technology_id_and_user_id(technology.id, user.id)
+              user_technology = UserTechnology.find_by_technology_id_and_user_id(technology[:id], user.id)
               user_technology.update(ActionController::Parameters.new(technology).permit(:level, :technology_type, :year))
             end
             { items:
