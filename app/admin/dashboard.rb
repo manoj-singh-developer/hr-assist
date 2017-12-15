@@ -38,7 +38,7 @@ ActiveAdmin.register_page "Dashboard" do
       column do
         panel "Admin Page" do
           para "Welcome to ActiveAdmin."
-
+          para link_to "Chestionare", "admin/rapidfire/surveys"
         end
       end
     end

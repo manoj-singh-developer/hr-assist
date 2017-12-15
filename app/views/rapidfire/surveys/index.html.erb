@@ -1,0 +1,30 @@
+<h2>
+  Surveys
+</h2>
+
+<h4>
+  <%= link_to t('Back to home'), '/' %>
+</h4>
+<hr/>
+
+<table>
+  <colgroup>
+    <col>
+    <col width="250">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Survey</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: "survey", collection: @surveys %>
+  </tbody>
+</table>
+
+<%= link_to 'NEW', new_survey_path %>
+
+<% if defined?(Kaminari) %>
+  <%= paginate @surveys %>
+<% end %>
