@@ -194,6 +194,9 @@
                 <span ng-if="technologies.level">
                   {{users.getTechnologyLvlTxt(technologies.level)}}
                 </span>
+                <span ng-if="technologies.technology_starting_year">
+                  , starting in {{technologies.technology_starting_year}}
+                </span>
               </li>
             </ul>
           </td>
