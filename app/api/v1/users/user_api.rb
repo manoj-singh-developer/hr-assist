@@ -26,18 +26,18 @@ module V1
 
         def filtered_users filters
 
-            users = User.where(company_end_date: nil, is_active: true)
+          users = User.where(company_end_date: nil, is_active: true)
 
-            users = users.by_month_birth(filters[:birthday].to_date) if filters[:birthday]
-            users = users.by_university_year(filters[:university_year].to_i) if filters[:university_year]
-            users = users.by_company_start_date_until_present(filters[:start_date].to_date) if filters[:start_date]
-            users = users.by_company_years(filters[:company_years].to_i) if filters[:company_years]
-            users = users.by_projects(filters[:projects]) if filters[:projects]
-            users = users.by_certifications(filters[:certifications]) if filters[:certifications]
-            users = users.by_technology_id_and_level(filters[:technologies].values.map{|x| x[:technology_id]}.zip(filters[:technologies].values.map{|x| x[:technology_level]})) if filters[:technologies]
-            users = users.by_language_id_and_level(filters[:languages].values.map{|x| x[:language_id]}.zip(filters[:languages].values.map{|x| x[:language_level]})) if filters[:languages]
+          users = users.by_month_birth(filters[:birthday].to_date) if filters[:birthday]
+          users = users.by_university_year(filters[:university_year].to_i) if filters[:university_year]
+          users = users.by_company_start_date_until_present(filters[:start_date].to_date) if filters[:start_date]
+          users = users.by_company_years(filters[:company_years].to_i) if filters[:company_years]
+          users = users.by_projects(filters[:projects]) if filters[:projects]
+          users = users.by_certifications(filters[:certifications]) if filters[:certifications]
+          users = users.by_technology_id_and_level(filters[:technologies].values.map{|x| x[:technology_id]}.zip(filters[:technologies].values.map{|x| x[:technology_level]})) if filters[:technologies]
+          users = users.by_language_id_and_level(filters[:languages].values.map{|x| x[:language_id]}.zip(filters[:languages].values.map{|x| x[:language_level]})) if filters[:languages]
 
-            users
+          users
         end
 
         params :pagination do
@@ -60,14 +60,14 @@ module V1
 
           if current_user.is_employee
 
-              params[:with] = []
-              exceptions = [
-                "address", "birthday", "car_plate", "city",
-                "company_start_date", "observations", "office_nr",
-                "phone", "picture", "schedule_id", "status", "uid",
-                "urgent_contact_name", "urgent_contact_phone", "zip_code",
-                "auth_token"
-              ]
+            params[:with] = []
+            exceptions = [
+              "address", "birthday", "car_plate", "city",
+              "company_start_date", "observations", "office_nr",
+              "phone", "picture", "schedule_id", "status", "uid",
+              "urgent_contact_name", "urgent_contact_phone", "zip_code",
+              "auth_token"
+            ]
           end
           if params[:filters]
             paginate_items filtered_users(params[:filters]), params[:with] , defined?(exceptions) ? exceptions : []
@@ -135,9 +135,21 @@ module V1
       end
 
       post "login" do
+        allowed_domains = Domain.all.pluck(:allowed_domain)
         result = ldap_login
         if result
           create_user(result.first)
+        elsif allowed_domains.include?(params[:email].partition('@').last)
+          user = User.find_by_email(params[:email])
+          if user
+            if user[:reg_status] == "confirmed"
+              login_non_ldap_user(user)
+            else user[:reg_status] == "pending"
+            error({ message: "Your account is not confirmed." })
+            end
+          else
+            User.create(email: params[:email], password: params[:password], reg_status: "pending") if User.where(reg_status: "pending").count < 20
+          end
         else
           error({ message: "Authentication FAILED." })
         end
