@@ -8,13 +8,13 @@
 <br>
 <%= check_box("google" , "google") %> Google
 
-<div id="ceva" style="display:none;">
+<div id="ldap" style="display:none;">
   <%= render 'ldap_details' , :locals => {:app_settings => AppSetting.new} %>
 </div>
 
 <script type="text/javascript">
   var checkbox = document.getElementById('LDAP_ldap');
-  var show_details = document.getElementById('ceva');
+  var show_details = document.getElementById('ldap');
     checkbox.onchange = function() {
       if(this.checked) {
         show_details.style['display'] = 'block' ;
