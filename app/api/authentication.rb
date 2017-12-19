@@ -12,7 +12,7 @@ module Authentication
   end
 
   def authenticate!
-    error!('401 Unauthorized', 401) unless current_user
+    error!('401 Unauthorized', 401) unless current_user && current_user[:reg_status] != "pending"
   end
 
   def authorize_user!

@@ -102,6 +102,7 @@ class User < ApplicationRecord
       partial_result[:technology_id] = technology.id
       partial_result[:name] = technology.name
       partial_result[:level] = tech.level
+      partial_result[:technology_starting_year] = tech.year
       result << partial_result
     end
     result

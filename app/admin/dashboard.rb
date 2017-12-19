@@ -38,7 +38,7 @@ ActiveAdmin.register_page "Dashboard" do
       column do
         panel "Admin Page" do
           para "Welcome to ActiveAdmin."
-
+          para link_to "Allowed Domains", '/admin/domains'
         end
       end
     end

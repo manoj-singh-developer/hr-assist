@@ -39,7 +39,8 @@
       languages: [],
       projects: [],
       start_date: undefined,
-      university_year: undefined
+      university_year: null,
+      company_years: ''
     };
     vm.technologiesText = [{
       title: "Junior",
@@ -413,7 +414,8 @@
         projects: projects,
         languages: languages,
         technologies: technologies,
-        certifications: vm.filters.certifications
+        certifications: vm.filters.certifications,
+        company_years: vm.filters.company_years ? vm.filters.company_years : ''
       };
       for (let key in filterObj) {
         if (!filterObj[key] || filterObj[key].length == 0) {

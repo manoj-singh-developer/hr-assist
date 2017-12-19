@@ -10,11 +10,20 @@ module APIHelpers
 
     user.roles << Role.find_by_name("employee") if user.roles.empty?
     user.ensure_authentication_token
+    user.reg_status = "confirmed"
     user.save
     data = {:user_id => user.id, :role_id => user.roles.first.id , :token => user.auth_token}
     custom_token = JWT.encode(data, Rails.application.secrets.secret_key_base)
 
     success(user: user, custom_token: custom_token)
+  end
+
+  def login_non_ldap_user(user)
+     user.roles << Role.find_by_name("employee") if user.roles.empty?
+     user.ensure_authentication_token
+     user.save
+
+    success(user: user)
   end
 
   def get_option(key)
@@ -79,7 +88,7 @@ module APIHelpers
       end
     else
       #TODO Refactor next condition
-      if special_relations && (model == User || model == Candidate || model.name == "Candidate")
+      if special_relations && (model == User || model.name == "User" || model == Candidate || model.name == "Candidate")
         get_custom_object(special_relations, model, relations, exception)
       else
         {items:  model.all.includes(relations).as_json(include: relations, except: exception)}

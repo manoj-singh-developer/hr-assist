@@ -1,0 +1,18 @@
+<p>
+  <strong>Allowed Domains:</strong>
+  <br>
+  <% @allowed_domains.each do |allowed| %>
+   <strong> <%= allowed %> </strong>
+      <br>
+  <% end %>
+</p>
+
+<%= form_for :domains do |f| %>
+
+    <div class="form-group">
+      <%= f.label "Add new domain" %>
+      <%= f.text_field :allowed_domain , class: "form-control" %><br>
+    </div>
+
+    <%= f.submit "Add" , class: "btn btn-default" %>
+<% end %>

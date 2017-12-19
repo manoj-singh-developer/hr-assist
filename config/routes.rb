@@ -46,4 +46,7 @@ Rails.application.routes.draw do
 
   post '/deploy', to: 'deploy#index'
 
+  get 'admin/domains', to: 'admin/domain#index'
+  post 'admin/domains', to: 'admin/domain#new'
+
 end
