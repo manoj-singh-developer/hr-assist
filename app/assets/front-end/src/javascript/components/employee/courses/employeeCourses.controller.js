@@ -12,6 +12,7 @@
     vm.userCertificationList = [];
     vm.userCertifications = [];
     vm.showForm = false;
+    vm.today = new Date();
 
     vm.dateService = dateService;
     vm.removeCourse = removeCourse;

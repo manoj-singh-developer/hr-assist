@@ -132,7 +132,7 @@
             md-placeholder="Pick date"
             name="year-{{$index}}"
             md-open-on-focus
-            ng-change="userEducation.checkDates($index)"
+            md-max-date="employeeCourse.today"
             required>
           </md-datepicker>
         </div>
