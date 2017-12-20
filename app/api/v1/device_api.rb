@@ -72,7 +72,7 @@ module V1
       post 'new' do
         if params[:items]
           params[:items].each do |item|
-            authorize_and_create(Device, {name: item[:name] , description: item[:serial_number]})
+            authorize_and_create(Device, {name: item[:name] , serial_number: item[:serial_number]})
           end
         else
           authorize_and_create(Device, post_params)
