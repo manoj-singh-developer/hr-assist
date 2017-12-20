@@ -29,12 +29,13 @@ module V1
 
           desc "Add devices to user"
           params do
-            requires :device_name, type: String, desc: "Device name"
-            requires :components, type: [String], desc: "Components"
+            requires :device_name, type: String, allow_blank: false, desc: "Device name"
+            optional :components, type: [String], allow_blank: false, desc: "Components"
+            optional :serial_number, type: String, desc: "Component Serial Number"
           end
           put ':user_id/devices' do
             user = User.find(params[:user_id])
-            Device.create(name: params[:device_name], user_id: user.id)
+            Device.create(name: params[:device_name], user_id: user.id, serial_number: params[:serial_number])
             components = HardwareComponent.where(name: params[:components])
             components.each do |component|
               UserDeviceSpecification.create(device_id: Device.last[:id], hardware_component_id: component[:id])
