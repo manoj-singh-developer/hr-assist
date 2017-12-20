@@ -56,7 +56,7 @@ module V1
         holidays = Holiday.all
         response = []
         holidays.each do |holiday|
-          holiday_replacements = holiday[:holiday_replacements]
+          holiday_replacements = holiday.holiday_replacements
           response << {
             holiday_id: holiday[:id],
             user_id: holiday[:user_id],
