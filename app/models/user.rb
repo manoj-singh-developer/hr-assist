@@ -113,8 +113,9 @@ class User < ApplicationRecord
     result = []
     user_devices.each do |device|
       partial_result = {}
-      partial_result[:device_id] = device.id
-      partial_result[:device_name] = device.name
+      partial_result[:device_id] = device[:id]
+      partial_result[:device_name] = device[:name]
+      partial_result[:serial_number] = device[:serial_number]
       partial_result[:components] = HardwareComponent.where(id: device.user_device_specifications.pluck(:hardware_component_id))
       result << partial_result
     end
