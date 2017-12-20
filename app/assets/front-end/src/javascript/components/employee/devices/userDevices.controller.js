@@ -43,6 +43,7 @@
     function editDevice(device) {
       vm.deviceName = device.device_name;
       vm.userComponents = device.components;
+      vm.serial_number = device.serial_number;
       vm.editedDevice = true;
       deviceToEdit = device;
       toggleForm();
@@ -72,7 +73,7 @@
       vm.minLength = 0;
       vm.searchComponent = '';
       vm.deviceName = '';
-      vm.serialNumber = '';
+      vm.serial_number = '';
       vm.userComponents = [];
       componentsToAdd = [];
     }
@@ -86,7 +87,8 @@
 
       let objToSave = {
         device_name: vm.deviceName,
-        components: componentsToAdd
+        components: componentsToAdd,
+        serial_number: vm.serial_number
       }
 
       if (deviceToEdit) {

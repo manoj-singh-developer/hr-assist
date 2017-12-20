@@ -143,6 +143,7 @@
           <th md-column>Languages & level</th>
           <th md-column>Technologies & level</th>
           <th md-column>Projects</th>
+          <th md-column>Devices & last update</th>
           <th md-column>Certifications and courses</th>
           <th md-column>Start date Assist</th>
           <th md-column>Actions</th>
@@ -208,11 +209,20 @@
               </li>
             </ul>
           </td>
+          
+          <td md-cell>
+           <ul class="c-list" ng-if="employee.devices">
+              <li ng-repeat="device in employee.devices">
+                {{$index + 1}}. {{device.name}}:
+                <span>{{device.updated_at | date: "dd-MM-yyyy"}}</span>
+              </li>
+            </ul>
+          </td>
 
-           <td md-cell>
-           <ul class="c-list" ng-if="employee.certifications">
-              <li ng-repeat="certification in employee.certifications">
-                {{$index + 1}}. {{certification.name}}
+          <td md-cell ng-hide="employee.candidate">
+            <ul class="c-list" ng-if="employee.projects">
+              <li ng-repeat="project in employee.projects">
+                {{$index + 1}}. {{project.name}}
               </li>
             </ul>
           </td>

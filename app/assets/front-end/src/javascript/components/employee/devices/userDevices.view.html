@@ -117,11 +117,12 @@
 
         <!-- SERIAL -->
         <!-- TODO backend for Serial number -->
-        <!-- <md-input-container md-no-float class="md-block" flex-gt-xs="">
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
           <label>Device Serial No.</label>
           <input
-            ng-model="userDevices.serialNumber">
-        </md-input-container> -->
+            ng-model="userDevices.serial_number"
+            ng-keyup="userDevices.disableSaveBtn=false">
+        </md-input-container>
         <!-- /SERIAL -->
       </section>
         
