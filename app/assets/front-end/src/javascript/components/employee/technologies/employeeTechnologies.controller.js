@@ -52,6 +52,10 @@
       let toRemove = _.findWhere(vm.userTechnologies, { id: technology.id });
       vm.userTechnologies = _.without(vm.userTechnologies, toRemove);
       technologiesToRemove.push(technology);
+
+      if (technologiesToRemove.length) {
+        $scope.addTechForm.$invalid = false;
+      }
       _disableSaveBtn(false);
     }
 
@@ -93,7 +97,7 @@
       vm.showForm = !vm.showForm;
       _disableSaveBtn(true);
       $scope.addTechForm['year-0'].$valid = true;
-       $scope.addTechForm['year-0'].$invalid = false;
+      $scope.addTechForm['year-0'].$invalid = false;
     }
 
     function cancel() {
