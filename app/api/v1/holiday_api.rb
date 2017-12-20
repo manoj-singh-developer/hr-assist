@@ -42,8 +42,7 @@ module V1
     end
 
     before do
-      authenticate!
-      error!('401 Access Denied', 401) unless current_user.is_admin
+      authorize_admin!
     end
 
     resource :holidays do
