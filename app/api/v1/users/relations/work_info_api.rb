@@ -36,9 +36,9 @@ module V1
             user = User.find(params[:user_id])
 
             user_work_info = WorkInfo.create(
-              ssh_public_key:           params[:info].ssh_public_key,
-              bitbucket:                params[:info].bitbucket,
-              github:                   params[:info].github,
+              ssh_public_key:           params[:info][:ssh_public_key],
+              bitbucket:                params[:info][:bitbucket],
+              github:                   params[:info][:github],
               user_id: user.id
             )
             user.work_info = user_work_info

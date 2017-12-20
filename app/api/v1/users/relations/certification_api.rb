@@ -59,7 +59,7 @@ module V1
             user = User.find(params[:user_id])
 
             params[:certifications].each do |certification|
-              user_certification = user.certifications.find(certification.id)
+              user_certification = user.certifications.find(certification[:id])
               user_certification.update(certification_params(certification))
             end
             { items: user.certifications }

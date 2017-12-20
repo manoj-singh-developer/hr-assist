@@ -27,10 +27,10 @@ module V1
 
             user_languages = user.user_languages.map do |user_language|
               {
-                language_id: user_language.language_id,
-                long_name: user_language.language.long_name,
-                short_name: user_language.language.short_name,
-                level: user_language.level
+                language_id: user_language[:language_id],
+                long_name: user_language[:language][:long_name],
+                short_name: user_language[:language][:short_name],
+                level: user_language[:level]
               }
             end
             { items: user_languages }
@@ -45,7 +45,7 @@ module V1
 
             params[:languages].each do |language|
               lang = Language.find(language[:id])
-              user_language = UserLanguage.find_or_create_by(language_id: lang.id, user_id: user.id)
+              user_language = UserLanguage.find_or_create_by(language_id: lang[:id], user_id: user[:id])
               user_language.level = language[:level]
               user_language.save!
             end

@@ -37,7 +37,7 @@ module V1
             Device.create(name: params[:device_name], user_id: user.id)
             components = HardwareComponent.where(name: params[:components])
             components.each do |component|
-              UserDeviceSpecification.create(device_id: Device.last.id, hardware_component_id: component.id)
+              UserDeviceSpecification.create(device_id: Device.last[:id], hardware_component_id: component[:id])
             end
             { items: user.get_user_devices }
           end

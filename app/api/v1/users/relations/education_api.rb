@@ -34,7 +34,7 @@ module V1
           post ':user_id/educations' do
             user = User.find(params[:user_id])
             params[:educations].each do |education|
-              user_education = Education.create(name: education.name, degree: education.degree, description: education.description, start_date: education.start_date, end_date: education.end_date)
+              user_education = Education.create(name: education[:name], degree: education[:degree], description: education[:description], start_date: education[:start_date], end_date: education[:end_date])
               user.educations << user_education
             end
             { items: user.educations }
@@ -47,7 +47,7 @@ module V1
           put ':user_id/educations' do
             user = User.find(params[:user_id])
             params[:educations].each do |education|
-              user_education = user.educations.find(education.id)
+              user_education = user.educations.find(education[:id])
               user_education.update(ActionController::Parameters.new(education).permit(:name, :degree, :description, :start_date, :end_date))
             end
 
