@@ -33,6 +33,7 @@ module V1
 
     before do
       authenticate!
+      error!('401 Access Denied', 401) unless current_user.is_admin
     end
 
     resource :devices do
