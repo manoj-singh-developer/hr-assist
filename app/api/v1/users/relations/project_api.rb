@@ -27,10 +27,10 @@ module V1
             { items:
                 user.user_projects.map do |user_project|
                   {
-                    project: user_project[:project],
+                    project: user_project.project,
                     user_project_start_date: user_project[:start_date],
                     user_project_end_date: user_project[:end_date],
-                    technologies: user_project[:technologies]
+                    technologies: user_project.technologies
                   }
                 end
             }
