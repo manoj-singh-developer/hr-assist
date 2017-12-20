@@ -113,6 +113,7 @@ class User < ApplicationRecord
     result = []
     user_devices.each do |device|
       partial_result = {}
+      partial_result[:updated_at] = device[:updated_at]
       partial_result[:device_id] = device[:id]
       partial_result[:device_name] = device[:name]
       partial_result[:serial_number] = device[:serial_number]
