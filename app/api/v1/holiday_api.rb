@@ -56,14 +56,14 @@ module V1
         holidays = Holiday.all
         response = []
         holidays.each do |holiday|
-          holiday_replacements = holiday.holiday_replacements
+          holiday_replacements = holiday[:holiday_replacements]
           response << {
-            holiday_id: holiday.id,
-            user_id: holiday.user_id,
-            days: holiday.days,
-            start_date: holiday.start_date,
-            end_date: holiday.end_date,
-            signing_day: holiday.signing_day,
+            holiday_id: holiday[:id],
+            user_id: holiday[:user_id],
+            days: holiday[:days],
+            start_date: holiday[:start_date],
+            end_date: holiday[:end_date],
+            signing_day: holiday[:signing_day],
             employee_replacements: employee_replacements(holiday_replacements)
           }
         end
@@ -84,12 +84,12 @@ module V1
 
         holiday_replacements = holiday.holiday_replacements
         response = {
-          holiday_id: holiday.id,
-          user_id: holiday.user_id,
-          days: holiday.days,
-          start_date: holiday.start_date,
-          end_date: holiday.end_date,
-          signing_day: holiday.signing_day,
+          holiday_id: holiday[:id],
+          user_id: holiday[:user_id],
+          days: holiday[:days],
+          start_date: holiday[:start_date],
+          end_date: holiday[:end_date],
+          signing_day: holiday[:signing_day],
           employee_replacements: employee_replacements(holiday_replacements)
         }
         response
@@ -113,18 +113,18 @@ module V1
         end
         holiday = authorize_and_create(Holiday, post_params)
         params[:project_ids].zip(params[:replacer_ids], params[:team_leader_ids]).each do |project_id, replacer_id, team_leader_id|
-          holiday_replacement = HolidayReplacement.create(holiday_id: holiday.id, project_id: project_id, replacer_id:replacer_id, team_leader_id: team_leader_id)
+          holiday_replacement = HolidayReplacement.create(holiday_id: holiday[:id], project_id: project_id, replacer_id: replacer_id, team_leader_id: team_leader_id)
           holiday.holiday_replacements << holiday_replacement
         end
         holiday_replacements = holiday.holiday_replacements
 
         {
-          holiday_id: holiday.id,
-          user_id: holiday.user_id,
-          days: holiday.days,
-          start_date: holiday.start_date,
-          end_date: holiday.end_date,
-          signing_day: holiday.signing_day,
+          holiday_id: holiday[:id],
+          user_id: holiday[:user_id],
+          days: holiday[:days],
+          start_date: holiday[:start_date],
+          end_date: holiday[:end_date],
+          signing_day: holiday[:signing_day],
           employee_replacements: employee_replacements(holiday_replacements)
         }
       end
