@@ -13,7 +13,7 @@ module V1
       include APIHelpers
 
       def post_params
-        ActionController::Parameters.new(params).permit(:name, :user_id)
+        ActionController::Parameters.new(params).permit(:name, :user_id, :serial_number)
       end
 
       params :pagination do
@@ -67,13 +67,12 @@ module V1
       desc "Create new device"
       params do
         requires :name, allow_blank: false, type: String
-        requires :description, allow_blank: false, type: String
-        requires :total, allow_blank: false, type: Integer
+        optional :serial_number, allow_blank: false, type: String
       end
       post 'new' do
         if params[:items]
-          params[:items].each do |x|
-            authorize_and_create(Device, {name: x[:name] , description: x[:description], total: x[:total]})
+          params[:items].each do |item|
+            authorize_and_create(Device, {name: item[:name] , description: item[:serial_number]})
           end
         else
           authorize_and_create(Device, post_params)
@@ -83,8 +82,7 @@ module V1
       desc "Update device"
       params do
         optional :name, allow_blank: false, type: String
-        optional :description, allow_blank: false, type: String
-        optional :total, allow_blank: false, type: Integer
+        optional :serial_number, allow_blank: false, type: String
       end
       put ':id' do
         device = Device.find(params[:id])
