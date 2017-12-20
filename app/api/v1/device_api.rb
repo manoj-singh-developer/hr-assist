@@ -32,7 +32,7 @@ module V1
     end
 
     before do
-      authenticate!
+      authorize_admin!
     end
 
     resource :devices do

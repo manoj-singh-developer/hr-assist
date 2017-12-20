@@ -19,4 +19,9 @@ module Authentication
     user = User.find(params[:user_id])
     error!('401 Access Denied', 401) unless user == current_user || current_user.is_admin
   end
+
+  def authorize_admin!
+    authenticate!
+    error!('401 Access Denied', 401) unless current_user.is_admin
+  end
 end
