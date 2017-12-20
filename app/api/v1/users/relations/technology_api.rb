@@ -26,9 +26,10 @@ module V1
             user = User.find(params[:user_id])
             { items:
             user.user_technologies.map do |user_technology|
+              debugger
               {
                 id: user_technology[:technology_id],
-                name: user_technology[:technology][:name],
+                name: user_technology.technology[:name],
                 level: user_technology[:level],
                 technology_type: user_technology[:technology_type],
                 technology_starting_year: user_technology[:year]
@@ -77,7 +78,7 @@ module V1
             user.user_technologies.map do |user_technology|
               {
                 id: user_technology[:technology_id],
-                name: user_technology[:technology][:name],
+                name: user_technology.technology[:name],
                 level: user_technology[:level],
                 technology_type: user_technology[:technology_type],
                 technology_starting_year: user_technology[:year]

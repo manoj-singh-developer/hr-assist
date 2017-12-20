@@ -28,8 +28,8 @@ module V1
             user_languages = user.user_languages.map do |user_language|
               {
                 language_id: user_language[:language_id],
-                long_name: user_language[:language][:long_name],
-                short_name: user_language[:language][:short_name],
+                long_name: user_language.language[:long_name],
+                short_name: user_language.language[:short_name],
                 level: user_language[:level]
               }
             end
