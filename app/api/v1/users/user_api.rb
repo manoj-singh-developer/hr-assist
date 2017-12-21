@@ -51,11 +51,10 @@ module V1
         desc "Return all users"
         params do
           use :pagination # aliases: includes, use_scope
-          optional :with, values: ['positions', 'languages', 'devices', 'educations', 'departments', 'projects', 'technologies', 'certifications', 'work_info'], type: [String]
+          optional :with, values: ['positions', 'languages', 'devices', 'educations', 'departments', 'projects', 'technologies', 'certifications', 'work_info', 'cnp'], type: [String]
           optional :filters, type: Hash
         end
         get do
-
           if current_user.is_employee
 
             params[:with] = []
@@ -64,7 +63,7 @@ module V1
               "company_start_date", "observations", "office_nr",
               "phone", "picture", "schedule_id", "status", "uid",
               "urgent_contact_name", "urgent_contact_phone", "zip_code",
-              "auth_token"
+              "auth_token", "work_info", "cnp", "company_end_date", "is_active", "reg_status"
             ]
           end
           if params[:filters]
@@ -112,6 +111,7 @@ module V1
           optional :upload_ids, type: Array[Integer]
         end
         put ':id' do
+          authorize_user!
           user = User.find(params[:id])
           authorize! :update, User
           user.update(post_params)
