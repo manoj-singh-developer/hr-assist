@@ -62,6 +62,7 @@ module V1
         optional :timetable, allow_blank: false, type: Integer
       end
       put ':id' do
+        authorize_admin!
         schedule = Schedule.find(params[:id])
         authorize!(:update, Schedule)
         schedule.update(post_params)
