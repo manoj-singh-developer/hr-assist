@@ -67,6 +67,7 @@ module V1
         optional :path, allow_blank: false, type: String
       end
       put ':id' do
+        authorize_admin!
         upload = Upload.find(params[:id])
         authorize! :update, Upload
         upload.update(post_params)
