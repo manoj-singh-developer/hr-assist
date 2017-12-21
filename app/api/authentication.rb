@@ -21,7 +21,6 @@ module Authentication
   end
 
   def authorize_admin!
-    authenticate!
     error!('401 Access Denied', 401) unless current_user.is_admin
   end
 end

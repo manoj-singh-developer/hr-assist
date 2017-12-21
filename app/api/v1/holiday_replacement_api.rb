@@ -24,7 +24,7 @@ module V1
     end
 
     before do
-      authorize_admin!
+      authenticate!
     end
 
     resource :holiday_replacements do
@@ -53,6 +53,7 @@ module V1
         requires :replaced_user_id, allow_blank: false, type: Integer
       end
       post 'new' do
+        authorize_admin!
         authorize_and_create(HolidayReplacement, post_params) do
             Holiday.find(post_params[:holiday_id])
             Project.find(post_params[:project_id])
@@ -68,6 +69,7 @@ module V1
       end
 
       put ':id' do
+        authorize_admin!
         holiday_replacement = HolidayReplacement.find(params[:id])
         authorize!(:update, HolidayReplacement)
         holiday_replacement.update(post_params)

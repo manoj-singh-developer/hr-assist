@@ -23,7 +23,7 @@ module V1
     end
 
     before do
-      authorize_admin!
+      authenticate!
     end
 
     resource :industries do
@@ -46,6 +46,7 @@ module V1
 
       desc "Get all industry projects"
       get ':id/projects' do
+        authorize_admin!
         industry = Industry.find(params[:id])
         projects = industry.projects
         {items: projects}
@@ -56,6 +57,7 @@ module V1
         requires :project_ids, type: [Integer], desc: "Project ids"
       end
       delete ':id/projects' do
+        authorize_admin!
         delete_object(Industry, Project, params[:id], params[:project_ids])
       end
 
@@ -65,9 +67,10 @@ module V1
         requires :label, allow_blank: false, type: String
       end
       post 'new' do
+        authorize_admin!
         if params[:items]
-          params[:items].each do |x|
-            authorize_and_create(Industry, {name: x[:name] , label: x[:label]})
+          params[:items].each do |item|
+            authorize_and_create(Industry, {name: item[:name] , label: item[:label]})
           end
         else
           authorize_and_create(Industry, post_params)
@@ -80,6 +83,7 @@ module V1
         optional :label, allow_blank: false, type: String
       end
       put ':id' do
+        authorize_admin!
         industry = Industry.find(params[:id])
         authorize!(:update, Industry)
         industry.update(post_params)
@@ -88,6 +92,7 @@ module V1
 
       desc "Delete industry"
       delete ':id' do
+        authorize_admin!
         Industry.find(params[:id]).destroy
       end
     end
