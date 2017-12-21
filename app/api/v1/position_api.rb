@@ -23,7 +23,7 @@ module V1
     end
 
     before do
-      authorize_admin!
+      authenticate!
     end
 
     resource :positions do
@@ -41,6 +41,7 @@ module V1
         requires :id , type: Integer, desc: "Position ID"
       end
       get ':id' do
+        authorize_admin!
         authorize!(:read, Position.find(params[:id]))
       end
 
@@ -50,6 +51,7 @@ module V1
         requires :job_detail, allow_blank: false, type: String
       end
       post 'new' do
+        authorize_admin!
         authorize_and_create(Position, post_params)
       end
 
@@ -59,6 +61,7 @@ module V1
         optional :job_detail, allow_blank: false, type: String
       end
       put ':id' do
+        authorize_admin!
         position = Position.find(params[:id])
         authorize!(:update, Position)
         position.update(post_params)
@@ -67,6 +70,7 @@ module V1
 
       desc "Delete position"
       delete ':id' do
+        authorize_admin!
         Position.find(params[:id]).destroy
       end
     end

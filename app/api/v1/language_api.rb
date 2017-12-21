@@ -23,7 +23,7 @@ module V1
     end
 
     before do
-      authorize_admin!
+      authenticate!
     end
 
     resource :languages do
@@ -41,6 +41,7 @@ module V1
         requires :id, type: Integer, desc: "Language ID"
       end
       get ':id' do
+        authorize_admin!
         authorize!(:read, Language.find(params[:id]))
       end
 
@@ -50,6 +51,7 @@ module V1
         requires :short_name, allow_blank: false, type: String
       end
       post 'new' do
+        authorize_admin!
         authorize_and_create(Language, post_params)
       end
 
@@ -59,6 +61,7 @@ module V1
         optional :short_name, allow_blank: false, type: String
       end
       put ':id' do
+        authorize_admin!
         language = Language.find(params[:id])
         authorize!(:update, Language)
         language.update(post_params)
@@ -67,6 +70,7 @@ module V1
 
       desc "Delete language"
       delete ':id' do
+        authorize_admin!
         Language.find(params[:id]).destroy
       end
     end

@@ -24,7 +24,7 @@ module V1
     end
 
     before do
-      authorize_admin!
+      authenticate!
     end
     
     resource :uploads do
@@ -34,6 +34,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
+        authorize_admin!
         get_paginated_items_for Upload
       end
 
@@ -42,6 +43,7 @@ module V1
         requires :id, type: Integer , desc: "Upload id"
       end
       get ':id' do
+        authorize_admin!
         authorize!(:read, Upload.find(params[:id]))
       end
 

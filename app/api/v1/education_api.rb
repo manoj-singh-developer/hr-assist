@@ -24,7 +24,7 @@ module V1
     end
 
     before do
-      authorize_admin!
+      authenticate!
     end
 
     resource :educations do
@@ -34,6 +34,7 @@ module V1
         use :pagination # aliases: includes, use_scope
       end
       get do
+        authorize_admin!
         get_paginated_items_for Education
       end
 
@@ -42,6 +43,7 @@ module V1
         requires :id , type: Integer, desc: "Education ID"
       end
       get ':id' do
+        authorize_admin!
         authorize!(:read, Education.find(params[:id]))
       end
 
@@ -66,6 +68,7 @@ module V1
         optional :end_date, allow_blank: false, type: Date
       end
       put ':id' do
+        authorize_admin!
         education = Education.find(params[:id])
         authorize!(:update, Education)
         education.update(post_params)
@@ -74,6 +77,7 @@ module V1
 
       desc "Delete education"
       delete ':id' do
+        authorize_admin!
         Education.find(params[:id]).destroy
       end
     end
