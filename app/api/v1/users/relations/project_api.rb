@@ -28,8 +28,8 @@ module V1
                 user.user_projects.map do |user_project|
                   {
                     project: user_project.project,
-                    user_project_start_date: user_project.start_date,
-                    user_project_end_date: user_project.end_date,
+                    user_project_start_date: user_project[:start_date],
+                    user_project_end_date: user_project[:end_date],
                     technologies: user_project.technologies
                   }
                 end
@@ -73,9 +73,9 @@ module V1
               technologies:
                 user_project.technologies.map do |technology|
                   {
-                    id: technology.id,
-                    name: technology.name,
-                    label: technology.label
+                    id: technology[:id],
+                    name: technology[:name],
+                    label: technology[:label]
                   }
                 end
             }

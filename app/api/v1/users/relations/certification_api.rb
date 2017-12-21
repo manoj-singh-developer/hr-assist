@@ -40,10 +40,10 @@ module V1
             user = User.find(params[:user_id])
             params[:certifications].each do |certification|
               user_certification = Certification.create(
-                name:           certification.name,
-                authority:      certification.authority,
-                licence_number: certification.licence_number,
-                year:           certification.year
+                name:           certification[:name],
+                authority:      certification[:authority],
+                licence_number: certification[:licence_number],
+                year:           certification[:year]
               )
               user.certifications << user_certification
             end
@@ -59,7 +59,7 @@ module V1
             user = User.find(params[:user_id])
 
             params[:certifications].each do |certification|
-              user_certification = user.certifications.find(certification.id)
+              user_certification = user.certifications.find(certification[:id])
               user_certification.update(certification_params(certification))
             end
             { items: user.certifications }

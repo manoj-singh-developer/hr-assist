@@ -56,7 +56,7 @@ module V1
     end
 
     before do
-      authenticate!
+      authorize_admin!
     end
 
     resource :candidates do
@@ -106,7 +106,7 @@ module V1
         if params[:technologies]
           params[:technologies].each do |tech|
             technology = Technology.find_or_create_by(name: tech[1][:technology_name])
-            CandidateTechnology.create(level: tech[1][:technology_level], technology_id: technology.id, candidate_id: candidate.id)
+            CandidateTechnology.create(level: tech[1][:technology_level], technology_id: technology[:id], candidate_id: candidate[:id])
           end
         end
         if candidate
@@ -117,7 +117,7 @@ module V1
             end
           end
 
-          get_paginated_items_for(Candidate.where(id: candidate.id), ['candidate_cv', 'candidate_files', 'technologies'])
+          get_paginated_items_for(Candidate.where(id: candidate[:id]), ['candidate_cv', 'candidate_files', 'technologies'])
         end
 
       end

@@ -221,8 +221,13 @@
       let data = {};
       data["device_ids"] = device.device_id;
       url = apiUrl + '/users/:id/devices';
-      
-      resource = $resource(url, data).delete({ id: user.id });
+
+      resource = $resource(url, data, {
+        'delete': {
+          method: 'DELETE',
+          isArray: true
+        }
+      }).delete({ id: user.id });
 
       promise = resource.$promise
         .then((data) => {
@@ -296,7 +301,12 @@
       let data = {};
       data["language_ids[]"] = languages;
       url = apiUrl + '/users/:id/languages';
-      resource = $resource(url, data).delete({ id: user.id });
+      resource = $resource(url, data, {
+        'delete': {
+          method: 'DELETE',
+          isArray: true
+        }
+      }).delete({ id: user.id });
 
       promise = resource.$promise
         .then((data) => {
@@ -362,7 +372,12 @@
 
     User.removeEducations = (id, education) => {
       url = apiUrl + '/users/:id/educations';
-      resource = $resource(url, education).delete({ id: id });
+      resource = $resource(url, education, {
+        'delete': {
+          method: 'DELETE',
+          isArray: true
+        }
+      }).delete({ id: id });
 
       promise = resource.$promise
         .then((data) => {
@@ -440,7 +455,12 @@
       let projId = project.project_id;
       data["technology_ids[]"] = technologies.map(technologies => technologies.id);
       url = apiUrl + '/users/:user_id/projects/:project_id/technologies';
-      resource = $resource(url, data).delete({
+      resource = $resource(url, data, {
+        'delete': {
+          method: 'DELETE',
+          isArray: true
+        }
+      }).delete({
         user_id: userId,
         project_id: projId
       });
@@ -655,8 +675,12 @@
       let data = {};
       data["certification_ids"] = certification.id;
       url = apiUrl + '/users/:id/certifications';
-      resource = $resource(url, data).delete({ id: id });
-
+      resource = $resource(url, data, {
+        'delete': {
+          method: 'DELETE',
+          isArray: true
+        }
+      }).delete({ id: id });
       promise = resource.$promise
         .then((data) => {
           alertService.success(model, 'removeCertifications');
@@ -677,16 +701,21 @@
         holiday_ids: holiday.holiday_id
       };
       url = apiUrl + '/users/:id/holidays';
-      resource = $resource(url, data).delete({ id: data.user_id });
+      resource = $resource(url, data, {
+        'delete': {
+          method: 'DELETE',
+          isArray: true
+        }
+      }).delete({ id: data.user_id });
 
       promise = resource.$promise
         .then((data) => {
-          alertService.success(model, 'removeDevices');
+          alertService.success(model, 'removeHoliday');
           return data;
         })
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'removeDevices')
+          alertService.error(model, 'removeHoliday')
         });
 
       return promise;

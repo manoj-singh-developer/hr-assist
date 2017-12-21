@@ -23,7 +23,7 @@ module V1
     end
 
     before do
-      authenticate!
+      authorize_admin!
     end
 
     resource :customers do
@@ -66,8 +66,8 @@ module V1
       end
       post 'new' do
         if params[:items]
-          params[:items].each do |x|
-            authorize_and_create(Customer, {name: x[:name] , country_id: x[:country_id]})
+          params[:items].each do |item|
+            authorize_and_create(Customer, {name: item[:name] , country_id: item[:country_id]})
           end
         else
           authorize_and_create(Customer, post_params)

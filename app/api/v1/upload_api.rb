@@ -24,9 +24,9 @@ module V1
     end
 
     before do
-      authenticate!
+      authorize_admin!
     end
-
+    
     resource :uploads do
 
       desc "Get all uploads"
