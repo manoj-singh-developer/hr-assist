@@ -42,7 +42,7 @@ module V1
     end
 
     before do
-      authorize_admin!
+      authenticate!
     end
 
     resource :holidays do
@@ -137,6 +137,7 @@ module V1
         optional :signing_day, allow_blank: false, type: Date
       end
       put ':id' do
+        authorize_admin!
         holiday = Holiday.find(params[:id])
         authorize!(:update, Holiday)
         holiday.update(post_params)
@@ -145,6 +146,7 @@ module V1
 
       desc "Delete holiday"
       delete ':id' do
+        authorize_admin!
         Holiday.destroy(params[:id])
       end
     end

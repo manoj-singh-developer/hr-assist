@@ -24,7 +24,7 @@ module V1
     end
 
     before do
-      authorize_admin!
+      authenticate!
     end
 
     resource :countries do
@@ -51,6 +51,7 @@ module V1
         requires :short_name, allow_blank: false, type: String
       end
       post 'new' do
+        authorize_admin!
         authorize_and_create(Country, post_params)
       end
 
@@ -61,6 +62,7 @@ module V1
       end
 
       put ':id' do
+        authorize_admin!
         country = Country.find(params[:id])
         authorize!(:update, Country)
         country.update(post_params)

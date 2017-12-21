@@ -23,7 +23,7 @@ module V1
     end
 
     before do
-      authorize_admin!
+      authenticate!
     end
 
     resource :technologies do
@@ -41,6 +41,7 @@ module V1
         requires :id ,type: Integer , desc: "technology id"
       end
       get ':id' do
+        authorize_admin!
         authorize!(:read, Technology.find(params[:id]))
       end
 
@@ -56,11 +57,13 @@ module V1
         requires :project_ids, type: [Integer], desc: "Project ids"
       end
       delete ':id/projects' do
+        authorize_admin!
         delete_object(Technology, Project, params[:id], params[:project_ids])
       end
 
       desc "Get all technology users"
       get ':id/users' do
+        authorize_admin!
         technology = Technology.find(params[:id])
         technology.user_technologies.map do |user_tech|
           {
@@ -75,6 +78,7 @@ module V1
         requires :user_ids, type: [Integer], desc: "User ids"
       end
       delete ':id/users' do
+        authorize_admin!
         delete_object(Technology, User, params[:id], params[:user_ids])
       end
 
@@ -100,6 +104,7 @@ module V1
         optional :label, allow_blank: false, type: String
       end
       put ':id' do
+        authorize_admin!
         technology = Technology.find(params[:id])
         authorize!(:update, Technology)
         technology.update(post_params)
@@ -108,6 +113,7 @@ module V1
 
       desc "Delete an technology"
       delete ':id' do
+        authorize_admin!
         Technology.find(params[:id]).destroy
       end
     end
