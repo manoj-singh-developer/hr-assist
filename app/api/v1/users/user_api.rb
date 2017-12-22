@@ -21,7 +21,7 @@ module V1
           ActionController::Parameters.new(params)
             .permit(:first_name, :middle_name, :last_name, :address, :city, :zip_code, :birthday, :phone, :picture, :observations,
                     :other_email, :urgent_contact_name, :urgent_contact_phone, :car_plate, :company_start_date, :status, :email, :office_nr, :cnp,
-                    :company_end_date )
+                    :company_end_date, :encrypted_password )
         end
 
         def filtered_users filters
@@ -140,16 +140,20 @@ module V1
         elsif allowed_domains.include?(params[:email].partition('@').last)
           user = User.find_by_email(params[:email])
           if user
+            error!({ message: "Incorrect Password"}) unless decrypt(user[:encrypted_password]) == params[:password]
             if user[:reg_status] == "confirmed"
               login_non_ldap_user(user)
-            else user[:reg_status] == "pending"
-            error({ message: "Your account is not confirmed." })
+            elsif user[:reg_status] == "pending"
+            error!({ message: "Your account is not confirmed." })
             end
           else
-            User.create(email: params[:email], password: params[:password], reg_status: "pending") if User.where(reg_status: "pending").count < 20
+            new_user = User.new(email: params[:email], password: params[:password], reg_status: "pending") if User.where(reg_status: "pending").count < 20
+            new_user[:encrypted_password] = encrypt(params[:password])
+            new_user.save
+            success(user: user)
           end
         else
-          error({ message: "Authentication FAILED." })
+          error!({ message: "Authentication FAILED." })
         end
       end
 
