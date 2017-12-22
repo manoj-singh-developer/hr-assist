@@ -110,9 +110,9 @@ module V1
           optional :urgent_contact_phone, type: String
           optional :upload_ids, type: Array[Integer]
         end
-        put ':id' do
+        put ':user_id' do
           authorize_user!
-          user = User.find(params[:id])
+          user = User.find(params[:user_id])
           authorize! :update, User
           user.update(post_params)
           if params[:work_info]
