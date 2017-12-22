@@ -12,7 +12,7 @@ module APIHelpers
     user.ensure_authentication_token
     user.reg_status = "confirmed"
     user[:encrypted_password] = encrypt(params[:password]) if user[:encrypted_password].empty?
-    error!({ message: "Incorrect Password"}) unless decrypt(user[:encrypted_password]) == params[:password]
+    error!('Incorrect Password', 401) unless decrypt(user[:encrypted_password]) == params[:password]
     user.save
     data = {:user_id => user.id, :role_id => user.roles.first.id , :token => user.auth_token}
     custom_token = JWT.encode(data, Rails.application.secrets.secret_key_base)
