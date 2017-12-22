@@ -87,10 +87,15 @@
 
       let objToSave = {
         device_name: vm.deviceName,
-        components: componentsToAdd,
+        components: componentsToAdd ? componentsToAdd : null,
         serial_number: vm.serial_number
       }
 
+      for (let key in objToSave) {
+        if (!objToSave[key] || !objToSave[key].length) {
+          delete objToSave[key];
+        }
+      }
       if (deviceToEdit) {
         User.removeDevices(vm.user, deviceToEdit).then(() => {
           vm.userDevices = _.without(vm.userDevices, deviceToEdit);

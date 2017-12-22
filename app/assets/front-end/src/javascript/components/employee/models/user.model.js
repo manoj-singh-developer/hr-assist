@@ -71,7 +71,7 @@
     };
 
     User.getAll = () => {
-      url = apiUrl + '/users?with[]=languages&with[]=technologies&with[]=projects&with[]=certifications&with[]=devices';
+      url = apiUrl + '/users?with[]=languages&with[]=technologies&with[]=projects&with[]=certifications';
       resource = $resource(url, {}, {
         'get': {
           method: 'GET',
