@@ -209,10 +209,10 @@
             </ul>
           </td>
 
-           <td md-cell>
-           <ul class="c-list" ng-if="employee.certifications">
-              <li ng-repeat="certification in employee.certifications">
-                {{$index + 1}}. {{certification.name}}
+          <td md-cell ng-hide="employee.candidate">
+            <ul class="c-list" ng-if="employee.projects">
+              <li ng-repeat="project in employee.projects">
+                {{$index + 1}}. {{project.name}}
               </li>
             </ul>
           </td>

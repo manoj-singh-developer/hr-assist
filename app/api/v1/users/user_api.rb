@@ -140,7 +140,7 @@ module V1
         elsif allowed_domains.include?(params[:email].partition('@').last)
           user = User.find_by_email(params[:email])
           if user
-            error!('Incorrect Password', 401) unless decrypt(user[:encrypted_password]) == params[:password]
+            error!('Incorrect Password', 401) if user[:encrypted_password].present? && decrypt(user[:encrypted_password]) != params[:password]
             if user[:reg_status] == "confirmed"
               login_non_ldap_user(user)
             elsif user[:reg_status] == "pending"

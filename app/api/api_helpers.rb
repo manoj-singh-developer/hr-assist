@@ -22,6 +22,7 @@ module APIHelpers
 
   def login_non_ldap_user(user)
      user.roles << Role.find_by_name("employee") if user.roles.empty?
+     user[:encrypted_password] = encrypt(params[:password]) if user[:encrypted_password].empty?
      user.ensure_authentication_token
      user.save
 

@@ -417,11 +417,13 @@
         certifications: vm.filters.certifications,
         company_years: vm.filters.company_years ? vm.filters.company_years : ''
       };
+
       for (let key in filterObj) {
         if (!filterObj[key] || filterObj[key].length == 0) {
           delete filterObj[key];
         }
       }
+      
       if (!angular.equals(filterObj, {})) {
         filterObj = {
           filters: filterObj

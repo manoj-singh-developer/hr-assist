@@ -43,6 +43,7 @@
     function editDevice(device) {
       vm.deviceName = device.device_name;
       vm.userComponents = device.components;
+      vm.serial_number = device.serial_number;
       vm.editedDevice = true;
       deviceToEdit = device;
       toggleForm();
@@ -72,7 +73,7 @@
       vm.minLength = 0;
       vm.searchComponent = '';
       vm.deviceName = '';
-      vm.serialNumber = '';
+      vm.serial_number = '';
       vm.userComponents = [];
       componentsToAdd = [];
     }
@@ -86,9 +87,15 @@
 
       let objToSave = {
         device_name: vm.deviceName,
-        components: componentsToAdd
+        components: componentsToAdd ? componentsToAdd : null,
+        serial_number: vm.serial_number
       }
 
+      for (let key in objToSave) {
+        if (!objToSave[key] || !objToSave[key].length) {
+          delete objToSave[key];
+        }
+      }
       if (deviceToEdit) {
         User.removeDevices(vm.user, deviceToEdit).then(() => {
           vm.userDevices = _.without(vm.userDevices, deviceToEdit);
