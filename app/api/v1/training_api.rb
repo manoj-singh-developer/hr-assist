@@ -13,7 +13,7 @@ module V1
 
       def post_params
         ActionController::Parameters.new(params)
-          .permit(:title, :description, :picture, :start_date, :duration, :user_id)
+          .permit(:organizer, :subject, :description, :time)
       end
 
       params :pagination do
@@ -39,36 +39,34 @@ module V1
 
       desc "Get training"
       params do
-        requires :id , type: Integer , desc: "Training ID"
+        requires :id, type: Integer, desc: "Training ID"
       end
       get ':id' do
+        authorize_admin!
         authorize!(:read, Training.find(params[:id]))
       end
 
       desc "Create new training"
       params do
-        requires :title, allow_blank: false, type: String
+        requires :organizer, allow_blank: false, type: String
+        requires :subject, allow_blank: false, type: String
         requires :description, allow_blank: false, type: String
-        requires :picture, allow_blank: false, type: String
-        requires :start_date, allow_blank: false, type: Date
-        optional :duration, type: Integer
-        optional :user_id, type: Integer
+        requires :time, allow_blank: false, type: DateTime
       end
       post 'new' do
-        authorize_and_create(Training, post_params) do
-          User.find(post_params[:user_id])
-        end
+        authorize_admin!
+        authorize_and_create(Training, post_params)  
       end
 
       desc "Update training"
       params do
-        optional :title, allow_blank: false, type: String
+        optional :organizer, allow_blank: false, type: String
+        optional :subject, allow_blank: false, type: String
         optional :description, allow_blank: false, type: String
-        optional :picture, allow_blank: false, type: String
-        optional :start_date, allow_blank: false, type: Date
-        optional :duration, type: Integer
+        optional :time, allow_blank: false, type: DateTime
       end
       put ':id' do
+        authorize_admin!
         training = Training.find(params[:id])
         authorize!(:update, Training)
         training.update(post_params)
@@ -77,6 +75,7 @@ module V1
 
       desc "Delete an training"
       delete ':id' do
+        authorize_admin!
         Training.find(params[:id]).destroy
       end
     end
