@@ -37,7 +37,10 @@ module V1
         get_paginated_items_for Training
       end
 
-      desc "Get training"
+      desc "Get training \n 
+      {
+        'id': '6'
+      }"
       params do
         requires :id, type: Integer, desc: "Training ID"
       end
@@ -46,7 +49,8 @@ module V1
         authorize!(:read, Training.find(params[:id]))
       end
 
-      desc "Create new training"
+      desc "Create new training \n 
+      {'description': 'ceva','organizer': 'Alex','subject': 'despre ceva ','time': '2018-01-03T09:22:00.000Z'}"
       params do
         requires :organizer, allow_blank: false, type: String
         requires :subject, allow_blank: false, type: String
@@ -58,7 +62,8 @@ module V1
         authorize_and_create(Training, post_params)  
       end
 
-      desc "Update training"
+      desc "Update training \n 
+      {'id': '6', 'description': 'ceva','organizer': 'Alex','subject': 'despre ceva ','time': '2018-01-03T09:22:00.000Z'}"
       params do
         optional :organizer, allow_blank: false, type: String
         optional :subject, allow_blank: false, type: String
@@ -73,7 +78,10 @@ module V1
         success
       end
 
-      desc "Delete an training"
+      desc "Delete an training \n 
+      {
+        'id': '6'
+      }"
       delete ':id' do
         authorize_admin!
         Training.find(params[:id]).destroy
