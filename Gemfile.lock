@@ -335,7 +335,7 @@ DEPENDENCIES
   populator
   puma (~> 3.0)
   rack-cors
-  rails (~> 5.0.6)
+  rails (~> 5.0.1)
   rapidfire
   rspec-rails (~> 3.5)
   sass-rails (~> 5.0)
