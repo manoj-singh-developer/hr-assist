@@ -26,15 +26,13 @@ module V1
 
         def filtered_users filters
           users = User.where(company_end_date: nil, is_active: true)
-
           users = users.by_month_birth(filters[:birthday].to_date) if filters[:birthday]
           users = users.by_university_year(filters[:university_year].to_i) if filters[:university_year]
           users = users.by_company_start_date_until_present(filters[:start_date].to_date) if filters[:start_date]
           users = users.by_projects(filters[:projects]) if filters[:projects]
           users = users.by_certifications(filters[:certifications]) if filters[:certifications]
-          users = users.by_technology_id_and_level(filters[:technologies].values.map(&:technology_id).zip(filters[:technologies].values.map(&:technology_level))) if filters[:technologies]
-          users = users.by_language_id_and_level(filters[:languages].values.map(&:language_id).zip(filters[:languages].values.map(&:language_level))) if filters[:languages]
-
+          users = users.by_technology_id_and_level(filters[:technologies].values.map{|tech| tech[:technology_id]}.zip(filters[:technologies].values.map{|tech| tech[:technology_level]})) if filters[:technologies]
+          users = users.by_language_id_and_level(filters[:languages].values.map{|lang| lang[:language_id]}.zip(filters[:languages].values.map{|lang| lang[:language_level]})) if filters[:languages]
           users
         end
 
@@ -55,6 +53,7 @@ module V1
           optional :filters, type: Hash
         end
         get do
+
           if current_user.is_employee
 
             params[:with] = []
@@ -71,7 +70,6 @@ module V1
           else
             get_paginated_items_for User.where(company_end_date: nil, is_active: true), params[:with] , defined?(exceptions) ? exceptions : []
           end
-
         end
 
         desc "Returns a user"
