@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 20180103135314) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "cnp"
+    t.string   "candidate_type"
   end
 
   create_table "certifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -138,6 +139,10 @@ ActiveRecord::Schema.define(version: 20180103135314) do
     t.integer "certification_id"
     t.index ["certification_id"], name: "index_certifications_users_on_certification_id", using: :btree
     t.index ["user_id"], name: "index_certifications_users_on_user_id", using: :btree
+  end
+
+  create_table "component", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", limit: 45
   end
 
   create_table "countries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -483,6 +488,7 @@ ActiveRecord::Schema.define(version: 20180103135314) do
     t.string   "office_nr"
     t.string   "urgent_contact_phone"
     t.string   "cnp"
+    t.string   "stackoverflow"
     t.date     "company_end_date"
     t.boolean  "is_active"
     t.string   "reg_status"
