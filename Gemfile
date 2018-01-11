@@ -32,6 +32,7 @@ gem 'populator'
 gem 'access-granted', '~> 1.1.0'
 #gem 'kaminari', '~> 1.0.1'
 gem 'liquid', '~> 3.0', '>= 3.0.6'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -76,4 +77,3 @@ gem 'rack-cors', :require => 'rack/cors'
 gem "paperclip", "~> 5.1.0"
 
 gem 'rapidfire'
-

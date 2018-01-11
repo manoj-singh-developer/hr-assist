@@ -148,6 +148,10 @@ module V1
             new_user = User.new(email: params[:email], password: params[:password], reg_status: "pending") if User.where(reg_status: "pending").count < 20
             new_user[:encrypted_password] = encrypt(params[:password])
             new_user.save
+            
+            UserMailer.welcome_email(new_user).deliver_now
+            AdminMailer.confirm_email(new_user).deliver_now
+            
             success(user: user)
           end
         else
