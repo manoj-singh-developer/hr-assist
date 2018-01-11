@@ -1,0 +1,5 @@
+SmtpSetting.create!(key: 'port' , value: '')
+SmtpSetting.create!(key: 'address' , value: '')
+SmtpSetting.create!(key: 'user_name' , value: '')
+SmtpSetting.create!(key: 'password' , value: '')
+SmtpSetting.create!(key: 'domain' , value: '')
