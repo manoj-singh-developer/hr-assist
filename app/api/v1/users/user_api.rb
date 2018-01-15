@@ -21,7 +21,7 @@ module V1
           ActionController::Parameters.new(params)
             .permit(:first_name, :middle_name, :last_name, :address, :city, :zip_code, :birthday, :phone, :picture, :observations,
                     :other_email, :urgent_contact_name, :urgent_contact_phone, :car_plate, :company_start_date, :status, :email, :office_nr, :cnp,
-                    :company_end_date, :encrypted_password )
+                    :company_end_date, :encrypted_password)
         end
 
         def filtered_users filters
@@ -49,11 +49,10 @@ module V1
         desc "Return all users"
         params do
           use :pagination # aliases: includes, use_scope
-          optional :with, values: ['positions', 'languages', 'devices', 'educations', 'departments', 'projects', 'technologies', 'certifications', 'work_info', 'cnp'], type: [String]
+          optional :with, values: ['positions', 'languages', 'devices', 'educations', 'department', 'projects', 'technologies', 'certifications', 'work_info', 'cnp'], type: [String]
           optional :filters, type: Hash
         end
         get do
-
           if current_user.is_employee
 
             params[:with] = []
