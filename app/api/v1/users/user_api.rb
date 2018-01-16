@@ -133,17 +133,18 @@ module V1
         allowed_domains = Domain.all.pluck(:allowed_domain)
         result = ldap_login
         user = User.find_by_email(params[:email])
-        error!({ message: "You have been deactivated. If this is an error please contact one of the admins" }) unless user.is_active
-        if result
+        if result 
+          error!({ message: "You have been deactivated. If this is an error please contact one of the admins" }) unless user.is_active
           create_user(result.first)
         elsif allowed_domains.include?(params[:email].partition('@').last)
           if user
             error!('Incorrect Password', 401) if user[:encrypted_password].present? && decrypt(user[:encrypted_password]) != params[:password]
-            if user[:reg_status] == "confirmed"
-
+            if user[:reg_status] == "confirmed" && user.is_active
               login_non_ldap_user(user)
             elsif user[:reg_status] == "pending"
-            error!({ message: "Your account is not confirmed." })
+              error!({ message: "Your account is not confirmed." })
+            elsif user.is_active == false
+              error!({ message: "You have been deactivated. If this is an error please contact one of the admins" })
             end
           else
             new_user = User.new(email: params[:email], password: params[:password], reg_status: "pending") if User.where(reg_status: "pending").count < 20
