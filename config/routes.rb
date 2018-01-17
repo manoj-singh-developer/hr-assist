@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   mount V1::Users::Relations::TechnologyAPI => '/api'
   mount V1::Users::Relations::UploadAPI => '/api'
   mount V1::Users::Relations::WorkInfoAPI => '/api'
+  mount V1::Users::Relations::DepartmentAPI => '/api'
 
   mount V1::ProjectAPI => '/api'
   mount V1::CustomerAPI => '/api'
