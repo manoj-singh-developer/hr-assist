@@ -23,7 +23,7 @@ module V1
     end
 
     before do
-      # authorize_admin!
+      authenticate!
     end
 
     resource :departments do
