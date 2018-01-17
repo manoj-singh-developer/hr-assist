@@ -31,8 +31,6 @@ class User < ApplicationRecord
     User.where(id: result.flatten)
   end
 
-   
-
   has_one :schedule
   has_one :work_info
   has_many :uploads

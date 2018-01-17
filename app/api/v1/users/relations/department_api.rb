@@ -27,24 +27,20 @@ module V1
             user.department
           end
 
-          /dsds/
-
           desc "Create user department"
           params do
-            requires :department_id, type:Integer, desc: 'Array of certifications objects'
+            requires :department_id, type: Integer
           end
           post ':user_id/department/new' do
             user = User.find(params[:user_id])
-                depapt = Department.find_by(id: params[:department_id])
+                department_id = Department.find_by(id: params[:department_id])
                 user_department = UserDepartment.find_or_create_by(
-                  department_id: depapt[:id],
+                  department_id: department_id[:id],
                   user_id: params[:user_id]
                   )
                 user_department.save!
-               
-           
-            {items: user.department}
-            
+
+            { items: user.department }
           end
         end
       end
