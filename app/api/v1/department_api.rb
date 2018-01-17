@@ -12,7 +12,7 @@ module V1
       include APIHelpers
 
       def post_params
-        ActionController::Parameters.new(params).permit(:name, :description)
+        ActionController::Parameters.new(params).permit(:name, :functional_manager)
       end
 
       params :pagination do
@@ -47,7 +47,7 @@ module V1
       desc "Create new department"
       params do
         requires :name, allow_blank: false, type: String
-        requires :description, allow_blank: false, type: String
+        requires :functional_manager, allow_blank: false, type: String
       end
       post 'new' do
         authorize_and_create(Department, post_params)
@@ -56,7 +56,7 @@ module V1
       desc "Update department"
       params do
         optional :name, allow_blank: false, type: String
-        optional :description, allow_blank: false, type: String
+        optional :functional_manager, allow_blank: false, type: String
       end
       put ':id' do
         department = Department.find(params[:id])
