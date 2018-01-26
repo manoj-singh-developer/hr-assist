@@ -49,12 +49,21 @@ module V1
           end
           post ':user_id/holidays' do
             User.find(params[:replacer_ids], params[:team_leader_ids], params[:user_id])
-
+            
             holiday = Holiday.create(days: params[:days], start_date: params[:start_date], end_date: params[:end_date], signing_day: params[:signing_day], user_id: params[:user_id])
             params[:project_ids].zip(params[:replacer_ids], params[:team_leader_ids]).each do |project_id, replacer_id, team_leader_id|
               holiday_replacement = HolidayReplacement.create(holiday_id: holiday.id, project_id: project_id, replacer_id: replacer_id, team_leader_id: team_leader_id)
               holiday.holiday_replacements << holiday_replacement
             end
+             
+            project = Project.where(id: params[:project_ids])
+            project = project.map(&:name).join(', ')
+            replacement = User.where(id: params[:replacer_ids])
+            replacement = replacement.map{|rep| name = rep.first_name + " " + rep.last_name + " " }.join(', ')
+            team_leader = User.where(id: params[:team_leader_ids])
+
+            HolidayMailer.holiday_email(team_leader,current_user, holiday, project, replacement).deliver_now
+            
             get_holiday(holiday)
           end
 

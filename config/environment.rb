@@ -20,6 +20,6 @@ Rails.application.configure do
 	  port:                  SmtpSetting::where(key: "port").first[:value].to_i,
 	  address:               SmtpSetting::where(key: "address").first[:value], 
 	  user_name:             SmtpSetting::where(key: "user_name").first[:value],
-	  # password:              ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base).decrypt_and_verify(SmtpSetting::where(key: "password").first[:value])
+	  password:              ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base).decrypt_and_verify(SmtpSetting::where(key: "password").first[:value])
 }
 end

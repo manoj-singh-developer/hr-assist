@@ -1,6 +1,6 @@
 class AdminMailer < ApplicationMailer
 	
-	default from: 'smtp@assist.ro'
+	default from: 'smtp-hr@assist.ro'
 
 	def confirm_email(user)
 		@user = user
