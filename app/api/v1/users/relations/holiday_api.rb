@@ -30,6 +30,22 @@ module V1
             end
           end
 
+          desc "Accept user holiday"
+          get ':user_id/holiday/accept' do
+            authorize_admin!
+            accept = Holiday.where(user_id: params[:user_id]).last
+            accept.approve_holiday = true
+            accept.save
+          end
+
+          desc "Decline user holiday"
+          get ':user_id/holiday/decline' do
+            authorize_admin!
+            accept = Holiday.where(user_id: params[:user_id]).last
+            accept.approve_holiday = false
+            accept.save
+          end
+
           desc "Get user holiday by id"
           get ':user_id/holidays/:holiday_id' do
             user = User.find(params[:user_id])
@@ -55,15 +71,15 @@ module V1
               holiday_replacement = HolidayReplacement.create(holiday_id: holiday.id, project_id: project_id, replacer_id: replacer_id, team_leader_id: team_leader_id)
               holiday.holiday_replacements << holiday_replacement
             end
-             
-            project = Project.where(id: params[:project_ids])
-            project = project.map(&:name).join(', ')
-            replacement = User.where(id: params[:replacer_ids])
-            replacement = replacement.map{|rep| name = rep.first_name + " " + rep.last_name + " " }.join(', ')
-            team_leader = User.where(id: params[:team_leader_ids])
 
-            HolidayMailer.holiday_email(team_leader,current_user, holiday, project, replacement).deliver_now
-            
+            user = User.find(params[:user_id])
+            projects = Project.where(id: params[:project_ids])
+            projects = projects.map(&:name).join(', ')
+            replacements = User.where(id: params[:replacer_ids]).pluck(:first_name, :last_name).map{|t| t.join(" ")}.join(", ")
+            team_leaders = User.where(id: params[:team_leader_ids]).pluck(:email)
+
+            HolidayMailer.holiday_email(team_leaders, current_user, holiday, projects, replacements).deliver_now
+              
             get_holiday(holiday)
           end
 

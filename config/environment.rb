@@ -12,6 +12,7 @@ end
 Rails.application.config.expiration_token_time = 1.day
 
 Rails.application.configure do 
+  config.action_mailer.default_url_options = {:host => "localhost:3000"}
 	config.action_mailer.raise_delivery_errors = true
   config.active_record.migration_error = :page_load
   config.action_mailer.delivery_method = :smtp

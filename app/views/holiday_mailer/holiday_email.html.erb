@@ -4,14 +4,15 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
   </head>
   <body>
-    <p> User: <%= @current_user.name %> </p>
+    <p><%= @current_user.name %> </p>
     
     	<p> days: <%= @holiday.days %> </p>
     	<p> start date: <%= @holiday.start_date %> </p>
     	<p> end date: <%= @holiday.end_date%> </p>
-    	<p> replacement: <%= @replacement %> </p>
-    	<p> project: <%= @project %> </p>
-    	<p> accept </p>
-    	<p> decline </p>
+    	<p> replacements: <%= @replacements %> </p>
+    	<p> projects: <%= @projects %> </p>
+    	<%= link_to "Accept", accept_url(@current_user.id) %>
+    	<br>
+    	<%= link_to "Descline", decline_url(@current_user.id) %>
   </body>
 </html>
