@@ -73,7 +73,7 @@ gem 'activeadmin', github: 'activeadmin'
 gem 'jwt', '>= 1.5.6'
 gem 'rack-cors', :require => 'rack/cors'
 
-gem "paperclip", "~> 5.1.0"
+gem 'paperclip', '~> 5.2', '>= 5.2.1'
 
 gem 'rapidfire'
 
