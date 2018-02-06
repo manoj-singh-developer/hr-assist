@@ -49,8 +49,6 @@ Rails.application.routes.draw do
 
   get 'admin/domains', to: 'admin/domain#index'
   post 'admin/domains', to: 'admin/domain#new'
-  get 'admin/accept/:user_id', to: 'admin/holiday#accept', as: :accept 
-  get 'admin/decline/:user_id', to: 'admin/holiday#decline',as: :decline
 
   get '/smtp', to: 'admin/smtp#show'
   post '/smtp' , to: 'smtp_settings#create'

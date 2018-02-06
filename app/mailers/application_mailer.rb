@@ -1,5 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'from@example.com'
+  default from: 'smtp-hr@assist.ro'
   layout 'mailer'
-  DEFAULT_EMAIL_FROM = 'smtp-hr@assist.ro'.freeze
 end

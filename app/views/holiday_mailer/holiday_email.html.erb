@@ -4,15 +4,14 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
   </head>
   <body>
-    <p><%= @current_user.name %> </p>
-    
-    	<p> days: <%= @holiday.days %> </p>
-    	<p> start date: <%= @holiday.start_date %> </p>
-    	<p> end date: <%= @holiday.end_date%> </p>
-    	<p> replacements: <%= @replacements %> </p>
-    	<p> projects: <%= @projects %> </p>
-    	<%= link_to "Accept", accept_url(@current_user.id) %>
-    	<br>
-    	<%= link_to "Descline", decline_url(@current_user.id) %>
+    <p>name<%= @current_user.name %> </p>
+      <p> days: <%= @holiday.days %> </p>
+      <p> start date: <%= @holiday.start_date %> </p>
+      <p> end date: <%= @holiday.end_date %> </p>
+      <p> replacements: <%= @replacements %> </p>
+      <p> projects: <%= @projects %> </p>
+      <%= link_to "Response", URL + "/api/v1/users/#{@current_user.id}/holiday/response" %>
+      <br>
+      <br>
   </body>
 </html>

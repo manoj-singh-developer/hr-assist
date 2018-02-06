@@ -20,7 +20,7 @@ module V1
             authenticate!
             authorize_user!
           }
-
+ 
           desc "Get all user holidays"
           get ':user_id/holidays' do
             user = User.find(params[:user_id])
@@ -30,20 +30,31 @@ module V1
             end
           end
 
-          desc "Accept user holiday"
-          get ':user_id/holiday/accept' do
+          desc "Ger user holiday"
+          get ':user_id/holiday/response' do
             authorize_admin!
-            accept = Holiday.where(user_id: params[:user_id]).last
-            accept.approve_holiday = true
-            accept.save
+            holiday = Holiday.where(user_id: params[:user_id]).last
+            user = User.find(params[:user_id])
+            {items: 
+              {  
+                user_id: user.id,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                days: holiday.days,
+                start_date: holiday.start_date,
+                end_date: holiday.end_date,
+                holiday_id: holiday.id
+              }
+            }
           end
 
-          desc "Decline user holiday"
-          get ':user_id/holiday/decline' do
+          desc "Accept user holiday"
+          post ':user_id/holiday/response' do
             authorize_admin!
-            accept = Holiday.where(user_id: params[:user_id]).last
-            accept.approve_holiday = false
-            accept.save
+            choice = true ? params[:response] == "true" : false
+            accepted_holiday = Holiday.where(user_id: params[:user_id]).last
+            accepted_holiday.approve_holiday = choice
+            accepted_holiday.save
           end
 
           desc "Get user holiday by id"
