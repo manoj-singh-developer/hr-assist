@@ -12,10 +12,9 @@
   UserFactory.$inject = ['$q', '$http', 'apiUrl', '$window', '$resource'];
 
   function UserFactory($q, $http, apiUrl, $window, $resource) {
-
     // Public API here
     return {
-      login: login,
+      login: login
     };
 
     function login(username, password) {
@@ -32,7 +31,6 @@
             return reject(error);
           });
       }
-
       return $q(promise);
     }
 
@@ -40,6 +38,5 @@
       var url = apiUrl + "/login";
       return $resource(url).save(data);
     }
-
   }
 })();
