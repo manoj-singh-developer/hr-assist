@@ -144,7 +144,7 @@
                     No employee matching were found.
                   </md-not-found>
                 </md-autocomplete>
-               
+
                 <div ng-messages="holidayform['autocompleteReplace_'+$index].$error"
                   layout-gt-xs="row" layout-align="center center"
                   ng-if="holidayform['autocompleteReplace_'+$index].$touched">
@@ -169,13 +169,13 @@
             <section>
               <div layout-gt-xs="row">
                 <label>Start date</label>
-                <md-datepicker 
+                <md-datepicker
                   md-open-on-focus
                   required
                   ng-model="holidayForm.dateList.from"
                   md-placeholder="Enter date"
                   ng-change="holidayForm.checkDates()"
-                  md-date-filter="holidayForm.getWorkingDay"> 
+                  md-date-filter="holidayForm.getWorkingDay">
                 </md-datepicker>
 
                  <label>End date</label>
@@ -186,13 +186,13 @@
                   md-placeholder="Enter date"
                   ng-change="holidayForm.checkDates()"
                   md-date-filter="holidayForm.getWorkingDay">
-                            
+
                 </md-datepicker>
 
-              </div>  
+              </div>
                <label>Signing date</label>
               <div layout-gt-xs="row">
-                <md-datepicker 
+                <md-datepicker
                   md-open-on-focus
                   required
                   ng-model="holidayForm.dateList.signing_day"
@@ -201,11 +201,11 @@
                   md-date-filter="holidayForm.getWorkingDay">
                 </md-datepicker>
               </div>
-            
+
             </section>
             <!--Period end-->
 
-            <section ng-show="holidayForm.validateDate" layout-gt-xs="row" 
+            <section ng-show="holidayForm.validateDate" layout-gt-xs="row"
               layout-align="center center">
               <span class="alert-info fade"
               role="alert">
@@ -214,7 +214,7 @@
             </section>
 
           </md-content>
-          
+
         </md-tab>
         <!-- /Request -->
 
@@ -227,9 +227,10 @@
               <h1 class="vacation-heading">Cerere pentru concediu de odihnă</h1>
               <p>Stimate Domnule Director,</p>
               <p>
-                  Subsemnatul
+                  Subsemnat<span ng-if="!holidayForm.isFemale">ul</span><span ng-if="holidayForm.isFemale">a</span>
                   <strong>{{holidayForm.user.first_name}} {{holidayForm.user.last_name}}</strong>,
-                  angajat al firmei SC ASSIST Software SRL, vă rog să-mi aprobaţi
+                  angaj<span ng-if="!holidayForm.isFemale">t al</span><span ng-if="holidayForm.isFemale">tă a</span>
+                  firmei SC ASSIST Software SRL, vă rog să-mi aprobaţi
                   <strong>
                       {{ (holidayForm.dateList.to - holidayForm.dateList.from - 86400000) | date: 'd'}}
                   </strong>
@@ -254,7 +255,6 @@
                     </span>.
                   </span>
               </p>
-
               <p>Vă mulţumesc.</p>
               <table>
                 <tr>

@@ -19,6 +19,7 @@
     vm.holidayDateIncrement = [{}];
     vm.holidayReplaceIncrement = [{}];
     vm.dateService = dateService;
+    vm.isFemale = false;
 
     vm.querySearch = querySearch;
     vm.saveHoliday = saveHoliday;
@@ -179,6 +180,10 @@
         vm.projects = data;
         return autocompleteService.buildList(vm.projects, ['name']);
       });
+    }
+
+    if (localStorage.getItem('gender') == 'female') {
+        vm.isFemale = true
     }
 
   }
