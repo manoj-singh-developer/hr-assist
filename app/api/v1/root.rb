@@ -22,6 +22,7 @@ module V1
         mount V1::TechnologyAPI
         mount V1::TrainingAPI
         mount V1::UploadAPI
+        mount V1::ComponentAPI
         mount V1::Users::UserAPI
         mount V1::Users::Relations::CertificationAPI
         mount V1::Users::Relations::DeviceAPI
@@ -33,6 +34,7 @@ module V1
         mount V1::Users::Relations::ScheduleAPI
         mount V1::Users::Relations::TechnologyAPI
         mount V1::Users::Relations::UploadAPI
+        mount V1::Users::Relations::DepartmentAPI
 
         add_swagger_documentation(
             api_version: "v1",

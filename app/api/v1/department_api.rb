@@ -28,7 +28,7 @@ module V1
 
     resource :departments do
 
-      desc "Get all departments"
+      desc "Get all departments, role: user/admin"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -36,7 +36,7 @@ module V1
         get_paginated_items_for Department
       end
 
-      desc "Get department"
+      desc "Get department, role: admin"
       params do
         requires :id, type: Integer , desc: "Department id"
       end
@@ -44,7 +44,9 @@ module V1
         authorize! :read, Department.find(params[:id])
       end
 
-      desc "Create new department"
+      desc 'Create new department, role: admin
+
+      {"name": "department_name", "functional_manager": "functional_manager_name"}'
       params do
         requires :name, allow_blank: false, type: String
         requires :functional_manager, allow_blank: false, type: String
@@ -53,7 +55,9 @@ module V1
         authorize_and_create(Department, post_params)
       end
 
-      desc "Update department"
+      desc 'Update department, role: admin
+
+      {"id": "1", name": "component_name", "functional_manager": "functional_manager"}'
       params do
         optional :name, allow_blank: false, type: String
         optional :functional_manager, allow_blank: false, type: String
@@ -65,8 +69,9 @@ module V1
         success
       end
 
-      desc "Delete department"
+      desc "Delete department, role: admin "
       delete ':id' do
+        authorize_admin!
         Department.find(params[:id]).destroy
       end
     end

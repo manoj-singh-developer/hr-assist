@@ -27,7 +27,9 @@ module V1
             user.department
           end
 
-          desc "Create user department"
+          desc 'Create user department
+
+          { "department_id": "30" }'
           params do
             requires :department_id, type: Integer
           end
