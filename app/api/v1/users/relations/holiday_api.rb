@@ -21,7 +21,7 @@ module V1
             authorize_user!
           }
 
-          desc "Get all user holidays"
+          desc "Get all user holidays, role: user"
           get ':user_id/holidays' do
             user = User.find(params[:user_id])
             holidays = user.holidays
@@ -37,7 +37,9 @@ module V1
             get_holiday(holiday)
           end
 
-          desc "Create user holiday"
+          desc 'Create user holiday, role: user
+
+          { "days": 10, "start_date": "2018-11-26", "end_date": "2018-11-29", "signing_day": "2018-11-22", "project_ids":[ "2" , "16" ], replacer_ids": ["2", "1"], "team_leader_ids": "42" }'
           params do
             requires :days, allow_blank: false, type: Integer
             requires :start_date, allow_blank: :false, type: Date

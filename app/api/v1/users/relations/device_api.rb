@@ -21,13 +21,15 @@ module V1
             authorize_user!
           }
 
-          desc "Get all user devices"
+          desc "Get all user devices, role: user"
           get ':user_id/devices' do
             user = User.find(params[:user_id])
             { items: user.get_user_devices }
           end
 
-          desc "Add devices to user"
+          desc 'Add devices to user, role: user 
+
+          {"device_name": "PC_bun","components": [ "CPU i3", "OS Linux", "Diagonala mare"],"serial_number": "123654"}'
           params do
             requires :device_name, type: String, allow_blank: false, desc: "Device name"
             optional :components, type: [String], allow_blank: false, desc: "Components"
@@ -43,7 +45,9 @@ module V1
             { items: user.get_user_devices }
           end
 
-          desc "Delete user devices"
+          desc 'Delete user devices, role: user 
+
+          {"device_ids": ["31","30"]}'
           params do
             requires :device_ids, type: [Integer], desc: "Device ids"
           end

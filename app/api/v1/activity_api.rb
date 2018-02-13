@@ -27,7 +27,7 @@ module V1
 
     resource :activities do
 
-      desc "Get all activities"
+      desc "Get all activities, role: admin"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -35,7 +35,7 @@ module V1
         get_paginated_items_for Activity
       end
 
-      desc "Get activity"
+      desc 'Get activity, role: admin'
       params do
         requires :id ,type: Integer , desc: "activity id"
       end
@@ -43,7 +43,9 @@ module V1
         authorize!(:read, Activity.find(params[:id]))
       end
 
-      desc "Create new activity"
+      desc 'Create new activity, role: admin 
+
+      { "name": "activity_name", "description": "activity_description" }'
       params do
         requires :name, allow_blank: false, type: String
         requires :description, allow_blank: false, type: String
@@ -52,7 +54,9 @@ module V1
         authorize_and_create(Activity, post_params)
       end
 
-      desc "Update activity"
+      desc 'Update activity, role: admin
+
+      { "id": "1", "name": "activity_name", "description": "activity_description" }'
       params do
         optional :name, allow_blank: false, type: String
         optional :description, allow_blank: false, type: String
@@ -64,7 +68,9 @@ module V1
         success
       end
 
-      desc "Delete activity"
+      desc 'Delete activity, role: admin
+
+      {"id": "1"}'
       delete ':id' do
         Activity.find(params[:id]).destroy
       end

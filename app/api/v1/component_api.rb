@@ -28,7 +28,7 @@ module V1
 
     resource :components do
 
-      desc "Get all components"
+      desc "Get all components, roles: admin/user"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -36,7 +36,9 @@ module V1
         get_paginated_items_for HardwareComponent
       end
 
-      desc "Add new component"
+      desc 'Add new component, roles: admin
+
+      {"name": "component_name"}'
       params do
         requires :name, allow_blank: false, type: [String]
       end
