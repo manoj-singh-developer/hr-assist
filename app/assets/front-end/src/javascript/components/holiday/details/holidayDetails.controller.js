@@ -13,7 +13,6 @@
     vm.holidayPaper = {};
     vm.print = print;
 
-    vm.dummyVariablelele="Mergeeee!!!!";
     vm.isFemale = false;
     _getHolidays();
 

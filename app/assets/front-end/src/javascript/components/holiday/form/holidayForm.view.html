@@ -227,9 +227,9 @@
               <h1 class="vacation-heading">Cerere pentru concediu de odihnă</h1>
               <p>Stimate Domnule Director,</p>
               <p>
-                  Subsemnat<span ng-if="!holidayForm.isFemale">ul</span><span ng-if="holidayForm.isFemale">a</span>
+                  Subsemnat{{holidayDetails.isFemale ? 'a' : 'ul'}}
                   <strong>{{holidayForm.user.first_name}} {{holidayForm.user.last_name}}</strong>,
-                  angaj<span ng-if="!holidayForm.isFemale">t al</span><span ng-if="holidayForm.isFemale">tă a</span>
+                  angaj{{holidayDetails.isFemale ? 'tă a' : 't al'}}
                   firmei SC ASSIST Software SRL, vă rog să-mi aprobaţi
                   <strong>
                       {{ (holidayForm.dateList.to - holidayForm.dateList.from - 86400000) | date: 'd'}}
