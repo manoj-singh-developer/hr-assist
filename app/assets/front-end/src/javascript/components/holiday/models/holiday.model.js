@@ -28,7 +28,7 @@
       promise = resource.$promise
         .then(data => data)
         .catch((error) => {
-          alertService.error(model, 'getAll');
+          //alertService.error(model, 'getAll');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -44,7 +44,7 @@
       promise = resource.$promise
         .then(data => data)
         .catch((error) => {
-          alertService.error(model, 'getById');
+          //alertService.error(model, 'getById');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
