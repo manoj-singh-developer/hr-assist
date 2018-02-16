@@ -90,7 +90,7 @@
         .then(data => data)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getById');
+          //alertService.error(model, 'getById');
         });
 
       return promise;
@@ -109,7 +109,7 @@
         .then(data => data.items)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getAll');
+          //alertService.error(model, 'getAll');
         });
 
       return promise;
@@ -128,7 +128,7 @@
         .then(data => data)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getEmployeeTechnologies');
+          //alertService.error(model, 'getEmployeeTechnologies');
         });
       return promise;
     };
@@ -146,7 +146,7 @@
         .then(data => data)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getProjectsTechnologies');
+          //alertService.error(model, 'getProjectsTechnologies');
         });
       return promise;
     };

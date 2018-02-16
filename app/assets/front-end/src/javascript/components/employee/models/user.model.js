@@ -63,7 +63,7 @@
       promise = resource.$promise
         .then(data => data)
         .catch((error) => {
-          alertService.error(model, 'getById');
+          //alertService.error(model, 'getById');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -82,7 +82,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getAll');
+          //alertService.error(model, 'getAll');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -116,7 +116,7 @@
       promise = resource.$promise
         .then(data => data)
         .catch((error) => {
-          alertService.error(model, 'getSchedule');
+          //alertService.error(model, 'getSchedule');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -155,7 +155,7 @@
       promise = resource.$promise
         .then(data => data)
         .catch((error) => {
-          alertService.error(model, 'getPosition');
+          // alertService.error(model, 'getPosition');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -190,7 +190,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getUserDevices');
+          // alertService.error(model, 'getUserDevices');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -255,7 +255,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getLanguages');
+          //alertService.error(model, 'getLanguages');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -269,7 +269,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getUserLanguages');
+          // alertService.error(model, 'getUserLanguages');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -329,7 +329,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getEducations');
+          //alertService.error(model, 'getEducations');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -399,7 +399,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getProjects');
+          // alertService.error(model, 'getProjects');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -487,7 +487,7 @@
       promise = resource.$promise
         .then(data => data)
         .catch((error) => {
-          alertService.error(model, 'getUserHolidays');
+          //alertService.error(model, 'getUserHolidays');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -527,7 +527,7 @@
         .then(data => data.items)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getUserTechnologies');
+          //alertService.error(model, 'getUserTechnologies');
         });
 
       return promise;
@@ -629,7 +629,7 @@
         .then(data => data.items)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getUserTechnologies');
+          //alertService.error(model, 'getUserTechnologies');
         });
 
       return promise;
@@ -736,7 +736,7 @@
         })
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getCv');
+          //alertService.error(model, 'getCv');
         });
     };
 

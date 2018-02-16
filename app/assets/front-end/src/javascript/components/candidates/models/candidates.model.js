@@ -29,7 +29,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getAll');
+          //alertService.error(model, 'getAll');
           errorService.forceLogout(error);
         });
 
