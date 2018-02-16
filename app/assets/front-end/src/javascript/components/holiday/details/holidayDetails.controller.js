@@ -13,6 +13,7 @@
     vm.holidayPaper = {};
     vm.print = print;
 
+    vm.isFemale = false;
     _getHolidays();
 
     function print() {
@@ -51,6 +52,10 @@
 
             });
         });
+    }
+
+    if (localStorage.getItem('gender') == 'female') {
+        vm.isFemale = true
     }
 
 
