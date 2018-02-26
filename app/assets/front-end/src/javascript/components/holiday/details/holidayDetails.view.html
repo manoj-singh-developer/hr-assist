@@ -9,13 +9,14 @@
           <md-icon class="material-icons">print</md-icon>
           <span>Print vacation request</span>
         </button>
-    </div>        
+    </div>
     <h1 class="vacation-heading">Cerere pentru concediu de odihnă</h1>
     <p>Stimate Domnule Director,</p>
     <p>
-        Subsemnatul
+        Subsemnat{{holidayDetails.isFemale ? 'a' : 'ul'}}
         <strong>{{holidayDetails.holidayPaper.lastName}} {{holidayDetails.holidayPaper.firstName}}</strong>,
-        angajat al firmei SC ASSIST Software SRL, vă rog să-mi aprobaţi
+        angaja{{holidayDetails.isFemale ? 'tă a' : 't al'}}
+        firmei SC ASSIST Software SRL, vă rog să-mi aprobaţi
         <strong>{{holidayDetails.holidayPaper.holidays}}</strong>
 
         <span ng-if="holidayDetails.holidayPaper.holidays === 1">zi</span>
@@ -28,12 +29,12 @@
         <span ng-if="holidayDetails.holidayPaper.signing">{{holidayDetails.holidayPaper.signing | date: 'yyyy'}}</span>
         <span ng-if="!holidayDetails.holidayPaper.signing">{{today | date: 'yyyy'}}</span>
 
-        <span ng-if="holidayDetails.holidayPaper.holidays > 1">în intervalul        
-          <span>        
-           <strong>{{holidayDetails.holidayPaper.startDate | date: 'dd.MM.yyyy'}} - {{holidayDetails.holidayPaper.endDate | date: 'dd.MM.yyyy'}}</strong>        
-          </span>.      
+        <span ng-if="holidayDetails.holidayPaper.holidays > 1">în intervalul
+          <span>
+           <strong>{{holidayDetails.holidayPaper.startDate | date: 'dd.MM.yyyy'}} - {{holidayDetails.holidayPaper.endDate | date: 'dd.MM.yyyy'}}</strong>
+          </span>.
         </span>
-        
+
         <span ng-if="holidayDetails.holidayPaper.holidays === 1">în data de <span>
             <strong>{{holidayDetails.holidayPaper.startDate | date: 'dd.MM.yyyy'}}</strong>
         </span>.

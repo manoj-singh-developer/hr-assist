@@ -28,7 +28,7 @@ module V1
 
     resource :application_types do
 
-      desc "Get all application types"
+      desc "Get all application types, role: admin"
       params do
         use :pagination # aliases: includes, use_scope
       end
@@ -36,7 +36,7 @@ module V1
         get_paginated_items_for ApplicationType
       end
 
-      desc "Get application type"
+      desc "Get application type, role: admin "
       params do
         requires :id, type: Integer , desc: "Application type id"
       end
@@ -44,14 +44,14 @@ module V1
         authorize!(:read, ApplicationType.find(params[:id]))
       end
 
-      desc "Get all application type projects"
+      desc "Get all application type projects, role: admin"
       get ':id/projects' do
         application_type = ApplicationType.find(params[:id])
         projects = application_type.projects
         {items: projects}
       end
 
-      desc "Delete application type projects"
+      desc "Delete application type projects, role: admin"
       params do
         requires :project_ids, type: Array[Integer], desc: "Projects ids"
       end
@@ -59,7 +59,9 @@ module V1
         delete_object(ApplicationType, Project, params[:id], params[:project_ids])
       end
 
-      desc "Create new application type"
+      desc 'Create new application type, role: admin
+
+      { "name": "application_name", "label": "applicaion_label"}'
       params do
         requires :name, allow_blank: false, type: String
         requires :label, allow_blank: false, type: String
@@ -74,7 +76,9 @@ module V1
         end
       end
 
-      desc "Update application type"
+      desc 'Update application type, role: admin 
+
+      { "id": "1", name": "applicatidon_name", "label": "applicaion_label"}'
       params do
         optional :name, allow_blank: false, type: String
         optional :label, allow_blank: false, type: String
@@ -86,7 +90,7 @@ module V1
         success
       end
 
-      desc "Delete application type"
+      desc "Delete application type, role: admin"
       delete ':id' do
         ApplicationType.find(params[:id]).destroy
       end

@@ -37,7 +37,7 @@ module V1
 
     resource :devices do
 
-      desc "Get all devices"
+      desc "Get all devices, roles: user/admin"
       get do
         if params[:filters]
          filtered_devices(params[:filters])
@@ -49,8 +49,7 @@ module V1
         end
       end
 
-
-      desc "Get device"
+      desc "Get device, role: admin"
       params do
         requires :id , type: Integer , desc: "Device ID"
       end
@@ -58,19 +57,22 @@ module V1
         authorize!(:read, Device.find(params[:id]))
       end
 
-      desc "Get all device users"
+      desc "Get all device users, role: admin"
       get ':id/users' do
         authorize_admin!
         device = Device.find(params[:id])
         {items: device.users}
       end
 
-      desc "Create new device"
+      desc 'Create new device, role: admin
+
+      {"name": "device_name", "serial_number": "111111"}'
       params do
         requires :name, allow_blank: false, type: String
         optional :serial_number, allow_blank: false, type: String
       end
       post 'new' do
+
         if params[:items]
           params[:items].each do |item|
             authorize_and_create(Device, {name: item[:name] , serial_number: item[:serial_number]})
@@ -80,7 +82,9 @@ module V1
         end
       end
 
-      desc "Update device"
+      desc 'Update device, role:admin 
+
+      {"id": "1", name": "device_name", "serial_number": "111111"}'
       params do
         optional :name, allow_blank: false, type: String
         optional :serial_number, allow_blank: false, type: String
