@@ -18,7 +18,7 @@
       controllerAs: 'userDevices',
       templateUrl: rootTemplatePath + 'employee/devices/userDevices.view.html'
     };
-    
+
     return directive
   }
 
