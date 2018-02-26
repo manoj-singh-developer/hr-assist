@@ -6,7 +6,7 @@
     .module('HRA')
     .controller('userDevicesCtrl', userDevicesCtrl);
 
-  function userDevicesCtrl($mdDialog, $rootScope, $scope, autocompleteService, Device, User) {
+  function userDevicesCtrl($mdDialog, $rootScope, $scope, autocompleteService, Component, User) {
 
     let vm = this;
     let componentsToAdd = [];
@@ -142,7 +142,7 @@
     }
 
     function _getComponents() {
-      Device.getComponents()
+      Component.getAll()
         .then((data) => {
           vm.components = data;
           autocompleteService.buildList(vm.components, ['name']);
