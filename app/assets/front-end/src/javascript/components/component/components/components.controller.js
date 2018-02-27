@@ -8,7 +8,10 @@
 
     function componentsCtrl($scope, $rootScope, $mdDialog, tableSettings, autocompleteService, Component) {
 
-        var vm = this;
+        let vm = this;
+        let excelData = [];
+        let exportComponents = [];
+        let querySearchItems = [];
         vm.tableSettings = tableSettings;
         vm.tableSettings.query = {
             limit: 10,
@@ -19,11 +22,11 @@
         vm.showForm = showForm;
         vm.remove = remove;
         vm.querySearch = querySearch;
+        vm.saveExcelFile = saveExcelFile;
 
         _getComponents();
 
         $rootScope.$on('event:componentUpdate', (event, data) => {
-            debugger
             let editedComponent = _.findWhere(vm.components, {
                 id: data.id
             });
@@ -61,6 +64,7 @@
                         });
                         vm.components = _.without(vm.components, toRemove);
                         _updateTablePagination(vm.components);
+                        _generateXlsx();
                     }
                     if (data.error == 'sql_error') {
                         let alert = $mdDialog.alert()
@@ -90,11 +94,22 @@
         function querySearch(query, list) {
             if (query) {
                 _updateTablePagination(autocompleteService.querySearch(query, list));
+                querySearchItems = autocompleteService.querySearch(query, list);
+                _generateXlsx();
             } else {
                 _updateTablePagination(list);
+                _generateXlsx();
             }
             return autocompleteService.querySearch(query, list);
 
+        }
+
+        function saveExcelFile() {
+            let opts = [{
+                sheetid: 'Components Raport',
+                headers: false
+            }];
+            let res = alasql('SELECT INTO XLSX("Components Raport.xlsx",?) FROM ? ORDER BY name', [opts, [excelData]]);
         }
 
         function _updateTablePagination(data) {
@@ -105,9 +120,45 @@
             Component.getAll().then((data) => {
                 vm.components = data;
                 _updateTablePagination(vm.components);
+                _generateXlsx();
                 return autocompleteService.buildList(vm.components, ['name']);
             });
         }
+
+        function _generateXlsx() {
+            excelData = [];
+            exportComponents = vm.searchText ? querySearchItems : vm.components;
+
+            let tableHeader = {
+                name: 'Component'
+            };
+
+            if (exportComponents) {
+                angular.forEach(exportComponents, function(value, key) {
+                    excelData.push({
+                        name: value.name
+                    });
+                });
+
+                Array.prototype.sortOn = function(key) {
+                    this.sort(function(a, b) {
+                        if (a[key].toLowerCase() < b[key].toLowerCase()) {
+                            return -1;
+                        } else if (a[key].toLowerCase() > b[key].toLowerCase()) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                };
+
+                excelData.sortOn('name');
+                excelData.unshift(tableHeader);
+
+                return excelData;
+            }
+        }
+
+
 
     }
 
