@@ -111,7 +111,7 @@
 
 
   <!-- ALL FILTERS -->
-  
+
 
   <hra-users-filters></hra-users-filters>
 <!-- / ALL FILTERS -->
@@ -154,9 +154,9 @@
           md-row
           md-select="employee"
           md-on-select="logItem"
-          ng-repeat="employee in users.users 
+          ng-repeat="employee in users.users
           | filter: (users.firstNameFilter || users.searchText)
-          | orderBy: users.tableSettings.query.order 
+          | orderBy: users.tableSettings.query.order
           | limitTo: users.tableSettings.query.limit : (users.tableSettings.query.page - 1) * users.tableSettings.query.limit track by $index"
           ui-sref="employeesParent.details({id: employee.id})">
           <td md-cell>
@@ -166,7 +166,7 @@
           <td md-cell>
             <p>{{employee.last_name}}</p>
           </td>
-          
+
           <td md-cell>
             <p>{{employee.first_name}}</p>
           </td>
@@ -179,7 +179,7 @@
           <td md-cell>
             <ul class="c-list" ng-if="employee.languages">
               <li ng-repeat="language in employee.languages">
-                {{$index + 1}}. {{language.long_name}}: 
+                {{$index + 1}}. {{language.long_name}}:
                 <span ng-if="language.level">
                   {{users.getLanguageLvlTxt(language.level)}}
                 </span>
@@ -210,17 +210,17 @@
           </td>
 
           <td md-cell ng-hide="employee.candidate">
-            <ul class="c-list" ng-if="employee.projects">
-              <li ng-repeat="project in employee.projects">
-                {{$index + 1}}. {{project.name}}
+            <ul class="c-list" ng-if="employee.certifications">
+              <li ng-repeat="certification in employee.certifications">
+                {{$index + 1}}. {{certification.name}}
               </li>
             </ul>
           </td>
-          
+
           <td md-cell>
               {{employee.company_start_date | date: "dd-MM-yyyy"}}
           </td>
-          
+
           <td md-cell>
 
             <md-button
