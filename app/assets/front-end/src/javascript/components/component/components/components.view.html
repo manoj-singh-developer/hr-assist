@@ -27,7 +27,7 @@
             Add
         </md-button>
 
-        <!-- <md-button
+        <md-button
           ng-click="components.saveExcelFile()"
           class="md-primary">
           <md-icon class="material-icons">file_download</md-icon>
@@ -35,7 +35,7 @@
             Export Excel
           </md-tooltip>
           Export Excel
-        </md-button> -->
+        </md-button>
 
       </div>
 
@@ -119,7 +119,7 @@
         md-select="component"
         md-on-select="logItem"
         md-auto-select="components.tableSettings.options.autoSelect"
-        ng-repeat="component in components.components | orderBy: components.tableSettings.query.order | limitTo: components.tableSettings.query.limit : (components.tableSettings.query.page -1) * components.tableSettings.query.limit">
+        ng-repeat="component in components.querySearch(components.searchText, components.components) | orderBy: components.tableSettings.query.order | limitTo: components.tableSettings.query.limit : (components.tableSettings.query.page -1) * components.tableSettings.query.limit">
 
           <td md-cell>{{$index + 1}}</td>
 
