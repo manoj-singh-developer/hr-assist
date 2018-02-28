@@ -130,13 +130,15 @@
             exportDepartments = vm.searchText ? querySearchItems : vm.departments;
 
             let tableHeader = {
-                name: 'Department'
+                name: 'Department',
+                functional_manager: 'Functional Manager'
             };
 
             if (exportDepartments) {
                 angular.forEach(exportDepartments, function(value, key) {
                     excelData.push({
-                        name: value.name
+                        name: value.name,
+                        functional_manager: value.functional_manager
                     });
                 });
 

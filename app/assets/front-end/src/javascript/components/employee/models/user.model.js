@@ -182,6 +182,64 @@
       return promise;
     };
 
+    User.getDepartments = () => {
+      url = apiUrl + '/departments';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getAll');
+        });
+
+      return promise;
+    };
+
+    User.getDepartment = (user) => {
+      url = apiUrl + '/users/:id/department';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: true
+        }
+      }).get({ id: user.id });
+
+      promise = resource.$promise
+        .then(data => data)
+        .catch((error) => {
+          // alertService.error(model, 'getDepartment');
+          errorService.forceLogout(error);
+          errorService.notUserFound(error);
+        });
+
+      return promise;
+    };
+
+    User.updateDepartment = (user, department) => {
+      url = apiUrl + '/users/:id/department/new';
+      resource = $resource(url, {}, {
+        'post': { method: 'POST' }
+      }).save({ id: user.id },{ department_id: department.id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'updateDepartment');
+          return data.items;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'updateDepartment')
+        });
+
+      return promise;
+    };
+
     User.getUserDevices = (userId) => {
       var userID = userId;
       url = apiUrl + '/users/' + userID + '/devices';

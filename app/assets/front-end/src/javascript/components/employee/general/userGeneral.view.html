@@ -21,8 +21,8 @@
         <!-- <strong>Last Update at: {{userGeneral.user.updatedAt | date: 'longDate'}}</strong> -->
       </p>
     </md-card-title-text>
-      
-    <button class="md-primary md-button" type="button" 
+
+    <button class="md-primary md-button" type="button"
       ng-click="userGeneral.generateCv()" aria-label="Generate CV">
       <md-icon class="material-icons ng-scope" role="img" aria-label="Generate CV">picture_as_pdf</md-icon>
       <span class="ng-scope">
@@ -30,7 +30,7 @@
       </span><div class="md-ripple-container"></div>
     </button>
 
-    <button class="md-primary md-button" type="button" 
+    <button class="md-primary md-button" type="button"
       ng-click="userGeneral.generateCv('doc')" aria-label="Generate CV"
       ng-if="userGeneral.isAdmin">
       <md-icon class="material-icons ng-scope" role="img" aria-label="Generate CV">file_download</md-icon>
@@ -135,6 +135,19 @@
         </span>
       </p>
 
+      <p class="c-card-profile__info c-card-profile__email u-clearfix" ng-if="userGeneral.department">
+        <strong>Department: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.department.name }}
+        </span>
+      </p>
+      <p class="c-card-profile__info c-card-profile__email u-clearfix" ng-if="userGeneral.department">
+        <strong>Functional Manager: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.department.functional_manager }}
+        </span>
+      </p>
+
       <p class="c-card-profile__info c-card-profile__email u-clearfix">
         <strong>Company email: </strong>
          <span class="u-float-right">
@@ -175,7 +188,7 @@
           {{ userGeneral.user.work_info.github }}
         </span>
       </p>
-      
+
       <p class="c-card-profile__info u-clearfix"
         ng-if="userGeneral.user.work_info.ssh_public_key.length">
         <strong>Public SSH key: </strong>
@@ -476,8 +489,38 @@
       </div>
       <!-- /ASSIST POSITION -->
 
+
+
+      <!-- ASSIST DEPARTMENT -->
+      <div layout-gt-xs="row" layout-align="start center">
+
+        <label flex-gt-xs="35" class="md-padding">
+          <strong>Department*</strong>
+        </label>
+
+        <md-input-container md-no-float class="md-block" flex-gt-xs="65">
+          <md-select
+            aria-label="Department"
+            ng-model="userGeneral.department"
+            ng-change="userGeneral.saveDepartment()"
+            md-selected-text="userGeneral.department.name || 'Department'"
+            md-no-asterisk
+            ng-required="!userGeneral.department">
+              <md-option
+               ng-value="item"
+               ng-repeat="item in userGeneral.departments">
+                 {{item.name}}
+              </md-option>
+          </md-select>
+
+          <!-- <div ng-messages="generalInfoForm.department.$error">
+            <div ng-message="required">This field is required</div>
+            <div ng-message="pattern">Please enter a valid middle name</div>
+          </div> -->
+        </md-input-container>
+
       </div>
-      <!-- /ASSIST POSITION -->
+      <!-- /ASSIST DEAPARTMENT -->
 
       <!-- OFFICE AND CONTRACT -->
       <div layout-gt-xs="row"
@@ -500,7 +543,7 @@
       </div>
       <!-- /OFFICE AND CONTRACT -->
 
-      
+
       <!-- SSH KEY -->
       <div layout-gt-xs="row"
         layout-align="start center">
@@ -518,7 +561,7 @@
       </div>
       <!-- /SSH KEY -->
 
-      
+
       <!-- USERNAME OF ACCOUNTS -->
       <div layout-gt-xs="row">
 
@@ -537,7 +580,7 @@
         </md-input-container>
         <!-- BITBUCKET USERNAME -->
 
-        
+
         <!-- GITHUB USERNAME -->
         <md-input-container md-no-float class="md-block" flex-gt-xs="50">
          <label>Github Username</label>
@@ -641,4 +684,3 @@
 
 </md-card>
 <!-- CARD GENERAL INFO -->
-
