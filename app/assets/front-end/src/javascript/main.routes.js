@@ -264,6 +264,30 @@ const rootTemplatePath = './views/components/';
           cssClassNames: 'view-components'
         }
       })
+      //@Departments
+      .state('departmentsParent', {
+        url: '/departments',
+        template: '<section ui-view></section>',
+        data: {
+          permissions: {
+            only: ['ADMIN'],
+            except: ['isAnonymous'],
+            redirectTo: 'login'
+          }
+        }
+      })
+      .state('departmentsParent.list', {
+        url: '/list',
+        template: '<hra-departments></hra-departments>',
+        data: {
+          permissions: {
+            only: ['ADMIN'],
+            except: ['isAnonymous'],
+            redirectTo: 'login'
+          },
+          cssClassNames: 'view-departments'
+        }
+      })
       // @CANDIDATES
       .state('candidateParent', {
         url: '/candidate',

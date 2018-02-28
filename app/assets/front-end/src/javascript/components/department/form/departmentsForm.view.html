@@ -1,0 +1,60 @@
+<md-toolbar class="md-table-toolbar">
+  <div class="md-toolbar-tools">
+    Department form
+  </div>
+</md-toolbar>
+
+
+
+<section class="md-padding">
+  <form
+    name="someForm"
+    class="form form-add-user"
+    ng-submit="departmentForm.add()">
+
+    <div layout-gt-xs="row">
+      <md-input-container md-no-float class="md-block" flex-gt-xs="">
+        <label>Name</label>
+        <input
+        type="text"
+        name="name"
+        ng-required="true"
+        ng-model="departmentForm.department.name">
+      </md-input-container>
+    </div>
+    
+    <div layout-gt-xs="row">
+      <md-input-container md-no-float class="md-block" flex-gt-xs="">
+        <label>Functional Manager</label>
+        <input
+        type="text"
+        name="name"
+        ng-required="true"
+        ng-model="departmentForm.department.functional_manager">
+      </md-input-container>
+    </div>
+
+
+    <div ng-init="disableSave=true" layout="row" layout-align="center center">
+
+      <md-button
+        ng-disabled="someForm.$invalid"
+        class="md-raised md-primary" ng-click="departmentForm.add()">
+        Save
+      </md-button>
+
+      <md-button
+        ng-disabled="someForm.$invalid"
+        class="md-raised md-primary" ng-click="departmentForm.clearButton()">
+        Clear
+      </md-button>
+
+      <md-button
+        class="md-raised" ng-click="departmentForm.closeButton()">
+        Close
+      </md-button>
+
+    </div>
+
+   </form>
+</section>
