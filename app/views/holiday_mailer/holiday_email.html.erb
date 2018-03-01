@@ -10,7 +10,8 @@
       <p> end date: <%= @holiday.end_date %> </p>
       <p> replacements: <%= @replacements %> </p>
       <p> projects: <%= @projects %> </p>
-      <%= link_to "Response", URL + "/api/v1/users/#{@current_user.id}/holiday/response" %>
+
+      <%= link_to "Response", "http://localhost:8000/#/holidays/request" %>
       <br>
       <br>
   </body>

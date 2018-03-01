@@ -5,6 +5,6 @@ class HolidayMailer < ApplicationMailer
     @holiday = holiday
     @projects = projects
     @replacements = replacements
-    mail(to: team_leaders, subject: 'HR.ASSIST.RO')
+    mail(to: ['alin.cioban@assist.ro','daniel.furtuna@assist.ro'], subject: 'HR.ASSIST.RO Holiday')
   end
 end

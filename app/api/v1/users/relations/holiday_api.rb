@@ -20,7 +20,7 @@ module V1
             authenticate!
             authorize_user!
           }
- 
+
           desc "Get all user holidays"
           get ':user_id/holidays' do
             user = User.find(params[:user_id])
@@ -35,8 +35,8 @@ module V1
             authorize_admin!
             holiday = Holiday.where(user_id: params[:user_id]).last
             user = User.find(params[:user_id])
-            {items: 
-              {  
+            {items:
+              {
                 user_id: user.id,
                 first_name: user.first_name,
                 last_name: user.last_name,
@@ -76,7 +76,7 @@ module V1
           end
           post ':user_id/holidays' do
             User.find(params[:replacer_ids], params[:team_leader_ids], params[:user_id])
-            
+
             holiday = Holiday.create(days: params[:days], start_date: params[:start_date], end_date: params[:end_date], signing_day: params[:signing_day], user_id: params[:user_id])
             params[:project_ids].zip(params[:replacer_ids], params[:team_leader_ids]).each do |project_id, replacer_id, team_leader_id|
               holiday_replacement = HolidayReplacement.create(holiday_id: holiday.id, project_id: project_id, replacer_id: replacer_id, team_leader_id: team_leader_id)
@@ -90,7 +90,7 @@ module V1
             team_leaders = User.where(id: params[:team_leader_ids]).pluck(:email)
 
             HolidayMailer.holiday_email(team_leaders, current_user, holiday, projects, replacements).deliver_now
-              
+
             get_holiday(holiday)
           end
 
