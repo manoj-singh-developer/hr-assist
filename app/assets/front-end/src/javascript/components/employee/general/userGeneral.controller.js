@@ -6,7 +6,7 @@
     .module('HRA')
     .controller('userGeneralCtrl', userGeneralCtrl);
 
-  function userGeneralCtrl($rootScope, $scope, $stateParams, $state, AuthInterceptor, dateService, md5, Position, Department, User) {
+  function userGeneralCtrl($rootScope, $scope, $stateParams, $state, AuthInterceptor, dateService, md5, Position, User) {
 
     let vm = this;
     let userCopy = {};
@@ -220,9 +220,6 @@
               'Position': {
                 'Label': vm.position.name
               },
-              'Department': {
-                'Label': vm.department.name
-              },
               'Activities': '',
               'Employer': {
                 'Name': 'Assist Software',
@@ -354,8 +351,7 @@
     function _getUserDepartment() {
       User.getDepartment(vm.user).then((data) => {
         vm.department = data[data.length-1];
-
-        //saveCopy();
+        saveCopy();
       });
     }
 
