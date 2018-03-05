@@ -423,7 +423,7 @@
           delete filterObj[key];
         }
       }
-      
+
       if (!angular.equals(filterObj, {})) {
         filterObj = {
           filters: filterObj
