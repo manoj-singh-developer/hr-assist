@@ -52,4 +52,5 @@ Rails.application.routes.draw do
 
   get '/smtp', to: 'admin/smtp#show'
   post '/smtp' , to: 'smtp_settings#create'
+
 end
