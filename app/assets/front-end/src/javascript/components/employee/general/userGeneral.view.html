@@ -21,8 +21,8 @@
         <!-- <strong>Last Update at: {{userGeneral.user.updatedAt | date: 'longDate'}}</strong> -->
       </p>
     </md-card-title-text>
-      
-    <button class="md-primary md-button" type="button" 
+
+    <button class="md-primary md-button" type="button"
       ng-click="userGeneral.generateCv()" aria-label="Generate CV">
       <md-icon class="material-icons ng-scope" role="img" aria-label="Generate CV">picture_as_pdf</md-icon>
       <span class="ng-scope">
@@ -30,7 +30,15 @@
       </span><div class="md-ripple-container"></div>
     </button>
 
-    <button class="md-primary md-button" type="button" 
+    <button class="md-primary md-button" type="button"
+      ng-click="userGeneral.goToHolidaysCalendar()" aria-label="Holidays Calendar">
+      <md-icon class="material-icons ng-scope" role="img" aria-label="Holidays Calendar">mood</md-icon>
+      <span class="ng-scope">
+        Holidays Calendar
+      </span><div class="md-ripple-container"></div>
+    </button>
+
+    <button class="md-primary md-button" type="button"
       ng-click="userGeneral.generateCv('doc')" aria-label="Generate CV"
       ng-if="userGeneral.isAdmin">
       <md-icon class="material-icons ng-scope" role="img" aria-label="Generate CV">file_download</md-icon>
@@ -175,7 +183,7 @@
           {{ userGeneral.user.work_info.github }}
         </span>
       </p>
-      
+
       <p class="c-card-profile__info u-clearfix"
         ng-if="userGeneral.user.work_info.ssh_public_key.length">
         <strong>Public SSH key: </strong>
@@ -500,7 +508,7 @@
       </div>
       <!-- /OFFICE AND CONTRACT -->
 
-      
+
       <!-- SSH KEY -->
       <div layout-gt-xs="row"
         layout-align="start center">
@@ -518,7 +526,7 @@
       </div>
       <!-- /SSH KEY -->
 
-      
+
       <!-- USERNAME OF ACCOUNTS -->
       <div layout-gt-xs="row">
 
@@ -537,7 +545,7 @@
         </md-input-container>
         <!-- BITBUCKET USERNAME -->
 
-        
+
         <!-- GITHUB USERNAME -->
         <md-input-container md-no-float class="md-block" flex-gt-xs="50">
          <label>Github Username</label>

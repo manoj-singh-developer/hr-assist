@@ -125,7 +125,7 @@ const rootTemplatePath = './views/components/';
         template: '<hra-holidays-calendar></hra-holidays-calendar>',
         data: {
           permissions: {
-            only: ['ADMIN'],
+            only: ['ADMIN','EMPLOYEE'],
             except: ['isAnonymous'],
             redirectTo: 'login'
           },
@@ -523,7 +523,7 @@ const rootTemplatePath = './views/components/';
     if (decodeToken) {
       userIdApi = parseInt(decodeToken.user_id);
       userIdTransition = parseInt(transitionProperties.toParams.id);
-      permittedState = (transitionProperties.toState.name == 'holidayParent.details');
+      permittedState = (transitionProperties.toState.name == 'holidayParent.details' || transitionProperties.toState.name == 'holidayParent.calendar');
       // [ userIdApi ] and [ userIdTransition ] should be the same
       // in order to PREVENT an Employee
       // to access other Employee profile
