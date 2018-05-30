@@ -120,6 +120,18 @@ const rootTemplatePath = './views/components/';
           cssClassNames: 'view-holidays'
         }
       })
+      .state('holidayParent.calendar', {
+        url: '/calendar',
+        template: '<hra-holidays-calendar></hra-holidays-calendar>',
+        data: {
+          permissions: {
+            only: ['ADMIN'],
+            except: ['isAnonymous'],
+            redirectTo: 'login'
+          },
+          cssClassNames: 'view-holidays-calendar'
+        }
+      })
       .state('holidayParent.details', {
         url: '/:id',
         template: '<hra-holiday-details></hra-holiday-details>',

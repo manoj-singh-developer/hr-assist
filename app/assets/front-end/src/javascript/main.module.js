@@ -14,7 +14,8 @@
     'angular-loading-bar',
     'routes',
     'ui.gravatar',
-    'angular-md5'
+    'angular-md5',
+    'ui.calendar'
   ]);
 
   angular
