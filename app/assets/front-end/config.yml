@@ -34,6 +34,7 @@ PATHS:
     - "bower_components/angular-datepicker/dist/angular-datepicker.css"
     - "bower_components/angular-datepicker/dist/angular-datepicker.css"
     - "bower_components/angular-loading-bar/build/loading-bar.min.css"
+    - "bower_components/fullcalendar/dist/fullcalendar.css"
 
   sass:
     - "src/sass/**/*.sass"
@@ -80,3 +81,6 @@ PATHS:
     - "bower_components/alasql/dist/alasql.min.js"
     - "bower_components/js-xlsx/dist/xlsx.full.min.js"
     - "bower_components/angular-md5/angular-md5.min.js"
+    - "bower_components/angular-ui-calendar/src/calendar.js"
+    - "bower_components/fullcalendar/dist/fullcalendar.min.js"
+    - "bower_components/fullcalendar/dist/gcal.js"
