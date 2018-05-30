@@ -37,6 +37,7 @@
     vm.cancel = cancel;
     vm.userLogOut = userLogOut;
     vm.generateCv = generateCv;
+    vm.goToHolidaysCalendar = goToHolidaysCalendar;
     vm.viewSsh = viewSsh;
 
     _getPositions();
@@ -99,6 +100,10 @@
       });
     }
 
+    function goToHolidaysCalendar () {
+      $state.go('holidayParent.calendar');
+    }
+
     function saveCopy() {
       userCopy = angular.copy(vm.user);
       positionCopy = angular.copy(vm.position);
@@ -124,7 +129,7 @@
     }
 
     function generateCv(typeOfDoc) {
-     
+
       let objectToGenerate = {
         'SkillsPassport': {
           'Locale': 'en',
