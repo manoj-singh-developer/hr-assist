@@ -27,7 +27,7 @@
                     holidayObj = {
                       title: user.first_name + ' ' + user.last_name,
                       start: holiday.start_date,
-                      end: holiday.end_date,
+                      end: moment(holiday.end_date, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD"),
                       stick: true
                     };
 
