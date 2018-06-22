@@ -70,7 +70,7 @@
         .then(data => data.items)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getAll');
+          //alertService.error(model, 'getAll');
         });
 
       return promise;
@@ -84,7 +84,7 @@
         .then(data => data)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getById');
+          //alertService.error(model, 'getById');
         });
 
       return promise;
@@ -121,7 +121,7 @@
         .then(data => data)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getEmployees');
+          //alertService.error(model, 'getEmployees');
         });
 
       return promise;
@@ -165,7 +165,7 @@
         .then(data => data.items)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getTechnologies');
+          //alertService.error(model, 'getTechnologies');
         });
 
       return promise;
@@ -229,7 +229,7 @@
         .then(data => data.items)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getIndustries');
+          //alertService.error(model, 'getIndustries');
         });
 
       return promise;
@@ -289,7 +289,7 @@
         .then(data => data.items)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'get customers');
+          //alertService.error(model, 'get customers');
         });
 
       return promise;
@@ -351,7 +351,7 @@
         .then(data => data.items)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'get appTypes');
+          //alertService.error(model, 'get appTypes');
         });
 
       return promise;
@@ -412,7 +412,7 @@
         .then(data => data.items)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getUsers');
+          //alertService.error(model, 'getUsers');
         });
 
       return promise;
@@ -444,7 +444,7 @@
       if (users.usersToRemove) {
         data['user_ids[]'] = users.usersToRemove;
       };
-      
+
       if (users.team_leader_id) {
         data['team_leader_id']= users.team_leader_id;
       };

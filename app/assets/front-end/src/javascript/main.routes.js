@@ -217,8 +217,44 @@ const rootTemplatePath = './views/components/';
         }
       })
       // @Devices
-      .state('deviceParent', {
-        url: '/devices',
+      // .state('deviceParent', {
+      //   url: '/devices',
+      //   template: '<section ui-view></section>',
+      //   data: {
+      //     permissions: {
+      //       only: ['ADMIN'],
+      //       except: ['isAnonymous'],
+      //       redirectTo: 'login'
+      //     }
+      //   }
+      // })
+      // .state('deviceParent.list', {
+      //   url: '/list',
+      //   template: '<hra-devices md-whiteframe="6"></hra-devices>',
+      //   data: {
+      //     permissions: {
+      //       only: ['ADMIN'],
+      //       except: ['isAnonymous'],
+      //       redirectTo: 'login'
+      //     },
+      //     cssClassNames: 'view-devices'
+      //   }
+      // })
+      // .state('deviceParent.details', {
+      //   url: '/:id',
+      //   template: '<hra-device-details></hra-device-detail>',
+      //   data: {
+      //     permissions: {
+      //       only: ['ADMIN'],
+      //       except: ['isAnonymous'],
+      //       redirectTo: 'login'
+      //     },
+      //     cssClassNames: 'view-device-details'
+      //   }
+      // })
+      //@Components
+      .state('componentsParent', {
+        url: '/components',
         template: '<section ui-view></section>',
         data: {
           permissions: {
@@ -228,28 +264,40 @@ const rootTemplatePath = './views/components/';
           }
         }
       })
-      .state('deviceParent.list', {
+      .state('componentsParent.list', {
         url: '/list',
-        template: '<hra-devices md-whiteframe="6"></hra-devices>',
+        template: '<hra-components></hra-components>',
         data: {
           permissions: {
             only: ['ADMIN'],
             except: ['isAnonymous'],
             redirectTo: 'login'
           },
-          cssClassNames: 'view-devices'
+          cssClassNames: 'view-components'
         }
       })
-      .state('deviceParent.details', {
-        url: '/:id',
-        template: '<hra-device-details></hra-device-detail>',
+      //@Departments
+      .state('departmentsParent', {
+        url: '/departments',
+        template: '<section ui-view></section>',
+        data: {
+          permissions: {
+            only: ['ADMIN'],
+            except: ['isAnonymous'],
+            redirectTo: 'login'
+          }
+        }
+      })
+      .state('departmentsParent.list', {
+        url: '/list',
+        template: '<hra-departments></hra-departments>',
         data: {
           permissions: {
             only: ['ADMIN'],
             except: ['isAnonymous'],
             redirectTo: 'login'
           },
-          cssClassNames: 'view-device-details'
+          cssClassNames: 'view-departments'
         }
       })
       // @CANDIDATES

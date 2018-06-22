@@ -39,6 +39,7 @@
               resolve (getLvlTxt(techUsers[i].technology_level));
             });
 
+
             vm.skillLvlTxt = [];
             promise
               .then((response) => {

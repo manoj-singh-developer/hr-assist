@@ -21,13 +21,40 @@ module V1
             authorize_user!
           }
 
-          desc "Get all user holidays"
+          desc "Get all user holidays, role: user"
           get ':user_id/holidays' do
             user = User.find(params[:user_id])
             holidays = user.holidays
             holidays.map do |holiday|
               get_holiday(holiday)
             end
+          end
+
+          desc "Ger user holiday"
+          get ':user_id/holiday/response' do
+            authorize_admin!
+            holiday = Holiday.where(user_id: params[:user_id]).last
+            user = User.find(params[:user_id])
+            {items:
+              {
+                user_id: user.id,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                days: holiday.days,
+                start_date: holiday.start_date,
+                end_date: holiday.end_date,
+                holiday_id: holiday.id
+              }
+            }
+          end
+
+          desc "Accept user holiday"
+          post ':user_id/holiday/response' do
+            authorize_admin!
+            choice = true ? params[:response] == "true" : false
+            accepted_holiday = Holiday.where(user_id: params[:user_id]).last
+            accepted_holiday.approve_holiday = choice
+            accepted_holiday.save
           end
 
           desc "Get user holiday by id"
@@ -37,7 +64,9 @@ module V1
             get_holiday(holiday)
           end
 
-          desc "Create user holiday"
+          desc 'Create user holiday, role: user
+
+          { "days": 10, "start_date": "2018-11-26", "end_date": "2018-11-29", "signing_day": "2018-11-22", "project_ids":[ "2" , "16" ], replacer_ids": ["2", "1"], "team_leader_ids": "42" }'
           params do
             requires :days, allow_blank: false, type: Integer
             requires :start_date, allow_blank: :false, type: Date
@@ -55,6 +84,15 @@ module V1
               holiday_replacement = HolidayReplacement.create(holiday_id: holiday.id, project_id: project_id, replacer_id: replacer_id, team_leader_id: team_leader_id)
               holiday.holiday_replacements << holiday_replacement
             end
+
+            user = User.find(params[:user_id])
+            projects = Project.where(id: params[:project_ids])
+            projects = projects.map(&:name).join(', ')
+            replacements = User.where(id: params[:replacer_ids]).pluck(:first_name, :last_name).map{|t| t.join(" ")}.join(", ")
+            team_leaders = User.where(id: params[:team_leader_ids]).pluck(:email)
+
+            HolidayMailer.holiday_email(team_leaders, current_user, holiday, projects, replacements).deliver_now
+
             get_holiday(holiday)
           end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170523082641) do
+ActiveRecord::Schema.define(version: 20180110141758) do
 
   create_table "active_admin_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "namespace"
@@ -78,6 +78,73 @@ ActiveRecord::Schema.define(version: 20170523082641) do
     t.index ["project_id"], name: "projects_to_app_types", using: :btree
   end
 
+  create_table "candidate_cvs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "candidate_id"
+    t.string   "cv_file_name"
+    t.string   "cv_content_type"
+    t.integer  "cv_file_size"
+    t.datetime "cv_updated_at"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["candidate_id"], name: "index_candidate_cvs_on_candidate_id", using: :btree
+  end
+
+  create_table "candidate_files", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "candidate_id"
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["candidate_id"], name: "index_candidate_files_on_candidate_id", using: :btree
+  end
+
+  create_table "candidate_technologies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "level"
+    t.integer  "candidate_id"
+    t.integer  "technology_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["candidate_id"], name: "index_candidate_technologies_on_candidate_id", using: :btree
+    t.index ["technology_id"], name: "index_candidate_technologies_on_technology_id", using: :btree
+  end
+
+  create_table "candidates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.date     "university_start_year"
+    t.date     "university_end_year"
+    t.string   "projects"
+    t.integer  "category"
+    t.string   "contact_info"
+    t.text     "comments",              limit: 65535
+    t.integer  "status"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "cnp"
+    t.string   "candidate_type"
+  end
+
+  create_table "certifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name",           limit: 120
+    t.string   "authority",      limit: 120
+    t.integer  "licence_number"
+    t.date     "year"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  create_table "certifications_users", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "user_id"
+    t.integer "certification_id"
+    t.index ["certification_id"], name: "index_certifications_users_on_certification_id", using: :btree
+    t.index ["user_id"], name: "index_certifications_users_on_user_id", using: :btree
+  end
+
+  create_table "component", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", limit: 45
+  end
+
   create_table "countries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "long_name"
     t.string   "short_name"
@@ -116,17 +183,17 @@ ActiveRecord::Schema.define(version: 20170523082641) do
 
   create_table "devices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.text     "description", limit: 65535
-    t.integer  "total"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "user_id"
+    t.string   "serial_number"
+    t.index ["user_id"], name: "index_devices_on_user_id", using: :btree
   end
 
-  create_table "devices_users", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "user_id"
-    t.integer "device_id"
-    t.index ["device_id"], name: "index_devices_users_on_device_id", using: :btree
-    t.index ["user_id"], name: "index_devices_users_on_user_id", using: :btree
+  create_table "domains", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "allowed_domain"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "educations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -151,6 +218,10 @@ ActiveRecord::Schema.define(version: 20170523082641) do
     t.text     "template",   limit: 65535
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+  end
+
+  create_table "hardware_components", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.text "name", limit: 65535
   end
 
   create_table "holiday_replacements", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -198,9 +269,10 @@ ActiveRecord::Schema.define(version: 20170523082641) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "languages_users", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "languages_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "user_id"
     t.integer "language_id"
+    t.integer "level"
     t.index ["language_id"], name: "index_languages_users_on_language_id", using: :btree
     t.index ["user_id"], name: "index_languages_users_on_user_id", using: :btree
   end
@@ -242,6 +314,48 @@ ActiveRecord::Schema.define(version: 20170523082641) do
     t.index ["technology_id"], name: "index_projects_technologies_on_technology_id", using: :btree
   end
 
+  create_table "rapidfire_answers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "attempt_id"
+    t.integer  "question_id"
+    t.text     "answer_text", limit: 65535
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["attempt_id"], name: "index_rapidfire_answers_on_attempt_id", using: :btree
+    t.index ["question_id"], name: "index_rapidfire_answers_on_question_id", using: :btree
+  end
+
+  create_table "rapidfire_attempts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "survey_id"
+    t.string   "user_type"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["survey_id"], name: "index_rapidfire_attempts_on_survey_id", using: :btree
+    t.index ["user_id", "user_type"], name: "index_rapidfire_attempts_on_user_id_and_user_type", using: :btree
+    t.index ["user_type", "user_id"], name: "index_rapidfire_attempts_on_user_type_and_user_id", using: :btree
+  end
+
+  create_table "rapidfire_questions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "survey_id"
+    t.string   "type"
+    t.string   "question_text"
+    t.string   "default_text"
+    t.string   "placeholder"
+    t.integer  "position"
+    t.text     "answer_options",   limit: 65535
+    t.text     "validation_rules", limit: 65535
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.index ["survey_id"], name: "index_rapidfire_questions_on_survey_id", using: :btree
+  end
+
+  create_table "rapidfire_surveys", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.text     "introduction", limit: 65535
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
   create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.string   "description"
@@ -265,11 +379,20 @@ ActiveRecord::Schema.define(version: 20170523082641) do
     t.index ["user_id"], name: "index_schedules_on_user_id", using: :btree
   end
 
+  create_table "smtp_settings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "key"
+    t.text     "value",      limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
   create_table "technologies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "creator_id"
     t.string   "name"
     t.string   "label"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_technologies_on_creator_id", using: :btree
   end
 
   create_table "technologies_user_projects", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -281,15 +404,12 @@ ActiveRecord::Schema.define(version: 20170523082641) do
   end
 
   create_table "trainings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "title"
     t.text     "description", limit: 65535
-    t.text     "picture",     limit: 65535
-    t.date     "start_date"
-    t.integer  "duration"
-    t.integer  "user_id"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
-    t.index ["user_id"], name: "index_trainings_on_user_id", using: :btree
+    t.string   "organizer"
+    t.string   "subject"
+    t.datetime "time"
   end
 
   create_table "uploads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -300,6 +420,15 @@ ActiveRecord::Schema.define(version: 20170523082641) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.index ["user_id"], name: "index_uploads_on_user_id", using: :btree
+  end
+
+  create_table "user_device_specifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "device_id"
+    t.integer  "hardware_component_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.index ["device_id"], name: "index_user_device_specifications_on_device_id", using: :btree
+    t.index ["hardware_component_id"], name: "index_user_device_specifications_on_hardware_component_id", using: :btree
   end
 
   create_table "user_projects", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -320,6 +449,7 @@ ActiveRecord::Schema.define(version: 20170523082641) do
     t.integer  "technology_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.string   "year"
     t.index ["technology_id"], name: "index_user_technologies_on_technology_id", using: :btree
     t.index ["user_id"], name: "index_user_technologies_on_user_id", using: :btree
   end
@@ -355,23 +485,43 @@ ActiveRecord::Schema.define(version: 20170523082641) do
     t.datetime "updated_at",                                        null: false
     t.string   "city"
     t.string   "zip_code"
-    t.integer  "office_nr"
+    t.string   "office_nr"
     t.string   "urgent_contact_phone"
+    t.string   "cnp"
+    t.string   "stackoverflow"
+    t.date     "company_end_date"
+    t.boolean  "is_active"
+    t.string   "reg_status"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  end
+
+  create_table "work_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.text     "ssh_public_key", limit: 65535
+    t.string   "bitbucket"
+    t.string   "github"
+    t.integer  "user_id"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.index ["user_id"], name: "index_work_infos_on_user_id", using: :btree
   end
 
   add_foreign_key "activities_projects", "activities"
   add_foreign_key "activities_projects", "projects"
   add_foreign_key "application_types_projects", "application_types"
   add_foreign_key "application_types_projects", "projects"
+  add_foreign_key "candidate_cvs", "candidates"
+  add_foreign_key "candidate_files", "candidates"
+  add_foreign_key "candidate_technologies", "candidates"
+  add_foreign_key "candidate_technologies", "technologies"
+  add_foreign_key "certifications_users", "certifications"
+  add_foreign_key "certifications_users", "users"
   add_foreign_key "customers", "countries"
   add_foreign_key "customers_projects", "customers"
   add_foreign_key "customers_projects", "projects"
   add_foreign_key "departments_users", "departments"
   add_foreign_key "departments_users", "users"
-  add_foreign_key "devices_users", "devices"
-  add_foreign_key "devices_users", "users"
+  add_foreign_key "devices", "users"
   add_foreign_key "educations_users", "educations"
   add_foreign_key "educations_users", "users"
   add_foreign_key "holiday_replacements", "holidays"
@@ -392,10 +542,12 @@ ActiveRecord::Schema.define(version: 20170523082641) do
   add_foreign_key "schedules", "users"
   add_foreign_key "technologies_user_projects", "technologies"
   add_foreign_key "technologies_user_projects", "user_projects", column: "user_projects_id"
-  add_foreign_key "trainings", "users"
   add_foreign_key "uploads", "users"
+  add_foreign_key "user_device_specifications", "devices"
+  add_foreign_key "user_device_specifications", "hardware_components"
   add_foreign_key "user_projects", "projects"
   add_foreign_key "user_projects", "users"
   add_foreign_key "user_technologies", "technologies"
   add_foreign_key "user_technologies", "users"
+  add_foreign_key "work_infos", "users"
 end

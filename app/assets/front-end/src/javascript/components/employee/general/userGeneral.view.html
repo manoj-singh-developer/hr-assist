@@ -143,6 +143,19 @@
         </span>
       </p>
 
+      <p class="c-card-profile__info c-card-profile__email u-clearfix" ng-if="userGeneral.department">
+        <strong>Department: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.department.name }}
+        </span>
+      </p>
+      <p class="c-card-profile__info c-card-profile__email u-clearfix" ng-if="userGeneral.department">
+        <strong>Functional Manager: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.department.functional_manager }}
+        </span>
+      </p>
+
       <p class="c-card-profile__info c-card-profile__email u-clearfix">
         <strong>Company email: </strong>
          <span class="u-float-right">
@@ -484,8 +497,33 @@
       </div>
       <!-- /ASSIST POSITION -->
 
+
+
+      <!-- ASSIST DEPARTMENT -->
+      <div layout-gt-xs="row" layout-align="start center">
+
+        <label flex-gt-xs="35" class="md-padding">
+          <strong>Department*</strong>
+        </label>
+
+        <md-input-container md-no-float class="md-block" flex-gt-xs="65">
+          <md-select
+            aria-label="Department"
+            ng-model="userGeneral.department"
+            ng-change="userGeneral.saveDepartment()"
+            md-selected-text="userGeneral.department.name || 'Department'"
+            md-no-asterisk
+            ng-required="!userGeneral.department">
+              <md-option
+               ng-value="item"
+               ng-repeat="item in userGeneral.departments">
+                 {{item.name}}
+              </md-option>
+          </md-select>
+        </md-input-container>
+
       </div>
-      <!-- /ASSIST POSITION -->
+      <!-- /ASSIST DEAPARTMENT -->
 
       <!-- OFFICE AND CONTRACT -->
       <div layout-gt-xs="row"
@@ -649,4 +687,3 @@
 
 </md-card>
 <!-- CARD GENERAL INFO -->
-

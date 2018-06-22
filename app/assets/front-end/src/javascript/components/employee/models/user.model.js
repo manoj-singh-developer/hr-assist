@@ -63,7 +63,7 @@
       promise = resource.$promise
         .then(data => data)
         .catch((error) => {
-          alertService.error(model, 'getById');
+          //alertService.error(model, 'getById');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -82,7 +82,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getAll');
+          //alertService.error(model, 'getAll');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -116,7 +116,7 @@
       promise = resource.$promise
         .then(data => data)
         .catch((error) => {
-          alertService.error(model, 'getSchedule');
+          //alertService.error(model, 'getSchedule');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -155,7 +155,7 @@
       promise = resource.$promise
         .then(data => data)
         .catch((error) => {
-          alertService.error(model, 'getPosition');
+          // alertService.error(model, 'getPosition');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -182,6 +182,64 @@
       return promise;
     };
 
+    User.getDepartments = () => {
+      url = apiUrl + '/departments';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: false
+        }
+      }).get();
+
+      promise = resource.$promise
+        .then(data => data.items)
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'getAll');
+        });
+
+      return promise;
+    };
+
+    User.getDepartment = (user) => {
+      url = apiUrl + '/users/:id/department';
+      resource = $resource(url, {}, {
+        'get': {
+          method: 'GET',
+          isArray: true
+        }
+      }).get({ id: user.id });
+
+      promise = resource.$promise
+        .then(data => data)
+        .catch((error) => {
+          // alertService.error(model, 'getDepartment');
+          errorService.forceLogout(error);
+          errorService.notUserFound(error);
+        });
+
+      return promise;
+    };
+
+    User.updateDepartment = (user, department) => {
+      url = apiUrl + '/users/:id/department/new';
+      resource = $resource(url, {}, {
+        'post': { method: 'POST' }
+      }).save({ id: user.id },{ department_id: department.id });
+
+      promise = resource.$promise
+        .then((data) => {
+          alertService.success(model, 'updateDepartment');
+          return data.items;
+        })
+        .catch((error) => {
+          errorService.forceLogout(error);
+          alertService.error(model, 'updateDepartment')
+        });
+
+      return promise;
+    };
+
     User.getUserDevices = (userId) => {
       var userID = userId;
       url = apiUrl + '/users/' + userID + '/devices';
@@ -190,7 +248,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getUserDevices');
+          // alertService.error(model, 'getUserDevices');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -255,7 +313,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getLanguages');
+          //alertService.error(model, 'getLanguages');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -269,7 +327,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getUserLanguages');
+          // alertService.error(model, 'getUserLanguages');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -329,7 +387,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getEducations');
+          //alertService.error(model, 'getEducations');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -399,7 +457,7 @@
       promise = resource.$promise
         .then(data => data.items)
         .catch((error) => {
-          alertService.error(model, 'getProjects');
+          // alertService.error(model, 'getProjects');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -487,7 +545,7 @@
       promise = resource.$promise
         .then(data => data)
         .catch((error) => {
-          alertService.error(model, 'getUserHolidays');
+          //alertService.error(model, 'getUserHolidays');
           errorService.forceLogout(error);
           errorService.notUserFound(error);
         });
@@ -527,7 +585,7 @@
         .then(data => data.items)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getUserTechnologies');
+          //alertService.error(model, 'getUserTechnologies');
         });
 
       return promise;
@@ -629,7 +687,7 @@
         .then(data => data.items)
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getUserTechnologies');
+          //alertService.error(model, 'getUserTechnologies');
         });
 
       return promise;
@@ -736,7 +794,7 @@
         })
         .catch((error) => {
           errorService.forceLogout(error);
-          alertService.error(model, 'getCv');
+          //alertService.error(model, 'getCv');
         });
     };
 

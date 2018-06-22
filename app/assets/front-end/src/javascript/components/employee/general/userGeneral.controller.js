@@ -6,11 +6,12 @@
     .module('HRA')
     .controller('userGeneralCtrl', userGeneralCtrl);
 
-  function userGeneralCtrl($rootScope, $scope, $stateParams, $state, autocompleteService, AuthInterceptor, dateService, md5, Position, User) {
+  function userGeneralCtrl($rootScope, $scope, $stateParams, $state, AuthInterceptor, dateService, md5, Position, User) {
 
     let vm = this;
     let userCopy = {};
     let positionCopy = {};
+    let departmentCopy = {};
     let scheduleCopy = {};
     let education = [];
     let userImage = '';
@@ -21,6 +22,7 @@
     vm.isAdmin = false;
     vm.user = {};
     vm.position = {};
+    vm.department = {};
     vm.schedule = {};
     vm.certifications = [];
     vm.dateService = dateService;
@@ -33,6 +35,7 @@
 
     vm.save = save;
     vm.savePosition = savePosition;
+    vm.saveDepartment = saveDepartment;
     vm.saveCopy = saveCopy;
     vm.cancel = cancel;
     vm.userLogOut = userLogOut;
@@ -41,6 +44,7 @@
     vm.viewSsh = viewSsh;
 
     _getPositions();
+    _getDepartments();
 
     if ($rootScope.isAdmin === true) {
       vm.isAdmin = true;
@@ -56,6 +60,7 @@
 
       saveCopy();
       _getUserPosition();
+      _getUserDepartment();
       _getEducation();
       _getBase64ImageUrl(vm.user.email, 100);
       _getUserLanguage();
@@ -107,18 +112,28 @@
     function saveCopy() {
       userCopy = angular.copy(vm.user);
       positionCopy = angular.copy(vm.position);
+      departmentCopy = angular.copy(vm.department);
       scheduleCopy = angular.copy(vm.schedule);
     }
 
     function cancel() {
       vm.user = angular.copy(userCopy);
       vm.position = angular.copy(positionCopy);
+      vm.department = angular.copy(departmentCopy);
       vm.schedule = angular.copy(scheduleCopy);
     }
 
     function savePosition() {
       User.updatePosition(vm.user, vm.position).then((data) => {
         vm.position = data;
+      });
+    }
+
+    function saveDepartment() {
+      User.updateDepartment(vm.user, vm.department).then((data) => {
+        // Just a hack because of POST instead OF PUT
+        vm.department = data[data.length-1];
+
       });
     }
 
@@ -323,6 +338,10 @@
       Position.getAll().then(data => vm.positions = data);
     }
 
+    function _getDepartments() {
+      User.getDepartments().then(data => vm.departments = data);
+    }
+
     function _getUser() {
       User.getById($stateParams.id).then(data => vm.user = data);
     }
@@ -330,6 +349,13 @@
     function _getUserPosition() {
       User.getPosition(vm.user).then((data) => {
         vm.position = data;
+        saveCopy();
+      });
+    }
+
+    function _getUserDepartment() {
+      User.getDepartment(vm.user).then((data) => {
+        vm.department = data[data.length-1];
         saveCopy();
       });
     }

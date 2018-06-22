@@ -44,7 +44,6 @@
       $scope.eventSources = [$scope.events];
       $scope.renderCalender = function(calendar) {
         if (uiCalendarConfig.calendars[calendar]) {
-          console.log('.', uiCalendarConfig.calendars[calendar]);
           uiCalendarConfig.calendars[calendar].fullCalendar('render');
         }
       };

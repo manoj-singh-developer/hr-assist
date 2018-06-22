@@ -32,7 +32,8 @@
           type="password"
           required>
   		</md-input-container>
-  	</div><!-- /Input fields -->
+  	</div>
+		<!-- /Input fields -->
 
   	<!-- Actions button -->
   	<div layout="row" layout-align="center center">
@@ -41,12 +42,16 @@
   			type="submit">
   			Sign In
   		</md-button>
-  	</div> <!-- /Actions button -->
+  	</div>
+		<!-- /Actions button -->
   </form>
 
-	<p class="login-footer-note login-error" ng-show="loginCtrl.loginError">
-    <strong>{{loginCtrl.error}}</strong>
-  </p>
+	<div layout="row" layout-align="center center">
+			<div class="login-footer-note alert alert-error fade" ng-show="loginCtrl.loginError">
+		    <i class="material-icons alert-icon" role="img" aria-label="error">error</i>
+				<strong>{{loginCtrl.error}}</strong>
+		  </div>
+	</div>
 
   <p class="login-footer-note">
     <strong>Important: </strong>Use your <strong>ASSIST</strong> email credentials

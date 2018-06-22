@@ -1,0 +1,48 @@
+<md-toolbar class="md-table-toolbar">
+  <div class="md-toolbar-tools">
+    Component form
+  </div>
+</md-toolbar>
+
+
+
+<section class="md-padding">
+  <form
+    name="someForm"
+    class="form form-add-user"
+    ng-submit="componentForm.add()">
+
+    <div layout-gt-xs="row">
+      <md-input-container md-no-float class="md-block" flex-gt-xs="">
+        <label>Name</label>
+        <input
+        type="text"
+        name="name"
+        ng-required="true"
+        ng-model="componentForm.component.name">
+      </md-input-container>
+    </div>
+
+    <div ng-init="disableSave=true" layout="row" layout-align="center center">
+
+      <md-button
+        ng-disabled="someForm.$invalid"
+        class="md-raised md-primary" ng-click="componentForm.add()">
+        Save
+      </md-button>
+
+      <md-button
+        ng-disabled="someForm.$invalid"
+        class="md-raised md-primary" ng-click="componentForm.clearButton()">
+        Clear
+      </md-button>
+
+      <md-button
+        class="md-raised" ng-click="componentForm.closeButton()">
+        Close
+      </md-button>
+
+    </div>
+
+   </form>
+</section>

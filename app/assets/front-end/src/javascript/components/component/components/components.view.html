@@ -1,0 +1,183 @@
+<section layout="column" md-whiteframe = '6'>
+
+
+
+  <!-- TITLE -->
+  <md-toolbar
+    class="md-table-toolbar md-default"
+    layout="row"
+    layout-align="space-between center">
+    <div class="md-toolbar-tools">
+
+      <div class="md-title">
+
+        <span>Components</span>
+
+      </div>
+
+      <div flex="" class="flex"></div>
+
+
+      <div layout="row" layout-align="right">
+
+        <md-button
+          md-no-ink
+          class="md-primary"
+          ng-click="components.showForm()">
+            Add
+        </md-button>
+
+        <md-button
+          ng-click="components.saveExcelFile()"
+          class="md-primary">
+          <md-icon class="material-icons">file_download</md-icon>
+          <md-tooltip md-autohide="true">
+            Export Excel
+          </md-tooltip>
+          Export Excel
+        </md-button>
+
+      </div>
+
+
+    </div>
+  </md-toolbar>
+  <!-- /TITLE -->
+
+
+
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+  <!-- AUTOCOMPLETE SEARCH -->
+  <md-content class="md-padding">
+
+      <md-autocomplete
+        ng-model="components.searchText"
+        md-search-text-change="components.querySearch(components.searchText, components.components)"
+        md-search-text="components.searchText"
+        md-items="item in components.querySearch(components.searchText, components.components)"
+        md-item-text="item.name"
+        md-min-length="0"
+        placeholder="Search for a Component">
+
+        <md-item-template>
+          <span class="item-metadata">
+            {{ item.name }}
+          </span>
+        </md-item-template>
+
+      </md-autocomplete>
+
+  </md-content>
+  <!-- /AUTOCOMPLETE SEARCH -->
+
+
+
+  <!-- SELECTED ROWS -->
+  <md-toolbar
+    class="md-table-toolbar alternate"
+    ng-show="components.tableSettings.options.rowSelection && components.tableSettings.selected.length">
+    <div class="md-toolbar-tools">
+      <span>
+        {{components.tableSettings.selected.length}} {{components.tableSettings.selected.length > 1 ? 'Components' : 'Component'}} selected
+      </span>
+    </div>
+  </md-toolbar>
+  <!-- /SELECTED ROWS -->
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+
+
+
+  <!-- TABLE components -->
+  <md-table-container>
+    <table
+      class="c-table--actions"
+      md-table
+      md-row-select="components.tableSettings.options.rowSelection"
+      multiple="{{components.tableSettings.options.multiSelect}}"
+      ng-model="components.tableSettings.selected"
+      md-progress="promise">
+
+      <thead
+        ng-if="!components.tableSettings.options.decapitate"
+        md-head
+        md-order="components.tableSettings.query.order">
+        <tr md-row>
+          <th md-column>NR</th>
+          <th md-column md-order-by="name">Name</th>
+          <!-- <th md-column>Holders</th> -->
+          <th md-column>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody md-body>
+        <tr
+        md-row
+        md-select="component"
+        md-on-select="logItem"
+        md-auto-select="components.tableSettings.options.autoSelect"
+        ng-repeat="component in components.querySearch(components.searchText, components.components) | orderBy: components.tableSettings.query.order | limitTo: components.tableSettings.query.limit : (components.tableSettings.query.page -1) * components.tableSettings.query.limit">
+
+          <td md-cell>{{$index + 1}}</td>
+
+          <td md-cell>{{component.name}}</td>
+
+          <!-- <td md-cell>
+            <ul class="c-list" ng-if="component.holders">
+              <li ng-repeat="employee in component.holders">
+
+                {{$index + 1}}. {{component.employee}}
+              </li>
+            </ul>
+          </td> -->
+
+          <td md-cell>
+
+            <md-button
+              class="md-icon-button md-primary"
+              label="Update component"
+              aria-label="Update component"
+              ng-click="components.showForm(component)">
+                <md-icon class="material-icons">create</md-icon>
+                <md-tooltip md-autohide="true">
+                  Update component
+                </md-tooltip>
+              </md-button>
+
+            <md-button
+              class="md-icon-button md-warn"
+              label="Remove component"
+              aria-label="Remove component"
+              ng-click="components.remove(component, $event)">
+              <md-icon class="material-icons">delete</md-icon>
+              <md-tooltip md-autohide="true">
+                Remove component
+              </md-tooltip>
+            </md-button>
+
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+  </md-table-container>
+  <!-- TABLE components -->
+
+
+
+
+  <!-- TABLE PAGINATION -->
+  <hra-table-pagination settings="components.tableSettings">
+  <hra-table-pagination>
+    <!-- TABLE PAGINATION -->
+
+
+
+
+
+
+</section>

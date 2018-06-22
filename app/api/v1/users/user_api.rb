@@ -21,20 +21,18 @@ module V1
           ActionController::Parameters.new(params)
             .permit(:first_name, :middle_name, :last_name, :address, :city, :zip_code, :birthday, :phone, :picture, :observations,
                     :other_email, :urgent_contact_name, :urgent_contact_phone, :car_plate, :company_start_date, :status, :email, :office_nr, :cnp,
-                    :company_end_date, :encrypted_password )
+                    :company_end_date, :encrypted_password)
         end
 
         def filtered_users filters
           users = User.where(company_end_date: nil, is_active: true)
-
           users = users.by_month_birth(filters[:birthday].to_date) if filters[:birthday]
           users = users.by_university_year(filters[:university_year].to_i) if filters[:university_year]
           users = users.by_company_start_date_until_present(filters[:start_date].to_date) if filters[:start_date]
           users = users.by_projects(filters[:projects]) if filters[:projects]
           users = users.by_certifications(filters[:certifications]) if filters[:certifications]
-          users = users.by_technology_id_and_level(filters[:technologies].values.map(&:technology_id).zip(filters[:technologies].values.map(&:technology_level))) if filters[:technologies]
-          users = users.by_language_id_and_level(filters[:languages].values.map(&:language_id).zip(filters[:languages].values.map(&:language_level))) if filters[:languages]
-
+          users = users.by_technology_id_and_level(filters[:technologies].values.map{|tech| tech[:technology_id]}.zip(filters[:technologies].values.map{|tech| tech[:technology_level]})) if filters[:technologies]
+          users = users.by_language_id_and_level(filters[:languages].values.map{|lang| lang[:language_id]}.zip(filters[:languages].values.map{|lang| lang[:language_level]})) if filters[:languages]
           users
         end
 
@@ -51,7 +49,7 @@ module V1
         desc "Return all users"
         params do
           use :pagination # aliases: includes, use_scope
-          optional :with, values: ['positions', 'languages', 'devices', 'educations', 'departments', 'projects', 'technologies', 'certifications', 'work_info', 'cnp'], type: [String]
+          optional :with, values: ['department', 'positions', 'languages', 'devices', 'educations', 'projects', 'technologies', 'certifications', 'work_info', 'cnp'], type: [String]
           optional :filters, type: Hash
         end
         get do
@@ -71,7 +69,6 @@ module V1
           else
             get_paginated_items_for User.where(company_end_date: nil, is_active: true), params[:with] , defined?(exceptions) ? exceptions : []
           end
-
         end
 
         desc "Returns a user"
@@ -132,30 +129,55 @@ module V1
         requires :password, type: String
       end
 
-      post "login" do
-        allowed_domains = Domain.all.pluck(:allowed_domain)
-        result = ldap_login
-        if result
-          create_user(result.first)
-        elsif allowed_domains.include?(params[:email].partition('@').last)
-          user = User.find_by_email(params[:email])
-          if user
-            error!('Incorrect Password', 401) if user[:encrypted_password].present? && decrypt(user[:encrypted_password]) != params[:password]
-            if user[:reg_status] == "confirmed"
-              login_non_ldap_user(user)
-            elsif user[:reg_status] == "pending"
-            error!({ message: "Your account is not confirmed." })
-            end
-          else
-            new_user = User.new(email: params[:email], password: params[:password], reg_status: "pending") if User.where(reg_status: "pending").count < 20
-            new_user[:encrypted_password] = encrypt(params[:password])
-            new_user.save
-            success(user: user)
-          end
-        else
+
+    post "login" do 
+      domain = params[:email].partition('@').last
+      allowed_domains = Domain.all.pluck(:allowed_domain)
+      user = User.find_by_email(params[:email])
+      if domain == "assist.ro" || allowed_domains.include?(params[:email].partition('@').last)
+        case login_method(user)
+        when "Ldap login"
+          create_user(ldap_login.first)  
+        when "Devise login"
+            login_devise(user)
+        when "Devise create"
+            create_user_devise(user)
+        when "Login error"
           error!({ message: "Authentication FAILED." })
         end
-      end
+      else
+        error!({ message: "This domain is missing." })
+      end 
+    end
+
+      # post "login" do
+      #   allowed_domains = Domain.all.pluck(:allowed_domain)
+      #   result = ldap_login
+      #   if result
+      #     create_user(result.first)
+      #   elsif allowed_domains.include?(params[:email].partition('@').last)
+      #     user = User.find_by_email(params[:email])
+      #     if user
+      #       error!('Incorrect Password', 401) if user[:encrypted_password].present? && decrypt(user[:encrypted_password]) != params[:password]
+      #       if user[:reg_status] == "confirmed"
+      #         login_non_ldap_user(user)
+      #       elsif user[:reg_status] == "pending"
+      #       error!({ message: "Your account is not confirmed." })
+      #       end
+      #     else
+      #       new_user = User.new(email: params[:email], password: params[:password], reg_status: "pending") if User.where(reg_status: "pending").count < 20
+      #       new_user[:encrypted_password] = encrypt(params[:password])
+      #       new_user.save
+            
+      #       UserMailer.welcome_email(new_user).deliver_now
+      #       AdminMailer.confirm_email(new_user).deliver_now
+            
+      #       success(user: user)
+      #     end
+      #   else
+      #     error!({ message: "Authentication FAILED." })
+      #   end
+      # end
 
       desc "Return current user"
       get "me" do

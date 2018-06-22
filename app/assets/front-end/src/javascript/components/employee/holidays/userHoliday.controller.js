@@ -30,6 +30,7 @@
     vm.dateList = [];
     vm.validateDate = false;
     vm.showForm = false;
+    vm.isFemale = false;
 
     vm.dateService = dateService;
     vm.queryUserSearch = queryUserSearch;
@@ -44,8 +45,9 @@
     vm.minLength = 0;
     vm.changeMinLength = changeMinLength;
     vm.verifyRequiredStatus = verifyRequiredStatus;
+    vm.checkGender = checkGender;
 
-    $rootScope.$on("event:userResourcesLoaded", (event, data) => {
+    $rootScope.$on('event:userResourcesLoaded', (event, data) => {
       vm.projects = data.projects;
       vm.users = data.users;
       vm.userHolidays = data.holidays;
@@ -224,8 +226,8 @@
     };
 
     function removeHoliday(holiday, event) {
-      holiday.start_date = $filter('date')(holiday.start_date, "d MMM, y");
-      holiday.end_date = $filter('date')(holiday.end_date, "d MMM, y");
+      holiday.start_date = $filter('date')(holiday.start_date, 'd MMM, y');
+      holiday.end_date = $filter('date')(holiday.end_date, 'd MMM, y');
 
       let confirm = $mdDialog.confirm()
         .title('Are you sure you want to delete the holiday between ' + holiday.start_date + ' and ' + holiday.end_date + ' ?')
@@ -308,6 +310,18 @@
       holidays.forEach((element, index) => {
         vm.totalDays += element.days;
       });
+    }
+
+    if (localStorage.getItem('gender') == 'female') {
+        vm.isFemale = true
+    }
+
+    function checkGender(){
+      if (vm.isFemale) {
+        localStorage.setItem('gender', 'female')
+      } else {
+        localStorage.removeItem('gender')
+      }
     }
 
   }

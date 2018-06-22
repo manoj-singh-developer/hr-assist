@@ -1,4 +1,43 @@
 module APIHelpers
+
+  def create_user_devise(user)
+      new_user = User.new(email: params[:email], password: params[:password], reg_status: "pending") if User.where(reg_status: "pending").count < 20
+      new_user[:encrypted_password] = encrypt(params[:password])
+      new_user.save
+      UserMailer.welcome_email(new_user).deliver_now
+      AdminMailer.confirm_email(new_user).deliver_now
+      success(user: user)
+  end
+
+  def login_devise(user)
+    error!('Incorrect Password', 401) if user[:encrypted_password].present? && decrypt(user[:encrypted_password]) != params[:password]
+    if user[:reg_status] == "confirmed"
+      user.roles << Role.find_by_name("employee") if user.roles.empty?
+      user[:encrypted_password] = encrypt(params[:password]) if user[:encrypted_password].empty?
+      user.ensure_authentication_token
+      user.save
+      data = {:user_id => user.id, :role_id => user.roles.first.id , :token => user.auth_token}
+      custom_token = JWT.encode(data, Rails.application.secrets.secret_key_base)
+
+      success(user: user, custom_token: custom_token)
+    elsif user[:reg_status] == "pending"
+      error!({ message: "Your account is not confirmed." })
+    end
+  end
+
+  def login_method(user)
+    email = params[:email].partition('@').last
+    if ldap_login
+      "Ldap login"
+    elsif user.nil? && email  != "assist.ro" && ldap_login == false 
+      "Devise create"
+    elsif user && email != "assist.ro"
+      "Devise login"
+    else
+      "Login error"
+    end
+  end
+
   #Finds or create user by email
   def create_user(ldap_info)
     user = User.find_or_create_by(email: ldap_info.mail.first) do |user|
@@ -21,13 +60,12 @@ module APIHelpers
   end
 
   def login_non_ldap_user(user)
-     user.roles << Role.find_by_name("employee") if user.roles.empty?
-     user[:encrypted_password] = encrypt(params[:password]) if user[:encrypted_password].empty?
-     user.ensure_authentication_token
-     user.save
-
-     data = {:user_id => user.id, :role_id => user.roles.first.id , :token => user.auth_token}
-     custom_token = JWT.encode(data, Rails.application.secrets.secret_key_base)
+    user.roles << Role.find_by_name("employee") if user.roles.empty?
+    user[:encrypted_password] = encrypt(params[:password]) if user[:encrypted_password].empty?
+    user.ensure_authentication_token
+    user.save
+    data = {:user_id => user.id, :role_id => user.roles.first.id , :token => user.auth_token}
+    custom_token = JWT.encode(data, Rails.application.secrets.secret_key_base)
 
     success(user: user, custom_token: custom_token)
   end

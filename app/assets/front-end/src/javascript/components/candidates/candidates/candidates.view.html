@@ -40,7 +40,7 @@
           </md-tooltip>
           ADD CANDIDATE
         </md-button>
-        
+
         <md-button
           ng-click="candidates.saveExcelFile()"
           class="md-primary">
@@ -146,23 +146,25 @@
           md-row
           md-select="candidate"
           md-on-select="logItem"
-          ng-repeat="candidate in candidates.candidates 
+          ng-repeat="candidate in candidates.candidates
           | filter: (candidates.firstNameFilter || candidates.searchText)
-          | orderBy: candidates.tableSettings.query.order 
+          | orderBy: candidates.tableSettings.query.order
           | limitTo: candidates.tableSettings.query.limit : (candidates.tableSettings.query.page - 1) * candidates.tableSettings.query.limit track by $index">
           <td md-cell>{{$index + 1}}</td>
           <td md-cell>{{candidate.name}}</td>
           <td md-cell>{{candidate.contact_info}}</td>
+
           <td md-cell>
             <ul class="c-list" ng-if="candidate.technologies">
               <li ng-repeat="technology in candidate.technologies">
-                {{$index + 1}}. {{technology.name}}: 
+                {{$index + 1}}. {{technology.name}}:
                 <span ng-if="technology.level">
                   {{candidates.getTechnologyLvlTxt(technology.level)}}
                 </span>
               </li>
             </ul>
           </td>
+
           <!-- <td md-cell>{{candidate.technology}}</td> -->
           <td md-cell>
             <p ng-if="candidate.category===0">Front End</p>
@@ -190,7 +192,7 @@
                 Update candidate
               </md-tooltip>
             </md-button>
-            
+
             <md-button
               class="md-icon-button md-warn"
               label="Remove candidate"
@@ -220,5 +222,3 @@
 
 
 </section>
-
-
