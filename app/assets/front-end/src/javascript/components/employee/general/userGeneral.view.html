@@ -31,6 +31,14 @@
     </button>
 
     <button class="md-primary md-button" type="button"
+      ng-click="userGeneral.goToHolidaysCalendar()" aria-label="Holidays Calendar">
+      <md-icon class="material-icons ng-scope" role="img" aria-label="Holidays Calendar">mood</md-icon>
+      <span class="ng-scope">
+        Holidays Calendar
+      </span><div class="md-ripple-container"></div>
+    </button>
+
+    <button class="md-primary md-button" type="button"
       ng-click="userGeneral.generateCv('doc')" aria-label="Generate CV"
       ng-if="userGeneral.isAdmin">
       <md-icon class="material-icons ng-scope" role="img" aria-label="Generate CV">file_download</md-icon>

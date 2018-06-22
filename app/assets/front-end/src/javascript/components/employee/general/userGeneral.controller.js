@@ -40,6 +40,7 @@
     vm.cancel = cancel;
     vm.userLogOut = userLogOut;
     vm.generateCv = generateCv;
+    vm.goToHolidaysCalendar = goToHolidaysCalendar;
     vm.viewSsh = viewSsh;
 
     _getPositions();
@@ -102,6 +103,10 @@
         }
         vm.toggleForm();
       });
+    }
+
+    function goToHolidaysCalendar () {
+      $state.go('holidayParent.calendar');
     }
 
     function saveCopy() {
