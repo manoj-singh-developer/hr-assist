@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180110141758) do
+ActiveRecord::Schema.define(version: 20180129125613) do
 
   create_table "active_admin_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "namespace"
@@ -122,7 +122,6 @@ ActiveRecord::Schema.define(version: 20180110141758) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "cnp"
-    t.string   "candidate_type"
   end
 
   create_table "certifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -139,10 +138,6 @@ ActiveRecord::Schema.define(version: 20180110141758) do
     t.integer "certification_id"
     t.index ["certification_id"], name: "index_certifications_users_on_certification_id", using: :btree
     t.index ["user_id"], name: "index_certifications_users_on_user_id", using: :btree
-  end
-
-  create_table "component", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "name", limit: 45
   end
 
   create_table "countries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -169,9 +164,9 @@ ActiveRecord::Schema.define(version: 20180110141758) do
 
   create_table "departments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "functional_manager"
   end
 
   create_table "departments_users", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -243,8 +238,9 @@ ActiveRecord::Schema.define(version: 20180110141758) do
     t.date     "end_date"
     t.date     "signing_day"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.boolean  "approve_holiday"
     t.index ["user_id"], name: "index_holidays_on_user_id", using: :btree
   end
 
@@ -422,6 +418,15 @@ ActiveRecord::Schema.define(version: 20180110141758) do
     t.index ["user_id"], name: "index_uploads_on_user_id", using: :btree
   end
 
+  create_table "user_departments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "user_id"
+    t.integer  "department_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["department_id"], name: "index_user_departments_on_department_id", using: :btree
+    t.index ["user_id"], name: "index_user_departments_on_user_id", using: :btree
+  end
+
   create_table "user_device_specifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "device_id"
     t.integer  "hardware_component_id"
@@ -488,7 +493,6 @@ ActiveRecord::Schema.define(version: 20180110141758) do
     t.string   "office_nr"
     t.string   "urgent_contact_phone"
     t.string   "cnp"
-    t.string   "stackoverflow"
     t.date     "company_end_date"
     t.boolean  "is_active"
     t.string   "reg_status"
@@ -543,6 +547,8 @@ ActiveRecord::Schema.define(version: 20180110141758) do
   add_foreign_key "technologies_user_projects", "technologies"
   add_foreign_key "technologies_user_projects", "user_projects", column: "user_projects_id"
   add_foreign_key "uploads", "users"
+  add_foreign_key "user_departments", "departments"
+  add_foreign_key "user_departments", "users"
   add_foreign_key "user_device_specifications", "devices"
   add_foreign_key "user_device_specifications", "hardware_components"
   add_foreign_key "user_projects", "projects"
