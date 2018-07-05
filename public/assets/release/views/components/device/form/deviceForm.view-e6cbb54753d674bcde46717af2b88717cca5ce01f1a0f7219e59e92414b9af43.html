@@ -1,0 +1,65 @@
+<md-toolbar class="md-table-toolbar">
+  <div class="md-toolbar-tools">
+    Device form
+  </div>
+</md-toolbar>
+
+<section class="md-padding">
+
+  <div layout-gt-xs="row">
+
+    <md-input-container md-no-float class="md-block" flex-gt-xs="">
+      <label>Full Name</label>
+      <input
+      type="text"
+      name="name"
+      ng-model="deviceForm.device.name"
+      required>
+    </md-input-container>
+
+    <md-input-container md-no-float class="md-block" flex-gt-xs="">
+      <label>Total Quantity</label>
+      <input
+      type="number"
+      name="quantity"
+      ng-model="deviceForm.device.total"
+      min="1"
+      max="100"
+      required>
+    </md-input-container>
+
+  </div>
+
+  <div layout-gt-xs="row">
+
+    <md-input-container md-no-float class="md-block" flex-gt-xs="">
+      <label>Description</label>
+      <textarea ng-model="deviceForm.device.description"></textarea>
+    </md-input-container>
+
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div layout="row" layout-align="center center">
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="deviceForm.add()">
+      Save
+    </md-button>
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="deviceForm.clear()">
+      Clear
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ng-click="deviceForm.close()">
+      Close
+    </md-button>
+
+  </div><!-- /ACTION BUTTONS -->
+
+ </section>

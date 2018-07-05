@@ -1,0 +1,240 @@
+<section layout="column" md-whiteframe = '6'>
+
+
+
+  <!-- TITLE -->
+  <md-toolbar
+    class="md-table-toolbar md-default"
+    layout="row"
+    layout-align="space-between center">
+    <div class="md-toolbar-tools">
+
+      <div class="md-title">Technologies</div>
+
+      <div flex="" class="flex"></div>
+
+      <md-button
+        md-no-ink
+        class="md-primary"
+        ng-click="technologies.showForm()">
+          Add
+      </md-button>
+
+      <!--
+
+      TO DO!!! To implement the add from json functionality
+
+      <md-button
+        md-no-ink
+        class="md-primary"
+        ng-click="technologies.showJsonForm($event)">
+          Add Skills from JSON
+      </md-button>
+ -->
+
+      <!--
+
+      TO DO!!! To implement  multiple delete functionality
+
+      <md-button
+        md-no-ink
+        class="md-primary"
+        ng-click="technologies.multipleRemove()">
+          Multiple remove
+      </md-button> -->
+
+    </div>
+  </md-toolbar> <!-- /TITLE -->
+
+
+
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+  <!-- AUTOCOMPLETE SEARCH -->
+  <md-content class="md-padding">
+    <form ng-submit="$event.preventDefault()">
+      <md-autocomplete
+        ng-disabled = "technologies.isDisabled"
+        ng-model="technologies.searchText"
+        md-selected-item="technologies.selectedItem"
+        md-search-text-change="technologies.searchTextChange(technologies.searchText)"
+        md-search-text="technologies.searchText"
+        md-selected-item-change="technologies.selectedItemChange(item)"
+        md-items="item in technologies.querySearch(technologies.searchText)"
+        md-item-text="item.name"
+        md-min-length="0"
+        placeholder="Search for a Skill">
+
+        <md-item-template>
+          <span class="item-metadata">
+            {{ item.name }}
+          </span>
+        </md-item-template>
+
+      </md-autocomplete>
+    </form>
+  </md-content><!-- /AUTOCOMPLETE SEARCH -->
+
+
+
+  <!-- SELECTED ROWS -->
+  <md-toolbar
+    class="md-table-toolbar alternate"
+    ng-show="technologies.tableSettings.options.rowSelection && technologies.tableSettings.selected.length">
+    <div class="md-toolbar-tools">
+      <span>
+        {{technologies.tableSettings.selected.length}} {{technologies.tableSettings.selected.length > 1 ? 'Technologies' : 'Technology'}} selected
+      </span>
+    </div>
+  </md-toolbar><!-- /SELECTED ROWS -->
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+
+
+
+  <!-- TABLE TECHNOLOGIES -->
+  <md-table-container>
+    <table
+      class="c-table--actions"
+      md-table
+      md-row-select="technologies.tableSettings.options.rowSelection"
+      multiple="{{technologies.tableSettings.options.multiSelect}}"
+      ng-model="technologies.tableSettings.selected"
+      md-progress="promise">
+
+      <thead
+        ng-if="!technologies.tableSettings.options.decapitate"
+        md-head
+        md-order="technologies.tableSettings.query.order">
+        <tr md-row>
+          <th md-column>NR</th>
+          <th md-column md-order-by="name">Name</th>
+          <th md-column>Label</th>
+          <th md-column>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody md-body>
+        <tr
+        md-row
+        md-select="technology"
+        md-on-select="logItem"
+        md-auto-select="technologies.tableSettings.options.autoSelect"
+        ng-repeat="technology in technologies.technologies | filter: technologies.searchText | orderBy: technologies.tableSettings.query.order | limitTo: technologies.tableSettings.query.limit : (technologies.tableSettings.query.page -1) * technologies.tableSettings.query.limit">
+
+        <td md-cell>{{$index + 1}}</td>
+
+          <td md-cell>{{technology.name}}</td>
+
+          <td md-cell>{{technology.label}}</td>
+          <td md-cell>
+
+            <md-button
+              class="md-icon-button md-primary"
+              label="View technology"
+              aria-label="View technology"
+              ui-sref="technologyParent.details({id: technology.id})">
+              <md-icon class="material-icons">visibility</md-icon>
+              <md-tooltip md-autohide="true">
+                View technology
+              </md-tooltip>
+            </md-button>
+
+            <md-button
+              class="md-icon-button md-primary"
+              label="Update technology"
+              aria-label="Update technology"
+              ng-click="technologies.showForm(technology)">
+                <md-icon class="material-icons">create</md-icon>
+                <md-tooltip md-autohide="true">
+                  Update technology
+                </md-tooltip>
+              </md-button>
+
+            <md-button
+              class="md-icon-button md-warn"
+              label="Remove technology"
+              aria-label="Remove technology"
+              ng-click="technologies.remove(technology, $event)">
+              <md-icon class="material-icons">delete</md-icon>
+              <md-tooltip md-autohide="true">
+                Remove technology
+              </md-tooltip>
+            </md-button>
+
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+  </md-table-container><!-- TABLE TECHNOLOGIES -->
+
+
+
+
+  <!-- TABLE PAGINATION -->
+  <md-table-pagination
+    md-limit="technologies.tableSettings.query.limit"
+    md-limit-options="technologies.tableSettings.limitOptions"
+    md-page="technologies.tableSettings.query.page"
+    md-total="{{technologies.technologies.length}}"
+    md-page-select="technologies.tableSettings.options.pageSelect"
+    md-boundary-links="technologies.tableSettings.options.boundaryLinks">
+  </md-table-pagination><!-- TABLE PAGINATION -->
+
+
+
+
+  <!-- TEMPLATES -->
+  <script type="text/ng-template" id="skillJson.tmpl.html">
+    <section layout="column">
+
+      <md-toolbar class="md-table-toolbar">
+        <div class="md-toolbar-tools ">
+          Add skills from JSON
+        </div>
+      </md-toolbar>
+
+      <section class="md-padding">
+
+        <form name="employeejsonform" class="form md-inline-form">
+          <textarea class="save-from-json" ng-model="skillM.json" placeholder="Paste json here">
+          </textarea>
+        </form>
+
+        <!-- Actions buttons -->
+        <div layout="row" layout-align="center center">
+
+          <md-button
+            class="md-raised md-primary"
+            ng-click="skillM.saveFromJson(skillM.json)">
+            Save
+          </md-button>
+
+          <md-button
+            class="md-raised md-primary"
+            ng-click="skillM.clearFields()">
+            Clear
+          </md-button>
+
+          <md-button
+            class="md-raised"
+            ng-click="skillM.closeDialog()">
+            Close
+          </md-button>
+
+        </div><!-- /Actions buttons -->
+
+      </section>
+
+    </section>
+  </script>
+  <!-- /TEMPLATES -->
+
+
+
+
+</section>

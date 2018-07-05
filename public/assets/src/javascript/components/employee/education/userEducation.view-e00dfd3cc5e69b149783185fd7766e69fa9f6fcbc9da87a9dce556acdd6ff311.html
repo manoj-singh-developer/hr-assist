@@ -1,0 +1,212 @@
+<!-- CARD EDUCATION -->
+<md-card>
+
+
+
+
+
+  <!-- CARD TITLE -->
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">Education</span>
+    </md-card-title-text>
+  </md-card-title><!-- /CARD TITLE -->
+
+
+
+
+
+
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here with your education experience.
+    </p>
+  </md-content> <!-- CARD NOTES -->
+
+
+
+
+
+
+  <!-- PREVIEW EDUCATION -->
+  <md-content
+    ng-show="!userEducation.showEditEducation"
+    class="c-card-profile__preview">
+    <md-list layout="row" layout-wrap>
+      <md-list-item
+        flex="50"
+        class="md-2-line"
+        ng-repeat="education in userEducation.userEducationList track by $index">
+        <div class="md-list-item-text" layout="column">
+           <h4>{{education.name}}</h4>
+           <p>{{education.degree}}</p>
+           <p>{{education.description}}</p>
+           <p>{{education.start_date | date:'longDate'}}</p>
+           <p>{{education.end_date | date:'longDate'}}</p>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-content><!-- /PREVIEW EDUCATION -->
+
+
+
+
+
+  <!-- FORM EDUCATION -->
+  <md-content
+    ng-show="userEducation.showEditEducation"
+    class="md-padding">
+
+    <!-- CARD GROUP  -->
+    <section
+      layout='column'
+      class="md-padding c-card-group"
+      ng-repeat="education in userEducation.userEducationList track by $index">
+
+
+
+
+
+      <!-- REMOVE EDUCATION -->
+      <md-button
+        class="md-fab md-mini md-warn c-card-group__remove"
+        ng-click="userEducation.removeEducation($index)"
+        ng-disabled = "userEducation.disabledEducations">
+        <md-icon class="material-icons">delete</md-icon>
+        <md-tooltip>Remove education</md-tooltip>
+      </md-button><!-- /REMOVE EDUCATION -->
+
+
+
+
+
+      <!-- SCHOOL -->
+      <section layout='row'>
+        <md-input-container md-no-float class="md-block" flex-gt-xs="100">
+          <label>School</label>
+          <input
+            ng-model="userEducation.userEducationList[$index].name"
+            ng-disabled ="userEducation.disabledEducations">
+        </md-input-container>
+      </section><!-- /SCHOOL -->
+
+
+
+
+
+
+      <!-- FIELD OF STUDY -->
+      <section layout='row'>
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+          <label>Field of Study</label>
+          <input
+            name="userEducation.userEducationList[$index].description"
+            ng-model="userEducation.userEducationList[$index].description"
+            ng-disabled ="userEducation.disabledEducations">
+        </md-input-container>
+      </section><!-- /FIELD OF STUDY -->
+
+
+
+
+
+      <!-- DIPLOMA  -->
+      <section layout='row'>
+        <md-input-container md-no-float class="md-block" flex-gt-xs="">
+          <label>Diploma</label>
+          <input
+            ng-model="userEducation.userEducationList[$index].degree"
+            ng-disabled ="userEducation.disabledEducations">
+        </md-input-container>
+      </section><!-- DIPLOMA -->
+
+
+
+
+
+      <!-- PERIOD -->
+      <section layout-gt-xs="row" layout-align="center center" class="u-mb-20">
+
+        <div flex-gt-xs="50">
+          <label class="u-ml-5">From*</label>
+          <hra-date-select
+            show-months="true"
+            orientation="vertical"
+            initial-date="userEducation.userEducationList[$index].start_date"
+            ng-model="userEducation.userEducationList[$index].start_date">
+          </hra-date-select>
+        </div>
+
+        <div flex-gt-xs="50">
+          <label class="u-ml-5">To*</label>
+          <hra-date-select
+            flex-gt-xs="50"
+            show-months="true"
+            orientation="vertical"
+            initial-date="userEducation.userEducationList[$index].end_date"
+            ng-model="userEducation.userEducationList[$index].end_date">
+          </hra-date-select>
+        </div>
+
+      </section><!-- /PERIOD -->
+
+
+
+
+
+    </section><!-- CARD GROUP  -->
+
+    <section class="md-padding">
+      <md-button
+        md-no-ink
+        class="md-primary small-text"
+        ng-click="userEducation.addNewEducation()">
+        Add New
+      </md-button>
+    </section>
+
+  </md-content><!-- /FORM EDUCATION -->
+
+
+
+
+
+  <!-- CARD ACTIONS -->
+  <md-card-actions
+    layout="column"
+    layout-align="start"
+    ng-show="!userEducation.showEditEducation">
+    <md-button
+      class="c-card-profile__btn no-margin"
+      ng-click="userEducation.displayEditEducation()">
+      Add Educations
+    </md-button>
+  </md-card-actions>
+
+  <md-card-actions
+    layout="row"
+    layout-align="center center"
+    ng-show="userEducation.showEditEducation"
+    class="additional">
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="userEducation.save(); userEducation.displayEditEducation()">
+      Save
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ng-click="userEducation.cancelAdd(); userEducation.displayEditEducation()">
+      Cancel
+    </md-button>
+
+  </md-card-actions>
+  <!-- /CARD ACTIONS -->
+
+
+
+
+
+</md-card><!-- /CARD EDUCATION -->

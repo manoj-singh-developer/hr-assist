@@ -9,6 +9,7 @@ module YourFileReader
   end
 end
 
+<<<<<<< HEAD
 Rails.application.config.expiration_token_time = 1.day
 
 Rails.application.configure do
@@ -24,3 +25,6 @@ Rails.application.configure do
     password:              ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base).decrypt_and_verify(SmtpSetting::where(key: "password").first[:value])
 }
 end
+=======
+Rails.application.config.expiration_token_time = 1.day
+>>>>>>> parent of daacbb1... Merge pull request #374 from assist-software/Task-19505

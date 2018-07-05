@@ -1,0 +1,542 @@
+<section layout="column">
+
+
+
+
+  <!-- TITLE -->
+  <md-toolbar
+    class="md-table-toolbar md-default"
+    layout="row"
+    layout-align="space-between center">
+    <div class="md-toolbar-tools">
+
+      <div class="md-title">
+        Projects
+        <md-button
+          class="md-primary"
+          label="Toggle filters"
+          aria-label="Toggle filters"
+          ng-click="projects.toggleFilters()">
+          <md-icon class="material-icons">filter_list</md-icon>
+          <md-tooltip md-autohide="true">
+            Toggle filters
+          </md-tooltip>
+        </md-button>
+      </div>
+
+      <div flex="" class="flex"></div>
+
+      <div layout="row" layout-align="right">
+
+        <md-button md-no-ink class="md-primary" ng-click="projects.showForm()">
+          Add
+        </md-button>
+
+        <md-button md-no-ink class="md-primary" ng-csv="projects.getArray()" csv-header="projects.getHeader()" filename="RaportProjects.csv">
+          Export
+        </md-button>
+
+        <!-- <md-button ng-if= "projects.projects.length < 50" md-no-ink class="md-primary" ng-click="projects.addFromApi()">
+          !!Add from ASSIST API (use this once)
+        </md-button> -->
+        <!--<md-button md-no-ink class="md-primary" ng-click="projects.removeMultipleProjects()">
+          Multiple Delete
+        </md-button>-->
+      </div>
+
+    </div>
+  </md-toolbar><!-- /TITLE -->
+
+
+
+
+  <md-divider class="divider-bold u-no-padding"></md-divider>
+
+  <!-- AUTOCOMPLETE SEARCH -->
+  <md-content class="md-padding">
+    <form ng-submit="$event.preventDefault()">
+      <md-autocomplete
+        ng-disabled="projects.isDisabled"
+        ng-model="projects.searchText"
+        md-selected-item="projects.selectedItem"
+        md-search-text-change="projects.searchTextChange(projects.searchText)"
+        md-search-text="projects.searchText"
+        md-selected-item-change="projects.selectedItemChange(item)"
+        md-items="item in projects.querySearch(projects.searchText)"
+        md-item-text="item.name" md-min-length="0" placeholder="Search">
+
+        <md-item-template>
+          <span class="item-metadata">
+          {{item.name}}
+        </md-item-template>
+
+      </md-autocomplete>
+    </form>
+  </md-content><!-- /AUTOCOMPLETE SEARCH -->
+
+
+
+
+  <!-- SELECTED ROWS -->
+  <md-toolbar
+    class="md-table-toolbar alternate"
+    ng-show="projects.table.options.rowSelection && projects.table.selected.length">
+    <div class="md-toolbar-tools">
+      <span>
+      {{projects.table.selected.length}} {{projects.table.selected.length > 1 ? 'projects' : 'project'}} selected
+    </span>
+    </div>
+  </md-toolbar><!-- /SELECTED ROWS -->
+
+
+
+
+  <!-- ALL FILTERS -->
+  <md-content
+    class="c-filters c-filters--employee md-padding"
+    ng-show="projects.showFilters">
+
+
+
+
+    <md-button
+      class="md-warn"
+      label="Reset all filters"
+      aria-label="Reset all filters"
+      ng-click="projects.resetFilters()">
+      <md-icon class="material-icons">autorenew</md-icon>
+      Reset filters
+      <md-tooltip md-autohide="true">
+        Reset all filters
+      </md-tooltip>
+    </md-button>
+
+
+
+
+    <!-- FILTER BY TECHNOLOGIES -->
+    <section layout="row" layout-align="center center">
+
+
+
+
+      <!-- SEARCH INPUT -->
+      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
+        <md-content class="md-padding">
+          <form ng-submit="$event.preventDefault()">
+
+            <md-autocomplete
+              md-selected-item="projects.selectedTechonology"
+              md-search-text-change="projects.searchTechonologyChange(projects.searchTechonology)"
+              md-search-text="projects.searchTechonology" md-selected-item-change="projects.selectedTechonologyChange(itemTech.label, projects.projects)"
+              md-items="itemTech in projects.querySearchTechonology(projects.searchTechonology)"
+              md-item-text="itemTech.label"
+              md-min-length="0"
+              placeholder="Filter by Techonologies">
+
+              <md-item-template>
+                <span class="item-metadata">
+                {{itemTech.label}}
+              </md-item-template>
+
+            </md-autocomplete>
+          </form>
+        </md-content>
+      </div><!-- /SEARCH INPUT -->
+
+
+
+
+      <!-- SEARCH OUPUT -->
+      <div flex="50" flex-gt-sm="65" flex-gt-md="75" layout-align="left center">
+        <md-list layout="row" layout-wrap>
+
+          <md-list-item
+            class="md-2-line c-filters__label">
+            <div class="md-list-item-text " layout="column">
+              <h4>Has the following technologies: </h4>
+            </div>
+          </md-list-item>
+
+          <md-list-item
+            class="md-2-line"
+            ng-repeat="technology in projects.arrayTechnology track by $index">
+            <div class="md-list-item-text" layout="column">
+              <p ng-click="projects.removeSearchTechnology($index)">
+                {{$index + 1}}. {{technology}}
+                <span class="material-icons c-filters__icon">close</span>
+              </p>
+            </div>
+          </md-list-item>
+
+        </md-list>
+      </div><!-- /SEARCH OUPUT -->
+
+
+    </section><!-- /FILTER BY TECHNOLOGIES -->
+
+
+
+
+    <!-- FILTER BY CUSTOMERS -->
+    <section layout="row" layout-align="center center">
+
+      <!-- SEARCH INPUT -->
+      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
+        <md-content class="md-padding">
+          <form ng-submit="$event.preventDefault()">
+            <md-autocomplete md-selected-item="projects.selectedCustomers" md-search-text-change="projects.searchCustomersChange(projects.searchCustomers)"
+              md-search-text="projects.searchCustomers" md-selected-item-change="projects.selectedCustomersChange(itemCust.name, projects.projects)"
+              md-items="itemCust in projects.querySearchCustomers(projects.searchCustomers)" md-item-text="itemCust.name" md-min-length="0"
+              placeholder="Filter by Customers">
+
+              <md-item-template>
+                <span class="item-metadata">
+                <span class="flag" ng-class="'flag-'+itemCust.name"></span>
+                {{itemCust.name}}
+              </md-item-template>
+
+            </md-autocomplete>
+          </form>
+        </md-content>
+      </div><!-- /SEARCH INPUT -->
+
+      <!-- SEARCH OUPUT -->
+      <div flex="50" flex-gt-sm="65" flex-gt-md="75" layout-align="left center">
+        <md-list layout="row" layout-wrap>
+
+          <md-list-item
+            class="md-2-line c-filters__label">
+            <div class="md-list-item-text " layout="column">
+              <h4>Has the following customers: </h4>
+            </div>
+          </md-list-item>
+
+          <md-list-item
+            class="md-2-line"
+            ng-repeat="customer in projects.arrayCustomers track by $index">
+            <div class="md-list-item-text" layout="column">
+              <p ng-click="projects.removeSearchCustomers($index)">
+                {{$index + 1}}. <span class="flag" ng-class="'flag-'+customer"></span> {{customer}}
+                <span class="material-icons c-filters__icon">close</span>
+              </p>
+            </div>
+          </md-list-item>
+
+        </md-list>
+      </div><!-- /SEARCH OUPUT -->
+
+    </section><!-- FILTER BY CUSTOMERS -->
+
+
+
+
+    <!-- FILTER BY INDUSTRY -->
+    <section layout="row" layout-align="center center">
+
+      <!-- SEARCH INPUT -->
+      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
+        <md-content class="md-padding">
+          <form ng-submit="$event.preventDefault()">
+            <md-autocomplete md-selected-item="projects.selectedIndustry" md-search-text-change="projects.searchIndustryChange(projects.searchIndustry)"
+              md-search-text="projects.searchIndustry" md-selected-item-change="projects.selectedIndustryChange(itemIndust.name, projects.projects)"
+              md-items="itemIndust in projects.querySearchIndustry(projects.searchIndustry)" md-item-text="itemIndust.name"
+              md-min-length="0" placeholder="Filter by Industry">
+
+              <md-item-template>
+                <span class="item-metadata">
+                {{itemIndust.name}}
+              </md-item-template>
+
+            </md-autocomplete>
+          </form>
+        </md-content>
+      </div><!-- /SEARCH INPUT -->
+
+      <!-- SEARCH OUPUT -->
+      <div flex="50" flex-gt-sm="65" flex-gt-md="75" layout-align="left center">
+        <md-list layout="row" layout-wrap>
+
+          <md-list-item
+            class="md-2-line c-filters__label">
+            <div class="md-list-item-text " layout="column">
+              <h4>Has the following industries: </h4>
+            </div>
+          </md-list-item>
+
+          <md-list-item
+            class="md-2-line"
+            ng-repeat="industry in projects.arrayIndustries track by $index">
+            <div class="md-list-item-text" layout="column">
+              <p ng-click="projects.removeSearchIndustry($index)">
+                {{$index + 1}}. {{industry}}
+                <span class="material-icons c-filters__icon">close</span>
+              </p>
+            </div>
+          </md-list-item>
+
+        </md-list>
+      </div><!-- /SEARCH OUPUT -->
+
+    </section><!-- /FILTER BY INDUSTRY -->
+
+
+
+
+    <!-- FILTER BY APP TYPE -->
+    <section layout="row" layout-align="center center">
+
+      <!-- SEARCH INPUT -->
+      <div flex="50" flex-gt-sm="35" flex-gt-md="25">
+        <md-content class="md-padding">
+          <form ng-submit="$event.preventDefault()">
+            <md-autocomplete
+              md-selected-item="projects.selectedAppType"
+              md-search-text-change="projects.searchAppTypeChange
+              (projects.searchAppType)"
+              md-search-text="projects.searchAppType"
+              md-selected-item-change="projects.selectedAppTypeChange(itemApp.name, projects.projects)"
+              md-items="itemApp in projects.querySearchAppType(projects.searchIndustry)"
+              md-item-text="itemApp.name"
+              md-min-length="0"
+              placeholder="Filter by Application Type">
+
+              <md-item-template>
+                <span class="item-metadata">
+                {{itemApp.name}}
+              </md-item-template>
+
+            </md-autocomplete>
+          </form>
+        </md-content>
+      </div><!-- /SEARCH INPUT -->
+
+      <!-- SEARCH OUPUT -->
+      <div flex="50" flex-gt-sm="65" flex-gt-md="75" layout-align="left center">
+        <md-list layout="row" layout-wrap>
+
+          <md-list-item
+            class="md-2-line c-filters__label">
+            <div class="md-list-item-text " layout="column">
+              <h4>Has the following Application Types: </h4>
+            </div>
+          </md-list-item>
+
+          <md-list-item
+            class="md-2-line"
+            ng-repeat="app in projects.arrayAppType track by $index">
+            <div class="md-list-item-text" layout="column">
+              <p ng-click="projects.removeSearchAppType($index)">
+                  {{$index + 1}}. {{app}}
+                <span class="material-icons c-filters__icon">close</span>
+              </p>
+            </div>
+          </md-list-item>
+
+        </md-list>
+      </div><!-- /SEARCH OUPUT -->
+
+    </section><!-- /FILTER BY APP TYPE -->
+
+
+
+
+    <!-- FILTER BY DATE -->
+    <div flex="60" flex-gt-sm="40" flex-gt-md="30">
+      <!--<md-content class="md-padding">
+        <md-datepicker ng-model="projects.filteredDate.startDate" md-placeholder="Project Start Date" ng-change="projects.startDatefilter($index)">
+        </md-datepicker>
+      </md-content>-->
+    </div><!-- FILTER BY DATE -->
+
+
+
+
+  </md-content> <!-- /ALL FILTERS -->
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+
+
+
+  <!-- TABLE PROJECTS -->
+  <md-table-container>
+    <table
+      class="c-table--actions c-table--big table-projects"
+      md-table
+      md-row-select="projects.table.options.rowSelection"
+      multiple="{{projects.table.options.multiSelect}}"
+      ng-model="projects.table.selected"
+      md-progress="promise">
+
+      <thead
+        ng-if="!projects.options.decapitate"
+        md-head
+        md-order="projects.query.order"
+        md-on-reorder="logOrder">
+        <tr md-row>
+          <th md-column md-order-by="name"></th>
+          <th md-column md-order-by="name">Name</th>
+          <th md-column md-order-by="startDate">Start</th>
+          <th md-column md-order-by="deadline">End</th>
+          <th md-column>Customer</th>
+          <th md-column>Type</th>
+          <th md-column>Industry</th>
+          <th md-column>Employees</th>
+          <th md-column>Technologies</th>
+          <th md-column>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody md-body>
+        <tr
+          class="project__row"
+          md-row
+          md-select="project"
+          md-on-select="logItem"
+          md-auto-select="projects.options.autoSelect"
+          ng-repeat="project in projects.projects | orderBy: projects.query.order | filter: projects.searchText  | filter: projects.years | filter: projects.customer | filter: projects.app | filter: projects.technology | filter: projects.industry| limitTo: projects.table.query.limit : (projects.table.query.page - 1) * projects.table.query.limit">
+
+          <td md-cell> {{$index + 1}}</td>
+
+          <td md-cell>
+            <strong>
+              {{project.name | limitTo: 20}}
+              <span ng-show = "project.name.length >20">[...]</span>
+            </strong>
+          </td>
+
+          <td md-cell>{{project.startDate | date: 'dd-MM-yyyy'}}</td>
+
+          <td md-cell>
+            <p class="u-no-margin">{{project.deadline | date: 'dd-MM-yyyy'}}</p>
+            <span ng-show="project.daysLeft > 0 ">
+              <strong>
+              ({{project.daysLeft}}
+              day<span ng-show = "project.daysLeft > 1">s</span> left)
+              </strong>
+            </span>
+            <!--<span ng-show="project.daysLeft === 0">
+              <strong>(Today!)</strong>
+            </span>-->
+            <!--<span ng-show="project.daysLeft < 0">
+              <strong>(Closed)</strong>
+            </span>-->
+          </td>
+
+          <td md-cell>
+            <ul class="c-list">
+              <li ng-repeat="customer in project.customers track by $index">
+                  <span class="flag" ng-class="'flag-'+customer.name"></span>
+                  {{customer.name}}
+              </li>
+            </ul>
+          </td>
+
+          <td md-cell>
+            <ul class="c-list">
+              <li ng-repeat="app in project.applicationTypes track by $index">
+              {{$index +1}}. {{app.name}}
+              </li>
+            </ul>
+          </td>
+
+          <td md-cell>
+            <ul class="c-list">
+              <li ng-repeat="industry in project.industries track by $index">
+                {{$index +1}}. {{industry.name}}
+              </li>
+            </ul>
+          </td>
+
+          <td md-cell>
+            <ul class="c-list">
+              <li ng-repeat="employee in project.employees track by $index">
+                {{$index +1}}. {{ employee.firstName }} {{ employee.lastName }}
+              </li>
+            </ul>
+          </td>
+
+          <td md-cell>
+            <ul class="c-list">
+              <li ng-repeat="technology in project.technologies track by $index">
+                {{$index +1}}. {{technology.label}}
+              </li>
+            </ul>
+          </td>
+
+          <td md-cell>
+
+            <md-button
+              class="md-icon-button md-primary"
+              label="View project"
+              aria-label="View project"
+              ui-sref="projectsParent.details({id: project.id})">
+              <md-icon class="material-icons">visibility</md-icon>
+              <md-tooltip md-autohide="true">
+                View project
+              </md-tooltip>
+            </md-button>
+
+            <md-button
+              class="md-icon-button md-warn"
+              label="Remove project"
+              aria-label="Remove project"
+              ng-click="projects.deleteConfirm($event, project, $index)">
+              <md-icon class="material-icons">delete</md-icon>
+              <md-tooltip md-autohide="true">
+                Remove project
+              </md-tooltip>
+            </md-button>
+
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+  </md-table-container><!-- /TABLE PROJECTS -->
+
+
+
+
+  <!-- TABLE PAGINATION -->
+  <md-table-pagination
+    md-limit="projects.table.query.limit"
+    md-limit-options="projects.table.limitOptions"
+    md-page="projects.table.query.page"
+    md-total="{{projects.projects.length}}" md-page-select="projects.table.options.pageSelect" md-boundary-links="projects.table.options.boundaryLinks">
+  </md-table-pagination><!-- /TABLE PAGINATION -->
+
+
+
+
+  <!-- TEMPLATES -->
+  <script type="text/ng-template" id="projectForm.tmpl.html">
+    <hra-project-form
+      md-whiteframe='6'
+      project=projectM.project
+      project-index="projectM.projectIndex"
+      form-title="projectM.formTitle">
+    </hra-project-form>
+  </script>
+
+  <script type="text/ng-template" id="projectJsonForm.tmpl.html">
+
+    <textarea
+      cols="30"
+      rows="10"
+      ng-model="projectJsonM.json">
+    </textarea>
+
+    <button ng-click="projectJsonM.saveFromJson(projectJsonM.json)">
+      Save
+    </button>
+
+  </script>
+  <!-- /TEMPLATES -->
+
+
+
+
+</section>

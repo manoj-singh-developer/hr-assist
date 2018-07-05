@@ -1,0 +1,186 @@
+<section layout="column" md-whiteframe="6" class="u-mb-50">
+
+
+
+  <!-- TITLE -->
+  <md-toolbar
+    class="md-table-toolbar md-default"
+    layout="row"
+    layout-align="space-between center">
+    <div class="md-toolbar-tools">
+
+      <div class="md-title">Application types</div>
+
+      <div flex="" class="flex"></div>
+
+      <md-button
+        md-no-ink
+        class="md-primary"
+        name="add-app-type"
+        ng-click="appTypes.showForm()">
+          Add
+      </md-button>
+
+    </div>
+  </md-toolbar><!-- /TITLE -->
+
+
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+
+
+
+  <md-input-container md-no-float class="simple-search">
+    <input ng-model="appTypes.searchText" placeholder="Search">
+  </md-input-container>
+
+
+
+  <!-- SELECTED ROWS -->
+  <md-toolbar
+    class="md-table-toolbar alternate"
+    ng-show="appTypes.tableSettings.options.rowSelection && appTypes.tableSettings.selected.length">
+    <div class="md-toolbar-tools">
+      <span>
+        {{appTypes.tableSettings.selected.length}} {{appTypes.tableSettings.selected.length > 1 ? 'appTypes' : 'Indusrey'}} selected
+      </span>
+    </div>
+  </md-toolbar><!-- /SELECTED ROWS -->
+
+  <md-divider class="md-padding divider-bold u-no-padding"></md-divider>
+
+
+
+
+  <!-- TABLE appTypes -->
+  <md-table-container>
+    <table
+      class="c-table--actions"
+      md-table
+      md-row-select="appTypes.tableSettings.options.rowSelection"
+      multiple="{{appTypes.tableSettings.options.multiSelect}}"
+      ng-model="appTypes.tableSettings.selected"
+      md-progress="promise">
+
+      <thead
+        ng-if="!appTypes.tableSettings.options.decapitate"
+        md-head
+        md-order="appTypes.tableSettings.query.order">
+        <tr md-row>
+          <th md-column md-order-by="name">Name</th>
+          <th md-column>Label</th>
+          <th md-column>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody md-body>
+        <tr
+          md-row
+          md-select="industry"
+          md-on-select="logItem"
+          md-auto-select="appTypestableSettingsoptions.autoSelect"
+          ng-repeat="industry in appTypes.appTypes | filter: appTypes.searchText | orderBy: appTypes.tableSettings.query.order | limitTo: appTypes.tableSettings.query.limit : (appTypes.tableSettings.query.page -1) * appTypes.tableSettings.query.limit">
+
+          <td md-cell>{{industry.name}}</td>
+
+          <td md-cell>{{industry.label}}</td>
+
+          <td md-cell>
+
+            <md-button
+              class="md-icon-button md-primary md-button md-ink-ripple"
+              label="Update industry"
+              aria-label="Update industry"
+              name="edit-industry"
+              ng-click="appTypes.showForm(industry)">
+                <md-icon class="material-icons">create</md-icon>
+                <md-tooltip md-autohide="true">
+                  Update industry
+                </md-tooltip>
+              </md-button>
+
+            <md-button
+              class="md-icon-button md-warn md-button md-ink-ripple"
+              label="Remove industry"
+              aria-label="Remove industry"
+              ng-click="appTypes.remove(industry, $event)">
+              <md-icon class="material-icons">delete</md-icon>
+              <md-tooltip md-autohide="true">
+                Remove industry
+              </md-tooltip>
+            </md-button>
+
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+  </md-table-container><!-- TABLE appTypes -->
+
+
+
+  <!-- TABLE PAGINATION -->
+  <md-table-pagination
+    md-limit="appTypes.tableSettings.query.limit"
+    md-limit-options="appTypes.tableSettings.limitOptions"
+    md-page="appTypes.tableSettings.query.page"
+    md-total="{{appTypes.appTypes.length}}"
+    md-page-select="appTypes.tableSettings.options.pageSelect"
+    md-boundary-links="appTypes.tableSettings.options.boundaryLinks">
+  </md-table-pagination><!-- TABLE PAGINATION -->
+
+
+
+  <!--TODO: Implement Add industry from JSON-->
+  <!-- TEMPLATES -->
+  <script type="text/ng-template" id="extraJsonForm.tmpl.html">
+    <section layout="column">
+
+      <!--<md-toolbar class="md-table-toolbar">-->
+        <!--<div class="md-toolbar-tools ">-->
+          <!--Add Industry from JSON-->
+        <!--</div>-->
+      <!--</md-toolbar>-->
+
+      <section class="md-padding">
+
+        <form name="employeejsonform" class="form md-inline-form">
+          <textarea class="save-from-json" ng-model="extraJsonM.json" placeholder="Paste json here">
+          </textarea>
+        </form>
+
+        <!-- Actions buttons -->
+        <div layout="row" layout-align="center center">
+
+          <md-button
+            class="md-raised md-primary"
+            ng-click="extraJsonM.saveFromJson(extraJsonM.json)">
+            Save
+          </md-button>
+
+          <md-button
+            class="md-raised md-primary"
+            ng-click="extraJsonM.clearFields()">
+            Clear
+          </md-button>
+
+          <md-button
+            class="md-raised"
+            ng-click="extraJsonM.closeDialog()">
+            Close
+          </md-button>
+
+        </div><!-- /Actions buttons -->
+
+      </section>
+
+    </section>
+  </script>
+  <!-- /TEMPLATES -->
+
+
+
+
+</section>

@@ -1,0 +1,73 @@
+<section class="c-section">
+  <section class="md-padding">
+    <form name="employeeform" class="form form-add-user md-inline-form">
+
+      <hra-general-info
+        candidate=employeeDetails.candidate
+        progress=employeeDetails.progress
+        class="c-card-profile"
+        md-whiteframe='6'>
+      </hra-general-info>
+
+      <hra-observations
+        class="c-card-profile"
+        md-whiteframe='6'>
+      </hra-observations>
+
+      <hra-schedule
+        ng-hide="employeeDetails.candidate"
+        class="c-card-profile"
+        md-whiteframe='6'>
+      </hra-schedule>
+
+      <hra-language
+        class="c-card-profile"
+        md-whiteframe='6'>
+      </hra-language>
+
+      <hra-employee-skills
+        class="c-card-profile"
+        md-whiteframe='6'>
+      </hra-employee-skills>
+
+      <hra-employee-project
+        ng-hide="employeeDetails.candidate"
+        class="c-card-profile"
+        md-whiteframe='6'>
+      </hra-employee-project>
+
+      <hra-equipments
+        ng-hide="employeeDetails.candidate"
+        class="c-card-profile"
+        md-whiteframe='6'>
+      </hra-equipments>
+
+      <hra-employee-upload-files
+        class="c-card-profile"
+        md-whiteframe='6'>
+      </hra-employee-upload-files>
+
+      <hra-employee-holiday
+        ng-hide="employeeDetails.candidate"
+        class="c-card-profile"
+        md-whiteframe='6'>
+      </hra-employee-holiday>
+
+      <hra-employee-education
+        class="c-card-profile"
+        md-whiteframe='6'>
+      </hra-employee-education>
+
+      <hra-employee-course
+        class="c-card-profile"
+        md-whiteframe='6'>
+      </hra-employee-course>
+
+      <hra-jobs
+        class="c-card-profile"
+        md-whiteframe='6'>
+      </hra-jobs>
+
+    </form>
+  </section>
+</section>

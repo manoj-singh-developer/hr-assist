@@ -1,0 +1,309 @@
+<section layout="column" aria-label="Employee-form">
+
+  <md-toolbar class="md-table-toolbar" aria-label="Form-title">
+    <div class="md-toolbar-tools ">
+      {{employeeForm.formTitle}}
+    </div>
+  </md-toolbar>
+
+  <section class="md-padding">
+    <form name="employeeform" class="form form-add-user md-inline-form" >
+
+
+
+
+      <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always" aria-label="Form-tabs" >
+
+        <!-- General Info -->
+        <md-tab label="General" >
+          <md-content class="md-padding">
+            <div layout-gt-xs="row">
+              <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+                <label>First Name</label>
+                <input ng-model="employeeForm.employee.firstName" name=firstName required>
+
+                <div ng-messages="employeeform.firstName.$error">
+                  <div ng-message="required">This field is required</div>
+                </div>
+
+              </md-input-container>
+            </div>
+
+            <div layout-gt-xs="row" ng-hide="true">
+              <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+                <input
+                ng-model="employeeForm.employee.schedule"
+                aria-label="scheduleEmployee"
+                name=schedule required>
+
+              </md-input-container>
+            </div>
+
+            <div layout-gt-xs="row">
+              <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+                <label>Middle Name</label>
+                <input ng-model="employeeForm.employee.middleName" name=middleName required>
+
+                <div ng-messages="employeeform.middleName.$error">
+                  <div ng-message="required">This field is required</div>
+                </div>
+
+              </md-input-container>
+            </div>
+
+            <div layout-gt-xs="row">
+              <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+                <label>Last Name</label>
+                <input ng-model="employeeForm.employee.lastName" name="lastName" required>
+
+                <div ng-messages="employeeform.lastName.$error">
+                  <div ng-message="required">This field is required</div>
+                </div>
+
+              </md-input-container>
+            </div>
+
+<!--             <div layout-gt-xs="row">
+
+              <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+                <label>Phone</label>
+                <input ng-model="employeeForm.employee.phone">
+
+                <div ng-messages="serverErrors">
+                  <div>
+                    {{serverErrorsArray.data.invalidAttributes.phone[0].message}}
+                  </div>
+                </div>
+              </md-input-container>
+
+            </div> -->
+
+            <div layout-gt-xs="row">
+              <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+                <label>Email</label>
+                <input ng-model="employeeForm.employee.emailAssist" name="email" type="email" required>
+
+                <div ng-messages="employeeform.email.$error">
+                  <div ng-message="email">Please insert a valid email</div>
+                </div>
+
+              </md-input-container>
+            </div>
+          </md-content>
+        </md-tab><!-- /General Info -->
+
+        <!-- Skills -->
+        <!-- <md-tab label="Skills">
+          <md-content class="md-padding">
+
+            <md-content class="md-padding">
+
+                <md-subheader class="md-no-sticky">
+                  All Skills test
+                </md-subheader>
+
+                <ul class="c-list">
+                  <li ng-repeat="item in employeeForm.employee.skills">
+                      <span ng-click="employeeForm.removeSkill(item, employeeForm.employee)">
+                        {{item.label}}
+                      </span>
+                  </li>
+                </ul>
+
+              <form ng-submit="$event.preventDefault()">
+                <md-autocomplete
+                  ng-model="employeeForm.searchText"
+                  md-no-cache="true"
+                  md-selected-item="employeeForm.selectedItem"
+                  md-search-text-change="employeeForm.searchTextChange(employeeForm.searchText)"
+                  md-search-text="employeeForm.searchText"
+                  md-selected-item-change="employeeForm.addSkill(item, employeeForm.employee)"
+                  md-items="item in employeeForm.querySearch(employeeForm.searchText)"
+                  md-item-text="item.label"
+                  md-min-length="0"
+                  placeholder="Search for a skill">
+
+                <md-item-template >
+                  <span class="item-metadata">
+                    {{item.label}}
+                </md-item-template>
+
+              </md-autocomplete>
+              </form>
+
+            </md-content>
+
+          </md-content>
+        </md-tab> -->
+        <!-- /Skills -->
+
+        <!-- Equipments -->
+        <!-- <md-tab label="Equipments">
+          <md-content class="md-padding" ng-hide="employeeForm.candidate">
+
+            <md-content class="md-padding">
+
+                <md-subheader class="md-no-sticky">
+                  All Equipments
+                </md-subheader>
+                <ul class="c-list" ng-if="employeeForm.employee.equipments">
+                  <li ng-repeat="equipment in employeeForm.employee.equipments">
+                    <strong ng-click="employeeForm.removeEq($index, equipment)">{{equipment.name}} {{equipment.description}}</strong>
+                  </li>
+                </ul>
+               <div layout-gt-xs="row" class="equipment-form">
+                 <md-input-container md-no-float class="md-block" flex-gt-xs="">
+                   <label>Monitor 1</label>
+                 </md-input-container>
+                  <form ng-submit="$event.preventDefault()">
+                   <md-autocomplete
+                    ng-model="employeeForm.searchMonitor1"
+                    md-no-cache="true"
+                    md-selected-item="employeeForm.selectedMonitor1"
+                    md-search-text-change="employeeForm.searchTextChange(0)"
+                    md-search-text="employeeForm.searchMonitor1"
+                    md-selected-item-change="employeeForm.addEquipments(itemEq,employeeForm.employee, nr=0, employeeForm.searchMonitor1 )"
+                    md-items="itemEq in employeeForm.querySearchEquipments(employeeForm.searchMonitor1)"
+                    md-item-text="itemEq.getFullName()"
+                    md-min-length="0"
+                    md-clear="false"
+                    placeholder="Search for first monitor">
+
+                     <md-item-template>
+                    <span class="item-metadata">
+                      {{itemEq.getFullName()}}
+                   </md-item-template>
+
+                 </md-autocomplete>
+                </form>
+               </div>
+
+               <div layout-gt-xs="row" class="equipment-form">
+                 <md-input-container md-no-float class="md-block" flex-gt-xs="">
+                   <label>Monitor 2</label>
+                 </md-input-container>
+                  <form ng-submit="$event.preventDefault()">
+                   <md-autocomplete
+                    ng-model="employeeForm.searchMonitor2"
+                    md-no-cache="true"
+                    md-selected-item="employeeForm.selectedMonitor2"
+                    md-search-text-change="employeeForm.searchTextChange(1)"
+                    md-search-text="employeeForm.searchMonitor2"
+                    md-selected-item-change="employeeForm.addEquipments(itemEq,employeeForm.employee, nr=1, employeeForm.searchMonitor2 )"
+                    md-items="itemEq in employeeForm.querySearchEquipments(employeeForm.searchMonitor2)"
+                    md-item-text="itemEq.getFullName()"
+                    md-min-length="0"
+                    placeholder="Search for second monitor">
+
+                     <md-item-template>
+                    <span class="item-metadata">
+                      {{itemEq.getFullName()}}
+                   </md-item-template>
+
+                 </md-autocomplete>
+                </form>
+               </div>
+
+               <div layout-gt-xs="row" class="equipment-form">
+                 <md-input-container md-no-float class="md-block" flex-gt-xs="">
+                   <label>Keyboard</label>
+                 </md-input-container>
+                  <form ng-submit="$event.preventDefault()">
+                   <md-autocomplete
+                    ng-model="employeeForm.searchKeyboard"
+                    md-no-cache="true"
+                    md-selected-item="employeeForm.selectedKeyboard"
+                    md-search-text-change="employeeForm.searchTextChange(2)"
+                    md-search-text="employeeForm.searchKeyboard"
+                    md-selected-item-change="employeeForm.addEquipments(itemEq,employeeForm.employee, nr=2, employeeForm.searchKeyboard )"
+                    md-items="itemEq in employeeForm.querySearchEquipments(employeeForm.searchKeyboard)"
+                    md-item-text="itemEq.getFullName()"
+                    md-min-length="0"
+                    placeholder="Search for a keyboard">
+
+                  <md-item-template>
+                    <span class="item-metadata">
+                      {{itemEq.getFullName()}}
+                  </md-item-template>
+
+                 </md-autocomplete>
+                </form>
+               </div>
+
+               <div layout-gt-xs="row" class="equipment-form">
+                 <md-input-container md-no-float class="md-block" flex-gt-xs="">
+                   <label>Mouse</label>
+                 </md-input-container>
+                  <form ng-submit="$event.preventDefault()">
+                   <md-autocomplete
+                    ng-model="employeeForm.searchMouse"
+                    md-no-cache="true"
+                    md-selected-item="employeeForm.selectedMouse"
+                    md-search-text-change="employeeForm.searchTextChange(3)"
+                    md-search-text="employeeForm.searchMouse"
+                    md-selected-item-change="employeeForm.addEquipments(itemEq,employeeForm.employee, nr=3, employeeForm.searchMouse )"
+                    md-items="itemEq in employeeForm.querySearchEquipments(employeeForm.searchMouse)"
+                    md-item-text="itemEq.getFullName()"
+                    md-min-length="0"
+                    placeholder="Search for a mouse">
+
+                     <md-item-template>
+                    <span class="item-metadata">
+                      {{itemEq.getFullName()}}
+                   </md-item-template>
+
+                 </md-autocomplete>
+                </form>
+              </div>
+            </md-content>
+          </md-content>
+        </md-tab> -->
+        <!-- /Equipments -->
+
+        <!-- Bio -->
+        <!-- <md-tab label="Bio">
+          <md-content class="md-padding">
+          BIO Here
+          </md-content>
+        </md-tab> -->
+        <!-- /Projects -->
+
+      </md-tabs>
+
+
+
+
+      <!-- Actions buttons -->
+      <div layout="row" layout-align="center center">
+
+        <md-button
+          class="md-raised md-primary"
+          ng-click="employeeForm.saveEmployee(employeeForm.employee)"
+          ng-disabled="btnIsDisabled">
+          Save
+        </md-button>
+
+        <md-button
+          class="md-raised md-primary"
+          ng-click="employeeForm.clearFields()">
+          Clear
+        </md-button>
+
+        <md-button
+          class="md-raised"
+          ng-click="employeeForm.closeDialog()">
+          Close
+        </md-button>
+
+      </div> <!-- /Actions buttons -->
+
+    </form>
+  </section>
+
+</section>

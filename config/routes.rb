@@ -50,7 +50,10 @@ Rails.application.routes.draw do
   get 'admin/domains', to: 'admin/domain#index'
   post 'admin/domains', to: 'admin/domain#new'
 
+<<<<<<< HEAD
   get '/smtp', to: 'admin/smtp#show'
   post '/smtp' , to: 'smtp_settings#create'
 
+=======
+>>>>>>> parent of daacbb1... Merge pull request #374 from assist-software/Task-19505
 end

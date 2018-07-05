@@ -1,0 +1,54 @@
+<md-toolbar class="md-table-toolbar">
+  <div class="md-toolbar-tools">
+    Customer form
+  </div>
+</md-toolbar>
+
+<section class="md-padding">
+
+  <div layout-gt-xs="row">
+    <md-input-container md-no-float class="md-block" flex-gt-xs="">
+      <label>Name</label>
+      <input
+      type="text"
+      name="name"
+      ng-model="customerForm.customer.name"
+      required>
+    </md-input-container>
+  </div>
+
+  <div layout-gt-xs="row">
+    <md-input-container md-no-float class="md-block" flex-gt-xs="">
+      <label>Country id</label>
+      <input
+      type="text"
+      name="country-id"
+      ng-model="customerForm.customer.country_id"
+      required>
+    </md-input-container>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div layout="row" layout-align="center center">
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="customerForm.add()">
+      Save
+    </md-button>
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="customerForm.clear()">
+      Clear
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ng-click="customerForm.close()">
+      Close
+    </md-button>
+
+  </div><!-- /ACTION BUTTONS -->
+
+ </section>

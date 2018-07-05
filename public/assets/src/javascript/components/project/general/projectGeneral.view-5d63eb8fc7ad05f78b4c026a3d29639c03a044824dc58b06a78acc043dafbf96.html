@@ -1,0 +1,132 @@
+<md-card>
+
+
+  <md-card-title>
+	   <md-card-title-text>
+	     <span class="md-headline">General informations</span>
+			 <p class="u-font-small u-no-margin">
+        <strong>Last Update at: {{prjGeneral.project.updatedAt | date: longDate}}</strong>
+      </p>
+	   </md-card-title-text>
+  </md-card-title>
+
+  <!-- PREVIEW GENERAL INFO -->
+  <md-content
+  	ng-show="prjGeneral.disabledgeneralInfo"
+    class="c-card-profile__preview">
+
+   <section layout-gt-xs="row">
+
+     <div flex="100" class="c-card-profile__general-info">
+
+       <p class="c-card-profile__info c-card-profile__name">
+        <strong>Name: </strong>
+         {{prjGeneral.project.name}}
+       </p>
+
+       <p class="c-card-profile__info c-card-profile__email">
+         <strong>Description: </strong>{{prjGeneral.project.description}}
+       </p>
+
+       <p class="c-card-profile__info c-card-profile__email">
+         <strong>Start date: </strong>{{prjGeneral.project.startDate | date:'longDate'}}
+       </p>
+
+       <p class="c-card-profile__info c-card-profile__phone">
+         <strong>Deadline: </strong>
+         {{prjGeneral.project.deadline | date:'longDate'}}
+       </p>
+
+     </div>
+
+    </section>
+  </md-content><!-- /PREVIEW GENERAL INFO -->
+
+
+	<md-content
+		class="md-padding"
+		ng-hide="prjGeneral.disabledgeneralInfo">
+
+		<!-- Name -->
+		<div layout-gt-xs="row">
+		  <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+				 <label>Name</label>
+				 <input ng-model="prjGeneral.project.name" name=name required>
+				 <div ng-messages="prjGeneral.name.$error">
+				   <div ng-message="required">This field is required</div>
+				 </div>
+
+		  </md-input-container>
+		</div><!-- /Name -->
+
+
+		<!-- Description -->
+		<div layout-gt-xs="row">
+		  <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+		    <label>Description</label>
+			      <textarea
+		          ng-model="prjGeneral.project.description"
+		          name="description"
+		          required>
+		        </textarea>
+
+		  </md-input-container>
+		</div><!-- /Description -->
+
+		<!-- Start date/ Deadline -->
+		<div layout-gt-xs="row">
+
+		    <label>Start date</label>
+		    <md-datepicker
+		      ng-model="prjGeneral.project.startDate"
+		      md-placeholder="Enter date">
+		    </md-datepicker>
+
+
+
+		    <label>Deadline</label>
+		    <md-datepicker
+		      ng-model="prjGeneral.project.deadline"
+		      md-min-date = "prjGeneral.project.startDate"
+		      md-placeholder="Enter date">
+		    </md-datepicker>
+
+		</div><!-- /Start date/ Deadline -->
+
+	</md-content>
+
+	<!-- CARD ACTIONS-->
+	<md-card-actions
+	  layout="column"
+	  layout-align="start"
+	  ng-show="prjGeneral.disabledgeneralInfo">
+	  <md-button
+	    class="c-card-profile__btn no-margin"
+	    ng-click="prjGeneral.disabledgeneralInfo = false">
+	    Add general information
+	  </md-button>
+	</md-card-actions>
+
+	<md-card-actions
+	  layout="row"
+	  layout-align="center center"
+	  ng-show="!prjGeneral.disabledgeneralInfo"
+	  class="additional">
+
+	  <md-button
+	    class="md-raised md-primary"
+	    ng-click="prjGeneral.saveProject(prjGeneral.project)"
+	    ng-disabled="btnIsDisabled">
+	    Save
+	  </md-button>
+
+	  <md-button
+	    class="md-raised"
+	    ng-click="prjGeneral.cancelAdd()">
+	    Cancel
+	  </md-button>
+
+	</md-card-actions><!-- /CARD ACTIONS-->
+</md-card>

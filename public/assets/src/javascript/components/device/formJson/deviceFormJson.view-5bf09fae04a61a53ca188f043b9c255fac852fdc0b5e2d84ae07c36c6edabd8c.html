@@ -1,0 +1,44 @@
+<md-toolbar class="md-table-toolbar">
+  <div class="md-toolbar-tools ">
+    Add devices from json
+  </div>
+</md-toolbar>
+
+<form name="employeejsonform" class="form">
+
+	<div layout-gt-xs="row" class="md-padding">
+			<md-input-container class="md-block" flex-gt-xs="">
+				<textarea
+					class="save-from-json"
+					ng-model="deviceFormJson.json"
+					placeholder="Paste json here">
+				</textarea>
+		  </md-input-container>
+	</div>
+
+	<!-- ACTION BUTTONS -->
+	<div layout="row" layout-align="center center">
+
+		<md-button
+			class="md-raised md-primary"
+			ng-click="deviceFormJson.save(deviceFormJson.json)">
+			Save
+		</md-button>
+
+		<md-button
+			class="md-raised md-primary"
+			ng-click="deviceFormJson.clear()">
+			Clear
+		</md-button>
+
+		<md-button
+			class="md-raised"
+			ng-click="deviceFormJson.close()">
+			Close
+		</md-button>
+
+	</div><!-- /ACTIONS BUTTONS -->
+
+</form>
+
+

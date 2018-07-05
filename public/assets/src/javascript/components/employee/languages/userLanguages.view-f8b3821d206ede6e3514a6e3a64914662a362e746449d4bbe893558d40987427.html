@@ -1,0 +1,189 @@
+<md-card>
+
+
+
+  <md-card-title>
+     <md-card-title-text>
+       <span class="md-headline">
+        Languages
+      </span>
+     </md-card-title-text>
+  </md-card-title>
+
+
+
+  <!-- PREVIEW  -->
+  <md-content
+    ng-show="!userLanguages.showEditLanguages"
+    class="c-card-profile__preview">
+    <md-list layout="row" layout-wrap>
+      <md-list-item
+        flex="25"
+        class="md-2-line"
+        ng-repeat="language in userLanguages.userLanguages track by $index">
+
+        <div class="md-list-item-text" layout="column">
+          <h4>{{language.long_name}}</h4>
+        </div>
+
+<!-- PT AFISAREA PRESCURTARII TARII TREB. DECOMENTAT NU PREA MI SE PARE ESTETIC SA FIE AFISATE AMBELE -->
+<!--         <div class="md-list-item-text" layout="column">
+          <span>{{language.short_name}}</span>
+        </div> -->
+
+      </md-list-item>
+    </md-list>
+
+  </md-content><!-- /PREVIEW -->
+
+
+
+    <!-- EDIT -->
+    <md-content
+      class = "md-padding"
+      ng-show="userLanguages.showEditLanguages">
+
+      <md-list layout="row" layout-wrap>
+
+        <md-list-item class="md-2-line c-filters__label">
+           <div class="md-list-item-text " layout="column">
+             <h4>Add/Remove language: </h4>
+           </div>
+         </md-list-item>
+
+         <md-list-item
+           class="md-2-line"
+           ng-repeat="language in userLanguages.userLanguages track by $index">
+           <div class="md-list-item-text" layout="column">
+             <p class="c-filters__item"
+              ng-click="userLanguages.removeFromQueue(language)" >
+               {{$index + 1}} {{language.long_name}}
+               <span class="material-icons c-filters__icon">close</span>
+             </p>
+           </div>
+         </md-list-item>
+
+      </md-list>
+
+    <!-- FILTER LANGUAGES -->
+    <section
+      layout-gt-xs="row"
+      layout-align="center center"
+      ng-repeat="language in userLanguages.languagesToAdd track by $index" >
+
+
+
+      <!-- LANGUAGE INPUT-->
+      <div flex="100" >
+        <!-- LANGUAGE SELECT-->
+        <md-content class="md-padding">
+          <form ng-submit="$event.preventDefault()">
+
+            <md-autocomplete
+              md-selected-item="userLanguages.selectedItem"
+              md-search-text-change="userLanguages.searchTextChange(userLanguages.searchText)"
+              md-search-text="userLanguages.searchText"
+              md-selected-item-change="userLanguages.addInQueue(item)"
+              md-items="item in userLanguages.querySearch(userLanguages.searchText, userLanguages.languages)"
+              md-item-text="item.long_name"
+              md-min-length="0"
+              placeholder="Search">
+
+              <md-item-template>
+                <span
+                class="item-metadata"
+                md-highlight-text="userLanguages.searchText">
+                  {{item.long_name}}
+                </span>
+              </md-item-template>
+
+            </md-autocomplete>
+          </form>
+        </md-content>
+        <!-- /LANGUAGE SELECT-->
+
+
+
+
+      <!--TODO DE GASIT O SOLUTIE PT A ELIMINA ADDINQUEUE 
+          DUPA SELECTAREA ELEMENTULUI 
+          ADAPTAREA API-ULUI PENTRU PRIMIREA DE LANGUAGE LVL
+      -->
+
+      <!-- LANGUAGE PROFICIENCY -->
+        <!-- <md-input-container
+           class="md-block md-padding u-no-margin"
+          flex-gt-xs="45">
+          <md-select
+            aria-label="Proficiency"
+            ng-model="nimic"
+            ng-disabled="!userLanguages.settings.showForm">
+            <md-option
+              ng-repeat="level in userLanguages.levels">
+                {{level}}
+            </md-option>
+          </md-select>
+        </md-input-container> -->
+        <!-- /LANGUAGE PROFICIENCY -->
+
+      </div>
+      <!-- LANGUAGE INPUT-->
+
+
+    </section>
+    <!-- /FILTER LANGUAGES -->
+
+
+    <section class="md-padding"
+      ng-show="!showDetails">
+      <md-button
+        md-no-ink
+        class="md-primary small-text"
+        ng-click="userLanguages.addNewLanguage(); showDetails = ! showDetails">
+        Add New Language
+      </md-button>
+    </section>
+
+
+
+    </md-content><!-- /EDIT -->
+
+
+
+  <!-- CARD ACTIONS-->
+  <md-card-actions
+    layout="column"
+    layout-align="start"
+    ng-show="!userLanguages.showEditLanguages">
+    <md-button
+      class="c-card-profile__btn no-margin"
+      ng-click="userLanguages.displayEditLanguages()">
+      Add/Edit languages
+    </md-button>
+  </md-card-actions>
+
+  <md-card-actions
+    layout="row"
+    layout-align="center center"
+    ng-show="userLanguages.showEditLanguages"
+    class="additional">
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="userLanguages.save()"
+      ng-disabled="btnIsDisabled">
+      Save
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ng-click="userLanguages.displayEditLanguages()">
+      Cancel
+    </md-button>
+
+  </md-card-actions>
+  <!-- /CARD ACTIONS-->
+
+
+
+</md-card>

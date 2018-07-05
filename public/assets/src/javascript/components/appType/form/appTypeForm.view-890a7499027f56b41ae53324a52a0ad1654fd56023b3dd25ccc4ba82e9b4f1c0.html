@@ -1,0 +1,54 @@
+<md-toolbar class="md-table-toolbar">
+  <div class="md-toolbar-tools">
+    Application type form
+  </div>
+</md-toolbar>
+
+<section class="md-padding">
+
+  <div layout-gt-xs="row">
+    <md-input-container md-no-float class="md-block" flex-gt-xs="">
+      <label>Name</label>
+      <input
+      type="text"
+      name="name"
+      ng-model="appTypeForm.appType.name"
+      required>
+    </md-input-container>
+  </div>
+
+  <div layout-gt-xs="row">
+    <md-input-container md-no-float class="md-block" flex-gt-xs="">
+      <label>Label</label>
+      <input
+      type="text"
+      name="label"
+      ng-model="appTypeForm.appType.label"
+      required>
+    </md-input-container>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div layout="row" layout-align="center center">
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="appTypeForm.add()">
+      Save
+    </md-button>
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="appTypeForm.clear()">
+      Clear
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ng-click="appTypeForm.close()">
+      Close
+    </md-button>
+
+  </div><!-- /ACTION BUTTONS -->
+
+ </section>

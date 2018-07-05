@@ -1,0 +1,587 @@
+<!-- CARD GENERAL INFO -->
+<md-card class="has-progress-bar">
+
+
+
+
+
+  <!-- CARD TITLE -->
+  <md-card-title layout="row" layout-align="top center">
+
+<!--     <div class="c-profile-progress">
+      <span class="c-profile-progress__info">
+        {{userGeneral.progress}}% completed
+      </span>
+      <span class="c-profile-progress__bar" style="width: {{userGeneral.progress}}%"></span>
+    </div> -->
+
+    <md-card-title-text>
+      <span class="md-headline">General informations</span>
+      <p class="u-font-small u-no-margin">
+        <strong>Last Update at: {{userGeneral.user.updatedAt | date: 'longDate'}}</strong>
+      </p>
+    </md-card-title-text>
+
+    <md-button
+      ng-hide="userGeneral.candidate"
+      class="md-primary"
+      ui-sref="usersParent.cv({id: userGeneral.pId})">
+      <!-- @!TODO: De adaugat info despre proiecte la CV -->
+      Generate CV
+    </md-button>
+
+    <md-button
+      ng-show="userGeneral.candidate"
+      class="md-primary"
+      ui-sref="candidateParent.cv({id: userGeneral.pId})">
+      Generate CV
+    </md-button>
+
+  </md-card-title><!-- /CARD TITLE -->
+
+
+
+
+
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here with your general personal/work information.
+    </p>
+  </md-content> <!-- CARD NOTES -->
+
+
+
+
+
+  <!-- PREVIEW -->
+  <md-content
+    ng-show="!userGeneral.settings.showForm"
+    class="c-card-profile__preview">
+   <section layout-gt-xs="row">
+
+    <div class="c-card-profile__picture"
+      flex="20"
+      ng-if="userGeneral.user.picture"
+      layout-align="top center">
+      <img
+        ng-src="{{userGeneral.user.picture}}"
+        class="md-card-image cv-picture">
+    </div>
+
+    <div class="c-card-profile__picture"
+      flex="20"
+      ng-if="!userGeneral.user.picture"
+      layout-align="top center">
+      <img
+        src="http://www.85percent.co.uk/wp-content/uploads/2015/08/default-placeholder-1024x1024-570x321.png"
+        class="md-card-image">
+     </div>
+
+     <div flex="80" class="c-card-profile__general-info">
+
+      <p class="c-card-profile__info c-card-profile__name u-clearfix">
+        <span class="c-card-profile__info-text u-float-right">
+          <strong>
+            {{userGeneral.user.first_name}} {{userGeneral.user.middle_name}} {{userGeneral.user.last_name}}
+          </strong>
+        </span>
+      </p>
+
+      <p class="c-card-profile__info u-clearfix">
+        <strong>Birthday: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.user.birthday | date: 'dd MMMM yyyy' }}
+        </span>
+      </p>
+
+      <p class="c-card-profile__info c-card-profile__phone u-clearfix">
+        <strong>Phone: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.user.phone }}
+        </span>
+      </p>
+
+      <p class="c-card-profile__info c-card-profile__email u-clearfix">
+        <strong>Other email: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.user.other_email }}
+        </span>
+      </p>
+
+      <p class="c-card-profile__info c-card-profile__address u-clearfix">
+        <strong>Address: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.user.address }}
+<!--           {{ userGeneral.user.address.zip }}
+          {{ userGeneral.user.address.city }} -->
+        </span>
+      </p>
+
+      <p class="c-card-profile__info u-clearfix">
+        <strong>Car's license plate: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.user.car_plate }}
+        </span>
+      </p>
+
+      <md-divider
+        class="md-padding divider-bold u-no-padding u-mt-20 u-mb-20">
+      </md-divider>
+
+      <p class="c-card-profile__info c-card-profile__email u-clearfix"
+        ng-hide="userGeneral.candidate">
+        <strong>Start date at Company: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.user.company_start_date | date: 'MMMM yyyy' }}
+        </span>
+      </p>
+
+      <p class="c-card-profile__info c-card-profile__email u-clearfix">
+        <strong>Position: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.position.name }}
+        </span>
+      </p>
+
+      <p class="c-card-profile__info c-card-profile__email u-clearfix">
+        <strong>Company email: </strong>
+         <span class="u-float-right">
+          {{ userGeneral.user.email }}
+        </span>
+      </p>
+
+      <p class="c-card-profile__info u-clearfix"
+        ng-hide="userGeneral.candidate">
+        <strong>Office: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.user.office_nr }}
+        </span>
+      </p>
+
+      <p class="c-card-profile__info u-clearfix"
+        ng-hide="userGeneral.candidate">
+        <strong>Contract type: </strong>
+        <span class="u-float-right">
+          {{ userGeneral.userSchedule.name }}
+        </span>
+       </p>
+
+      <md-divider
+        class="md-padding divider-bold u-no-padding u-mt-20 u-mb-20">
+      </md-divider>
+
+      <p class="c-card-profile__info u-clearfix">
+        <strong>Urgent Contact Person:</strong>
+        <span class="u-float-right">
+          {{ userGeneral.user.urgent_contact_name }}
+        </span>
+      </p>
+
+      <p class="c-card-profile__info">
+        <strong>Urgent Contact Phone: </strong>
+        <span class="u-float-right">
+            {{ userGeneral.user.urgent_contact_phone }}
+        </span>
+      </p>
+
+     </div>
+
+    </section>
+  </md-content><!-- /PREVIEW -->
+
+
+
+
+
+  <!-- EDIT -->
+  <md-content
+    class="md-padding"
+    ng-show="userGeneral.settings.showForm">
+
+    <div layout-gt-xs="row">
+      <md-input-container md-no-float class="md-block u-mb-20">
+        <md-button
+          class="md-raised u-no-margin"
+          ngf-select="userGeneral.upload($file)"
+          ngf-pattern="'image/*'"
+          ngf-accept="'image/*'"
+          ngf-max-size="1MB"
+          >
+          Upload profile picture
+          <!-- @!TODO: de aratat si in modul edit poza daca asceasta exista -->
+       </md-button>
+      </md-input-container>
+    </div>
+
+    <div ng-show="userGeneral.showSuccessMsg"
+      class="alert-success fade"
+      role="alert">
+      Your picture has been successfully uploaded.
+    </div>
+
+    <div ng-show="userGeneral.showErrMsg"
+      class="alert-error fade"
+      role="alert">
+      A problem occurred while uploading the prohile picture.
+    </div>
+
+     <div ng-show="userGeneral.showToLargeImage"
+      class="alert-error fade"
+      role="alert">
+      Image size is too big. The size limit is 1MB.
+    </div>
+
+
+
+    <!-- PERSONAL INFO -->
+    <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
+
+    <!-- First Name -->
+    <div layout-gt-xs="row">
+      <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+        <label>First Name</label>
+        <input
+          type="text"
+          ng-value="userGeneral.user.first_name"
+          ng-model="userGeneral.user.first_name"
+          name=firstName
+          >
+
+        <div ng-messages="userGeneral.firstName.$error">
+          <div ng-message="required">This field is required</div>
+        </div>
+
+      </md-input-container>
+    </div><!-- /First Name -->
+
+    <!-- Middle Name -->
+    <div layout-gt-xs="row">
+      <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+        <label>Middle Name</label>
+        <input
+          type="text"
+          ng-model="userGeneral.user.middle_name"
+          ng-value="userGeneral.user.middle_name"
+          name="middleName"
+          ng-disabled="userGeneral.disabledgeneralInfo">
+
+        <div ng-messages="userGeneral.middleName.$error">
+          <div ng-message="required">This field is required</div>
+        </div>
+
+      </md-input-container>
+    </div><!-- /Middle Name -->
+
+    <!-- Last Name -->
+    <div layout-gt-xs="row">
+      <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+        <label>Last Name</label>
+        <input
+          type="text"
+          ng-model="userGeneral.user.last_name"
+          ng-value="userGeneral.user.last_name"
+          name="lastName"
+          >
+
+        <div ng-messages="userGeneral.lastName.$error">
+          <div ng-message="required">This field is required</div>
+        </div>
+
+      </md-input-container>
+    </div><!-- Last Name -->
+
+    <!-- BIRTHDAY -->
+    <div layout-gt-xs="row" layout-align="start center" class="u-ml-10 u-mr-10">
+
+      <label class="u-mr-20">Birthday</label>
+      <hra-date-select
+        ng-model="userGeneral.user.birthday" >
+      </hra-date-select>
+
+    </div><!-- /BIRTHDAY -->
+
+
+
+
+    <!-- CONTACT INFO -->
+    <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
+
+    <!-- Address -->
+    <div layout-gt-xs="row">
+
+      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+        <label>City</label>
+        <input
+          type="text"
+          name=judet
+          ng-value="userGeneral.user.city"
+          ng-model="userGeneral.user.city"
+          >
+      </md-input-container>
+
+      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+        <label>ZIP</label>
+        <input
+          type="text"
+          name=localitate
+          ng-value="userGeneral.user.zip_code"
+          ng-model="userGeneral.user.zip_code"
+          ng-disabled="userGeneral.disabledgeneralInfo">
+      </md-input-container>
+
+    </div>
+
+    <div layout-gt-xs="row">
+      <md-input-container md-no-float class="md-block" flex-gt-xs="100">
+        <label>Address</label>
+        <input
+          type="text"
+          name=adresa
+          ng-value="userGeneral.user.address"
+          ng-model="userGeneral.user.address"
+          ng-disabled="userGeneral.disabledgeneralInfo">
+      </md-input-container>
+    </div>
+    <!-- /Address -->
+
+    <!-- PHONE AND EMAIL -->
+    <div layout-gt-xs="row">
+
+      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+
+        <label>Phone</label>
+        <input
+          ng-value="userGeneral.user.phone"
+          ng-model="userGeneral.user.phone">
+
+        <div ng-messages="serverErrors">
+          {{serverErrorsArray.data.invalidAttributes.phone[0].message}}
+        </div>
+
+      </md-input-container>
+
+      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+
+        <label>Email</label>
+        <input
+          ng-value="userGeneral.user.other_email"
+          ng-model="userGeneral.user.other_email"
+          name="emailOther"
+          type="email">
+
+        <div ng-messages="userGeneral.email.$error">
+          <div ng-message="email">Please insert a valid email</div>
+        </div>
+
+      </md-input-container>
+
+    </div><!-- /PHONE AND EMAIL -->
+
+    <!-- CAR LICENSE -->
+    <div layout-gt-xs="row">
+      <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+        <label>Car's license plate</label>
+        <input
+          type="text"
+          ng-value="userGeneral.user.car_plate"
+          ng-model="userGeneral.user.car_plate">
+
+      </md-input-container>
+    </div><!-- CAR LICENSE -->
+
+
+
+
+
+    <!-- ASSIST INFO -->
+    <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
+
+    <!-- STARTED WORKING ON -->
+    <div layout-gt-xs="row" layout-align="start center" ng-hide="userGeneral.candidate">
+      <label flex-gt-xs="35" class="md-padding">
+        <strong>Start date at Company</strong>
+      </label>
+
+      <hra-date-select class="hide-days"
+        flex-gt-xs="65"
+        ng-model="userGeneral.user.company_start_date">
+      </hra-date-select>
+
+    </div><!-- STARTED WORKING ON -->
+
+    <!-- ASSIST POSITION -->
+    <div layout-gt-xs="row" layout-align="start center" ng-hide="userGeneral.candidate">
+
+      <label flex-gt-xs="35" class="md-padding">
+        <strong>Position</strong>
+      </label>
+
+      <md-input-container md-no-float class="md-block" flex-gt-xs="65">
+        <md-select
+          aria-label="Position"
+          ng-model="userGeneral.position"
+          ng-change="userGeneral.savePosition()"
+          md-selected-text="userGeneral.position.name || 'Position'" >
+            <md-option
+             ng-value="item"
+             ng-repeat="item in userGeneral.positions track by $index">
+               {{item.name}}
+            </md-option>
+        </md-select>
+      </md-input-container>
+
+    </div><!-- ASSIST POSITION -->
+
+    <!-- ASSIST CANDIDATE POSITION -->
+    <div layout-gt-xs="row" layout-align="start center" ng-show="userGeneral.candidate">
+
+      <label flex-gt-xs="35" class="md-padding u-mb-20">
+        <strong>Position</strong>
+      </label>
+
+      <md-input-container md-no-float class="md-block" flex-gt-xs="30">
+        <md-select
+          aria-label ="Position"
+          ng-model="userGeneral.user.assistPositionTitle"
+          md-selected-text="userGeneral.getSelectedText(userGeneral.user.assistPositionTitle, position=1)">
+            <md-option
+             ng-value="position"
+             ng-repeat="position in userGeneral.candidatesPositionTitle">
+               {{position}}
+            </md-option>
+        </md-select>
+      </md-input-container>
+
+    </div><!-- ASSIST CANDIDATE POSITION -->
+
+    <!-- ASSIST EMAIL -->
+    <div layout-gt-xs="row">
+      <md-input-container md-no-float class="md-block" flex-gt-xs="">
+
+        <label>ASSIT email</label>
+
+        <input
+          ng-value="userGeneral.user.email"
+          ng-model="userGeneral.user.email"
+          name="emailAssist"
+          type="email"
+
+          readonly>
+
+        <div ng-messages="userGeneral.email.$error">
+          <div ng-message="email">Please insert a valid email</div>
+        </div>
+
+      </md-input-container>
+    </div><!-- /ASSIST EMAIL -->
+
+    <!-- OFFICE AND CONTRACT -->
+    <div layout-gt-xs="row"
+      layout-align="start center"
+      ng-hide="userGeneral.candidate">
+
+      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+        <!-- @!TODO: De facut autocomplete aici, se cunosc birourile -->
+        <label>Office Nr.</label>
+        <input
+          type="text"
+          name="office"
+          ng-value="userGeneral.user.office_nr"
+          ng-model="userGeneral.user.office_nr">
+      </md-input-container>
+
+      <md-input-container md-no-float flex-gt-xs="50">
+        <md-select
+          aria-label="contract type"
+          ng-model="userGeneral.copyUserSchedule.name"
+          md-selected-text="userGeneral.getSelectedText(userGeneral.copyUserSchedule.name, contract=0)">
+          <md-option
+            ng-value="type"
+            ng-repeat="type in userGeneral.contractType">
+              {{type}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+    </div><!-- /OFFICE AND CONTRACT -->
+
+
+
+
+    <md-divider class="divider-bold u-mt-15 u-mb-20"></md-divider>
+    <!-- Urgent Contact -->
+    <div layout-gt-xs="row">
+
+      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+        <label>Urgent Contact Name</label>
+        <input
+          type="text"
+          name="urgentContactName"
+          ng-value="userGeneral.user.urgent_contact_name"
+          ng-model="userGeneral.user.urgent_contact_name"
+           />
+      </md-input-container>
+
+      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+       <label>Urgent Contact Phone</label>
+        <input
+          type="text"
+          name="urgentContactPhone"
+          ng-value="userGeneral.user.urgent_contact_phone"
+          ng-model="userGeneral.user.urgent_contact_phone"
+           />
+      </md-input-container>
+
+    </div><!-- /Urgent Contact -->
+
+  </md-content><!-- /EDIT -->
+
+
+
+
+
+  <!-- CARD ACTIONS-->
+  <md-card-actions
+    layout="column"
+    layout-align="start"
+    ng-show="!userGeneral.settings.showForm">
+    <md-button
+      class="c-card-profile__btn no-margin"
+      ng-click="userGeneral.toggleForm(); userGeneral.saveCopy()">
+      Add/Edit general information
+    </md-button>
+  </md-card-actions>
+
+  <md-card-actions
+    layout="row"
+    layout-align="center center"
+    ng-show="userGeneral.settings.showForm"
+    class="additional">
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="userGeneral.save()"
+      ng-disabled="btnIsDisabled">
+      Save
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ng-click="userGeneral.toggleForm(); userGeneral.cancel()">
+      Cancel
+    </md-button>
+
+  </md-card-actions>
+  <!-- /CARD ACTIONS-->
+
+
+
+
+
+</md-card><!-- CARD GENERAL INFO -->
+

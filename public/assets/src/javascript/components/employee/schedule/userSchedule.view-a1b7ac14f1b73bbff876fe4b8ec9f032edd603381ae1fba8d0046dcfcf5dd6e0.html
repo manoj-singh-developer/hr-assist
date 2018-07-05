@@ -1,0 +1,111 @@
+<!-- CARD SCHEDULE -->
+<md-card>
+
+
+
+
+  <!-- CARD TITLE -->
+  <md-card-title>
+   <md-card-title-text>
+     <span class="md-headline">Schedule</span>
+   </md-card-title-text>
+  </md-card-title><!-- CARD TITLE -->
+
+
+
+
+
+  <!-- CARD NOTES -->
+  <md-content class="c-card-profile__notes">
+    <p>
+      <strong>NOTE: </strong>Complete here your work schedule by dragging and selecting the corresponding boxes.
+    </p>
+  </md-content> <!-- CARD NOTES -->
+
+
+
+
+
+  <!-- FORM SCHEDULE -->
+  <section layout-gt-xs="row" ng-disabled="!hraSchedule.showEditSchedule" class="c-section-schedule">
+
+    <ul class="c-schedule-days">
+        <li>Mon</li>
+        <li>Tue</li>
+        <li>Wed</li>
+        <li>Thu</li>
+        <li>Fri</li>
+    </ul>
+
+    <md-list layout="row" class="c-schedule-list">
+
+      <ul class="c-schedule c-schedule--hours">
+          <li>09:00 - 10:00</li>
+          <li>10:00 - 11:00</li>
+          <li>11:00 - 12:00</li>
+          <li>12:00 - 12:30</li>
+          <li>12:30 - 13:30(lunch)</li>
+          <li>13:30 - 14:00</li>
+          <li>14:00 - 15:00</li>
+          <li>15:00 - 16:00</li>
+          <li>17:00 - 17:00</li>
+          <li>17:00 - 18:00</li>
+      </ul>
+
+      <ul
+          class="c-schedule c-shedule--right"
+          selectable
+          selectable-list="hraSchedule.numbersScheduleArray"
+          selectable-out="hraSchedule.selectedSchedule">
+          <li class="ui-widget-content" ng-repeat="schedule in hraSchedule.numbersScheduleArray track by $index">09:00 - 10:00</li>
+      </ul>
+
+   </md-list>
+
+  </section>
+
+
+
+
+
+  <!-- CARD ACTIONS-->
+   <md-card-actions
+    layout="column"
+    layout-align="start"
+    ng-show="!hraSchedule.showEditSchedule">
+    <md-button
+      id ="schedule"
+      class="c-card-profile__btn no-margin"
+      ng-click="hraSchedule.displayEditSchedule()">
+      Edit Schedule
+    </md-button>
+  </md-card-actions>
+
+  <md-card-actions
+    layout="row"
+    layout-align="center center"
+    ng-show="hraSchedule.showEditSchedule"
+    class="additional">
+
+    <md-button
+      class="md-raised md-primary"
+      ng-click="hraSchedule.save(); hraSchedule.displayEditSchedule()"
+      ng-hide="hraSchedule.disabledSchedule">
+      Save
+    </md-button>
+
+    <md-button
+      class="md-raised"
+      ng-click="hraSchedule.cancelAdd(); hraSchedule.displayEditSchedule()"
+      ng-hide="hraSchedule.disabledSchedule">
+      Cancel
+    </md-button>
+
+  </md-card-actions>
+  <!-- /CARD ACTIONS-->
+
+
+
+
+
+</md-card><!-- CARD SCHEDULE -->

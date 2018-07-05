@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HR ASSIST</title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./vendor.css">
+    <link rel="stylesheet" href="./app.css">
+
+  </head>
+
+  <body ng-app="HRA" ui-router-styles hra-route-css-class ng-cloak>
+
+    <section ng-controller="mainController" class="main-view">
+
+      <style>
+        .view-login .c-navigation {
+          display: none !important;
+        }
+      </style>
+
+
+      <md-content class="c-navigation">
+
+        <md-nav-bar
+          ng-if="isAdmin"
+          class="[ c-navbar c-navbar--admin ] [ js-navbar-admin ]"
+          ng-class="{'secNavBar': nav === true}"
+          md-selected-nav-item="currentNavItem"
+          nav-bar-aria-label="navigation links"
+          ng-hide="mainCtrl.isLanding">
+
+          <md-nav-item md-nav-sref="dashboard" name="Dashboard" ng-click="firstNavBar()">
+            <md-icon class="material-icons">dashboard</md-icon>
+            Dashboard
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="projectsParent.list" name="projects" ng-click="firstNavBar()">
+            <md-icon class="material-icons">work</md-icon>
+            Projects
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="employeesParent.list" name="employees" ng-click="firstNavBar()">
+            <md-icon class="material-icons">group</md-icon>
+            Employees
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="candidateParent.list" name="candidate" ng-click="firstNavBar()">
+            <md-icon class="material-icons">school</md-icon>
+            Candidates
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="holidayParent.list" name="Holiday" ng-click="firstNavBar()">
+            <md-icon class="material-icons">mood</md-icon>
+            Holidays
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="landing-page" name="logout" ng-click="mainCtrl.logOut()">
+            <span>Logout</span>
+          </md-nav-item>
+
+       
+
+          <md-nav-item class="coconut" md-nav-sref="deviceParent.list" name="devices" ng-click="secNavBar()">
+            Devices
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="technologyParent.list" name="technologies" ng-click="secNavBar()">
+            Technologies
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="industryParent.list" name="industries" ng-click="secNavBar()">
+            Industries
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="customerParent.list" name="customers" ng-click="secNavBar()">
+            Customers
+          </md-nav-item>
+
+          <md-nav-item md-nav-sref="appTypeParent.list" name="appTypes" ng-click="secNavBar()">
+            App types
+          </md-nav-item>
+
+        </md-nav-bar>
+
+        <md-nav-bar
+          ng-show="mainCtrl.isLanding"
+          class="[ c-navbar--employee ]  [ js-navbar-employee ]"
+          md-selected-nav-item="currentNavItem"
+          nav-bar-aria-label="navigation links">
+
+          <md-nav-item md-nav-sref="login" name="equipments">
+            Login
+          </md-nav-item>
+
+        </md-nav-bar>
+
+      </md-content>
+
+
+
+      <section class="page-content">
+        <div ui-view></div>
+      </section>
+
+
+    </section>
+
+    <!--SCRIPTS-->
+     <script src="./vendor.js"></script>
+     <script src="./app.js"></script>
+
+  </body>
+</html>

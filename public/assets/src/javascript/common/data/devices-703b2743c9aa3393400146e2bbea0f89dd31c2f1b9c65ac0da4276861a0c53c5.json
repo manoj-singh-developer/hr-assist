@@ -1,0 +1,329 @@
+[
+  {
+    "name": "Monitor Philips 23,8",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor LG 24",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® Core™ i3-4330 CPU,8GB GiB, 256GB SSD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor Dell 27",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Apple MackBook PRO 13 late",
+    "description": "8GB, 256Gb SSD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor BenQ 24",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor Philips 24",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® I3, 16GB RAM, 256GB SSD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® I5, 3340, 16GB RAM, 500GB HDD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor LG 22",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor Philips 22",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® Core™ I3-4170, 7,5 RAM, 228 HDD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® Core™ I5, 8GB RAM, Intel HD Graphics 3000 512MB, 500GB",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "iMac 27-inch Late 2012",
+    "description": "Intel® Core™ I7, 16 GB RAM",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor LG 23",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },
+{
+    "name": "Monitor Philips 23",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor BenQ 27",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor LG 27",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },
+{
+    "name": "Desktop",
+    "description": "Intel® Core™ I5-3470, 16GB RAM, 256GB SSD, 1TB HDD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® Core™ I3, 8GB RAM, 240GB SSD, 500GB HDD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® Core™ I3-4160, 8GB RAM, 1TB HDD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "iMac 21,5",
+    "description": "Procesor 2,5 GHz Intel® Core™ I5, 8GB RAM, 1333MHz, DDR3",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® Core™ I3-4160. 4GB RAM, 250GB SSD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® Core™ I5, 12GB RAM, 240GB RAM, 1TB HDD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor AOC 23",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® Core™ I3, 8GB RAM, 120GB SSD, 1TB HDD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® Core™ I7, 32GB, 1,12TB",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor LG IPS FULLHD",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Mac Mini(Mid 2011)",
+    "description": "Processor: 2,3 Ghz, Intel® Core™ I5, 8GB RAM, 240GB SSD ",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Apple 27",
+    "description": "I5, 24GB RAM, 1TB HDD, AMD Radeon R9 M390",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor Dell 23,5",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® Core™ I3-4370 16GB, 250GB",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor LG 21,5",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "ViewSonic (1440x900)",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "ASUS VH242, 23",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Mac Book Pro",
+    "description": "I7, 16GB RAM, 256GB SSD Intel® Iris Pro 1536MB",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor Samsung 24",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® Core™ I5-6500, 16GB RAM, 240GB SSD, 500GB HDD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor Dell 23",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel® Core™ I3-4160, 8GB RAM, 230GB SSD, 500GB HDD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Apple MackBook Pro",
+    "description": "I7, 16GB RAM, 256 SSD, Iris Pro",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor ASUS VH242, 23",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "I3, 9GB, 230GB SSD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Laptop Lenovo",
+    "description": "I5, 8GB RAM, 1TB HDD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Desktop",
+    "description": "Intel®  Core™ I3-4160, 16GB RAM, 240GB SSD, 500GB HDD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Monitor Philips 27",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Laptop ASUS Zenbook",
+    "description": "12GB RAM, 240GB SSD",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Telefon Motorola G1",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Telefon Samsung S6",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Boxe",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Ipad Air",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Tableta grafica Wacom",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Hub USB cu alimentare externa",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Telefon Nexus 5",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Telefon iPhone 5s",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Telefon Tastatura Apple",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Tastatura Microsoft Confort Curve",
+    "description": "Tastatura Microsoft Confort Curve",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Telefon Nokia Lumia 650",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Telefon Nokia Lumia 630",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Tebleta INTUOS",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Telefon Nexus 4",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Telefon OnePlus 2",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "SurfaceBook",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Tastatura Delux",
+    "description": "",
+    "total": 100,
+    "used": 0
+  },{
+    "name": "Mouse",
+    "description": "",
+    "total": 100,
+    "used": 0
+  }]
