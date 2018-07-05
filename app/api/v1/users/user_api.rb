@@ -129,22 +129,6 @@ module V1
         requires :password, type: String
       end
 
-<<<<<<< HEAD
-
-    post "login" do 
-      domain = params[:email].partition('@').last
-      allowed_domains = Domain.all.pluck(:allowed_domain)
-      user = User.find_by_email(params[:email])
-      if domain == "assist.ro" || allowed_domains.include?(params[:email].partition('@').last)
-        case login_method(user)
-        when "Ldap login"
-          create_user(ldap_login.first)  
-        when "Devise login"
-            login_devise(user)
-        when "Devise create"
-            create_user_devise(user)
-        when "Login error"
-=======
       post "login" do
         allowed_domains = Domain.all.pluck(:allowed_domain)
         result = ldap_login
@@ -157,7 +141,7 @@ module V1
             if user[:reg_status] == "confirmed"
               login_non_ldap_user(user)
             elsif user[:reg_status] == "pending"
-            error!({ message: "Your account is not confirmed." })
+              error!({ message: "Your account is not confirmed." })
             end
           else
             new_user = User.new(email: params[:email], password: params[:password], reg_status: "pending") if User.where(reg_status: "pending").count < 20
@@ -166,13 +150,9 @@ module V1
             success(user: user)
           end
         else
->>>>>>> parent of daacbb1... Merge pull request #374 from assist-software/Task-19505
           error!({ message: "Authentication FAILED." })
         end
-      else
-        error!({ message: "This domain is missing." })
-      end 
-    end
+      end
 
       # post "login" do
       #   allowed_domains = Domain.all.pluck(:allowed_domain)
@@ -192,10 +172,10 @@ module V1
       #       new_user = User.new(email: params[:email], password: params[:password], reg_status: "pending") if User.where(reg_status: "pending").count < 20
       #       new_user[:encrypted_password] = encrypt(params[:password])
       #       new_user.save
-            
+
       #       UserMailer.welcome_email(new_user).deliver_now
       #       AdminMailer.confirm_email(new_user).deliver_now
-            
+
       #       success(user: user)
       #     end
       #   else

@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20180129125613) do
-=======
 ActiveRecord::Schema.define(version: 20180103135314) do
->>>>>>> parent of daacbb1... Merge pull request #374 from assist-software/Task-19505
 
   create_table "active_admin_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "namespace"
