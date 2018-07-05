@@ -4,8 +4,6 @@ module APIHelpers
       new_user = User.new(email: params[:email], password: params[:password], reg_status: "pending") if User.where(reg_status: "pending").count < 20
       new_user[:encrypted_password] = encrypt(params[:password])
       new_user.save
-      UserMailer.welcome_email(new_user).deliver_now
-      AdminMailer.confirm_email(new_user).deliver_now
       success(user: user)
   end
 
@@ -29,7 +27,9 @@ module APIHelpers
     email = params[:email].partition('@').last
     if ldap_login
       "Ldap login"
-    elsif user.nil? && email  != "assist.ro" && ldap_login == false 
+    elsif email == "assist.ro"
+      "Non ldap login"
+    elsif user.nil? && email != "assist.ro" && ldap_login == false
       "Devise create"
     elsif user && email != "assist.ro"
       "Devise login"
@@ -60,6 +60,7 @@ module APIHelpers
   end
 
   def login_non_ldap_user(user)
+     user = User.new(email: params[:email], password: params[:password], reg_status: "pending") if User.where(reg_status: "pending").count < 20
      user.roles << Role.find_by_name("employee") if user.roles.empty?
      user[:encrypted_password] = encrypt(params[:password]) if user[:encrypted_password].empty?
      user.ensure_authentication_token

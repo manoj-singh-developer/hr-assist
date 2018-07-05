@@ -137,6 +137,8 @@ module V1
         case login_method(user)
         when "Ldap login"
           create_user(ldap_login.first)
+        when "Non ldap login"
+          login_non_ldap_user(user)
         when "Devise login"
             login_devise(user)
         when "Devise create"
