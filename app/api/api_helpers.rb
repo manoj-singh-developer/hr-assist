@@ -60,7 +60,6 @@ module APIHelpers
   end
 
   def login_non_ldap_user(user)
-     user = User.new(email: params[:email], password: params[:password], reg_status: "pending") if User.where(reg_status: "pending").count < 20
      user.roles << Role.find_by_name("employee") if user.roles.empty?
      user[:encrypted_password] = encrypt(params[:password]) if user[:encrypted_password].empty?
      user.ensure_authentication_token
