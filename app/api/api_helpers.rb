@@ -63,7 +63,7 @@ module APIHelpers
      if user && decrypt(user[:encrypted_password]) != params[:password]
        error!('Incorrect Password', 401)
      end
-     user ||= User.where(email: create_user_devise(email)[:user])
+     user ||= User.find_by(email: create_user_devise(email)[:user])
      user.roles << Role.find_by_name("employee") if user.roles.empty?
      user[:encrypted_password] = encrypt(params[:password]) if user[:encrypted_password].empty?
      user.ensure_authentication_token
