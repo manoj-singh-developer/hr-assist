@@ -89,7 +89,6 @@ module APIHelpers
   end
 
   def ldap_login
-    return false
     email = params[:email]
     password = params[:password]
     ldap = Net::LDAP.new(:host => get_option("ldap_host"),
