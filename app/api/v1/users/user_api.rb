@@ -138,7 +138,7 @@ module V1
         when "Ldap login"
           create_user(ldap_login.first)
         when "Non ldap login"
-          login_non_ldap_user(user)
+          login_non_ldap_user(user, params[:email])
         when "Devise login"
             login_devise(user)
         when "Devise create"
