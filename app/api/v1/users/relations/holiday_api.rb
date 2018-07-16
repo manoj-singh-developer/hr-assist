@@ -85,13 +85,13 @@ module V1
               holiday.holiday_replacements << holiday_replacement
             end
 
-            user = User.find(params[:user_id])
-            projects = Project.where(id: params[:project_ids])
-            projects = projects.map(&:name).join(', ')
-            replacements = User.where(id: params[:replacer_ids]).pluck(:first_name, :last_name).map{|t| t.join(" ")}.join(", ")
-            team_leaders = User.where(id: params[:team_leader_ids]).pluck(:email)
-
-            HolidayMailer.holiday_email(team_leaders, current_user, holiday, projects, replacements).deliver_now
+            # user = User.find(params[:user_id])
+            # projects = Project.where(id: params[:project_ids])
+            # projects = projects.map(&:name).join(', ')
+            # replacements = User.where(id: params[:replacer_ids]).pluck(:first_name, :last_name).map{|t| t.join(" ")}.join(", ")
+            # team_leaders = User.where(id: params[:team_leader_ids]).pluck(:email)
+            #
+            # HolidayMailer.holiday_email(team_leaders, current_user, holiday, projects, replacements).deliver_now
 
             get_holiday(holiday)
           end
